@@ -20,8 +20,8 @@ keywords:
 # このリポジトリはファイルの種類ごとに一方を適用する（文書・データは CC BY-SA 4.0、コードは MIT）。
 # 適用範囲の正本は LICENSE.md。
 # --- 公開時に記入する欄（いまは無効） ---
-# date-released: "YYYY-MM-DD"
-# repository-code: "https://github.com/<owner>/<repo>"
+# date-released: "2026-11-10"
+# repository-code: "https://github.com/NFlaboratory/acs-phase1"
 # --- Zenodo で DOI 取得後に追加する欄（いまは無効） ---
 # identifiers:
 #   - type: doi
