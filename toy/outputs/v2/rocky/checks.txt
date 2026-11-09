@@ -1,0 +1,48 @@
+[WITNESS] OK  CR-1a(i)/CR-1c for eta_heat -- WF=1 and eta=1 at t0-1, eta=0 for all s>=t0 (200 steps), x_t0 in D_eta=True; WF reaches 0 at t0+13 on this sequence
+[WITNESS] OK  CR-1a(i)/CR-1c for eta_food -- WF=1 and eta=1 at t0-1, eta=0 for all s>=t0 (200 steps), x_t0 in D_eta=True; WF reaches 0 at t0+21 on this sequence
+[GRID] OK  CR-1a(ii) eta_heat: under eta_heat=0, temp' <= max(0,temp-1); temp<=1 => integ' <= integ-1 -- 1403136 (x,u,e) triples, 0 violations.  Hence WF=0 within temp0+integ0 <= 18 steps of persistent non-satisfaction.  Fields read by temp'/integ': pos, door, T, rock, energy, integ, temp, hpsl, heff (code inspection of f_auto/f_dir)
+[GRID] OK  CR-1a(ii) eta_food: under eta_food=0, Phi=energy+eat_gain*carry drops by >=1 while base active; base inactive => energy, hpsl do not rise and integ' <= integ-1 -- 695520 triples, 0 violations.  Hence base activity ends within Phi0 steps and WF=0 within Phi0+10 steps
+[WITNESS] OK  CR-1b joint satisfiability -- x at (1, 2), e with T=0 and res_cur=1
+[WITNESS] OK  CR-2b(i) sensing: fixed e, different x -> different I
+[WITNESS] OK  CR-2b(i) sensing: fixed x, different e -> different I
+[WITNESS] OK  CR-2b(ii) discrimination: e difference -> different internal representation
+[WITNESS] OK  CR-2b(iii) valuation incl. feasibility sensitivity: x in K vs x not in K -> different evaluation -- Pi_eval 2 vs -1 (same M, same e)
+[WITNESS] OK  CR-2b(iv) action: different representation/evaluation -> different response -- responses found over 16 states (same M, same b): ['N', 'S', 'W', 'eat', 'signal', 'wait']
+[WITNESS] OK  CR-2a/c basic functions per division and base functions exist (activity map)
+[GRID] OK  ass:f_decomposition f = (+)(f_auto, f_dir) and f(x,u_empty,e) = f_auto(x,e) -- f is defined as oplus(f_auto,f_dir) (construction); u_empty identity checked on 423360 pairs, 0 violations
+[WITNESS] OK  ass:env_input_nondegeneracy
+[WITNESS] OK  ass:env_viable_nondegeneracy A(x,e) != A(x,e') -- |A|=13 vs 0
+[WITNESS] OK  ass:viable_realizability
+[WITNESS] OK  ass:compact_spaces / ass:M_compact: X, U finite (discrete topology); M finite-valued -- by construction (finite ranges in body.py, bounded memories in mind.py)
+[GRID] OK  (SC-2) toy rule: integ=0 is invariant under f for all u,e and under every upsilon in Upsilon_adm -- 1221696 triples, 0 violations
+[GRID] OK  (FT-2) toy rule: hpsl=0 cannot be left (no f step raises hpsl; Upsilon does not act on hpsl) -- 0 violations
+[RECORD] OK  g_O(o_t,x_t,u_t,b_t) equals the realised next o of the joint simulation -- 80 checks, 0 mismatches
+[RECORD] OK  g_O does not depend on M of the individual (effective action fixed) -- 0 mismatches
+[RECORD] OK  observation factorisation: u_t = pipeline(M_t, P_sens(x_t,e_t)) -- 0 mismatches
+[RECORD] OK  M2 output does not depend on the M3 factor (def:m2_map) -- 0 mismatches
+
+Not checked here: ass:no_branching (one instance per name by construction), ass:Eext_time_fixed (types fixed by construction), section-3..6 assumptions (see README 'assumptions').
+[RECORD] OK  i: prop:blockage_dichotomy (exactly one of B1, B2 at every blocked time) -- 276 blocked steps
+[RECORD] OK  i: prop:eu_blockage (EU false on T_P => A empty)
+[RECORD] OK  i: prop:fr_mu_eff (A empty <=> mu_eff = 0)
+[RECORD] OK  i: prop:selection_responsibility (u_t not in A_t => x_t+1 not in K)
+[RECORD] OK  i: prop:blockage_viability_kernel (blk and e in E_req => x not in Viab_f(K))
+[RECORD] OK  i: prop:viab_stage_core (x in Viab_f(K) => Hor not finite below cap)
+[RECORD] OK  i: prop:collapse_basic (C-2) absorption of Col and FT
+[RECORD] OK  i: prop:termination_order (FT reached no later than the first CS; WF=0 under Col) -- T_FT=36, t_C=37
+[RECORD] OK  i: prop:recover_excludes_termination (Recover=1 for some upsilon => CS=0)
+[RECORD] OK  i: prop:tstab_implies_principles (T-STAB => SM, EU and (FR where defined) in the window)
+[RECORD] OK  i: zones: Z5 iff Col=1; Recover defined only on Z1..Z4
+[RECORD] OK  j: prop:blockage_dichotomy (exactly one of B1, B2 at every blocked time) -- 252 blocked steps
+[RECORD] OK  j: prop:eu_blockage (EU false on T_P => A empty)
+[RECORD] OK  j: prop:fr_mu_eff (A empty <=> mu_eff = 0)
+[RECORD] OK  j: prop:selection_responsibility (u_t not in A_t => x_t+1 not in K)
+[RECORD] OK  j: prop:blockage_viability_kernel (blk and e in E_req => x not in Viab_f(K))
+[RECORD] OK  j: prop:viab_stage_core (x in Viab_f(K) => Hor not finite below cap)
+[RECORD] OK  j: prop:collapse_basic (C-2) absorption of Col and FT
+[RECORD] OK  j: prop:termination_order (FT reached no later than the first CS; WF=0 under Col) -- T_FT=56, t_C=60
+[RECORD] OK  j: prop:recover_excludes_termination (Recover=1 for some upsilon => CS=0)
+[RECORD] OK  j: prop:tstab_implies_principles (T-STAB => SM, EU and (FR where defined) in the window)
+[RECORD] OK  j: zones: Z5 iff Col=1; Recover defined only on Z1..Z4
+[RECORD] OK  org: prop:org_blockage_characterization (A(Sigma_org)=empty <=> no org action keeps Pi_org >= 0)
+[RECORD] OK  org: def:org_acs (org_ACS iff WF_org = 1; n_org is not part of the condition) and def:org_class_terms (participating iff n_org >= 1)

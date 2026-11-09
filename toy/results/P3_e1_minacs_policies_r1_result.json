@@ -1,0 +1,113 @@
+{
+ "id": "P3_e1_minacs_policies_r1",
+ "spec_md5": "90ed60b1fd74494694fe82b1712a6fe3",
+ "registry_entry": "2026-10-26T07:44:56.479138+00:00\t90ed60b1fd74494694fe82b1712a6fe3\t/home/claude/E4/specs/P3_e1_minacs_policies_r1.json\tP3_e1_minacs_policies_r1",
+ "run_at": "2026-10-26T07:45:27.563229+00:00",
+ "python": "3.13.16",
+ "seconds": 31.0,
+ "deviation": null,
+ "problems_at_run": [],
+ "n_units_per_variant_condition": 900,
+ "verdicts": [
+  {
+   "id": "H1",
+   "statement": "（回帰検査）u_t∈U^Viab(x_t) を選んだ時刻に核から出るのは、e_t∉E_req(x_t) の時刻に限られる（prop:kernel_maintenance の一段の形）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 3122,
+      "holds": 3122
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H2",
+   "statement": "核維持応答を選ぶ方策の崩壊到達時刻は、一段先だけを見る方策（後続の energy 最大）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 888,
+      "a>b": 888,
+      "a<b": 12,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H3",
+   "statement": "核維持応答を選ぶ方策の崩壊到達時刻は、TIPA 機構以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 501,
+      "a>b": 259,
+      "a<b": 399,
+      "a==b": 242
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H4",
+   "statement": "TIPA 機構の崩壊到達時刻は、記憶をもたない観測反射以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 570,
+      "a>b": 65,
+      "a<b": 330,
+      "a==b": 505
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5a",
+   "statement": "TIPA 機構の崩壊到達時刻は、固定行動列以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 900,
+      "a>=b": 711,
+      "a>b": 567,
+      "a<b": 189,
+      "a==b": 144
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5b",
+   "statement": "TIPA 機構の崩壊到達時刻は、常に待機する方策以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 900,
+      "a>b": 684,
+      "a<b": 0,
+      "a==b": 216
+     }
+    }
+   },
+   "rule_dependent": false
+  }
+ ],
+ "consistency": []
+}

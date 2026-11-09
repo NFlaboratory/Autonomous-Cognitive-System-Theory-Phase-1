@@ -1,0 +1,389 @@
+[
+ {
+  "suite": "structure",
+  "check_id": "S01_MinACS",
+  "labels": [
+   "ass:s5_observation_factorization",
+   "prop:s5_observation_causality",
+   "def:update_section5"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 13824,
+  "premise_cases": 2304,
+  "kind": "exhaustive",
+  "detail": "Update(M,x,e) depends on (M, P_sens(x,e)) only",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S02_MinACS",
+  "labels": [
+   "def:s4_primitive_composition",
+   "def:s4_psl_sources",
+   "def:s5_standard_step"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 13824,
+  "premise_cases": 2304,
+  "kind": "exhaustive",
+  "detail": "u = P_act(M, P_disc, P_val) depends on (M, I) only",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S03_MinACS",
+  "labels": [
+   "prop:purpose_self_attribution",
+   "def:purpose_formation",
+   "def:m2_request_signal",
+   "def:m2_priority"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 13824,
+  "premise_cases": 2304,
+  "kind": "exhaustive",
+  "detail": "(Pur, sig, Priority, mode) depend on (M, I) only",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S04_MinACS",
+  "labels": [
+   "def:m2_map",
+   "ass:functional_concurrency"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 4608,
+  "premise_cases": 4608,
+  "kind": "exhaustive",
+  "detail": "M2 output unchanged when only the M3 purpose record changes",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S05_MinACS",
+  "labels": [
+   "prop:s5_one_step",
+   "def:update_section5",
+   "def:sel_proj",
+   "def:action_decision"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 13824,
+  "premise_cases": 13824,
+  "kind": "exhaustive",
+  "detail": "every (M,x,e): u in U, f(x,u,e) in X, Update in the declared M-space",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S07_MinACS",
+  "labels": [
+   "prop:s5_continuation",
+   "def:s5_operation_record"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 24,
+  "premise_cases": 24,
+  "kind": "exhaustive",
+  "detail": "re-running with the same x0, M0, o0 and background gives the same record (40 steps)",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S08_MinACS",
+  "labels": [
+   "prop:s5_causality"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 48,
+  "premise_cases": 48,
+  "kind": "exhaustive",
+  "detail": "changing the background from t on leaves (x,M,o) up to t unchanged (t = 5, 20)",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S09_MinACS",
+  "labels": [
+   "prop:s5_observation_causality"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 702,
+  "premise_cases": 235,
+  "kind": "exhaustive",
+  "detail": "M_t is determined by M_0 and I_0..I_{t-1} (premise: non-empty I-prefixes shared by runs that differ in x or o)",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S01_Furnace",
+  "labels": [
+   "ass:s5_observation_factorization",
+   "prop:s5_observation_causality",
+   "def:update_section5"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 2313600,
+  "premise_cases": 325350,
+  "kind": "exhaustive",
+  "detail": "Update(M,x,e) depends on (M, P_sens(x,e)) only",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S02_Furnace",
+  "labels": [
+   "def:s4_primitive_composition",
+   "def:s4_psl_sources",
+   "def:s5_standard_step"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 2313600,
+  "premise_cases": 325350,
+  "kind": "exhaustive",
+  "detail": "u = P_act(M, P_disc, P_val) depends on (M, I) only",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S03_Furnace",
+  "labels": [
+   "prop:purpose_self_attribution",
+   "def:purpose_formation",
+   "def:m2_request_signal",
+   "def:m2_priority"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 2313600,
+  "premise_cases": 325350,
+  "kind": "exhaustive",
+  "detail": "(Pur, sig, Priority, mode) depend on (M, I) only",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S04_Furnace",
+  "labels": [
+   "def:m2_map",
+   "ass:functional_concurrency"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 462720,
+  "premise_cases": 462720,
+  "kind": "exhaustive",
+  "detail": "M2 output unchanged when only the M3 purpose record changes",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S05_Furnace",
+  "labels": [
+   "prop:s5_one_step",
+   "def:update_section5",
+   "def:sel_proj",
+   "def:action_decision"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 2313600,
+  "premise_cases": 2313600,
+  "kind": "exhaustive",
+  "detail": "every (M,x,e): u in U, f(x,u,e) in X, Update in the declared M-space",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S06_Furnace",
+  "labels": [
+   "def:psl4",
+   "def:effective_action_resolve",
+   "ass:psl_minimal"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 960,
+  "premise_cases": 5280,
+  "kind": "exhaustive",
+  "detail": "r_local from I only (every M sampled 1/7); r != bot => u = r and r != u_empty",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S07_Furnace",
+  "labels": [
+   "prop:s5_continuation",
+   "def:s5_operation_record"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 20,
+  "premise_cases": 20,
+  "kind": "exhaustive",
+  "detail": "re-running with the same x0, M0, o0 and background gives the same record (40 steps)",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S08_Furnace",
+  "labels": [
+   "prop:s5_causality"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 40,
+  "premise_cases": 40,
+  "kind": "exhaustive",
+  "detail": "changing the background from t on leaves (x,M,o) up to t unchanged (t = 5, 20)",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S09_Furnace",
+  "labels": [
+   "prop:s5_observation_causality"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 391,
+  "premise_cases": 390,
+  "kind": "exhaustive",
+  "detail": "M_t is determined by M_0 and I_0..I_{t-1} (premise: non-empty I-prefixes shared by runs that differ in x or o)",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "MUT_S04_MutM2ReadsPurpose",
+  "labels": [
+   "def:m2_map",
+   "ass:functional_concurrency"
+  ],
+  "domain": "Furnace-mut",
+  "status": "PASS_NONVACUOUS",
+  "cases": 462720,
+  "premise_cases": 192800,
+  "kind": "mutation",
+  "detail": "mutation 'M2 reads the M3 purpose record' detected by S04 (192800 violations)",
+  "evidence": [
+   "(M(bo=0, rec=None, pur='none'), X(fu=0, tp=1, s=1), E(h=0, d=0, k=0, o=0))",
+   "(M(bo=0, rec=None, pur='none'), X(fu=0, tp=1, s=1), E(h=0, d=0, k=0, o=1))"
+  ]
+ },
+ {
+  "suite": "structure",
+  "check_id": "MUT_S01_MutUpdateReadsHiddenFlue",
+  "labels": [
+   "ass:s5_observation_factorization",
+   "prop:s5_observation_causality",
+   "def:update_section5"
+  ],
+  "domain": "Furnace-mut",
+  "status": "PASS_NONVACUOUS",
+  "cases": 2313600,
+  "premise_cases": 241000,
+  "kind": "mutation",
+  "detail": "mutation 'Update reads the true flue state o (not sensed)' detected by S01 (241000 violations)",
+  "evidence": [
+   "(M(bo=0, rec=None, pur='none'), ('I', 0, 1, 1, 0, 0))",
+   "(M(bo=0, rec=None, pur='none'), ('I', 0, 1, 1, 0, 1))"
+  ]
+ },
+ {
+  "suite": "structure",
+  "check_id": "MUT_S02_MutActionReadsHidden",
+  "labels": [
+   "def:s4_primitive_composition",
+   "def:s4_psl_sources",
+   "def:s5_standard_step"
+  ],
+  "domain": "MinACS-mut",
+  "status": "PASS_NONVACUOUS",
+  "cases": 13824,
+  "premise_cases": 168,
+  "kind": "mutation",
+  "detail": "mutation 'action reads the resource state r where it is not sensed' detected by S02 (168 violations)",
+  "evidence": [
+   "(M(bc=0, bf=0, pur='none'), ('I', 0, 4, 0, 1, None, 0, None))",
+   "(M(bc=0, bf=0, pur='none'), ('I', 0, 4, 0, 1, None, 1, None))"
+  ]
+ },
+ {
+  "suite": "structure",
+  "check_id": "MUT_S06_MutProtReadsMemory",
+  "labels": [
+   "def:psl4",
+   "def:effective_action_resolve",
+   "ass:psl_minimal"
+  ],
+  "domain": "Furnace-mut",
+  "status": "PASS_NONVACUOUS",
+  "cases": 960,
+  "premise_cases": 80,
+  "kind": "mutation",
+  "detail": "mutation 'PSL-4 protective response reads M (purpose record)' detected by S06 (80 violations)",
+  "evidence": [
+   "('depends on M', X(fu=0, tp=4, s=1), E(h=1, d=0, k=0, o=0))",
+   "('depends on M', X(fu=0, tp=4, s=1), E(h=1, d=0, k=0, o=1))"
+  ]
+ },
+ {
+  "suite": "structure",
+  "check_id": "MUT_S06_MutResolveCancels",
+  "labels": [
+   "def:psl4",
+   "def:effective_action_resolve",
+   "ass:psl_minimal"
+  ],
+  "domain": "Furnace-mut",
+  "status": "PASS_NONVACUOUS",
+  "cases": 960,
+  "premise_cases": 2640,
+  "kind": "mutation",
+  "detail": "mutation 'M3 command overrides an issued protective response' detected by S06 (2640 violations)",
+  "evidence": [
+   "('resolve', M(bo=0, rec=None, pur='none'), X(fu=0, tp=5, s=1), E(h=1, d=0, k=0, o=0))",
+   "('resolve', M(bo=0, rec=(0, 'wait', 1, 1), pur='cool'), X(fu=0, tp=5, s=1), E(h=1, d=0, k=0, o=0))"
+  ]
+ },
+ {
+  "suite": "structure",
+  "check_id": "S06_v2_resolve",
+  "labels": [
+   "def:effective_action_resolve",
+   "def:psl4"
+  ],
+  "domain": "v2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 65,
+  "premise_cases": 52,
+  "kind": "exhaustive",
+  "detail": "Phi_resolve on U x (DIRS u {bot}): bot => u_M3 ; r != bot => pr_loc kept, pr_loc(r) != pr_loc(u_empty)",
+  "evidence": null
+ },
+ {
+  "suite": "structure",
+  "check_id": "S10_v2_psl_sensitivity",
+  "labels": [
+   "def:psl_sensitivity"
+  ],
+  "domain": "v2",
+  "status": "EXAMPLE_ONLY",
+  "cases": 1,
+  "premise_cases": null,
+  "kind": "static",
+  "detail": "static reading: Gamma_in,t reads ['x.alert', 'x.hsens']; x_t is fixed before the TIPA step of t (no same-time loop)",
+  "evidence": null
+ }
+]

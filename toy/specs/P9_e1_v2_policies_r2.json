@@ -1,0 +1,336 @@
+{
+ "id": "P9_e1_v2_policies_r2",
+ "model": "e1_v2",
+ "purpose": "E1 on the v2 toy: impose one policy on individual i (partner j, drone and organisation keep their rules) and compare collapse-reaching times on held-out seeds, in a world without others ('alone') and in the default world.  Kernel-maintaining responses use the judgment layer's certificates (U^Viab_cert, a subset of U^Viab), since Viab_f(K) is decided only by certificates in v2.",
+ "undetermined_rule": "fixed before any run: if the oracle answers 'not_in' or 'undetermined', choose from A(x,e) in the same order; if A is empty, wait (e4/policies_v2.py docstring).",
+ "non_realisability_note": "P-Viab-*, P-A-* read the true lam, A(x,e) and the certificates; reference policies only.",
+ "tuning_history": "No policy was tuned.  The policies were written before any run; one smoke test of all 16 conditions (tuning seed 1, eat_gain 5, regen_period 3, snap_jitter 10, 300 steps; T_col of i: alone: P-Viab-first 166, P-Viab-last 166, P-A-first 25, P-A-greedy 25, P-mech 85, P-greedy 258, P-fixed 24, P-wait 25; default: P-Viab-first 166, P-Viab-last 166, P-A-first 35, P-A-greedy 35, P-mech 168, P-greedy 262, P-fixed 40, P-wait 35) was run before registration.  Seeds 11-60 were not run with these policies before registration.  The v2 mechanism was tuned earlier on seed 1 (v2 report).",
+ "metric_note": "T_col = first step with integ = 0 for i; censored (None = +inf) if not reached within 300 steps.",
+ "sources": [
+  "/home/claude/TOY2/acs_toy/*.py",
+  "/home/claude/E4/e4/*.py",
+  "/home/claude/E4/run_prereg.py"
+ ],
+ "seeds": {
+  "tune": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "eval": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46,
+   47,
+   48,
+   49,
+   50,
+   51,
+   52,
+   53,
+   54,
+   55,
+   56,
+   57,
+   58,
+   59,
+   60
+  ]
+ },
+ "sweep": {
+  "eat_gain": [
+   4,
+   5,
+   6
+  ],
+  "regen_period": [
+   2,
+   3,
+   4
+  ],
+  "snap_jitter": [
+   10
+  ],
+  "steps": [
+   300
+  ]
+ },
+ "conditions": [
+  "alone:P-Viab-first",
+  "alone:P-Viab-last",
+  "alone:P-A-first",
+  "alone:P-A-greedy",
+  "alone:P-mech",
+  "alone:P-greedy",
+  "alone:P-fixed",
+  "alone:P-wait",
+  "default:P-Viab-first",
+  "default:P-Viab-last",
+  "default:P-A-first",
+  "default:P-A-greedy",
+  "default:P-mech",
+  "default:P-greedy",
+  "default:P-fixed",
+  "default:P-wait"
+ ],
+ "rule_variants": {
+  "R0": {}
+ },
+ "rule_independent_metrics": [],
+ "hypotheses": [
+  {
+   "id": "H1a",
+   "kind": "share",
+   "predicate": "cert_exit_only_outside_Ereq",
+   "conditions": [
+    "alone:P-Viab-first",
+    "alone:P-Viab-last",
+    "default:P-Viab-first",
+    "default:P-Viab-last"
+   ],
+   "statement": "（回帰検査）証明書つきの核維持応答 u∈U^Viab_cert(x_t) を選んで証明書の集合から出るのは、e_t∉E_req(x_t) の時刻に限られる（prop:kernel_maintenance の一段の形）。",
+   "how_it_could_fail": "判定層の頑健後続の列挙（局所像 lam の像）が世界の遷移と食い違えば、e∈E_req で集合から出る例が生じる。命題に反するので、起こるとすれば実装の誤りに限られる。回帰検査として登録する。",
+   "rule": {
+    "support_min": 1.0,
+    "reject_max": 0.999
+   }
+  },
+  {
+   "id": "H1b",
+   "kind": "share",
+   "predicate": "f_table_consistent",
+   "conditions": [
+    "alone:P-Viab-first",
+    "alone:P-Viab-last",
+    "default:P-Viab-first",
+    "default:P-Viab-last"
+   ],
+   "statement": "（回帰検査）判定層の後続表 f(x,u,lam|rel) は、世界で実現した後続と一致する（局所像による列挙の正確さ）。",
+   "how_it_could_fail": "body.relevant が f の読む lam の成分を取りこぼしていれば不一致が生じる。回帰検査として登録する。",
+   "rule": {
+    "support_min": 1.0,
+    "reject_max": 0.999
+   }
+  },
+  {
+   "id": "H2-alone",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "alone:P-Viab-first",
+    "alone:P-A-greedy"
+   ],
+   "statement": "（alone）核維持応答を選ぶ方策の崩壊到達時刻は、一段先だけを見る方策（後続の energy・temp・integ 最大）以上である。",
+   "how_it_could_fail": "U^Viab_cert は実現した e を見ない。厳寒（e∉E_req）で U^Viab_cert が屋外の行動を含めば凍えうる。試運転では P-Viab-first 166 に対し P-A-greedy は 25（alone）・35（default）だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H3-alone",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "alone:P-Viab-first",
+    "alone:P-mech"
+   ],
+   "statement": "（alone）核維持応答を選ぶ方策の崩壊到達時刻は、TIPA 機構以上である。",
+   "how_it_could_fail": "機構は観測した寒さ・欠乏に先読みで応答するが、P-Viab は E_req 外の環境を考慮しない。試運転（default）では機構 168 が P-Viab-first 166 を上回った。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H4-alone",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "alone:P-mech",
+    "alone:P-greedy"
+   ],
+   "statement": "（alone）TIPA 機構の崩壊到達時刻は、記憶をもたない観測反射以上である。",
+   "how_it_could_fail": "試運転で観測反射は 258（alone）・262（default）で、機構（85・168）を上回った。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H5a-alone",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "alone:P-mech",
+    "alone:P-fixed"
+   ],
+   "statement": "（alone）TIPA 機構の崩壊到達時刻は、固定行動列以上である。",
+   "how_it_could_fail": "固定行動列が偶然に食べる・避難する時刻と背景が合えば、機構より長く存続しうる。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H5b-alone",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "alone:P-mech",
+    "alone:P-wait"
+   ],
+   "statement": "（alone）TIPA 機構の崩壊到達時刻は、常に待機する方策以上である。",
+   "how_it_could_fail": "待機は移動の費用を払わない。default では相手・ドローン・組織からの贈与で待機の方が長く存続しうる。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H2-default",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "default:P-Viab-first",
+    "default:P-A-greedy"
+   ],
+   "statement": "（default）核維持応答を選ぶ方策の崩壊到達時刻は、一段先だけを見る方策（後続の energy・temp・integ 最大）以上である。",
+   "how_it_could_fail": "U^Viab_cert は実現した e を見ない。厳寒（e∉E_req）で U^Viab_cert が屋外の行動を含めば凍えうる。試運転では P-Viab-first 166 に対し P-A-greedy は 25（alone）・35（default）だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H3-default",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "default:P-Viab-first",
+    "default:P-mech"
+   ],
+   "statement": "（default）核維持応答を選ぶ方策の崩壊到達時刻は、TIPA 機構以上である。",
+   "how_it_could_fail": "機構は観測した寒さ・欠乏に先読みで応答するが、P-Viab は E_req 外の環境を考慮しない。試運転（default）では機構 168 が P-Viab-first 166 を上回った。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H4-default",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "default:P-mech",
+    "default:P-greedy"
+   ],
+   "statement": "（default）TIPA 機構の崩壊到達時刻は、記憶をもたない観測反射以上である。",
+   "how_it_could_fail": "試運転で観測反射は 258（alone）・262（default）で、機構（85・168）を上回った。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H5a-default",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "default:P-mech",
+    "default:P-fixed"
+   ],
+   "statement": "（default）TIPA 機構の崩壊到達時刻は、固定行動列以上である。",
+   "how_it_could_fail": "固定行動列が偶然に食べる・避難する時刻と背景が合えば、機構より長く存続しうる。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H5b-default",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "default:P-mech",
+    "default:P-wait"
+   ],
+   "statement": "（default）TIPA 機構の崩壊到達時刻は、常に待機する方策以上である。",
+   "how_it_could_fail": "待機は移動の費用を払わない。default では相手・ドローン・組織からの贈与で待機の方が長く存続しうる。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  }
+ ],
+ "deviation_from_r1": "r1 was registered and started, but was stopped at the 2-hour limit of the execution environment before\nany result had been written (the log was empty; no evaluation output was seen).  To finish within the limit,\ntwo sources were changed, neither of which changes any unit's result:\n  - the kernel oracle's successor tables and in_core answers are shared across units with the same body\n    parameters (e4/policies_v2.py, e4/adapters.py);\n  - run_prereg.py can run units in parallel (--jobs).\nEquality was checked before registration on tuning seeds 1-5 (shared vs fresh oracle, 16 units: 0 differ;\nseed 1 smoke values reproduced).",
+ "source_hashes": {
+  "/home/claude/TOY2/acs_toy/body.py": "20e04ec19d72f80da1fed98ebcc8af2c",
+  "/home/claude/TOY2/acs_toy/checks.py": "cf0798be3b2361a0c035684d13328928",
+  "/home/claude/TOY2/acs_toy/config.py": "a2f59fd17712ed9222d917e94b8041a0",
+  "/home/claude/TOY2/acs_toy/events.py": "9ee2191926e624368ceb1f7ee0e61846",
+  "/home/claude/TOY2/acs_toy/judge.py": "5c37ad799062944534cdd686c36605c5",
+  "/home/claude/TOY2/acs_toy/mind.py": "383b0d950a1d4ad147f722f945cfcc8b",
+  "/home/claude/TOY2/acs_toy/org.py": "faed65ebf0e54b982004c234ae8fe34a",
+  "/home/claude/TOY2/acs_toy/sim.py": "a97ffefedaae2f40725d318c17ee8bee",
+  "/home/claude/TOY2/acs_toy/viewer.py": "d4f3c72d4505b903d1fab55a1dabc53b",
+  "/home/claude/TOY2/acs_toy/world.py": "9da4503c74b33bb1ba20a7c26c11ace7",
+  "/home/claude/E4/e4/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "/home/claude/E4/e4/adapters.py": "a704fe9c5d88be39d9b7ec636a5cae98",
+  "/home/claude/E4/e4/policies_minacs.py": "b3a1c028b6a89af766a93aacec79afe2",
+  "/home/claude/E4/e4/policies_v2.py": "07904f883ac67b70351a57e8984e7495",
+  "/home/claude/E4/e4/prereg.py": "67496a558dd9971e5326fd47e0c5b5ca",
+  "/home/claude/E4/run_prereg.py": "52bea5035911fc74daf40dda75908cf1"
+ },
+ "registered_at": "2026-10-26T13:35:46.538388+00:00"
+}

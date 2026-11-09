@@ -1,0 +1,117 @@
+{
+ "scenario": "default",
+ "overrides": [],
+ "steps": 300,
+ "seconds": 48.6,
+ "i": {
+  "T_blk": 153,
+  "T_col": 260,
+  "in_P_blk": true,
+  "in_P_col": true,
+  "T_FT": 260,
+  "chi_EI_0_from_until_record_end": 255,
+  "zone_counts": {
+   "Z0": 220,
+   "Z1": 40,
+   "Z4": 10,
+   "Z3": 6,
+   "Z5": 40
+  },
+  "blocked_steps": 10,
+  "B1_steps": 3,
+  "B2_steps": 7,
+  "blockage_ends": {
+   "autonomous": 2,
+   "e_t (gift at k)": 1
+  },
+  "SM_fail_steps_on_T_P": 10,
+  "EU_fail_steps_on_T_P": 3,
+  "TSTAB_true_steps": 212,
+  "gifts_received_alive": {
+   "drone": 3
+  },
+  "purposes_seen": [
+   "('energy', 'r0', 'eat')",
+   "('energy', 'r1', 'eat')",
+   "('energy', 'self', 'call')",
+   "('heat', 'S', 'seal')",
+   "('relation', ('self', 'P'), 'give')",
+   "('safety', 'self', 'avoid')"
+  ],
+  "mode_counts": {
+   "3C": 183,
+   "3B": 40,
+   "3A": 37
+  },
+  "psl4_overrides": 0,
+  "fast_steps": 136,
+  "action_classes": {
+   "non-purpose": 210,
+   "purpose:energy": 31,
+   "purpose:heat": 12,
+   "purpose:safety": 1,
+   "purpose:relation": 5,
+   "purpose:energy+relation": 1
+  },
+  "final_beta_val": 1.0
+ },
+ "j": {
+  "T_blk": 153,
+  "T_col": 180,
+  "in_P_blk": true,
+  "in_P_col": true,
+  "T_FT": 178,
+  "chi_EI_0_from_until_record_end": 179,
+  "zone_counts": {
+   "Z0": 143,
+   "Z1": 37,
+   "Z4": 17,
+   "Z3": 10,
+   "Z5": 120
+  },
+  "blocked_steps": 17,
+  "B1_steps": 2,
+  "B2_steps": 13,
+  "blockage_ends": {
+   "autonomous": 1,
+   "e_t (gift at k)": 3
+  },
+  "SM_fail_steps_on_T_P": 15,
+  "EU_fail_steps_on_T_P": 2,
+  "TSTAB_true_steps": 137,
+  "gifts_received_alive": {
+   "org": 2,
+   "drone": 3,
+   "partner": 2
+  },
+  "purposes_seen": [
+   "('energy', 'r0', 'eat')",
+   "('energy', 'r1', 'eat')",
+   "('energy', 'r3', 'eat')",
+   "('energy', 'self', 'call')",
+   "('heat', 'S', 'seal')",
+   "('safety', 'self', 'avoid')"
+  ],
+  "mode_counts": {
+   "3C": 118,
+   "3B": 29,
+   "3A": 33
+  },
+  "psl4_overrides": 0,
+  "fast_steps": 90,
+  "action_classes": {
+   "non-purpose": 151,
+   "purpose:energy": 17,
+   "purpose:safety": 2,
+   "purpose:heat": 9,
+   "purpose:energy+relation": 1
+  },
+  "final_beta_val": 1.0
+ },
+ "org": {
+  "org_ACS_steps": 260,
+  "org_blocked_steps": 139,
+  "allocations": 2
+ },
+ "checks_NG": 0
+}

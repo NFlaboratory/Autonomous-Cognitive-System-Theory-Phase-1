@@ -1,0 +1,84 @@
+section,no,label,title,group,status,checks,v2_column,in_paper
+§4,1,def:sel_proj,決定論的選択射影（分類B）,T01 担体・帰属,PASS_NONVACUOUS,S05_Furnace@Furnace; S05_MinACS@MinACS,,True
+§4,2,def:s4_carrier_contract,同時刻作動の担体規約（分類B）,T01 担体・帰属,NOT_RUN,,,True
+§4,3,def:s4_output_attribution,機構出力の個体への帰属（分類B）,T01 担体・帰属,PASS_NONVACUOUS,R08_output_attribution@v2-records,,True
+§4,4,def:m1_state,M1内部状態（分類B）,T02 M1,NOT_RUN,,,True
+§4,5,def:m1_map,情報統合機構 M_1（分類B）,T02 M1,EXAMPLE_ONLY,,"xi_tokens, eps_est",True
+§4,6,def:std_init,M1-aの予備状態推定（分類B）,T02 M1,NOT_RUN,,,True
+§4,7,def:m1_integration,M1-aの動態重みと最終統合（分類B）,T02 M1,NOT_RUN,,,True
+§4,8,def:s4_m1_sources,M1補助出力の情報源（分類B）,T02 M1,NOT_RUN,,,True
+§4,9,def:s4_state_estimation_error,状態推定誤差（分類C）,T02 M1,EXAMPLE_ONLY,,eps_est,True
+§4,10,def:id_vector,識別状態と内部対象トークン（分類B）,T02 M1,EXAMPLE_ONLY,,xi_tokens,True
+§4,11,def:m1_temporal_base,M1-cの時間的基底表現（分類B）,T02 M1,NOT_RUN,,,True
+§4,12,def:m1_temporal_features,M1-cの予測整合性と先行時間特徴量（分類C）,T02 M1,NOT_RUN,,,True
+§4,13,def:env_set_prediction,外部側の集合値予測（分類B）,T02 M1,NOT_RUN,,,True
+§4,14,def:prediction_record_check,予測集合の記録と二種類の予測外（分類C）,T02 M1,EXAMPLE_ONLY,,"pred_internal_miss, pred_theory_miss",True
+§4,15,def:m1_temporal_output,M1-cの最終時間特徴量（分類B）,T02 M1,NOT_RUN,,,True
+§4,16,def:m2_eval_space,M2内部評価情報空間（分類B）,T03 M2,NOT_RUN,,,True
+§4,17,def:request_signal_types,要求の一覧と要請信号の型（分類B）,T03 M2,EXAMPLE_ONLY,,"Req, sig",True
+§4,18,def:rq_eval_types,要求×対象の評価の型（分類B）,T03 M2,NOT_RUN,,,True
+§4,19,def:m2_map,適応的評価機構 M_2（分類B）,T03 M2,PASS_NONVACUOUS,MUT_S04_MutM2ReadsPurpose@Furnace-mut; S04_Furnace@Furnace; S04_MinACS@MinACS,"P, sig, Pi_eval",True
+§4,20,def:m2a_threat,M2-a可行性脅威検出機能（分類B）,T03 M2,EXAMPLE_ONLY,,Pi_eval,True
+§4,21,def:s4_internal_viability_check,内部可行判定と理論上の可行判定（分類C）,T03 M2,NOT_RUN,,,True
+§4,22,def:mech_mu_eff,機構層有効行動多様度の一般形（分類C）,T03 M2,EXAMPLE_ONLY,,mu_hat,True
+§4,23,def:m2b_vuln,M2-b構造的脆弱性評価機能（分類B）,T03 M2,NOT_RUN,,,True
+§4,24,def:m2c_latent_function,M2-c潜在的不安定性評価機能（分類B）,T03 M2,NOT_RUN,,,True
+§4,25,def:m2_latent_instability,潜在的不安定性の機構層指標（分類C）,T03 M2,EXAMPLE_ONLY,,"C1, C2, C3",True
+§4,26,def:m2_priority,Priority警告体系（分類B）,T03 M2,PASS_NONVACUOUS,S03_Furnace@Furnace; S03_MinACS@MinACS,P,True
+§4,27,def:m2_request_signal,M2による要請信号の生成（分類B）,T03 M2,PASS_NONVACUOUS,S03_Furnace@Furnace; S03_MinACS@MinACS,sig,True
+§4,28,def:eval_vs_judgment,二つの評価と判断の区別（分類B）,T03 M2,NOT_RUN,,,True
+§4,29,def:m3_map,応答行動機構 M_3（分類B）,T04 M3,NOT_RUN,,,True
+§4,30,def:m3a_info,M3-a統合入力情報（分類B）,T04 M3,NOT_RUN,,,True
+§4,31,def:purpose_formation,目的の型と目的の形成（分類B）,T04 M3,PASS_NONVACUOUS,S03_Furnace@Furnace; S03_MinACS@MinACS,Pur,True
+§4,32,def:purpose_status,目的の状態判断（分類B）,T04 M3,EXAMPLE_ONLY,,stat,True
+§4,33,def:m3_candidate_set,M3候補集合（分類B）,T04 M3,NOT_RUN,,,True
+§4,34,def:m3_fit,候補適合比較（分類B）,T04 M3,NOT_RUN,,,True
+§4,35,def:s4_candidate_sources,候補と適合比較の情報来歴（分類B）,T04 M3,NOT_RUN,,,True
+§4,36,def:mode_judgment,動作モードの判断（分類B）,T04 M3,PASS_NONVACUOUS,R09_modes_styles@v2-records,,True
+§4,37,def:request_response_mismatch,要請と応答の不一致（分類C）,T04 M3,EXAMPLE_ONLY,,Mis,True
+§4,38,def:M3_modes,M3動作モード（分類B）,T04 M3,PASS_NONVACUOUS,R09_modes_styles@v2-records,mode,True
+§4,39,def:m3_3b_styles,3B応答様式（分類B）,T04 M3,PASS_NONVACUOUS,R09_modes_styles@v2-records,style,True
+§4,40,def:action_decision,TIPA行動指令の決定（分類B）,T04 M3,PASS_NONVACUOUS,S05_Furnace@Furnace; S05_MinACS@MinACS,u_M3,True
+§4,41,def:psl_availability,利用可能性（分類C）,T05 PSL,NOT_RUN,,,True
+§4,42,def:psl,PSLの形式的定義（分類B）,T05 PSL,NOT_RUN,,,True
+§4,43,def:psl1,PSL-1の形式的定義（分類B）,T05 PSL,NOT_RUN,,,True
+§4,44,def:psl2,PSL-2の形式的定義（分類B）,T05 PSL,NOT_RUN,,,True
+§4,45,def:psl3,PSL-3の形式的定義（分類B）,T05 PSL,NOT_RUN,,,True
+§4,46,def:psl4,PSL-4：局所急性異常への保護応答（分類B）,T05 PSL,PASS_NONVACUOUS,MUT_S06_MutProtReadsMemory@Furnace-mut; MUT_S06_MutResolveCancels@Furnace-mut; R10_resolve_on_records@v2-records; S06_Furnace@Furnace; S06_v2_resolve@v2,"r_local, psl4_override",True
+§4,47,def:effective_action_resolve,実効行動解決写像（分類B）,T05 PSL,PASS_NONVACUOUS,MUT_S06_MutProtReadsMemory@Furnace-mut; MUT_S06_MutResolveCancels@Furnace-mut; R10_resolve_on_records@v2-records; S06_Furnace@Furnace; S06_v2_resolve@v2,,True
+§4,48,def:psl_sensitivity,PSL感度制御写像（分類B）,T05 PSL,EXAMPLE_ONLY,S10_v2_psl_sensitivity@v2,,True
+§4,49,def:s4_psl_sources,PSLの信号・基盤担体と標準写像への接続（分類B）,T05 PSL,PASS_NONVACUOUS,MUT_S02_MutActionReadsHidden@MinACS-mut; S02_Furnace@Furnace; S02_MinACS@MinACS,,True
+§4,50,def:req_involvement,要求の関与（分類C）,T06 目的・結果,NOT_RUN,,,True
+§4,51,def:action_classes,行動の区分（分類C）,T06 目的・結果,EXAMPLE_ONLY,,action_class,True
+§4,52,def:purpose_action_difference,目的に関わる作用差と一段の条件充足（分類C）,T06 目的・結果,NOT_RUN,,,True
+§4,53,def:result_tuple,一つの行動の結果の記述（分類C）,T06 目的・結果,PASS_NONVACUOUS,R08_output_attribution@v2-records,"Pur, stat, u",True
+§4,54,def:purpose_course,目的の経過の記述（分類C）,T06 目的・結果,NOT_RUN,,,True
+§4,55,def:impl_layer,実装部位層 ISL（分類B）,T07 ISL,NOT_RUN,,,True
+§4,56,def:sensor,感覚実装役割（分類B）,T07 ISL,NOT_RUN,,,True
+§4,57,def:effector,効果実装役割（分類B）,T07 ISL,NOT_RUN,,,True
+§4,58,def:mem_substrate,記憶実装役割（分類B）,T07 ISL,NOT_RUN,,,True
+§4,59,def:impl_psl_connection,ISLとPSLの接続規約（分類B）,T07 ISL,NOT_RUN,,,True
+§4,60,def:integrated_fast_processing,統合的高速処理（分類B）,T11 高速処理・機能軸,EXAMPLE_ONLY,,fast,True
+§4,61,def:fast_cross_layer,高速処理の三層横断性（分類C）,T11 高速処理・機能軸,NOT_RUN,,,True
+§4,62,def:fast_memory_sets,五機能的記憶集合（分類B）,T11 高速処理・機能軸,EXAMPLE_ONLY,,"T_rout, T_sal, T_err, T_eval, T_resp",True
+§4,63,def:functional_axis,機能軸（分類C）,T11 高速処理・機能軸,PASS_NONVACUOUS,R11_readout_ranges@v2-records,F_M1 ... F_ISL_eff,True
+§4,64,def:s4_primitive_composition,標準作動形式との合成対応（分類B）,T11 高速処理・機能軸,PASS_NONVACUOUS,MUT_S02_MutActionReadsHidden@MinACS-mut; S02_Furnace@Furnace; S02_MinACS@MinACS,,True
+§5,1,def:s5_responsibilities,本節の責務,T08 §5一段作動・Update,NOT_RUN,,,True
+§5,2,def:s5_standard_step,標準作動の一段,T08 §5一段作動・Update,PASS_NONVACUOUS,MUT_S02_MutActionReadsHidden@MinACS-mut; S02_Furnace@Furnace; S02_MinACS@MinACS,,True
+§5,3,def:update_section5,Updateの参照と一段遷移写像,T08 §5一段作動・Update,PASS_NONVACUOUS,MUT_S01_MutUpdateReadsHiddenFlue@Furnace-mut; S01_Furnace@Furnace; S01_MinACS@MinACS; S05_Furnace@Furnace; S05_MinACS@MinACS; U_S01_flip@Furnace[flip]; U_S01_forget@Furnace[forget]; U_S01_frozen@Furnace[frozen]; U_S01_orig@Furnace[orig],,True
+§5,4,def:memory_intertime_update,保持内容の時刻間読み出し,T08 §5一段作動・Update,NOT_RUN,,,True
+§5,5,def:s5_operation_record,標準作動記録,T08 §5一段作動・Update,PASS_NONVACUOUS,S07_Furnace@Furnace; S07_MinACS@MinACS; U_S07_flip@Furnace[flip]; U_S07_forget@Furnace[forget]; U_S07_frozen@Furnace[frozen]; U_S07_orig@Furnace[orig],,True
+§5,6,def:s5_record_agreement,保持記録の一致（分類C）,T08 §5一段作動・Update,EXAMPLE_ONLY,,rec_agree,True
+§5,7,def:intertime_update,担体から誘導される時刻間変化,T08 §5一段作動・Update,EXAMPLE_ONLY,U_census_flip@Furnace[flip]; U_census_forget@Furnace[forget]; U_census_frozen@Furnace[frozen]; U_census_orig@Furnace[orig],"delta_M, delta",True
+§5,8,def:learning_intertime_change,学習・忘却の時刻間的位置づけ（分類B）,T08 §5一段作動・Update,EXAMPLE_ONLY,U_census_flip@Furnace[flip]; U_census_forget@Furnace[forget]; U_census_frozen@Furnace[frozen]; U_census_orig@Furnace[orig],delta_L,True
+§5,9,def:bias_tendency,偏向性（分類C）,T09 §5偏向・学習読出し,EXAMPLE_ONLY,,"beta_val, beta_act",True
+§5,10,def:bias_attribution,偏向性の帰属区分（分類C）,T09 §5偏向・学習読出し,NOT_RUN,,,True
+§5,11,def:beta_accumulated,偏向強度（分類C）,T09 §5偏向・学習読出し,PASS_NONVACUOUS,R11_readout_ranges@v2-records,"beta_val, beta_act",True
+§5,12,def:s5_readout_types,読み出しの型と解析範囲,T09 §5偏向・学習読出し,PASS_NONVACUOUS,R11_readout_ranges@v2-records,,True
+§5,13,def:beta_intertime_update,偏向強度の時刻間読み出し,T09 §5偏向・学習読出し,NOT_RUN,,,True
+§5,14,def:s5_prediction_coefficient,予測精度係数（分類C）,T10 §5予測・健全度・接続,EXAMPLE_ONLY,,pi_tau,True
+§5,15,def:tau_hat_section5,実効的時間地平（分類C）,T10 §5予測・健全度・接続,PASS_NONVACUOUS,R11_readout_ranges@v2-records; R12_tau_hat@v2-records,tau_hat,True
+§5,16,def:deff_section5,実効的発展自由度（分類C）,T10 §5予測・健全度・接続,PASS_NONVACUOUS,R11_readout_ranges@v2-records,d_eff,True
+§5,17,def:s5_health_quantities,PSL・ISL健全度量（分類C）,T10 §5予測・健全度・接続,PASS_NONVACUOUS,R11_readout_ranges@v2-records,"h_psl, h_mem, h_sens, h_eff",True
+§5,18,def:extended_variable_tuple,時刻依存量の整理用タプル（分類C）,T10 §5予測・健全度・接続,NOT_RUN,,,True
+§5,19,def:s5_downstream_interface,後続節への記録インターフェース,T10 §5予測・健全度・接続,NOT_RUN,,,True

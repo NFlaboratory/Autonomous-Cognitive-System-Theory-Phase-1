@@ -1,0 +1,201 @@
+{
+ "MinACS": {
+  "state_level": {
+   "|X|": 72,
+   "|K|": 20,
+   "|Viab_f(K)|": 18,
+   "|R_all|": 0,
+   "|O_any|": 20,
+   "|pi_X(Viab_resp)|": 20,
+   "R_all subset Viab": true,
+   "Viab subset O_any": true,
+   "O_any subset K": true,
+   "Viab minus R_all": [
+    "0211",
+    "0221",
+    "0311",
+    "0321",
+    "0411",
+    "0421",
+    "0511",
+    "0521",
+    "1111",
+    "1121",
+    "1211",
+    "1221",
+    "1311",
+    "1321",
+    "1411",
+    "1421",
+    "1511",
+    "1521"
+   ],
+   "O_any minus Viab": [
+    "0111",
+    "0121"
+   ],
+   "K minus O_any": [],
+   "piX(resp) minus Viab": [
+    "0111",
+    "0121"
+   ],
+   "pairs": 1152,
+   "blocked pairs": 744,
+   "blocked pairs with x in K": 62,
+   "B1": 136,
+   "B2": 608,
+   "B1 with x in K": 54,
+   "B2 with x in K": 8,
+   "pairs x in Viab, e not in E_req(x)": 132,
+   "pairs x in Viab, e not in E_req(x), blocked": 46
+  },
+  "trajectory_level (P-mech)": {
+   "runs": 900,
+   "collapsed runs": 526,
+   "alive steps": 28737,
+   "steps x in Viab, not in R_all": 27574,
+   "steps x in Viab, e not in E_req": 11284,
+   "pre-collapse-band steps (Z1-Z4)": 6692,
+   "pre-collapse-band steps with Recover": 6690,
+   "steps x in O_any, not in Viab": 361,
+   "blocked steps": 1328,
+   "blocked B1": 599,
+   "blocked B2": 729,
+   "steps outside K (alive)": 802,
+   "Z3 steps (all base functions stopped, not collapse)": 534,
+   "Z3 steps with Recover by some upsilon": 532,
+   "K-exit episodes": 801,
+   "collapses preceded by blockage at the last alive step": 526,
+   "K-exit episodes ending in autonomous return to K": 259
+  },
+  "examples": {
+   "Z3 recoverable": [
+    11,
+    {
+     "cold_len": 2,
+     "gift_events": 0,
+     "regrow_period": 3
+    },
+    34,
+    [
+     1,
+     0,
+     2,
+     1
+    ],
+    "100"
+   ],
+   "K exit and return": [
+    11,
+    {
+     "cold_len": 2,
+     "gift_events": 3,
+     "regrow_period": 3
+    },
+    34,
+    35
+   ]
+  }
+ },
+ "Furnace": {
+  "state_level": {
+   "|X|": 60,
+   "|K|": 25,
+   "|Viab_f(K)|": 19,
+   "|R_all|": 0,
+   "|O_any|": 25,
+   "|pi_X(Viab_resp)|": 20,
+   "R_all subset Viab": true,
+   "Viab subset O_any": true,
+   "O_any subset K": true,
+   "Viab minus R_all": [
+    "021",
+    "031",
+    "041",
+    "111",
+    "121",
+    "131",
+    "141",
+    "211",
+    "221",
+    "231",
+    "241",
+    "311",
+    "321",
+    "331",
+    "341",
+    "411",
+    "421",
+    "431",
+    "441"
+   ],
+   "O_any minus Viab": [
+    "011",
+    "051",
+    "151",
+    "251",
+    "351",
+    "451"
+   ],
+   "K minus O_any": [],
+   "piX(resp) minus Viab": [
+    "011"
+   ],
+   "pairs": 960,
+   "blocked pairs": 584,
+   "blocked pairs with x in K": 64,
+   "B1": 44,
+   "B2": 540,
+   "B1 with x in K": 22,
+   "B2 with x in K": 42,
+   "pairs x in Viab, e not in E_req(x)": 82,
+   "pairs x in Viab, e not in E_req(x), blocked": 16
+  },
+  "trajectory_level (P-mech)": {
+   "runs": 900,
+   "collapsed runs": 674,
+   "alive steps": 31171,
+   "steps x in Viab, not in R_all": 29746,
+   "steps x in Viab, e not in E_req": 3313,
+   "steps x in O_any, not in Viab": 597,
+   "blocked steps": 1525,
+   "blocked B1": 1284,
+   "blocked B2": 241,
+   "pre-collapse-band steps (Z1-Z4)": 2700,
+   "pre-collapse-band steps with Recover": 2700,
+   "steps outside K (alive)": 828,
+   "Z3 steps (all base functions stopped, not collapse)": 828,
+   "Z3 steps with Recover by some upsilon": 828,
+   "K-exit episodes": 828,
+   "collapses preceded by blockage at the last alive step": 674,
+   "K-exit episodes ending in autonomous return to K": 144
+  },
+  "examples": {
+   "Z3 recoverable": [
+    11,
+    {
+     "deliv_period": 2,
+     "draught": 1,
+     "hot_len": 4
+    },
+    14,
+    [
+     0,
+     0,
+     1
+    ],
+    "010"
+   ],
+   "K exit and return": [
+    12,
+    {
+     "deliv_period": 3,
+     "draught": 2,
+     "hot_len": 6
+    },
+    26,
+    27
+   ]
+  }
+ }
+}

@@ -1,0 +1,63 @@
+# 原稿の静的検査とトイの回帰検査（下書き・GitHub 上では未実行）。外部パッケージを使わない Python 3 だけで動く。
+# 各ステップは bash -eo pipefail で動かし、さらに先頭で set -euo pipefail を明示する（tee の後ろで失敗が隠れないように）。
+# 注：uses と container は可変のタグ（@v4・@v5・latest）を参照している。初回の実行が通ったら、実際に用いたコミット SHA（とイメージの digest）に固定することを検討する（未固定・未実行）。
+name: checks
+on: [push, pull_request, workflow_dispatch]
+defaults:
+  run:
+    shell: bash
+jobs:
+  paper-static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: every file has exactly one license (LICENSE.md)
+        run: |
+          set -euo pipefail
+          python3 -I tools/check_licenses.py .
+      - name: labels, references, citations (exit 1 on failure)
+        run: |
+          set -euo pipefail
+          python3 -I tools/ci_gate.py paper
+      - name: appendix C is regenerated from the body
+        run: |
+          set -euo pipefail
+          python3 -I tools/gen_appendix_c.py paper "$RUNNER_TEMP/appendix_index.tex" abstract.tex section1_intro.tex section2_definition.tex section3_principles.tex section4_tipa.tex section5_extended_dynamics.tex section6_relational.tex section7_collapse.tex section8_organizational_acs.tex section9_limitations.tex
+          cmp "$RUNNER_TEMP/appendix_index.tex" paper/appendix_index.tex
+      - name: dependency table is regenerated from the body
+        run: |
+          set -euo pipefail
+          python3 -I tools/gen_dependency_table.py paper "$RUNNER_TEMP/dependency_table.md"
+          cmp "$RUNNER_TEMP/dependency_table.md" docs/dependency_table.md
+  toy-regression:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: toy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: source manifest
+        run: |
+          set -euo pipefail
+          md5sum -c --quiet MANIFEST.md5
+      - name: common judge layer vs MinACS analysis
+        run: |
+          set -euo pipefail
+          python3 regress_minacs.py | tee "$RUNNER_TEMP/regress.txt"
+          grep -q "NG = 0 /" "$RUNNER_TEMP/regress.txt"
+      - name: exhaustive checks (furnace, MinACS)
+        run: |
+          set -euo pipefail
+          python3 run_e8_checks.py | tee "$RUNNER_TEMP/e8.txt"
+          if grep -q "\] NG" "$RUNNER_TEMP/e8.txt"; then echo "NG found"; exit 1; fi
+      - name: verification suite (quick; v2 record checks are NOT_RUN without traces)
+        run: |
+          set -euo pipefail
+          python3 -I verification/run_all.py --quick

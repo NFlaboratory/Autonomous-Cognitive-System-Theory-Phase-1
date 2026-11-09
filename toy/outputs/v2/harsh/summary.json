@@ -1,0 +1,107 @@
+{
+ "scenario": "harsh",
+ "overrides": [],
+ "steps": 300,
+ "seconds": 24.8,
+ "i": {
+  "T_blk": 15,
+  "T_col": 55,
+  "in_P_blk": true,
+  "in_P_col": true,
+  "T_FT": 55,
+  "chi_EI_0_from_until_record_end": 51,
+  "zone_counts": {
+   "Z0": 17,
+   "Z1": 38,
+   "Z4": 19,
+   "Z3": 8,
+   "Z5": 245
+  },
+  "blocked_steps": 19,
+  "B1_steps": 11,
+  "B2_steps": 8,
+  "blockage_ends": {
+   "e_t (gift at k)": 1
+  },
+  "SM_fail_steps_on_T_P": 18,
+  "EU_fail_steps_on_T_P": 11,
+  "TSTAB_true_steps": 9,
+  "gifts_received_alive": {
+   "partner": 1,
+   "drone": 6,
+   "org": 2
+  },
+  "purposes_seen": [
+   "('energy', 'D', 'draw')",
+   "('energy', 'r0', 'eat')",
+   "('energy', 'r1', 'eat')",
+   "('energy', 'self', 'call')",
+   "('heat', 'S', 'seal')"
+  ],
+  "mode_counts": {
+   "3C": 7,
+   "3B": 19,
+   "3A": 29
+  },
+  "psl4_overrides": 0,
+  "fast_steps": 0,
+  "action_classes": {
+   "purpose:energy": 5,
+   "non-purpose": 46,
+   "purpose:energy+relation": 1,
+   "purpose:heat": 3
+  },
+  "final_beta_val": 1.0
+ },
+ "j": {
+  "T_blk": 16,
+  "T_col": 25,
+  "in_P_blk": true,
+  "in_P_col": true,
+  "T_FT": 22,
+  "chi_EI_0_from_until_record_end": 17,
+  "zone_counts": {
+   "Z0": 11,
+   "Z1": 14,
+   "Z4": 9,
+   "Z3": 8,
+   "Z5": 275
+  },
+  "blocked_steps": 9,
+  "B1_steps": 0,
+  "B2_steps": 6,
+  "blockage_ends": {},
+  "SM_fail_steps_on_T_P": 6,
+  "EU_fail_steps_on_T_P": 0,
+  "TSTAB_true_steps": 10,
+  "gifts_received_alive": {},
+  "purposes_seen": [
+   "('energy', 'D', 'draw')",
+   "('energy', 'r0', 'eat')",
+   "('energy', 'r1', 'eat')",
+   "('energy', 'self', 'call')",
+   "('heat', 'S', 'seal')",
+   "('relation', ('self', 'P'), 'give')"
+  ],
+  "mode_counts": {
+   "3C": 4,
+   "3B": 10,
+   "3A": 11
+  },
+  "psl4_overrides": 0,
+  "fast_steps": 0,
+  "action_classes": {
+   "purpose:energy": 3,
+   "non-purpose": 20,
+   "purpose:relation": 1,
+   "purpose:energy+relation": 1
+  },
+  "final_beta_val": 1.0
+ },
+ "org": {
+  "org_ACS_steps": 55,
+  "org_blocked_steps": 266,
+  "allocations": 2
+ },
+ "checks_NG": 0
+}

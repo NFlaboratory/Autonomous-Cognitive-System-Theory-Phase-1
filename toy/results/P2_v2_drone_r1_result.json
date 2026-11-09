@@ -1,0 +1,48 @@
+{
+ "id": "P2_v2_drone_r1",
+ "spec_md5": "ef740638d549d9f59571db0a94938210",
+ "registry_entry": "2026-10-26T07:23:26.389426+00:00\tef740638d549d9f59571db0a94938210\t/home/claude/E4/specs/P2_v2_drone_r1.json\tP2_v2_drone_r1",
+ "run_at": "2026-10-26T07:29:48.049744+00:00",
+ "python": "3.13.16",
+ "seconds": 375.5,
+ "deviation": null,
+ "problems_at_run": [],
+ "n_units_per_variant_condition": 450,
+ "verdicts": [
+  {
+   "id": "H4",
+   "statement": "ドローン（非 ACS の救助者）がいるとき、個体 i の崩壊到達時刻はいないとき以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 450,
+      "a>=b": 376,
+      "a>b": 306,
+      "a<b": 74,
+      "a==b": 70
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5",
+   "statement": "同じく個体 j について。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 450,
+      "a>=b": 395,
+      "a>b": 274,
+      "a<b": 55,
+      "a==b": 121
+     }
+    }
+   },
+   "rule_dependent": false
+  }
+ ],
+ "consistency": []
+}

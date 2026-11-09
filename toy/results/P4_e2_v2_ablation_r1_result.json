@@ -1,0 +1,184 @@
+{
+ "id": "P4_e2_v2_ablation_r1",
+ "spec_md5": "7f7c27aee446597935c898625ec042ff",
+ "registry_entry": "2026-10-26T08:25:32.653235+00:00\t7f7c27aee446597935c898625ec042ff\t/home/claude/E4/specs/P4_e2_v2_ablation_r1.json\tP4_e2_v2_ablation_r1",
+ "run_at": "2026-10-26T08:53:36.866145+00:00",
+ "python": "3.13.16",
+ "seconds": 1683.0,
+ "deviation": null,
+ "problems_at_run": [],
+ "n_units_per_variant_condition": 450,
+ "verdicts": [
+  {
+   "id": "H1",
+   "statement": "完全な機構の T_col_sum は、情報取得・統合を除いた機構（M1 の時間統合を外す（見えないものの信念を直ちに失効させる））以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 293,
+      "a>b": 213,
+      "a<b": 157,
+      "a==b": 80
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H2",
+   "statement": "完全な機構の T_col_sum は、可行性感応評価を除いた機構（M2 の Π_eval を定数にし、自己状態の閾値に基づく欠乏・警告の要請を出さない）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 450,
+      "a>b": 450,
+      "a<b": 0,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H3",
+   "statement": "完全な機構の T_col_sum は、応答可能性評価・再構成を除いた機構（先読みを外し（深さ 1）、候補を目的から生成せず U 全体に固定する）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 411,
+      "a>b": 411,
+      "a<b": 39,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H4",
+   "statement": "完全な機構の T_col_sum は、環境利用・外部結合評価を除いた機構（必要環境要因（energy・heat）に関わる目的の形成と候補の追加を外す）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 450,
+      "a>b": 450,
+      "a<b": 0,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5",
+   "statement": "完全な機構の T_col_sum は、応答形成・選択を除いた機構（適合度を一定にし、選択射影の既定順だけで選ぶ）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 432,
+      "a>b": 431,
+      "a<b": 18,
+      "a==b": 1
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H6",
+   "statement": "完全な機構の T_col_sum は、時間横断的情報保持・更新を除いた機構（Update を恒等写像にする（学習・忘却・記録の更新なし））以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 256,
+      "a>b": 246,
+      "a<b": 194,
+      "a==b": 10
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H7",
+   "statement": "完全な機構の T_col_sum は、物理的感知・作用・基盤維持を除いた機構（PSL-4 の保護応答と repair を外す）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 450,
+      "a>=b": 396,
+      "a>b": 41,
+      "a<b": 54,
+      "a==b": 355
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H8",
+   "statement": "完全な機構の T_col_sum は、（追加）自動化を除いた機構（ルーティン応答（比較を経ない応答）を外す）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 240,
+      "a>b": 189,
+      "a<b": 210,
+      "a==b": 51
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H9",
+   "statement": "完全な機構の T_col_sum は、（追加）関係を除いた機構（relation の要請（合図・贈与）を外す）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 27,
+      "a>b": 12,
+      "a<b": 423,
+      "a==b": 15
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H10",
+   "statement": "完全な機構の T_col_sum は、（追加）救助の担い手を除いた機構（relation を外し、ドローンと組織も除く）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 113,
+      "a>b": 103,
+      "a<b": 337,
+      "a==b": 10
+     }
+    }
+   },
+   "rule_dependent": false
+  }
+ ],
+ "consistency": []
+}

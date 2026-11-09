@@ -1,0 +1,92 @@
+\documentclass[dvipdfmx,a4paper]{jsarticle}
+
+%---------------- 数式・記号 ----------------
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+%---------------- 図・箇条書き ----------------
+\usepackage{graphicx}     % \resizebox（TikZ 図の全幅化）
+\usepackage{longtable}     % 付録 B の主要記号一覧
+\usepackage{enumitem}     % enumerate[label=...]/description[style=nextline]
+\usepackage{tikz}
+\usetikzlibrary{fit,backgrounds,arrows.meta,calc,positioning}
+%---------------- 引用 ----------------
+\usepackage[backend=biber]{biblatex}
+\addbibresource{references.bib}
+%---------------- 定理様 環境（§3 基準・全セクション共通）----------------
+\newtheoremstyle{breakstyle}
+  {10pt}       % 上の空白
+  {10pt}       % 下の空白
+  {\normalfont}
+  {}
+  {\bfseries}
+  {.}
+  {\newline}  % 見出しの後で改行
+  {}
+
+\theoremstyle{breakstyle}
+\theoremstyle{definition}
+\newtheorem{definition}{定義}[section]
+\newtheorem{theorem}{定理}[section]
+\newtheorem{assumptioninner}{仮定}[section]
+\renewcommand{\theassumptioninner}{A\thesection.\arabic{assumptioninner}}
+\newenvironment{assumption}
+  {\begin{assumptioninner}}
+  {\end{assumptioninner}}
+\newtheorem{proposition}{命題}[section]
+\newtheorem{lemma}{補題}[section]
+\newtheorem{observation}{観察記録}[section]
+\newtheorem{remark}{備考}[section]
+\newtheorem{problem}{問題}
+
+%---------------- メタ情報 ----------------
+\title{自律認知システム理論：倫理的協調知性の数理的基盤\\（Phase 1：決定論的定式化）}
+\author{NF}
+\date{}
+% PDF の作成者欄を固定する（hyperref を使わないので dvipdfmx の special で指定する）
+\AtBeginDvi{\special{pdf:docinfo<</Author(NF)>>}}
+
+\begin{document}
+\maketitle
+
+%================ 要旨 ================
+\input{abstract}
+
+%================ Section 1 導入 ================
+\input{section1_intro}
+
+%================ Section 2 ACSの形式的定義 ================
+\input{section2_definition}
+
+%================ Section 3 三原理：SM・EU・FR ================
+\input{section3_principles}
+
+%================ Section 4 TIPA・PSL・実装部位層 ================
+\input{section4_tipa}
+
+%================ Section 5 標準作動形式と時刻間の接続 ================
+\input{section5_extended_dynamics}
+
+%================ Section 6 ACS関係性の最小構造 ================
+\input{section6_relational}
+
+%================ Section 7 崩壊・閉塞・崩壊経路集合 ================
+\input{section7_collapse}
+
+%================ Section 8 組織ACS ================
+\input{section8_organizational_acs}
+
+%================ Section 9 限界・未解決問題・Phase 2・3への展望 ================
+\input{section9_limitations}
+
+%================ 付録 A 記号添字規約・B 主要記号一覧・C 定義・命題等の一覧 ================
+\appendix
+\input{appendix_notation}
+\input{appendix_symbols}
+\input{appendix_index}
+
+%================ 参考文献 ================
+\printbibliography
+
+\end{document}

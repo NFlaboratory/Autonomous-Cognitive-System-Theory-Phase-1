@@ -1,0 +1,249 @@
+{
+ "id": "P1_minacs_learning_r1",
+ "seconds": 17.8,
+ "units": 7200,
+ "identical": 5465,
+ "different": 1735,
+ "not_in_record": 0,
+ "examples": [
+  {
+   "unit": [
+    "R0",
+    "learn",
+    12,
+    "{\"cold_len\": 2, \"gift_events\": 3, \"regrow_period\": 3}"
+   ],
+   "recorded_vs_now": {
+    "recover_count_last_alive": [
+     1,
+     null
+    ],
+    "blocked": [
+     2,
+     0
+    ],
+    "T_col": [
+     34,
+     null
+    ],
+    "B2": [
+     2,
+     0
+    ],
+    "recover_at_last_alive": [
+     "100",
+     null
+    ]
+   }
+  },
+  {
+   "unit": [
+    "R0",
+    "learn",
+    12,
+    "{\"cold_len\": 4, \"gift_events\": 3, \"regrow_period\": 2}"
+   ],
+   "recorded_vs_now": {
+    "blocked": [
+     1,
+     2
+    ],
+    "B1": [
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "unit": [
+    "R0",
+    "learn",
+    11,
+    "{\"cold_len\": 2, \"gift_events\": 3, \"regrow_period\": 3}"
+   ],
+   "recorded_vs_now": {
+    "blocked": [
+     0,
+     3
+    ],
+    "B1": [
+     0,
+     3
+    ]
+   }
+  },
+  {
+   "unit": [
+    "R0",
+    "learn",
+    13,
+    "{\"cold_len\": 2, \"gift_events\": 3, \"regrow_period\": 3}"
+   ],
+   "recorded_vs_now": {
+    "recover_count_last_alive": [
+     1,
+     null
+    ],
+    "blocked": [
+     2,
+     1
+    ],
+    "B1": [
+     0,
+     1
+    ],
+    "T_col": [
+     20,
+     null
+    ],
+    "B2": [
+     2,
+     0
+    ],
+    "recover_at_last_alive": [
+     "100",
+     null
+    ]
+   }
+  },
+  {
+   "unit": [
+    "R0",
+    "learn",
+    13,
+    "{\"cold_len\": 2, \"gift_events\": 3, \"regrow_period\": 5}"
+   ],
+   "recorded_vs_now": {
+    "B1": [
+     2,
+     1
+    ],
+    "T_col": [
+     20,
+     11
+    ],
+    "B2": [
+     0,
+     1
+    ]
+   }
+  }
+ ],
+ "verdicts_differing": [
+  {
+   "id": "H1",
+   "variant": "R0",
+   "recorded": {
+    "verdict": "supported",
+    "counts": {
+     "n": 900,
+     "a>=b": 877,
+     "a>b": 268,
+     "a<b": 23,
+     "a==b": 609
+    }
+   },
+   "now": {
+    "verdict": "supported",
+    "counts": {
+     "n": 900,
+     "a>=b": 880,
+     "a>b": 267,
+     "a<b": 20,
+     "a==b": 613
+    }
+   }
+  },
+  {
+   "id": "H2",
+   "variant": "R0",
+   "recorded": {
+    "verdict": "supported",
+    "counts": {
+     "n": 1268,
+     "holds": 1268
+    }
+   },
+   "now": {
+    "verdict": "supported",
+    "counts": {
+     "n": 1251,
+     "holds": 1251
+    }
+   }
+  },
+  {
+   "id": "H2",
+   "variant": "R1",
+   "recorded": {
+    "verdict": "supported",
+    "counts": {
+     "n": 1264,
+     "holds": 1264
+    }
+   },
+   "now": {
+    "verdict": "supported",
+    "counts": {
+     "n": 1251,
+     "holds": 1251
+    }
+   }
+  },
+  {
+   "id": "H2",
+   "variant": "R2",
+   "recorded": {
+    "verdict": "supported",
+    "counts": {
+     "n": 1256,
+     "holds": 1256
+    }
+   },
+   "now": {
+    "verdict": "supported",
+    "counts": {
+     "n": 1251,
+     "holds": 1251
+    }
+   }
+  },
+  {
+   "id": "H2",
+   "variant": "R3",
+   "recorded": {
+    "verdict": "supported",
+    "counts": {
+     "n": 1268,
+     "holds": 1268
+    }
+   },
+   "now": {
+    "verdict": "supported",
+    "counts": {
+     "n": 1251,
+     "holds": 1251
+    }
+   }
+  },
+  {
+   "id": "H3",
+   "variant": "R0",
+   "recorded": {
+    "verdict": "supported",
+    "counts": {
+     "n": 1268,
+     "holds": 1268
+    }
+   },
+   "now": {
+    "verdict": "supported",
+    "counts": {
+     "n": 1251,
+     "holds": 1251
+    }
+   }
+  }
+ ],
+ "verdicts_total": 6
+}

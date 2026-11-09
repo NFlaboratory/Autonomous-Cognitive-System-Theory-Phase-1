@@ -1,0 +1,195 @@
+[
+ {
+  "suite": "v2_records",
+  "check_id": "R01_tstab_zero_margin",
+  "labels": [
+   "prop:tstab_zero_margin"
+  ],
+  "domain": "v2-records",
+  "status": "PASS_NONVACUOUS",
+  "cases": 5100,
+  "premise_cases": 57,
+  "kind": "records",
+  "detail": "on T_P with SM, EU, FR true and Pi = 0: T-STAB not satisfied",
+  "evidence": null
+ },
+ {
+  "suite": "v2_records",
+  "check_id": "R02_principle_time_domain_down",
+  "labels": [
+   "lem:principle_time_domain_down"
+  ],
+  "domain": "v2-records",
+  "status": "PASS_NONVACUOUS",
+  "cases": 5100,
+  "premise_cases": 2630,
+  "kind": "records",
+  "detail": "T_P downward closed, Col = 0 on T_P",
+  "evidence": null
+ },
+ {
+  "suite": "v2_records",
+  "check_id": "R03_undefined_outside_TP",
+  "labels": [
+   "def:principle_time_domain",
+   "def:tstab"
+  ],
+  "domain": "v2-records",
+  "status": "PASS_NONVACUOUS",
+  "cases": 5100,
+  "premise_cases": 2470,
+  "kind": "records",
+  "detail": "outside T_P: SM, EU, FR, T-STAB are undefined (not false)",
+  "evidence": null
+ },
+ {
+  "suite": "v2_records",
+  "check_id": "R04_sm_K_equiv",
+  "labels": [
+   "prop:sm_K_equiv"
+  ],
+  "domain": "v2-records",
+  "status": "PASS_NONVACUOUS",
+  "cases": 5100,
+  "premise_cases": 2630,
+  "kind": "records",
+  "detail": "on T_P: SM <=> x in K <=> Pi >= 0",
+  "evidence": null
+ },
+ {
+  "suite": "v2_records",
+  "check_id": "R05_fr_undefined_when_eu_false",
+  "labels": [
+   "def:fr_domain",
+   "def:FR"
+  ],
+  "domain": "v2-records",
+  "status": "PASS_NONVACUOUS",
+  "cases": 5100,
+  "premise_cases": 38,
+  "kind": "records",
+  "detail": "outside D_FR the local FR is undefined",
+  "evidence": null
+ },
+ {
+  "suite": "v2_records",
+  "check_id": "R06_fr_next_sm",
+  "labels": [
+   "prop:fr_next_sm"
+  ],
+  "domain": "v2-records",
+  "status": "PASS_NONVACUOUS",
+  "cases": 5100,
+  "premise_cases": 138,
+  "kind": "records",
+  "detail": "FR false => x_{t+1} not in K (and SM_{t+1} false on T_P)",
+  "evidence": null
+ },
+ {
+  "suite": "v2_records",
+  "check_id": "R07_sm_one_step_A",
+  "labels": [
+   "prop:sm_one_step_A"
+  ],
+  "domain": "v2-records",
+  "status": "PASS_NONVACUOUS",
+  "cases": 5100,
+  "premise_cases": 5085,
+  "kind": "records",
+  "detail": "(ii) x_{t+1} in K <=> u_t in A_t",
+  "evidence": null
+ },
+ {
+  "suite": "v2_records",
+  "check_id": "R08_output_attribution",
+  "labels": [
+   "def:s4_output_attribution",
+   "def:result_tuple"
+  ],
+  "domain": "v2-records",
+  "status": "PASS_NONVACUOUS",
+  "cases": 5100,
+  "premise_cases": 2447,
+  "kind": "records",
+  "detail": "WF = 0: mechanism outputs are not attributed to the individual (recorded as undef, not 0 / empty)",
+  "evidence": null
+ },
+ {
+  "suite": "v2_records",
+  "check_id": "R09_modes_styles",
+  "labels": [
+   "def:M3_modes",
+   "def:m3_3b_styles",
+   "def:mode_judgment"
+  ],
+  "domain": "v2-records",
+  "status": "PASS_NONVACUOUS",
+  "cases": 5100,
+  "premise_cases": 2653,
+  "kind": "records",
+  "detail": "mode in {3A,3B,3C}; style is one of the three 3B styles iff mode = 3B, else none",
+  "evidence": null
+ },
+ {
+  "suite": "v2_records",
+  "check_id": "R10_resolve_on_records",
+  "labels": [
+   "def:effective_action_resolve",
+   "def:psl4"
+  ],
+  "domain": "v2-records",
+  "status": "PASS_NONVACUOUS",
+  "cases": 5100,
+  "premise_cases": 2,
+  "kind": "records",
+  "detail": "an issued protective response is the effective action",
+  "evidence": null
+ },
+ {
+  "suite": "v2_records",
+  "check_id": "R11_readout_ranges",
+  "labels": [
+   "def:functional_axis",
+   "def:s5_health_quantities",
+   "def:beta_accumulated",
+   "def:s5_readout_types",
+   "def:tau_hat_section5",
+   "def:deff_section5"
+  ],
+  "domain": "v2-records",
+  "status": "PASS_NONVACUOUS",
+  "cases": 5100,
+  "premise_cases": 5100,
+  "kind": "records",
+  "detail": "F and health in [0,1]; beta, d_eff, tau_hat >= 0 (values 'undef' skipped)",
+  "evidence": null
+ },
+ {
+  "suite": "v2_records",
+  "check_id": "R12_tau_hat",
+  "labels": [
+   "def:tau_hat_section5"
+  ],
+  "domain": "v2-records",
+  "status": "PASS_NONVACUOUS",
+  "cases": 5100,
+  "premise_cases": 2608,
+  "kind": "records",
+  "detail": "tau_hat = tau * pi_tau (tau = 3 in the v2 configuration; both columns are rounded to 3 decimals)",
+  "evidence": null
+ },
+ {
+  "suite": "v2_records",
+  "check_id": "R13_termination_order",
+  "labels": [
+   "prop:termination_order"
+  ],
+  "domain": "v2-records",
+  "status": "PASS_NONVACUOUS",
+  "cases": 5100,
+  "premise_cases": 2447,
+  "kind": "records",
+  "detail": "Col = 1 => FT = 1 and WF = 0 (parts (ii) and (iv))",
+  "evidence": null
+ }
+]

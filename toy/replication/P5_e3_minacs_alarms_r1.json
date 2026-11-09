@@ -1,0 +1,11 @@
+{
+ "id": "P5_e3_minacs_alarms_r1",
+ "seconds": 8.5,
+ "units": 3600,
+ "identical": 3600,
+ "different": 0,
+ "not_in_record": 0,
+ "examples": [],
+ "verdicts_differing": [],
+ "verdicts_total": 5
+}

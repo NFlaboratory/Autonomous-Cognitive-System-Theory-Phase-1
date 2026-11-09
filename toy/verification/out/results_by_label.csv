@@ -1,0 +1,77 @@
+label,status,checks
+ass:env_input_nondegeneracy,PASS_NONVACUOUS,P11_nondegeneracy_implication@Furnace; P11_nondegeneracy_implication@MinACS; P11_nondegeneracy_implication@Tightrope
+ass:env_viable_nondegeneracy,PASS_NONVACUOUS,P11_nondegeneracy_implication@Furnace; P11_nondegeneracy_implication@MinACS; P11_nondegeneracy_implication@Tightrope
+ass:functional_concurrency,NOT_RUN,partial evidence: MUT_S04_MutM2ReadsPurpose@Furnace-mut; S04_Furnace@Furnace; S04_MinACS@MinACS
+ass:psl_minimal,NOT_RUN,partial evidence: MUT_S06_MutProtReadsMemory@Furnace-mut; MUT_S06_MutResolveCancels@Furnace-mut; S06_Furnace@Furnace
+ass:s5_observation_factorization,PASS_NONVACUOUS,MUT_S01_MutUpdateReadsHiddenFlue@Furnace-mut; S01_Furnace@Furnace; S01_MinACS@MinACS; U_S01_flip@Furnace[flip]; U_S01_forget@Furnace[forget]; U_S01_frozen@Furnace[frozen]; U_S01_orig@Furnace[orig]
+ass:theta_exterior_blockage,PASS_NONVACUOUS,P15_theta_exterior_blockage@Furnace; P15_theta_exterior_blockage@MinACS; P15_theta_exterior_blockage@Tightrope
+def:FR,PASS_NONVACUOUS,R05_fr_undefined_when_eu_false@v2-records
+def:M3_modes,PASS_NONVACUOUS,R09_modes_styles@v2-records
+def:action_decision,PASS_NONVACUOUS,S05_Furnace@Furnace; S05_MinACS@MinACS
+def:beta_accumulated,PASS_NONVACUOUS,R11_readout_ranges@v2-records
+def:collapse,PASS_NONVACUOUS,D4_histories@Dormancy; D5_census@Dormancy
+def:deff_section5,PASS_NONVACUOUS,R11_readout_ranges@v2-records
+def:effective_action_resolve,PASS_NONVACUOUS,MUT_S06_MutProtReadsMemory@Furnace-mut; MUT_S06_MutResolveCancels@Furnace-mut; R10_resolve_on_records@v2-records; S06_Furnace@Furnace; S06_v2_resolve@v2
+def:eu_critical_domain,EXAMPLE_ONLY,D6_domain_sets@Dormancy; MU_boundary_A2@MU-A2; MU_boundary_A3@MU-A3
+def:fr_domain,PASS_NONVACUOUS,R05_fr_undefined_when_eu_false@v2-records
+def:functional_axis,PASS_NONVACUOUS,R11_readout_ranges@v2-records
+def:functional_termination,PASS_NONVACUOUS,D4_histories@Dormancy; D5_census@Dormancy
+def:intertime_update,EXAMPLE_ONLY,U_census_flip@Furnace[flip]; U_census_forget@Furnace[forget]; U_census_frozen@Furnace[frozen]; U_census_orig@Furnace[orig]
+def:kernel_all_any,EXAMPLE_ONLY,MU_boundary_A2@MU-A2; MU_boundary_A3@MU-A3
+def:learning_intertime_change,EXAMPLE_ONLY,U_census_flip@Furnace[flip]; U_census_forget@Furnace[forget]; U_census_frozen@Furnace[frozen]; U_census_orig@Furnace[orig]
+def:m2_map,PASS_NONVACUOUS,MUT_S04_MutM2ReadsPurpose@Furnace-mut; S04_Furnace@Furnace; S04_MinACS@MinACS
+def:m2_priority,PASS_NONVACUOUS,S03_Furnace@Furnace; S03_MinACS@MinACS
+def:m2_request_signal,PASS_NONVACUOUS,S03_Furnace@Furnace; S03_MinACS@MinACS
+def:m3_3b_styles,PASS_NONVACUOUS,R09_modes_styles@v2-records
+def:mode_judgment,PASS_NONVACUOUS,R09_modes_styles@v2-records
+def:model_learning_working,EXAMPLE_ONLY,U_census_flip@Furnace[flip]; U_census_forget@Furnace[forget]; U_census_frozen@Furnace[frozen]; U_census_orig@Furnace[orig]
+def:principle_time_domain,PASS_NONVACUOUS,D3_principle_time_domain_down@Dormancy; R03_undefined_outside_TP@v2-records
+def:psl4,PASS_NONVACUOUS,MUT_S06_MutProtReadsMemory@Furnace-mut; MUT_S06_MutResolveCancels@Furnace-mut; R10_resolve_on_records@v2-records; S06_Furnace@Furnace; S06_v2_resolve@v2
+def:psl_sensitivity,EXAMPLE_ONLY,S10_v2_psl_sensitivity@v2
+def:purpose_formation,PASS_NONVACUOUS,S03_Furnace@Furnace; S03_MinACS@MinACS
+def:result_tuple,PASS_NONVACUOUS,R08_output_attribution@v2-records
+def:robust_response,EXAMPLE_ONLY,MU_boundary_A2@MU-A2; MU_boundary_A3@MU-A3
+def:s4_output_attribution,PASS_NONVACUOUS,R08_output_attribution@v2-records
+def:s4_primitive_composition,PASS_NONVACUOUS,MUT_S02_MutActionReadsHidden@MinACS-mut; S02_Furnace@Furnace; S02_MinACS@MinACS
+def:s4_psl_sources,PASS_NONVACUOUS,MUT_S02_MutActionReadsHidden@MinACS-mut; S02_Furnace@Furnace; S02_MinACS@MinACS
+def:s5_health_quantities,PASS_NONVACUOUS,R11_readout_ranges@v2-records
+def:s5_operation_record,PASS_NONVACUOUS,S07_Furnace@Furnace; S07_MinACS@MinACS; U_S07_flip@Furnace[flip]; U_S07_forget@Furnace[forget]; U_S07_frozen@Furnace[frozen]; U_S07_orig@Furnace[orig]
+def:s5_readout_types,PASS_NONVACUOUS,R11_readout_ranges@v2-records
+def:s5_standard_step,PASS_NONVACUOUS,MUT_S02_MutActionReadsHidden@MinACS-mut; S02_Furnace@Furnace; S02_MinACS@MinACS
+def:sel_proj,PASS_NONVACUOUS,S05_Furnace@Furnace; S05_MinACS@MinACS
+def:tau_hat_section5,PASS_NONVACUOUS,R11_readout_ranges@v2-records; R12_tau_hat@v2-records
+def:tstab,PASS_NONVACUOUS,R03_undefined_outside_TP@v2-records
+def:update_section5,PASS_NONVACUOUS,MUT_S01_MutUpdateReadsHiddenFlue@Furnace-mut; S01_Furnace@Furnace; S01_MinACS@MinACS; S05_Furnace@Furnace; S05_MinACS@MinACS; U_S01_flip@Furnace[flip]; U_S01_forget@Furnace[forget]; U_S01_frozen@Furnace[frozen]; U_S01_orig@Furnace[orig]
+def:update_stop_on_trajectory,EXAMPLE_ONLY,U_census_flip@Furnace[flip]; U_census_forget@Furnace[forget]; U_census_frozen@Furnace[frozen]; U_census_orig@Furnace[orig]
+def:viab_core,EXAMPLE_ONLY,D6_domain_sets@Dormancy; MU_boundary_A2@MU-A2; MU_boundary_A3@MU-A3
+def:wf_realization,EXAMPLE_ONLY,D5_census@Dormancy
+lem:finite_exit,PASS_NONVACUOUS,MU_finite_exit@MU-A2; MU_finite_exit@MU-A3
+lem:principle_time_domain_down,PASS_NONVACUOUS,D3_principle_time_domain_down@Dormancy; R02_principle_time_domain_down@v2-records
+lem:sd_viab,PASS_NONVACUOUS,MU_sd_viab@MU-A2; MU_sd_viab@MU-A3; P10_sd_viab@Furnace; P10_sd_viab@MinACS; P10_sd_viab@Tightrope
+prop:blockage_dichotomy,PASS_NONVACUOUS,MU_blockage_dichotomy@MU-A2; MU_blockage_dichotomy@MU-A3; P05_blockage_dichotomy@Furnace; P05_blockage_dichotomy@MinACS; P05_blockage_dichotomy@Tightrope
+prop:exterior_blockage,PASS_NONVACUOUS,MU_exterior_blockage@MU-A2; MU_exterior_blockage@MU-A3; P18_exterior_blockage@Furnace; P18_exterior_blockage@MinACS; P18_exterior_blockage@Tightrope
+prop:feasibility_sensitivity_scope,PASS_NONVACUOUS,MU_feasibility_sensitivity_scope@MU-A2; MU_feasibility_sensitivity_scope@MU-A3; P12_feasibility_sensitivity_scope@Furnace; P12_feasibility_sensitivity_scope@MinACS; P12_feasibility_sensitivity_scope@Tightrope
+prop:fr_next_sm,PASS_NONVACUOUS,MU_fr_next_sm@MU-A2; MU_fr_next_sm@MU-A3; P04_fr_next_sm@Furnace; P04_fr_next_sm@MinACS; P04_fr_next_sm@Tightrope; R06_fr_next_sm@v2-records
+prop:fr_one_step,PASS_NONVACUOUS,P03_fr_one_step@Furnace; P03_fr_one_step@MinACS; P03_fr_one_step@Tightrope
+prop:kernel_standard_comparison,PASS_NONVACUOUS,MU_kernel_standard_comparison@MU-A2; MU_kernel_standard_comparison@MU-A3; P08_kernel_standard_comparison@Furnace; P08_kernel_standard_comparison@MinACS; P08_kernel_standard_comparison@Tightrope
+prop:nondegeneracy_implication,PASS_NONVACUOUS,MU_nondegeneracy_implication@MU-A2; MU_nondegeneracy_implication@MU-A3; P11_nondegeneracy_implication@Furnace; P11_nondegeneracy_implication@MinACS; P11_nondegeneracy_implication@Tightrope
+prop:pi_violation_profile,PASS_NONVACUOUS,P14_pi_violation_profile@Furnace; P14_pi_violation_profile@MinACS; P14_pi_violation_profile@Tightrope
+prop:purpose_self_attribution,PASS_NONVACUOUS,S03_Furnace@Furnace; S03_MinACS@MinACS
+prop:realized_reestablishment,PASS_NONVACUOUS,D1_realized_reestablishment_CS@Dormancy; D1_realized_reestablishment_FTS@Dormancy
+prop:robust_noninclusion,EXAMPLE_ONLY,MU_robust_noninclusion@MU-B2; P13_robust_noninclusion@Furnace; P13_robust_noninclusion@MinACS; P13_robust_noninclusion@Tightrope
+prop:robust_nonresponse_viab,PASS_NONVACUOUS,MU_robust_nonresponse_viab@MU-A2; MU_robust_nonresponse_viab@MU-A3; P09_robust_nonresponse_viab@Furnace; P09_robust_nonresponse_viab@MinACS; P09_robust_nonresponse_viab@Tightrope
+prop:s5_causality,PASS_NONVACUOUS,S08_Furnace@Furnace; S08_MinACS@MinACS; U_S08_flip@Furnace[flip]; U_S08_forget@Furnace[forget]; U_S08_frozen@Furnace[frozen]; U_S08_orig@Furnace[orig]
+prop:s5_continuation,PASS_NONVACUOUS,S07_Furnace@Furnace; S07_MinACS@MinACS; U_S07_flip@Furnace[flip]; U_S07_forget@Furnace[forget]; U_S07_frozen@Furnace[frozen]; U_S07_orig@Furnace[orig]
+prop:s5_observation_causality,PASS_NONVACUOUS,MUT_S01_MutUpdateReadsHiddenFlue@Furnace-mut; S01_Furnace@Furnace; S01_MinACS@MinACS; S09_Furnace@Furnace; S09_MinACS@MinACS; U_S01_flip@Furnace[flip]; U_S01_forget@Furnace[forget]; U_S01_frozen@Furnace[frozen]; U_S01_orig@Furnace[orig]; U_S09_flip@Furnace[flip]; U_S09_forget@Furnace[forget]; U_S09_frozen@Furnace[frozen]; U_S09_orig@Furnace[orig]
+prop:s5_one_step,PASS_NONVACUOUS,S05_Furnace@Furnace; S05_MinACS@MinACS
+prop:sd_necessity,PASS_NONVACUOUS,MU_sd_necessity@MU-A2; MU_sd_necessity@MU-A3; P17_sd_necessity@Furnace; P17_sd_necessity@MinACS; P17_sd_necessity@Tightrope
+prop:sd_necessity_fr,PASS_NONVACUOUS,MU_sd_necessity_fr@MU-A2; MU_sd_necessity_fr@MU-A3; P19_sd_necessity_fr@Furnace; P19_sd_necessity_fr@MinACS; P19_sd_necessity_fr@Tightrope
+prop:sd_robust_nonresponse,PASS_NONVACUOUS,MU_sd_robust_nonresponse@MU-A2; MU_sd_robust_nonresponse@MU-A3; P16_sd_robust_nonresponse@Furnace; P16_sd_robust_nonresponse@MinACS; P16_sd_robust_nonresponse@Tightrope
+prop:sm_K_equiv,PASS_NONVACUOUS,P01_sm_K_equiv@Furnace; P01_sm_K_equiv@MinACS; P01_sm_K_equiv@Tightrope; R04_sm_K_equiv@v2-records
+prop:sm_one_step_A,PASS_NONVACUOUS,P02_sm_one_step_A@Furnace; P02_sm_one_step_A@MinACS; P02_sm_one_step_A@Tightrope; R07_sm_one_step_A@v2-records
+prop:termination_order,PASS_NONVACUOUS,D2_termination_order@Dormancy; R13_termination_order@v2-records
+prop:tstab_zero_margin,PASS_NONVACUOUS,R01_tstab_zero_margin@v2-records
+prop:viab_core_max,PASS_NONVACUOUS,MU_viab_core_max@MU-A2; MU_viab_core_max@MU-A3; P06_viab_core_max@Furnace; P06_viab_core_max@MinACS; P06_viab_core_max@Tightrope
+prop:viab_resp_max,PASS_NONVACUOUS,MU_viab_resp_max@MU-B2
+prop:viab_stage_finite,PASS_NONVACUOUS,MU_viab_stage_finite@MU-A2; MU_viab_stage_finite@MU-A3; P07_viab_stage_finite@Furnace; P07_viab_stage_finite@MinACS; P07_viab_stage_finite@Tightrope
+prop:viab_stage_nested,PASS_NONVACUOUS,P07_viab_stage_finite@Furnace; P07_viab_stage_finite@MinACS; P07_viab_stage_finite@Tightrope

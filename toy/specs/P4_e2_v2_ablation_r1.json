@@ -1,0 +1,306 @@
+{
+ "id": "P4_e2_v2_ablation_r1",
+ "model": "e2_v2",
+ "purpose": "E2: remove one principle-related function group (def:principle_related_functions, 7 groups) or one additional element from both individuals' mechanisms in the v2 toy, and compare the collapse-reaching times with the full mechanism on held-out seeds.",
+ "ablation_implementation": {
+  "-integ": "M1 の時間統合を外す（見えないものの信念を直ちに失効させる）",
+  "-feas": "M2 の Π_eval を定数にし、自己状態の閾値に基づく欠乏・警告の要請を出さない",
+  "-resp": "先読みを外し（深さ 1）、候補を目的から生成せず U 全体に固定する",
+  "-envuse": "必要環境要因（energy・heat）に関わる目的の形成と候補の追加を外す",
+  "-select": "適合度を一定にし、選択射影の既定順だけで選ぶ",
+  "-update": "Update を恒等写像にする（学習・忘却・記録の更新なし）",
+  "-phys": "PSL-4 の保護応答と repair を外す",
+  "-auto": "ルーティン応答（比較を経ない応答）を外す",
+  "-relation": "relation の要請（合図・贈与）を外す",
+  "-rescuers": "relation を外し、ドローンと組織も除く"
+ },
+ "ablation_mapping_note": "The mapping from the paper's function groups to code-level removals is a toy convention; another implementation of the same removal could give different results.",
+ "tuning_history": "The v2 mechanism was tuned on seed 1 (fixed severe-cold periods).  The ablation switches were written before any run.  One smoke test of all 11 conditions on tuning seed 1 (eat_gain 5, regen 3, snap_jitter 10) was run before registration and showed T_col_sum: full 334, -integ 172, -feas 57, -resp 236, -envuse 57, -select 131, -update 252, -phys 334, -auto 539, -relation 468, -rescuers 468.  Seeds 11-60 were not run before registration.",
+ "metric_note": "T_col_sum = T_col(i) + T_col(j), a structure lost at no time within 300 steps counted as 301.",
+ "sources": [
+  "/home/claude/TOY2/acs_toy/*.py",
+  "/home/claude/E4/e4/*.py",
+  "/home/claude/E4/run_prereg.py"
+ ],
+ "seeds": {
+  "tune": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "eval": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46,
+   47,
+   48,
+   49,
+   50,
+   51,
+   52,
+   53,
+   54,
+   55,
+   56,
+   57,
+   58,
+   59,
+   60
+  ]
+ },
+ "sweep": {
+  "eat_gain": [
+   4,
+   5,
+   6
+  ],
+  "regen_period": [
+   2,
+   3,
+   4
+  ],
+  "snap_jitter": [
+   10
+  ],
+  "steps": [
+   300
+  ]
+ },
+ "conditions": [
+  "full",
+  "-integ",
+  "-feas",
+  "-resp",
+  "-envuse",
+  "-select",
+  "-update",
+  "-phys",
+  "-auto",
+  "-relation",
+  "-rescuers"
+ ],
+ "rule_variants": {
+  "R0": {}
+ },
+ "rule_independent_metrics": [],
+ "hypotheses": [
+  {
+   "id": "H1",
+   "kind": "paired",
+   "metric": "T_col_sum",
+   "conditions": [
+    "full",
+    "-integ"
+   ],
+   "statement": "完全な機構の T_col_sum は、情報取得・統合を除いた機構（M1 の時間統合を外す（見えないものの信念を直ちに失効させる））以上である。",
+   "how_it_could_fail": "除去によって費用のかかる行動（移動・合図・修復・往復）が減り、存続が延びうる。登録前の試運転（調整用 seed 1）で -auto・-relation・-rescuers は完全な機構を上回り、-phys は同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H2",
+   "kind": "paired",
+   "metric": "T_col_sum",
+   "conditions": [
+    "full",
+    "-feas"
+   ],
+   "statement": "完全な機構の T_col_sum は、可行性感応評価を除いた機構（M2 の Π_eval を定数にし、自己状態の閾値に基づく欠乏・警告の要請を出さない）以上である。",
+   "how_it_could_fail": "除去によって費用のかかる行動（移動・合図・修復・往復）が減り、存続が延びうる。登録前の試運転（調整用 seed 1）で -auto・-relation・-rescuers は完全な機構を上回り、-phys は同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H3",
+   "kind": "paired",
+   "metric": "T_col_sum",
+   "conditions": [
+    "full",
+    "-resp"
+   ],
+   "statement": "完全な機構の T_col_sum は、応答可能性評価・再構成を除いた機構（先読みを外し（深さ 1）、候補を目的から生成せず U 全体に固定する）以上である。",
+   "how_it_could_fail": "除去によって費用のかかる行動（移動・合図・修復・往復）が減り、存続が延びうる。登録前の試運転（調整用 seed 1）で -auto・-relation・-rescuers は完全な機構を上回り、-phys は同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H4",
+   "kind": "paired",
+   "metric": "T_col_sum",
+   "conditions": [
+    "full",
+    "-envuse"
+   ],
+   "statement": "完全な機構の T_col_sum は、環境利用・外部結合評価を除いた機構（必要環境要因（energy・heat）に関わる目的の形成と候補の追加を外す）以上である。",
+   "how_it_could_fail": "除去によって費用のかかる行動（移動・合図・修復・往復）が減り、存続が延びうる。登録前の試運転（調整用 seed 1）で -auto・-relation・-rescuers は完全な機構を上回り、-phys は同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H5",
+   "kind": "paired",
+   "metric": "T_col_sum",
+   "conditions": [
+    "full",
+    "-select"
+   ],
+   "statement": "完全な機構の T_col_sum は、応答形成・選択を除いた機構（適合度を一定にし、選択射影の既定順だけで選ぶ）以上である。",
+   "how_it_could_fail": "除去によって費用のかかる行動（移動・合図・修復・往復）が減り、存続が延びうる。登録前の試運転（調整用 seed 1）で -auto・-relation・-rescuers は完全な機構を上回り、-phys は同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H6",
+   "kind": "paired",
+   "metric": "T_col_sum",
+   "conditions": [
+    "full",
+    "-update"
+   ],
+   "statement": "完全な機構の T_col_sum は、時間横断的情報保持・更新を除いた機構（Update を恒等写像にする（学習・忘却・記録の更新なし））以上である。",
+   "how_it_could_fail": "除去によって費用のかかる行動（移動・合図・修復・往復）が減り、存続が延びうる。登録前の試運転（調整用 seed 1）で -auto・-relation・-rescuers は完全な機構を上回り、-phys は同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H7",
+   "kind": "paired",
+   "metric": "T_col_sum",
+   "conditions": [
+    "full",
+    "-phys"
+   ],
+   "statement": "完全な機構の T_col_sum は、物理的感知・作用・基盤維持を除いた機構（PSL-4 の保護応答と repair を外す）以上である。",
+   "how_it_could_fail": "除去によって費用のかかる行動（移動・合図・修復・往復）が減り、存続が延びうる。登録前の試運転（調整用 seed 1）で -auto・-relation・-rescuers は完全な機構を上回り、-phys は同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H8",
+   "kind": "paired",
+   "metric": "T_col_sum",
+   "conditions": [
+    "full",
+    "-auto"
+   ],
+   "statement": "完全な機構の T_col_sum は、（追加）自動化を除いた機構（ルーティン応答（比較を経ない応答）を外す）以上である。",
+   "how_it_could_fail": "除去によって費用のかかる行動（移動・合図・修復・往復）が減り、存続が延びうる。登録前の試運転（調整用 seed 1）で -auto・-relation・-rescuers は完全な機構を上回り、-phys は同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H9",
+   "kind": "paired",
+   "metric": "T_col_sum",
+   "conditions": [
+    "full",
+    "-relation"
+   ],
+   "statement": "完全な機構の T_col_sum は、（追加）関係を除いた機構（relation の要請（合図・贈与）を外す）以上である。",
+   "how_it_could_fail": "除去によって費用のかかる行動（移動・合図・修復・往復）が減り、存続が延びうる。登録前の試運転（調整用 seed 1）で -auto・-relation・-rescuers は完全な機構を上回り、-phys は同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H10",
+   "kind": "paired",
+   "metric": "T_col_sum",
+   "conditions": [
+    "full",
+    "-rescuers"
+   ],
+   "statement": "完全な機構の T_col_sum は、（追加）救助の担い手を除いた機構（relation を外し、ドローンと組織も除く）以上である。",
+   "how_it_could_fail": "除去によって費用のかかる行動（移動・合図・修復・往復）が減り、存続が延びうる。登録前の試運転（調整用 seed 1）で -auto・-relation・-rescuers は完全な機構を上回り、-phys は同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  }
+ ],
+ "source_hashes": {
+  "/home/claude/TOY2/acs_toy/body.py": "20e04ec19d72f80da1fed98ebcc8af2c",
+  "/home/claude/TOY2/acs_toy/checks.py": "cf0798be3b2361a0c035684d13328928",
+  "/home/claude/TOY2/acs_toy/config.py": "a2f59fd17712ed9222d917e94b8041a0",
+  "/home/claude/TOY2/acs_toy/events.py": "9ee2191926e624368ceb1f7ee0e61846",
+  "/home/claude/TOY2/acs_toy/judge.py": "5c37ad799062944534cdd686c36605c5",
+  "/home/claude/TOY2/acs_toy/mind.py": "383b0d950a1d4ad147f722f945cfcc8b",
+  "/home/claude/TOY2/acs_toy/org.py": "faed65ebf0e54b982004c234ae8fe34a",
+  "/home/claude/TOY2/acs_toy/sim.py": "a97ffefedaae2f40725d318c17ee8bee",
+  "/home/claude/TOY2/acs_toy/viewer.py": "d4f3c72d4505b903d1fab55a1dabc53b",
+  "/home/claude/TOY2/acs_toy/world.py": "9da4503c74b33bb1ba20a7c26c11ace7",
+  "/home/claude/E4/e4/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "/home/claude/E4/e4/adapters.py": "5485b634e7aa6a7e11f9a262159b50a9",
+  "/home/claude/E4/e4/policies_minacs.py": "b3a1c028b6a89af766a93aacec79afe2",
+  "/home/claude/E4/e4/prereg.py": "67496a558dd9971e5326fd47e0c5b5ca",
+  "/home/claude/E4/run_prereg.py": "af8b6026d8db07ea20c2346ca6614b05"
+ },
+ "registered_at": "2026-10-26T08:25:32.653235+00:00"
+}

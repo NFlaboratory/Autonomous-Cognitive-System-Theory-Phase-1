@@ -1,0 +1,109 @@
+{
+ "scenario": "cooperative",
+ "overrides": [],
+ "steps": 300,
+ "seconds": 43.7,
+ "i": {
+  "T_blk": 157,
+  "T_col": 171,
+  "in_P_blk": true,
+  "in_P_col": true,
+  "T_FT": 171,
+  "chi_EI_0_from_until_record_end": 170,
+  "zone_counts": {
+   "Z0": 141,
+   "Z1": 30,
+   "Z4": 14,
+   "Z3": 6,
+   "Z5": 129
+  },
+  "blocked_steps": 14,
+  "B1_steps": 1,
+  "B2_steps": 13,
+  "blockage_ends": {},
+  "SM_fail_steps_on_T_P": 16,
+  "EU_fail_steps_on_T_P": 1,
+  "TSTAB_true_steps": 135,
+  "gifts_received_alive": {
+   "org": 2,
+   "drone": 6,
+   "partner": 3
+  },
+  "purposes_seen": [
+   "('energy', 'r0', 'eat')",
+   "('energy', 'r1', 'eat')",
+   "('energy', 'self', 'call')",
+   "('heat', 'S', 'seal')",
+   "('safety', 'self', 'avoid')"
+  ],
+  "mode_counts": {
+   "3C": 123,
+   "3B": 21,
+   "3A": 27
+  },
+  "psl4_overrides": 0,
+  "fast_steps": 91,
+  "action_classes": {
+   "non-purpose": 138,
+   "purpose:energy": 27,
+   "purpose:heat": 3,
+   "purpose:energy+relation": 2,
+   "purpose:safety": 1
+  },
+  "final_beta_val": 1.0
+ },
+ "j": {
+  "T_blk": 250,
+  "T_col": 258,
+  "in_P_blk": true,
+  "in_P_col": true,
+  "T_FT": 258,
+  "chi_EI_0_from_until_record_end": null,
+  "zone_counts": {
+   "Z0": 229,
+   "Z1": 29,
+   "Z4": 8,
+   "Z3": 4,
+   "Z2": 3,
+   "Z5": 42
+  },
+  "blocked_steps": 8,
+  "B1_steps": 1,
+  "B2_steps": 7,
+  "blockage_ends": {},
+  "SM_fail_steps_on_T_P": 8,
+  "EU_fail_steps_on_T_P": 1,
+  "TSTAB_true_steps": 216,
+  "gifts_received_alive": {
+   "drone": 3
+  },
+  "purposes_seen": [
+   "('energy', 'r0', 'eat')",
+   "('energy', 'r1', 'eat')",
+   "('energy', 'self', 'call')",
+   "('heat', 'S', 'seal')",
+   "('relation', ('self', 'P'), 'give')"
+  ],
+  "mode_counts": {
+   "3C": 187,
+   "3B": 60,
+   "3A": 11
+  },
+  "psl4_overrides": 0,
+  "fast_steps": 151,
+  "action_classes": {
+   "non-purpose": 237,
+   "purpose:energy": 9,
+   "purpose:heat": 4,
+   "purpose:relation": 7,
+   "purpose:energy+relation": 1
+  },
+  "final_beta_val": 1.0
+ },
+ "org": {
+  "org_ACS_steps": 258,
+  "org_blocked_steps": 232,
+  "allocations": 2
+ },
+ "checks_NG": 0
+}

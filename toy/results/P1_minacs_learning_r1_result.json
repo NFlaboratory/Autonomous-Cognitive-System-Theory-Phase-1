@@ -1,0 +1,97 @@
+{
+ "id": "P1_minacs_learning_r1",
+ "spec_md5": "c8bed54073a17f6a38e4f616d829486a",
+ "registry_entry": "2026-10-26T07:23:26.351880+00:00\tc8bed54073a17f6a38e4f616d829486a\t/home/claude/E4/specs/P1_minacs_learning_r1.json\tP1_minacs_learning_r1",
+ "run_at": "2026-10-26T07:24:09.040961+00:00",
+ "python": "3.13.16",
+ "seconds": 35.4,
+ "deviation": null,
+ "problems_at_run": [],
+ "n_units_per_variant_condition": 900,
+ "verdicts": [
+  {
+   "id": "H1",
+   "statement": "Update が働く個体（learn）の崩壊到達時刻は、信念を更新しない個体（no-learn）以上である（崩壊なしは +∞ とみなす）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 877,
+      "a>b": 268,
+      "a<b": 23,
+      "a==b": 609
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H2",
+   "statement": "崩壊した軌道では、崩壊直前の生存時刻に Recover=1 となる許容外的作用が 3 種すべてではない（外的回復可能性が狭まっている）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1268,
+      "holds": 1268
+     }
+    },
+    "R1": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1264,
+      "holds": 1264
+     }
+    },
+    "R2": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1256,
+      "holds": 1256
+     }
+    },
+    "R3": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1268,
+      "holds": 1268
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H3",
+   "statement": "（モデル記述の仮説）MinACS では崩壊した軌道のすべてで、崩壊前に少なくとも一度閉塞が生じる。本文の『崩壊は閉塞の事前経由を要しない』とは別の、このモデルについての記述。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1268,
+      "holds": 1268
+     }
+    }
+   },
+   "rule_dependent": false
+  }
+ ],
+ "consistency": [
+  {
+   "metric": "T_col",
+   "units_differing_across_variants": 471
+  },
+  {
+   "metric": "blocked",
+   "units_differing_across_variants": 314
+  },
+  {
+   "metric": "B1",
+   "units_differing_across_variants": 274
+  },
+  {
+   "metric": "B2",
+   "units_differing_across_variants": 300
+  }
+ ]
+}

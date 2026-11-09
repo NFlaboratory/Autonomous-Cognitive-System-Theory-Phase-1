@@ -1,0 +1,4834 @@
+%======================================================================
+\section{崩壊・閉塞・崩壊経路集合}
+\label{sec:collapse_cond}
+
+\S\ref{sec:acs_def} で与えたACSの形式的定義、
+\S\ref{sec:three_principles} の可行性構造、
+\S\ref{sec:extended_dynamics} の時刻依存量、
+および
+\S\ref{sec:rel_min} の関係性記述を受けて、
+本節では単一ACS個体 $\Sigma_i$ における
+閉塞、記述的崩壊前状態帯、外的回復可能性、崩壊、
+およびそれらの軌道記録上の表現を整理する。
+
+本節の主眼は、
+これらを一つの失敗概念へまとめることではなく、
+互いに異なる水準の状態として区別することにある。
+とくに、
+閉塞、整形式実現の不成立および崩壊は、
+それぞれ異なる判定条件に基づく概念であり、
+相互に同一視しない。
+本節はこの区別を基本とする。
+閉塞は、ある時刻の実現環境のもとで
+可行行動が失われることに関する局所的な状態である。
+これに対して崩壊は、
+単一時刻の機能低下や閉塞そのものではなく、
+本枠組みにおいて終端的に扱われる状態である（\S\ref{sec:acs_def} 定義~\ref{def:collapse}）。
+
+本節ではさらに、
+崩壊周辺の状態を記述するための状態帯と、
+閉塞または崩壊への到達を記録する経路集合を導入する。
+本節は、崩壊の一般原因論、確率的到達理論、
+あるいは崩壊までの距離理論を構成するものではない。
+
+Phase~1 の本節が直接対象とするのは単一ACS個体である。
+
+本節で新たに用いる主要記号の一覧は付録~\ref{app:symbols_s7} に示す。
+なお、
+$A_{i,t}$、$\mathrm{WF}_{i,t}$、
+$\mathrm{Desc}_t$、$Q$ 等は
+前節までに導入された記号であり、
+本節では必要に応じて参照するが再定義しない。
+
+\begin{remark}[本節における三原理と機能の記述水準]
+\label{rem:s7_principle_levels}
+本節で三原理と機能に言及するときは、次の水準を区別する。
+\begin{description}[style=nextline]
+  \item[原理]
+  自己維持（SM）・環境利用（EU）・可行応答（FR）の三原理は、
+  \S\ref{sec:three_principles} で定める、存続中のACSに対する制約軸である。
+  本節は、原理そのものについて成立・不成立を述べない。
+  \item[時刻別充足述語]
+  各原理について \S\ref{sec:three_principles} で定める時刻別の条件であり、
+  真偽をもつのはこの水準である。
+  SM の時刻別充足述語は、\S\ref{sec:three_principles} で定める適用域において
+  $x_t\in K$ のとき真となる。
+  EU の時刻別充足述語は同節の適用域で定義され、
+  FR の時刻別充足述語（局所 FR）はさらに定義域 $\mathcal{D}_{\mathrm{FR}}$ 上でだけ定義される。
+  本節は各時刻の判定を「SM の時刻別充足述語が真である」「偽である」のように記述し、
+  「偽である」は、時刻別充足述語が定義されたうえで偽となることを指す。
+  定義されない時刻を、偽である時刻に含めない。
+  \item[機能]
+  原始的な機能の各区分に関して個体が有する基礎的な機能と基盤機能
+  （\S\ref{sec:acs_def}）、
+  \S\ref{sec:three_principles} の構造的機能、
+  および \S\ref{sec:tipa} の TIPA・PSL・ISL の標準機能形式は、機能の水準に属する。
+  作動・停止・低下を述べる対象はこの水準であり、
+  時刻別充足述語の真偽とは区別する。
+  \item[診断量]
+  機能軸、健全度、記述的状態帯、$\mu_{\mathrm{eff},t}$ などの分類C量である。
+\end{description}
+本節は、機能が作動していることから時刻別充足述語が真であることを一般的な帰結として置かず、
+時刻別充足述語が偽であることから特定の機能の停止を一般的な帰結として置かない。
+また、原理ごとの専用の機能を置かない。
+\end{remark}
+
+以下では、
+\S\ref{subsec:blockage} で閉塞と諸概念との関係を整理し、
+\S\ref{subsec:precollapse_states} で崩壊周辺の記述的状態帯を整理する。
+続いて、
+\S\ref{subsec:external_recovery} で外的回復可能性と同一個体性を扱い、
+\S\ref{subsec:collapse_def} で崩壊（\S\ref{sec:acs_def} で定義）を整理する。
+その後、
+\S\ref{subsec:blk_path_set} と
+\S\ref{subsec:col_path_set} で
+閉塞・崩壊を軌道記録上の経路集合として表現し、
+\S\ref{subsec:inflow_paths} で
+内部動学および関係性との記述的接続を整理する。
+最後に、
+\S\ref{subsec:to_section8} で
+個体レベルの定義を組織ACSの議論へ接続する際の境界を示す。
+
+%----------------------------------------------------------------------
+\subsection{閉塞}
+\label{subsec:blockage}
+
+本小節では、ACS個体 $\Sigma_i$ の閉塞（\S\ref{sec:acs_def} 定義~\ref{def:blockage_sec2}）と、
+現在状態の可行性、必要環境充足、
+$E_{\mathrm{req}}$ ロバスト可行性核、
+整形式実現、および崩壊との関係を整理する。
+
+\subsubsection{閉塞の定義の参照}
+
+閉塞は \S\ref{sec:acs_def} の定義~\ref{def:blockage_sec2}（可行行動集合が空であること）による。
+本節はこれを再定義せず、時刻 $t$ の内部状態 $x_t\in X$ と
+実現外部環境状態 $e_t\in E_{\mathrm{ext}}$ に対する
+\[
+  A_{i,t}
+  =
+  A(x_t,e_t)
+  =
+  \bigl\{
+    u\in U
+    \bigm|
+    f(x_t,u,e_t)\in K
+  \bigr\}
+  =\emptyset
+\]
+の形で用いる。
+
+\begin{remark}[閉塞の持続評価関数による書き換え]
+\label{rem:blockage_pi_form}
+可行集合 $K=\{x\in X\mid\Pi(x)\ge0\}$ の定義より、
+\[
+  A_{i,t}=\emptyset
+  \iff
+  \forall u\in U,\;
+  \Pi\!\bigl(f(x_t,u,e_t)\bigr)<0
+\]
+である。
+\end{remark}
+
+\begin{remark}[閉塞定義における環境状態の型]
+\label{rem:blockage_environment_type}
+定義~\ref{def:blockage_sec2} に現れる $e_t$ は、
+7タプルの第三成分 $E$ の要素ではなく、
+外部環境状態空間
+$e_t\in E_{\mathrm{ext}}$
+の要素である。
+
+\[
+  E
+  \subseteq
+  \{0,1\}^{X\times E_{\mathrm{ext}}}
+\]
+は必要環境要因の集合であり、
+環境状態そのものの集合ではない。
+したがって本節でも、
+実現外部環境状態は
+$E_{\mathrm{ext}}$ の要素として扱い、
+必要環境要因集合 $E$ とは型を区別する。
+
+また、状態遷移写像の型は
+\[
+  f:
+  X\times U\times E_{\mathrm{ext}}
+  \longrightarrow X
+\]
+であり、
+閉塞はこの実現外部環境状態 $e_t$ に相対して定まる。
+\end{remark}
+
+\begin{remark}[閉塞は「遷移不能」を意味しない]
+\label{rem:blockage_not_no_transition}
+閉塞
+$A_{i,t}=\emptyset$
+が意味するのは、
+実現外部環境状態 $e_t$ のもとで
+\emph{次状態を $K$ 内に保つ行動が存在しない}ことである。
+
+これは、
+遷移写像 $f(x_t,u,e_t)$ 自体が未定義であること、
+物理的変化が停止すること、
+または次時刻が存在しないことを意味しない。
+
+したがって閉塞は、
+「遷移そのものの不存在」ではなく、
+「一ステップ先の可行性を保持する行動の不存在」
+として理解される。
+\end{remark}
+
+\subsubsection{閉塞と SM・必要環境充足・整形式実現の区別}
+
+\begin{remark}[閉塞と SM の時刻別充足述語は異なる時点条件である]
+\label{rem:blockage_vs_sm}
+\S\ref{sec:three_principles} の SM の時刻別充足述語は、
+時刻 $t$ の現在状態について
+$\Pi(x_t)\ge0 \iff x_t\in K$
+のとき真となる、単一時刻の可行状態条件である。
+
+これに対し閉塞は、
+同じ時刻 $t$ の $(x_t,e_t)$ のもとで
+一ステップ後を $K$ 内に保つ行動が存在するかを問う条件である。
+
+したがって、
+\[
+  \text{SM の時刻別充足述語}
+  =
+  \text{現在状態の可行性}
+\]
+と
+\[
+  \text{閉塞}
+  =
+  \text{実現環境下での一ステップ可行行動の消失}
+\]
+は異なる。
+
+本論文は一般に、
+\[
+  x_t\in K
+  \Longrightarrow
+  A_{i,t}\neq\emptyset
+\]
+も、
+\[
+  A_{i,t}\neq\emptyset
+  \Longrightarrow
+  x_t\in K
+\]
+も仮定しない。
+
+したがって、
+SM の時刻別充足述語の真偽と
+閉塞の成立・不成立を
+同一視しない。
+\end{remark}
+
+\begin{remark}[閉塞と必要環境充足は異なる]
+\label{rem:blockage_vs_required_environment}
+必要環境充足集合は
+\[
+  E_{\mathrm{req}}(x_t)
+  =
+  \bigl\{
+    e\in E_{\mathrm{ext}}
+    \bigm|
+    \forall\eta\in E,\;
+    \eta(x_t,e)=1
+  \bigr\}
+\]
+であり、
+状態 $x_t$ において
+すべての必要環境要因を充足する
+外部環境状態の集合を表す。
+
+一方、閉塞は
+実際に実現した $e_t$ に相対する
+$A(x_t,e_t)=\emptyset$
+という行動可行性条件である。
+
+したがって、
+$e_t\in E_{\mathrm{req}}(x_t)$
+は閉塞の定義条件ではなく、
+また
+\[
+  E_{\mathrm{req}}(x_t)=\emptyset
+\]
+も閉塞の定義と同一ではない。
+
+必要環境充足と閉塞のあいだに
+追加の含意を主張する場合には、
+状態遷移および可行性に関する
+追加条件を要する。
+\end{remark}
+
+閉塞と同じ時刻の整形式実現の関係は、
+\S\ref{sec:acs_def} の備考~\ref{rem:blockage_not_collapse_sec2} に従う。
+
+\subsubsection{閉塞の時刻局所性}
+
+\begin{remark}[閉塞は吸収状態として定義されない]
+\label{rem:blockage_time_dependence}
+$A_{i,t}$ は
+$x_t$ および $e_t$ に相対して定まるため、
+閉塞は時刻 $t$ ごとの条件として判定される。
+
+ある時刻 $t$ で
+$A_{i,t}=\emptyset$
+が成立しても、
+後続時刻 $s>t$ における
+$A_{i,s}$
+の値は、
+その時刻の状態 $x_s$、
+実現外部環境状態 $e_s$、
+および必要に応じて
+後続節で扱う外的作用等に依存して
+別途定まる。
+
+したがって、
+閉塞それ自体を
+吸収状態として定義しない。
+
+特に、本論文は、
+$A_{i,t}=\emptyset$
+から
+\[
+  A_{i,s}=\emptyset
+  \qquad
+  \forall s>t
+\]
+を一般的な帰結として置かない。
+\end{remark}
+
+\subsubsection{閉塞と $E_{\mathrm{req}}$ ロバスト可行性核}
+
+\S\ref{sec:three_principles} では、
+状態依存の必要環境充足集合
+$E_{\mathrm{req}}(x)$ に対して
+一つの共通行動で可行性を保持できる状態を捉えるため、
+$E_{\mathrm{req}}$ ロバスト可行性核
+$\mathrm{Viab}_f(K)$
+を導入した。
+
+ここで重要なのは、
+閉塞
+$A(x_t,e_t)=\emptyset$
+が\emph{実現した一つの環境状態 $e_t$}
+に相対するのに対し、
+$\mathrm{Viab}_f(K)$ は
+\emph{$E_{\mathrm{req}}(x)$ のすべての環境状態}
+に対するロバスト不変性を要求する点である。
+
+したがって、
+両者を接続するには、
+少なくとも実現環境が
+必要環境充足集合に属するという条件が必要となる。
+
+\begin{proposition}[閉塞と $E_{\mathrm{req}}$ ロバスト可行性核の関係]
+\label{prop:blockage_viability_kernel}
+時刻 $t\in\mathbb{N}_0$ において
+\[
+  e_t\in E_{\mathrm{req}}(x_t)
+\]
+かつ
+\[
+  A_{i,t}=\emptyset
+\]
+が成立するならば、
+\[
+  x_t\notin\mathrm{Viab}_f(K)
+\]
+が成立する。
+\end{proposition}
+
+\begin{proof}
+背理法による。
+
+\[
+  e_t\in E_{\mathrm{req}}(x_t),
+  \qquad
+  A_{i,t}=\emptyset
+\]
+を仮定し、さらに
+\[
+  x_t\in\mathrm{Viab}_f(K)
+\]
+と仮定する。
+
+定義~\ref{def:viab_core} より、
+\[
+  \mathrm{Viab}_f(K)
+  =
+  \bigcup_{K'\in\mathfrak{K}} K',
+\]
+ここで $\mathfrak{K}$ は
+$E_{\mathrm{req}}$ 不変な
+$K_{\mathrm{req}}$ の部分集合の族である。
+
+したがって
+$x_t\in\mathrm{Viab}_f(K)$ ならば、
+ある
+\[
+  K'\in\mathfrak{K}
+\]
+が存在して
+\[
+  x_t\in K'
+\]
+である。
+
+$K'$ の $E_{\mathrm{req}}$ 不変性より、
+ある一つの行動
+\[
+  u^\star\in U
+\]
+が存在して、
+\[
+  \forall e\in E_{\mathrm{req}}(x_t),\qquad
+  f(x_t,u^\star,e)\in K'
+\]
+が成立する。
+
+仮定より
+\[
+  e_t\in E_{\mathrm{req}}(x_t)
+\]
+であるから、
+特に
+\[
+  f(x_t,u^\star,e_t)\in K'.
+\]
+
+また、
+定義~\ref{def:viab_core} より
+\[
+  K'
+  \subseteq
+  K_{\mathrm{req}}
+  \subseteq
+  K
+\]
+であるため、
+\[
+  f(x_t,u^\star,e_t)\in K.
+\]
+
+したがって、
+定義~\ref{def:at} より
+\[
+  u^\star\in A_{i,t},
+\]
+ゆえに
+\[
+  A_{i,t}\neq\emptyset
+\]
+となる。
+
+これは
+\[
+  A_{i,t}=\emptyset
+\]
+に矛盾する。
+
+したがって
+\[
+  x_t\notin\mathrm{Viab}_f(K).
+\]
+\end{proof}
+
+\begin{remark}[実現環境が $E_{\mathrm{req}}(x_t)$ 外にある場合]
+\label{rem:blockage_viab_requires_ereq}
+命題~\ref{prop:blockage_viability_kernel} における
+$e_t\in E_{\mathrm{req}}(x_t)$
+は本質的な前件である。
+
+実現環境が
+$e_t\notin E_{\mathrm{req}}(x_t)$
+である場合、
+閉塞
+$A(x_t,e_t)=\emptyset$
+が成立しても、
+それだけから
+$x_t\notin\mathrm{Viab}_f(K)$
+を一般には導けない。
+
+なぜなら、
+$\mathrm{Viab}_f(K)$ の不変性条件が量化するのは
+$E_{\mathrm{req}}(x_t)$ 内の外部環境状態であり、
+その外部にある実現環境 $e_t$ に対する
+一ステップ可行性は
+ロバスト可行性核の定義条件に含まれないからである。
+例えば $X=\{0,1\}$、$\Pi(x)=x-1$（したがって $K=\{1\}$）、$U=\{u\}$、
+$E_{\mathrm{ext}}=\{e^1,e^2\}$、$E=\{\eta\}$、$\eta(x,e)=1\iff e=e^1$ とし、
+$f(1,u,e^1)=1$、それ以外の引数では $f=0$ とする。
+このとき $\{1\}$ は $E_{\mathrm{req}}$ 不変であるから $1\in\mathrm{Viab}_f(K)$ であるが、
+$x_t=1$、$e_t=e^2$ では $A_{i,t}=\emptyset$ である（型の水準の例）。
+
+したがって、
+\[
+  \text{閉塞}
+  +
+  \text{実現必要環境充足}
+  \Longrightarrow
+  \text{ロバスト可行性核外}
+\]
+という条件付き含意としてのみ用いる。
+\end{remark}
+
+\begin{remark}[逆方向の非採用]
+\label{rem:viability_kernel_not_blockage}
+命題~\ref{prop:blockage_viability_kernel} の逆向き、
+すなわち
+\[
+  x_t\notin\mathrm{Viab}_f(K)
+  \Longrightarrow
+  A_{i,t}=\emptyset
+\]
+は、
+Phase~1 の一般的主張として採用しない。
+
+$x_t\notin\mathrm{Viab}_f(K)$ は、
+$E_{\mathrm{req}}(x)$ に対する
+ロバスト不変性を満たす状態集合の外部にあることを意味する。
+
+しかし本論文は、
+そのことから
+実現環境 $e_t$ のもとで
+一ステップだけ $K$ 内へ遷移できる行動が
+存在しないことを一般的な帰結として置かない。
+
+したがって、
+ロバスト可行性核の外部にある状態でも、
+$A_{i,t}\neq\emptyset$
+でありうる。
+
+本論文は、
+核外性それ自体を
+「閉塞へ向かうこと」
+または
+「閉塞経路集合への流入」
+と同一視しない。
+そのような動学的接続を述べるには、
+追加の条件を要する。
+\end{remark}
+
+\subsubsection{閉塞と崩壊の区別}
+
+閉塞と崩壊の区別は、
+\S\ref{sec:acs_def} の備考~\ref{rem:blockage_not_collapse_sec2} に従う。
+閉塞から後続時刻に可行行動が存在する状態へ移行しうることは、
+備考~\ref{rem:blockage_time_dependence} に従い、
+その外的回復可能性は \S\ref{subsec:external_recovery} で扱う。
+
+\begin{remark}[閉塞・SM・整形式実現・崩壊の記述水準]
+\label{rem:blockage_fourway_distinction}
+本節では、少なくとも次の四条件を区別する。
+
+\[
+  \Pi(x_t)\ge0
+  \qquad
+  \text{（SM の時刻別充足述語／現在状態の可行性）},
+\]
+\[
+  A_{i,t}=\emptyset
+  \qquad
+  \text{（閉塞／一ステップ可行行動の消失）},
+\]
+\[
+  \mathrm{WF}_{i,t}=0
+  \qquad
+  \text{（整形式実現の不成立）},
+\]
+\[
+  \mathrm{Col}_{i,t}=1
+  \qquad
+  \text{（崩壊）}.
+\]
+
+これらは異なる形式対象に関する条件であり、
+本論文は追加仮定なしに
+相互の同値性を置かない。
+
+とりわけ、本論文は、
+閉塞 $A_{i,t}=\emptyset$ から
+$\mathrm{WF}_{i,t}=0$ および $\mathrm{Col}_{i,t}=1$ を
+いずれも一般的な帰結として置かない。
+
+閉塞と崩壊の詳細な区別、
+および崩壊側から見た非回復性（\S\ref{sec:acs_def} 定義~\ref{def:collapse} の (SC-2)）の読みは
+\S\ref{subsec:collapse_def}
+に委ねる。
+\end{remark}
+
+\begin{remark}[「閉塞」という用語の使用範囲]
+\label{rem:blockage_terminology}
+本論文では、
+$A_{i,t}=\emptyset$
+が成立する状態だけを
+「閉塞」と呼ぶ。
+
+したがって、
+SM の時刻別充足述語が偽であること、
+必要環境の非充足、
+ロバスト可行性核の外部化、
+整形式実現の不成立、
+全機能停止、
+または崩壊を、
+それだけを理由として
+「閉塞」と呼ばない。
+
+この用語規約により、
+可行行動の消失と、
+それ以外の失敗関連状態との
+概念的混同を避ける。
+閉塞を維持の局面と回復の局面に分けて読むこと、
+閉塞が一段遷移仕様に相対すること、
+および日常語の行き詰まりとの関係は、
+\S\ref{sec:acs_def} の備考~\ref{rem:blockage_scope_sec2} による。
+\end{remark}
+
+\begin{remark}[閉塞の定義に含まれない事項]
+\label{rem:blockage_in_precollapse}
+閉塞から崩壊への決定論的遷移、
+閉塞の持続、
+閉塞からの回復、
+または閉塞経路集合
+$\mathfrak{P}_{\mathrm{blk}}$
+への動学的流入条件は、
+定義~\ref{def:blockage_sec2} に含まれず、
+本論文はそれらを同定義だけからの一般的な帰結として置かない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{崩壊周辺の記述的状態帯}
+\label{subsec:precollapse_states}
+
+
+本小節では、
+閉塞と崩壊のあいだに存在しうる
+機能低下・作動停止等を記述的に整理するため、
+補助的な状態帯
+\[
+  \mathsf{Z}_0,\ldots,\mathsf{Z}_5
+\]
+を導入する。
+
+ここで重要なのは、
+これらの状態帯が
+Phase~1 における正式な状態空間 $X$ の分割ではなく、
+閉塞・機能低下・崩壊を相互に混同しないための
+\emph{分類Cの記述用ラベル}であるという点である。
+
+本小節では、
+$\mathsf{Z}_0$
+を通常作動の\emph{基準帯}、
+\[
+  \mathsf{Z}_1,\ldots,\mathsf{Z}_4
+\]
+を\emph{記述的崩壊前状態帯}、
+$\mathsf{Z}_5$
+を崩壊状態に対応する終端側の記述帯として扱う。
+
+したがって、
+本節で「記述的崩壊前状態帯」と呼ぶ範囲は
+$\mathsf{Z}_1,\ldots,\mathsf{Z}_4$
+とし、
+$\mathsf{Z}_0$ は含めない。
+
+\subsubsection{機能作動・健全度量との関係}
+
+\begin{remark}[機能作動記述の参照]
+\label{rem:functional_axis_reference}
+本小節でいう
+「部分的機能不全」および
+「全機能停止」は、
+ACS個体 $\Sigma_i$ の
+TIPA、PSL、ISL によって表現される
+標準機能形式の作動状態に関する
+\emph{記述的な呼称}である。
+
+これらの機構・基盤・実装部位の正式な構造と
+同一時刻における作動記述は
+\S\ref{sec:tipa}
+に委ねる。
+
+本小節は、
+本小節独自の新しい機能軸、
+作動指標、
+閾値、
+または全機能停止判定写像を導入しない。
+
+したがって、
+「全機能停止」という呼称は、
+TIPA、PSL、ISL に関係する
+標準機能が総体として
+機能的に作動していないと記述される状態を指すが、
+その判定の具体的な操作化は
+\S\ref{sec:tipa}
+の機能軸（\S\ref{subsec:functional_axis}）に
+従う。
+
+また、
+この記述は
+特定の生物器官、
+神経回路、
+ハードウェアモジュール、
+または特定アルゴリズムが
+一律に停止していることを要求するものではない。
+\end{remark}
+
+\begin{remark}[健全度量と状態帯を同一視しない]
+\label{rem:health_not_zone_identity}
+\S\ref{sec:extended_dynamics} で扱う
+PSL・ISL 関連の健全度量
+\[
+  h_{\mathrm{psl},t},
+  \qquad
+  h_{\mathrm{mem},t},
+  \qquad
+  h_{\mathrm{sens},t},
+  \qquad
+  h_{\mathrm{eff},t}
+\]
+は、
+時刻間変化を記述・診断・比較するための
+分類C量である。
+
+これらの健全度成分 $h_{q,t}$ が
+所定の閾値以下であることと、
+特定の状態帯 $\mathsf{Z}_j$ への分類とのあいだに、
+Phase~1 で普遍的な同値条件を置かない。
+
+健全度の値だけから閉塞・崩壊を一般的な帰結として置かないことは、
+\S\ref{sec:extended_dynamics} の備考~\ref{rem:s5_health_noncollapse} に従う。
+
+逆に、
+閉塞または崩壊が成立したことだけから
+特定の健全度成分が
+必ず $0$ になるとも仮定しない。
+
+したがって、
+健全度量と状態帯は関連しうるが、
+別個の記述対象である。
+\end{remark}
+
+\subsubsection{記述的状態帯}
+
+\begin{remark}[閉塞・崩壊周辺の記述的状態帯]
+\label{rem:descriptive_zones}
+閉塞、機能低下、および崩壊の位置づけを
+記述的に区別するため、
+次の補助ラベルを用いる：
+\[
+  \mathsf{Z}_0,\;
+  \mathsf{Z}_1,\;
+  \mathsf{Z}_2,\;
+  \mathsf{Z}_3,\;
+  \mathsf{Z}_4,\;
+  \mathsf{Z}_5.
+\]
+
+これらは
+分類Cの記述用ラベルであり、
+ACS自身が
+$\mathsf{Z}_k$ という内部変数を
+保持または計算することを要求しない。
+
+また、
+$\mathsf{Z}_k$ の添字は
+時間順序、
+因果順序、
+重症度の厳密な尺度、
+距離、
+または遷移確率を表さない。
+
+\medskip
+\noindent
+\textbf{(a) $\mathsf{Z}_0$：通常作動・基準帯。}
+
+$\mathsf{Z}_0$ は、
+閉塞・崩壊周辺の状態を比較するための
+通常作動側の参照帯である。
+
+典型的には、
+主要な機能作動が維持され、
+閉塞
+$A_{i,t}=\emptyset$
+や顕著な機能低下が
+前景化していない状態を表す。
+
+ただし、
+$\mathsf{Z}_0$ に属するための
+普遍的な健全度閾値、
+T-STAB 閾値、
+または三原理の時刻別充足述語に関する閾値を
+本小節では定めない。
+
+$\mathsf{Z}_0$ は
+障害状態を意味しないため、
+本論文では
+\emph{崩壊前状態帯には含めない}。
+
+\medskip
+\noindent
+\textbf{(b) $\mathsf{Z}_1$：軽度障害顕在化帯。}
+
+$\mathsf{Z}_1$ は、
+通常作動との差異として、
+軽度の機能低下、
+慢性的負荷、
+維持コスト増大、
+または健全度低下に相当する兆候が
+記述的に顕在化している状態を表す。
+
+この呼称は、
+特定の健全度量が
+所定の閾値を下回ったことを
+普遍的に意味しない。
+
+また、本論文は、
+$\mathsf{Z}_1$ であることから
+SM・EU・FR のいずれかの時刻別充足述語が偽であること、
+閉塞、
+整形式実現の不成立、
+または崩壊を
+一般的な帰結として置かない。
+
+\medskip
+\noindent
+\textbf{(c) $\mathsf{Z}_2$：部分的機能不全帯。}
+
+$\mathsf{Z}_2$ は、
+TIPA、PSL、ISL によって表現される
+標準機能の一部について、
+機能的な低下または停止が
+通常作動と区別される程度に
+記述される状態を表す。
+
+ただし、
+部分的機能不全が存在しても、
+同一ACS個体としての構造的自己が
+直ちに失われるとはしない。
+
+また本論文は、
+$\mathsf{Z}_2$ であることだけから
+$A_{i,t}=\emptyset$
+または
+$\mathrm{WF}_{i,t}=0$
+または
+$\mathrm{Col}_{i,t}=1$
+を一般的な帰結として置かない。
+
+\medskip
+\noindent
+\textbf{(d) $\mathsf{Z}_3$：全機能停止帯。}
+
+$\mathsf{Z}_3$ は、
+\S\ref{sec:tipa} において
+標準機能形式として記述される
+TIPA、PSL、ISL に関係する作動機能が、
+総体として機能的に停止していると
+記述される状態を表す。
+
+本小節では、
+この状態を独立した
+Phase~1 の形式的 Definition として
+新設しない。
+
+また、
+全機能停止は
+閉塞と同一ではない。
+
+すなわち、
+全機能停止帯 $\mathsf{Z}_3$ と記述されることと、
+$A_{i,t}=\emptyset$ であることは
+同義ではない。
+
+さらに、本論文は、
+全機能停止だけから
+整形式実現の不成立または崩壊を
+一般的な帰結として置かない。
+
+\medskip
+\noindent
+\textbf{(e) $\mathsf{Z}_4$：閉塞帯。}
+
+$\mathsf{Z}_4$ は、
+定義~\ref{def:blockage_sec2} の
+閉塞
+$A_{i,t}=\emptyset$
+が成立する状態に対応する。
+
+$\mathsf{Z}_4$ は、
+$\mathsf{Z}$ 帯のうち、
+本小節以前に
+厳密な形式条件が確定している状態帯である。
+
+ただし\S\ref{subsec:blockage}で示したとおり、
+閉塞は
+SM の時刻別充足述語が偽であること、
+必要環境非充足、
+ロバスト可行性核外、
+整形式実現の不成立、
+または崩壊と同一ではない。
+$\mathsf{Z}_4$ に記述される時刻は、
+\S\ref{sec:three_principles} の閉塞の二分
+（命題~\ref{prop:blockage_dichotomy}）によって
+(B1) と (B2) に記述的に分けうる。
+この二分は診断上の分割であり、原因の分類ではない（備考~\ref{rem:blockage_dichotomy}）。
+
+\medskip
+\noindent
+\textbf{(f) $\mathsf{Z}_5$：崩壊帯。}
+
+$\mathsf{Z}_5$ は、
+\S\ref{sec:acs_def} 定義~\ref{def:collapse} の
+崩壊指標
+$\mathrm{Col}_{i,t}=1$
+が成立する終端側の状態に対応する。
+
+崩壊の正式な定義と吸収性は
+\S\ref{sec:acs_def}（定義~\ref{def:collapse}、命題~\ref{prop:collapse_basic}）で与えられ、
+本枠組みにおける非回復性の射程は
+\S\ref{subsec:collapse_def}
+で扱う。
+
+したがって本小節では、
+$\mathsf{Z}_5$ の定義条件を
+先取りして追加しない。
+\end{remark}
+
+\subsubsection{状態帯の論理的関係}
+
+\begin{remark}[$\mathsf{Z}$ 帯は状態空間分割ではない]
+\label{rem:Z_not_partition}
+$\mathsf{Z}_0,\ldots,\mathsf{Z}_5$ は、
+状態空間 $X$ の部分集合族として
+形式的に定義されたものではない。
+
+したがって、
+本論文は、これらのラベルに基づく分類が
+$X$ の被覆や排反な分割を与えるとは仮定しない。
+
+特に、
+$\mathsf{Z}_1$、
+$\mathsf{Z}_2$、
+$\mathsf{Z}_3$ は
+記述的な機能状態ラベルであるため、
+閉塞
+$\mathsf{Z}_4$
+と同一時刻に重なって記述される場合を
+排除しない。
+
+一方、
+$\mathsf{Z}_5$ は
+\S\ref{sec:acs_def} 定義~\ref{def:collapse} の
+崩壊終端に対応するため、
+通常ACS状態量との同時的な扱いは
+同定義の帰属の規定と軌道記録の規約（\S\ref{subsec:blk_path_set}）に従う。
+
+したがって、
+$\mathsf{Z}$ 帯は
+正式な状態空間分割ではなく、
+異なる失敗関連現象を
+比較可能に記述するための
+補助的整理である。
+\end{remark}
+
+\begin{remark}[$\mathsf{Z}$ 帯は全順序ではない]
+\label{rem:Z_not_total_order}
+添字
+$0,1,2,3,4,5$
+は、
+記述上の整理番号であり、
+厳密な重症度尺度を定義しない。
+
+したがって、
+状態帯ラベルの添字に沿った重症度の全順序を置かず、
+$\mathsf{Z}_k$ と記述される状態から
+$\mathsf{Z}_{k+1}$ と記述される状態への
+決定論的遷移も仮定しない。
+
+例えば、
+部分的機能不全
+$\mathsf{Z}_2$
+から閉塞
+$\mathsf{Z}_4$
+へ移ること、
+全機能停止
+$\mathsf{Z}_3$
+から通常作動側へ回復すること、
+あるいは
+閉塞や全機能停止を事前に経由せず
+崩壊へ到達することを、
+状態帯の番号規約だけでは
+肯定も否定もしない。
+
+この点は、
+後続の経路集合
+$\mathfrak{P}_{\mathrm{blk}}$、
+$\mathfrak{P}_{\mathrm{col}}$
+の定義とは別問題である。
+\end{remark}
+
+\begin{remark}[全機能停止と閉塞の非同一性]
+\label{rem:full_stop_not_blockage}
+全機能停止
+$\mathsf{Z}_3$
+と閉塞
+$\mathsf{Z}_4$
+は、
+異なる記述対象に関する条件である。
+
+全機能停止は、
+TIPA・PSL・ISL に関係する
+機能作動の停止についての
+記述的状態である。
+
+これに対し閉塞は、
+実現外部環境状態 $e_t$ のもとで
+$A_{i,t}=\emptyset$
+が成立するという
+厳密な行動可行性条件である。
+
+したがって本論文は、
+$\mathsf{Z}_3$ と記述されることから
+$\mathsf{Z}_4$ と記述されることを、
+またその逆を、一般的な帰結として置かない。
+
+両者が同時に記述される場合はありうるが、
+その同時成立も
+本小節の定義からは要求されない。
+\end{remark}
+
+\subsubsection{三原理の時刻別充足述語・整形式実現・崩壊との区別}
+
+\begin{remark}[状態帯と三原理の時刻別充足述語が偽であることを同一視しない]
+\label{rem:zones_not_principle_failure}
+$\mathsf{Z}_1$、
+$\mathsf{Z}_2$、
+$\mathsf{Z}_3$
+は、
+機能の水準における低下または作動停止に関する
+記述的ラベルである（備考~\ref{rem:s7_principle_levels}）。
+
+これらのいずれかが記述されることから、
+SM・EU・FR のいずれかの時刻別充足述語が
+偽であるとはしない。
+
+逆に、
+SM・EU・FR のいずれかの時刻別充足述語が偽であることから、
+特定の
+$\mathsf{Z}_1$、
+$\mathsf{Z}_2$、
+$\mathsf{Z}_3$
+へ分類されるとも仮定しない。
+
+また、
+閉塞
+$\mathsf{Z}_4$
+についても、
+\S\ref{subsec:blockage}で明示したとおり、
+SM の時刻別充足述語が偽であることとは同一ではない。
+
+したがって、
+\[
+  \text{三原理の時刻別充足述語の真偽}
+  \neq
+  \text{$\mathsf{Z}$帯の記述}
+\]
+である。
+\end{remark}
+
+\begin{remark}[崩壊前状態帯と整形式実現の不成立を同一視しない]
+\label{rem:precollapse_not_wf_failure}
+本論文は、$\mathsf{Z}_1$ から
+$\mathsf{Z}_4$ のいずれかに
+記述されることだけから、
+$\mathrm{WF}_{i,t}=0$
+を一般的な帰結として置かない。
+
+特に、
+部分的機能不全、
+全機能停止、
+または閉塞が存在しても、
+同一ACS個体としての構造的自己の
+形式的実現がその時刻に
+失われたとは限らない。
+
+逆に本論文は、
+$\mathrm{WF}_{i,t}=0$
+であることから、
+本小節のどの記述帯へ
+分類されるかを一般的な帰結として置かない。
+
+整形式実現と崩壊の正式な関係は、
+後続の
+\S\ref{subsec:collapse_def}
+で射程を限定して扱う。
+\end{remark}
+
+\subsubsection{「崩壊前状態帯」という呼称}
+
+\begin{remark}[崩壊前状態帯という呼称の用法]
+\label{rem:precollapse_terminology}
+本論文では、
+\[
+  \mathsf{Z}_1,\;
+  \mathsf{Z}_2,\;
+  \mathsf{Z}_3,\;
+  \mathsf{Z}_4
+\]
+を総称して、
+\emph{記述的崩壊前状態帯}
+と呼ぶ。
+以下では略して
+\emph{崩壊前状態帯}
+ともいう。
+帯を付けない「崩壊前状態」は、
+特定の状態帯への分類を意図しない
+一般的な説明語として用いる。
+
+この呼称に
+$\mathsf{Z}_0$
+は含めない。
+$\mathsf{Z}_0$ は
+通常作動側の比較基準であり、
+障害または崩壊前状態を意味しない。
+
+また、
+「崩壊前」という語は、
+これらの状態が
+時間的・因果的に
+崩壊の前駆段階として
+必ず出現することを意味しない。
+
+すなわち、本論文は、
+$\mathsf{Z}_j$（$j=1,2,3,4$）
+にあることから
+\[
+  \exists s>t:
+  \mathrm{Col}_{i,s}=1
+\]
+を一般的な帰結として置かない。
+
+同様に、
+崩壊が成立するために
+$\mathsf{Z}_1$ から
+$\mathsf{Z}_4$ のいずれかを
+事前に経由することも
+必要条件とはしない。
+
+したがって、
+この呼称は
+\[
+  \text{崩壊とは区別されるが、
+  崩壊周辺の障害・閉塞状態を記述する帯}
+\]
+という分類上の意味に限定される。
+\end{remark}
+
+\begin{remark}[状態帯と回復・崩壊・経路集合の関係]
+\label{rem:zones_no_path_implication}
+本論文は、特定の
+$\mathsf{Z}_1$ から
+$\mathsf{Z}_4$
+に記述されることだけから、
+外的回復可能性、
+崩壊到達経路集合への帰属、
+または崩壊への到達を
+一般的な帰結として置かない。
+
+閉塞経路集合への帰属については、
+$\mathsf{Z}_4$ に記述される時刻が
+軌道記録 $\sigma$（定義~\ref{def:trajectory_space}）の
+ACS記録有効時刻域 $I_{\mathrm{ACS}}(\sigma)$（定義~\ref{def:acs_valid_time_domain}）に属するとき、
+定義~\ref{def:blk_path_set} により
+$\sigma\in\mathfrak{P}_{\mathrm{blk}}$ である。
+$\mathsf{Z}_1$ から $\mathsf{Z}_3$ に記述されることだけからは、
+この帰属を一般的な帰結として置かない。
+
+外的回復可能性、閉塞経路集合および崩壊到達経路集合の正式な条件は、
+それぞれ
+\S\ref{subsec:external_recovery}、
+\S\ref{subsec:blk_path_set}、
+\S\ref{subsec:col_path_set}
+で定める。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{外的回復可能性と同一個体性}
+\label{subsec:external_recovery}
+
+本小節では、
+$\mathsf{Z}_1$ から $\mathsf{Z}_4$ に記述される状態について、
+ACS個体 $\Sigma_i$ の外部から与えられる作用により、
+\emph{同一個体としての継続が回復可能であるか}
+を記述するための補助的形式を導入する。
+
+ここで扱う外的回復可能性は、
+ACS内部の行動 $u\in U$ による自律的応答とは区別される。
+また、
+本小節は外的作用そのものの物理過程、
+介入後の詳細な状態遷移、
+同一個体性を有限観測から判定する一般アルゴリズム、
+または社会的介入の一般理論を構成するものではない。
+
+本小節の目的は、
+\S\ref{subsec:collapse_def} で崩壊を本節の諸概念と関係づけるのに先立って、
+\[
+  \text{外的作用によって同一個体として回復しうる状態}
+\]
+と
+\[
+  \text{同一個体としての回復が本枠組み内で成立しない終端状態}
+\]
+を混同しないための記述上の境界を与えることである。
+
+\subsubsection{許容外的作用集合}
+
+\begin{definition}[許容外的作用集合（分類C）]
+\label{def:admissible_external_action}
+ACS個体 $\Sigma_i$ に対して、
+Phase~1 の本節で
+外的回復可能性の評価対象として考慮する
+外的作用の集合を
+\[
+  \Upsilon_{\mathrm{adm},i}
+\]
+と表し、
+これを
+\emph{許容外的作用集合}
+と呼ぶ。
+
+各
+\[
+  \upsilon\in\Upsilon_{\mathrm{adm},i}
+\]
+は、
+$\Sigma_i$ の外部から与えられる作用を表す。
+
+$\Upsilon_{\mathrm{adm},i}$ は、
+物理的・生物学的・社会的・工学的に
+可能なすべての外的作用の集合ではなく、
+本論文の Phase~1 において
+回復可能性を記述するために
+考慮対象へ含めた作用の集合である。
+
+本節では、
+$\Upsilon_{\mathrm{adm},i}$ の
+位相構造、
+測度構造、
+代数構造、
+作用時間、
+強度、
+複合作用規則、
+または具体的実装を
+一般形式としては定めない。
+個々の回復可能性の判定に用いる $\Upsilon_{\mathrm{adm},i}$ は、
+当該判定に先立って固定し、判定対象の経過または結果に応じて事後的に変更しない。
+$\Upsilon_{\mathrm{adm},i}$ は、\S\ref{sec:tipa} の M1-b の識別状態空間 $\Xi$ とは
+記号・型・役割を異にする。
+\end{definition}
+
+\begin{remark}[内部行動 $u$ と外的作用 $\upsilon$ の役割の区別]
+\label{rem:external_action_type}
+許容外的作用
+\[
+  \upsilon\in\Upsilon_{\mathrm{adm},i}
+\]
+と、
+ACS個体 $\Sigma_i$ 自身が
+行動空間 $U$ から選択する
+$u\in U$
+とは、
+本節では異なる役割の変数として区別する。
+両集合の非同一性を一般条件としては仮定せず、
+$\upsilon$ と $u$ を暗黙に同一視しない。
+
+特に、
+外的作用 $\upsilon$ を
+7タプルの遷移写像
+$f(x_t,u,e_t)$
+の第三引数または行動引数へ
+暗黙に代入しない。
+
+Phase~1 では、
+$\upsilon$ が通常の
+$f$ または $\mathrm{Update}$
+へどのように作用するかを表す
+普遍的な外的介入作用素は導入しない。
+
+実際に起きた救助や介入は、許容外的作用 $\upsilon$ としてではなく、
+実現した外部環境状態 $e_t$（背景成分または行動応答成分）を通じて
+$f$ に入る状態変化として、軌道の上で記述する。
+実現した軌道の上で同一個体としての再成立が判定される場合の扱いは、
+\S\ref{sec:acs_def} の命題~\ref{prop:realized_reestablishment} による。
+許容外的作用集合は、回復可能性の判定にだけ用いる。
+\end{remark}
+
+\begin{remark}[$\Upsilon_{\mathrm{adm}}$ はモデル境界である]
+\label{rem:Upsilon_adm_scope}
+$\Upsilon_{\mathrm{adm},i}$ は、
+「宇宙に存在しうるすべての回復手段」
+を意味しない。
+
+したがって、
+ある状態について
+\[
+  \forall\upsilon\in\Upsilon_{\mathrm{adm},i},
+  \quad
+  \text{回復が成立しない}
+\]
+と記述されたとしても、
+それだけから
+考えうるあらゆる外的作用に対する
+\emph{絶対的な物理的不可能性}
+を導いてはならない。
+
+$\Upsilon_{\mathrm{adm},i}$ は、
+Phase~1 の本枠組みで
+回復可能性を論じるための
+\emph{モデル上の許容作用域}
+を定める。
+
+この限定は、
+\S\ref{subsec:collapse_def}
+で崩壊の非回復性を読むときにも維持する。
+\end{remark}
+
+\begin{remark}[$\Upsilon_{\mathrm{adm}}$ の空集合可能性]
+\label{rem:Upsilon_adm_empty}
+本論文は一般に、
+\[
+  \Upsilon_{\mathrm{adm},i}\neq\emptyset
+\]
+を仮定しない。
+
+したがって、
+対象系または記述範囲によっては
+\[
+  \Upsilon_{\mathrm{adm},i}=\emptyset
+\]
+でありうる。
+
+ただしその場合、
+「本枠組み内で外的回復作用が指定されていない」ことは表しても、
+本論文は、それだけから
+$\mathrm{Col}_{i,t}=1$
+を一般的な帰結として置かない。
+
+すなわち、
+許容外的作用集合の空性と
+崩壊を同一視しない。
+\end{remark}
+
+\subsubsection{同一個体性の保存}
+
+\begin{remark}[回復と別個体生成の区別]
+\label{rem:same_identity}
+本小節でいう
+\emph{回復}は、
+外的作用後も
+同一ACS個体 $\Sigma_i$ が
+その後続の主体として継続する場合に限る。
+
+したがって、
+外的作用によって
+ACSとして作動可能な構造が形成されたとしても、
+その主体が
+元の $\Sigma_i$ ではなく
+別個の ACS個体
+$\Sigma_{i'}$（$i'\neq i$）
+として扱われるべき場合、
+それを
+$\Sigma_i$ の回復とは数えない。
+
+本論文の構造的自己
+$S_{\mathrm{struct}}(\Sigma_i)$
+は、
+同一ACS個体としての形式的構造を
+識別するための基準を与える。
+
+ただしPhase~1では、
+同一個体性を
+単一の距離、
+単一の連続量、
+単一の記憶内容、
+または単一の物理部位の保存へ
+還元しない。
+\end{remark}
+
+\begin{remark}[同一個体性の判定を過剰形式化しない]
+\label{rem:identity_scope}
+同一個体性の保存には、
+対象実装に応じて、
+構造的自己、
+内部モデル、
+Update 構造、
+自己--環境境界、
+記憶の連続性その他が
+関係しうる。
+
+しかし本論文は、
+それらのすべてを
+同一個体性の普遍的必要十分条件として
+Phase~1 内で固定しない。
+
+したがって、
+本小節は
+「どの程度の部品交換まで同一個体か」、
+「内部モデルの何パーセントが保持されれば同一か」、
+「記憶の連続性がどの程度必要か」
+といった実装依存の同一性判定問題へ
+普遍的な閾値を与えない。
+
+Phase~1 で必要なのは、
+回復概念が
+\[
+  \text{同一個体の再継続}
+\]
+と
+\[
+  \text{別個体の生成}
+\]
+を概念上区別することである。
+\end{remark}
+
+\subsubsection{外的回復述語}
+
+\begin{definition}[外的回復述語と外的回復可能性（分類C）]
+\label{def:external_recoverability}
+時刻
+\[
+  t\in\mathbb{N}_0
+\]
+において、
+ACS個体 $\Sigma_i$ が
+記述的崩壊前状態帯
+\[
+  \mathsf{Z}_1,\ldots,\mathsf{Z}_4
+\]
+のいずれかに記述される状態にあるとする。
+
+このとき、
+許容外的作用集合
+$\Upsilon_{\mathrm{adm},i}$ 上の
+決定論的二値補助写像
+\[
+  \mathrm{Recover}_{i,t}:
+  \Upsilon_{\mathrm{adm},i}
+  \longrightarrow
+  \{0,1\}
+\]
+を
+\emph{外的回復述語}
+と呼ぶ。
+
+各
+\[
+  \upsilon\in\Upsilon_{\mathrm{adm},i}
+\]
+について
+\[
+  \mathrm{Recover}_{i,t}(\upsilon)=1
+\]
+であるとは、
+対象系ごとに当該判定に先立って固定された
+Phase~1 の回復判定規則のもとで、
+外的作用 $\upsilon$ を考慮したときに、
+別個体の生成ではなく、
+同一個体 $\Sigma_i$ としての
+組織・結合関係（\S\ref{sec:acs_def} の定義~\ref{def:collapse} の (SC-1)）を保存または再成立させつつ、
+通常ACSとしての後続作動へ
+復帰しうると判定されることを表す。
+
+一方、
+\[
+  \mathrm{Recover}_{i,t}(\upsilon)=0
+\]
+は、
+その外的作用 $\upsilon$ について
+上記の意味での回復可能性が
+本枠組み内で成立すると
+判定されないことを表す。
+
+この回復判定規則は、
+同一個体と別個体を区別する判定基準を含み、
+判定対象の経過または結果に応じて
+事後的に変更しない。
+その同一個体の判定基準は、
+\S\ref{sec:acs_def} の定義~\ref{def:collapse} および定義~\ref{def:functional_termination} の
+判定規則に含まれる基準と同じものとする。
+また、$\upsilon$ を考慮して判定する継続は、
+(SC-2)・(FT-2) が量化する継続のうち $\upsilon$ を加えたものとし、
+後続作動への復帰の判定は、(FT-1) の基礎的な機能のいずれかの
+機能的活動が同一個体として再び成立することを含むものとする。
+
+ACS個体 $\Sigma_i$ が
+時刻 $t$ において
+\emph{外的回復可能}であるとは、
+\[
+  \exists\upsilon\in\Upsilon_{\mathrm{adm},i}
+  \quad\text{s.t.}\quad
+  \mathrm{Recover}_{i,t}(\upsilon)=1
+\]
+が成立することをいう。
+\end{definition}
+
+\begin{remark}[外的回復述語は外的介入動学そのものではない]
+\label{rem:recover_not_intervention_dynamics}
+定義~\ref{def:external_recoverability} の
+$\mathrm{Recover}_{i,t}$ は、
+外的作用後の物理過程を
+明示的に生成する
+状態遷移写像ではない。
+
+本論文は、
+$(x_t,\upsilon) \longmapsto x'$
+のような
+普遍的な外的介入遷移写像を
+Phase~1 では導入しない。
+
+したがって、
+$\mathrm{Recover}_{i,t}(\upsilon)$ は
+回復作用の力学そのものではなく、
+対象系ごとに定められた
+外的回復可能性を記述するための
+分類Cの補助述語である。
+
+介入後の詳細な状態軌道、
+介入強度、
+複数作用の合成、
+介入コスト、
+および介入の到達可能性は、
+本小節の共通形式には含めない。
+\end{remark}
+
+\begin{remark}[$\mathrm{Recover}=1$ は実際の回復発生を意味しない]
+\label{rem:recoverability_not_actual_recovery}
+\[
+  \mathrm{Recover}_{i,t}(\upsilon)=1
+\]
+は、
+作用 $\upsilon$ のもとで
+同一個体としての回復が
+\emph{可能であると判定される}ことを表す。
+
+これは、
+時刻 $t$ 以後に
+実際に作用 $\upsilon$ が与えられること、
+または実際の軌道上で
+回復が発生することを意味しない。
+
+したがって、
+回復可能性、回復作用の実施および実際の回復到達を、
+それぞれ可能性・実施・結果として区別する。
+
+この区別により、
+外的回復可能性を
+将来の実現事象と同一視しない。
+\end{remark}
+
+\begin{remark}[$\mathrm{Recover}=0$ の解釈]
+\label{rem:recover_zero_scope}
+\[
+  \mathrm{Recover}_{i,t}(\upsilon)=0
+\]
+は、
+作用 $\upsilon$ による回復が
+本枠組みの判定規則のもとで
+成立すると認められないことを表す。
+
+これは、
+作用 $\upsilon$ による回復が
+宇宙的・物理的に絶対不可能であることを
+意味しない。
+
+さらに、
+\[
+  \forall\upsilon\in\Upsilon_{\mathrm{adm},i},
+  \quad
+  \mathrm{Recover}_{i,t}(\upsilon)=0
+\]
+であっても、
+それだけから
+崩壊を定義しない。
+
+崩壊には、
+\S\ref{sec:acs_def} 定義~\ref{def:collapse} の
+(SC-1)・(SC-2) の成立を要する。
+\end{remark}
+
+\subsubsection{記述的崩壊前状態帯との関係}
+
+\begin{remark}[外的回復可能性の対象範囲]
+\label{rem:recover_predicate_scope}
+本小節の外的回復可能性は、
+記述的崩壊前状態帯
+\[
+  \mathsf{Z}_1,\ldots,\mathsf{Z}_4
+\]
+にある状態について用いる。
+
+したがって、
+通常作動・基準帯
+$\mathsf{Z}_0$
+を
+「回復対象」として扱わない。
+
+$\mathsf{Z}_0$ の維持に
+外部資源または外的支援が
+必要となる場合はありうるが、
+それは
+障害状態からの
+\emph{回復可能性}
+とは別の問題である。
+
+また、
+崩壊帯
+$\mathsf{Z}_5$
+については、
+本小節の回復可能性定義を
+そのまま適用して
+崩壊を否定するのではなく、
+\S\ref{sec:acs_def} の崩壊の定義（定義~\ref{def:collapse}）に委ねる。
+\end{remark}
+
+\begin{remark}[状態帯番号と回復可能性の関係]
+\label{rem:zone_not_recoverability_order}
+本論文は、$\mathsf{Z}_1$、
+$\mathsf{Z}_2$、
+$\mathsf{Z}_3$、
+$\mathsf{Z}_4$
+という添字の大小から、
+回復可能性の大小または
+回復確率の大小を一般的な帰結として置かない。
+
+例えば、
+$\mathsf{Z}_4$
+の閉塞状態が
+ある許容外的作用によって
+回復可能である一方、
+ある
+$\mathsf{Z}_2$
+の部分的機能不全状態が
+本枠組み内では
+回復可能と判定されない場合を
+状態帯の番号規約は排除しない。
+
+したがって、
+$\mathsf{Z}$ 帯は
+回復難易度の尺度ではない。
+\end{remark}
+
+\begin{remark}[閉塞と外的回復可能性]
+\label{rem:blockage_external_recovery}
+閉塞
+$A_{i,t}=\emptyset$
+は、
+$\mathsf{Z}_4$ に対応する
+時刻局所的な一ステップ条件である。
+
+閉塞の成立は、
+外的回復可能性を否定しない。
+
+すなわち、
+ある時刻 $t$ に
+$A_{i,t}=\emptyset$
+であっても、
+\[
+  \exists\upsilon\in\Upsilon_{\mathrm{adm},i}
+  \quad\text{s.t.}\quad
+  \mathrm{Recover}_{i,t}(\upsilon)=1
+\]
+である場合を許容する。
+
+この区別は、
+\S\ref{subsec:blockage}
+で述べた、
+閉塞 $A_{i,t}=\emptyset$ から $\mathrm{Col}_{i,t}=1$ を
+一般的な帰結として置かないという扱いの、
+回復側の記述を与える。
+\end{remark}
+
+\subsubsection{WF・三原理の時刻別充足述語との関係}
+
+\begin{remark}[外的回復可能性と整形式実現]
+\label{rem:recovery_and_wf}
+外的回復可能性は、
+$\mathrm{WF}_{i,t}=0$
+と同義ではない。
+
+記述的崩壊前状態帯にある
+$\Sigma_i$ が
+時刻 $t$ において
+整形式実現を保っている場合でも、
+外的作用による機能回復が
+有意味である場合はありうる。
+
+逆に本論文は、
+$\mathrm{WF}_{i,t}=0$
+であることだけから、
+外的回復可能性の有無を
+一般的な帰結として置かない。
+
+したがって、
+$\mathrm{WF}_{i,t}$
+と
+$\mathrm{Recover}_{i,t}$
+は異なる形式対象である。
+
+崩壊の定義（\S\ref{sec:acs_def} 定義~\ref{def:collapse}）も、
+整形式実現の不成立と
+本枠組みに相対する非回復性を
+区別している。
+\end{remark}
+
+\begin{remark}[外的回復可能性と三原理の時刻別充足述語]
+\label{rem:recovery_not_principle_truth}
+外的回復可能性は、
+SM・EU・FR の
+いずれの時刻別充足述語の条件でもない。
+
+また、
+\[
+  \exists\upsilon\in\Upsilon_{\mathrm{adm},i}:
+  \mathrm{Recover}_{i,t}(\upsilon)=1
+\]
+であることから、
+SM・EU・FR の時刻別充足述語が
+時刻 $t$ に真であるとは限らない。
+
+逆に、
+三原理の時刻別充足述語が時刻 $t$ に真であっても、
+外的回復作用を必要とする状態でない場合や、
+$\Upsilon_{\mathrm{adm},i}$ が
+空である場合がありうる。
+
+したがって、
+\[
+  \text{外的回復可能性}
+  \neq
+  \text{三原理の時刻別充足述語の判定}
+\]
+である。
+\end{remark}
+
+\subsubsection{崩壊定義への接続}
+
+\begin{remark}[外的回復可能性と崩壊の依存方向]
+\label{rem:recovery_collapse_distinction}
+本小節は、
+外的回復可能性を先に定義し、
+崩壊そのものは定義しない。
+
+したがって、
+論理的な依存方向は
+\[
+  \text{許容外的作用域}
+  \longrightarrow
+  \text{外的回復可能性}
+  \longrightarrow
+  \text{崩壊定義における非回復性の参照}
+\]
+である。
+
+崩壊の定義の条件 (SC-2)（\S\ref{sec:acs_def} 定義~\ref{def:collapse}）は
+本小節の
+$\Upsilon_{\mathrm{adm},i}$
+を参照し、
+\S\ref{subsec:collapse_def}
+はその非回復性を外的回復可能性の射程とあわせて読む。
+
+一方、
+本小節の
+$\mathrm{Recover}_{i,t}$
+の定義に
+$\mathrm{Col}_{i,t}$
+の真理値を用いない。
+
+これにより、
+\[
+  \text{回復可能性}
+  \leftrightarrow
+  \text{崩壊でないこと}
+\]
+という循環定義を避ける。
+\end{remark}
+
+\begin{remark}[回復可能なら崩壊ではない]
+\label{rem:recoverable_excludes_collapse}
+記述的崩壊前状態帯
+$\mathsf{Z}_1$ から
+$\mathsf{Z}_4$ にある時刻 $t$ について、
+\[
+  \exists\upsilon\in\Upsilon_{\mathrm{adm},i}
+  \quad\text{s.t.}\quad
+  \mathrm{Recover}_{i,t}(\upsilon)=1
+\]
+が成立するならば、
+その時刻の状態は
+崩壊状態ではない
+（\S\ref{subsec:collapse_def} 命題~\ref{prop:recover_excludes_termination}）。
+
+これは、
+外的回復可能性から
+新たな崩壊定義を導出するものではなく、
+回復判定規則に課した (SC-2) との整合の要求
+（定義~\ref{def:external_recoverability}）からの帰結である。
+
+すなわち、
+\[
+  \text{本枠組みで同一個体として回復可能}
+  \quad\Rightarrow\quad
+  \text{崩壊として扱わない}
+\]
+という区別を維持する。
+\end{remark}
+
+\subsubsection{本小節の限定}
+
+\begin{remark}[Phase~1 における外的回復可能性の限定]
+\label{rem:external_recovery_phase1_scope}
+本小節の形式化には、
+以下の限定がある。
+
+第一に、
+$\Upsilon_{\mathrm{adm},i}$ は
+全外的作用を網羅しない。
+
+第二に、
+$\mathrm{Recover}_{i,t}$ は
+対象系ごとの判定規則を抽象化した
+分類Cの補助述語であり、
+介入後の状態遷移を
+生成する写像ではない。
+
+第三に、
+同一個体性の普遍的な
+必要十分条件を
+Phase~1 では与えない。
+
+第四に、
+回復可能性の存在は
+実際の回復作用の実施や
+実際の回復到達を意味しない。
+
+第五に、本論文は、
+$\mathrm{Recover}=0$ または
+$\Upsilon_{\mathrm{adm}}=\emptyset$
+だけから崩壊を一般的な帰結として置かない。
+
+したがって、
+本小節は
+崩壊と非崩壊を
+有限観測から完全判定する理論ではなく、
+崩壊の定義の (SC-2) が参照する
+\emph{回復可能性側の概念境界}
+を与えるものである。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{崩壊：本枠組みにおける吸収的終端状態}
+\label{subsec:collapse_def}
+
+本小節では、
+\S\ref{sec:acs_def} の定義~\ref{def:functional_termination} および
+定義~\ref{def:collapse} で定義した
+ACS個体 $\Sigma_i$ の機能的終端と崩壊を、
+本節の諸概念と関係づけて整理する。
+
+\subsubsection{崩壊指標}
+
+機能的終端判定時刻域 $\mathbb{T}_{\mathrm{FT},i}$、
+機能的終端状態指標 $\mathrm{FTS}_{i,t}$、その条件 (FT-1)・(FT-2)、
+機能的終端指標 $\mathrm{FT}_{i,t}$、
+崩壊状態指標 $\mathrm{CS}_{i,t}$、その条件 (SC-1)・(SC-2)、および崩壊指標
+$\mathrm{Col}_{i,t}\in\{0,1\}$ は、
+\S\ref{sec:acs_def} の定義~\ref{def:functional_termination} および
+定義~\ref{def:collapse} で与えた。
+吸収性 (C-2) と崩壊状態成立時刻の存在 (C-3) は同節の命題~\ref{prop:collapse_basic}、
+崩壊が成立している時刻までに機能的終端状態が成立済みであることは同節の命題~\ref{prop:termination_order} である。
+本節でいう崩壊の非回復性は同定義の条件 (SC-2) を指し、
+機能的終端の非回復性は条件 (FT-2) を指す。
+本小節ではこれらを再定義せず、
+条件 (FT-2)・(SC-2) が参照する許容外的作用集合 $\Upsilon_{\mathrm{adm},i}$ の内容を
+\S\ref{subsec:external_recovery}（定義~\ref{def:admissible_external_action}）に従って読む。
+
+\begin{remark}[崩壊指標の値 $0$ の意味]
+\label{rem:collapse_zero_meaning}
+$\mathrm{Col}_{i,t}=0$
+は、
+時刻 $t$ までのいずれの時刻においても、
+定義~\ref{def:collapse} の意味での
+崩壊状態が成立していないことを表す。
+
+本論文は、これから
+$\mathrm{WF}_{i,t}=1$、
+$A_{i,t}\neq\emptyset$、
+$x_t\in K$、
+または
+SM・EU・FR の時刻別充足述語が真であることを
+一般的な帰結として置かない。
+
+したがって、
+$\mathrm{Col}_{i,t}=0$
+を「健全」「可行」「回復済み」
+などの一般的な正常性指標として
+使用しない。
+\end{remark}
+
+\subsubsection{整形式実現との関係}
+
+\begin{remark}[整形式実現の不成立と崩壊の関係]
+\label{rem:wf_failure_not_collapse}
+機能的終端指標・崩壊指標と整形式実現指標の関係は、
+\S\ref{sec:acs_def} の備考~\ref{rem:collapse_wf_relation} に従う。
+\end{remark}
+
+\begin{remark}[崩壊と構造的自己]
+\label{rem:collapse_structural_self}
+本論文の構造的自己
+$S_{\mathrm{struct}}(\Sigma_i)$
+は、
+同一ACS個体としての
+形式的構造を識別する基準である。
+
+崩壊が成立した時刻以後の
+$\mathrm{WF}_{i,t}=0$
+（命題~\ref{prop:termination_order}）は、
+その構造的自己が
+時刻 $t$ において
+整形式に実現されていないことを表す。
+その逆、すなわち $\mathrm{WF}_{i,t}=0$ から崩壊を、本論文は一般的な帰結として置かない
+（備考~\ref{rem:collapse_wf_relation}）。
+
+ただし、
+構造的自己という
+形式的記述対象それ自体を
+数学的対象として消去するわけではない。
+
+したがって、
+崩壊は
+「7タプルの記述が論文上存在しなくなること」
+ではなく、
+その同一ACS個体としての
+通常の実現・継続が
+本枠組み内で終端化したことを表す。
+\end{remark}
+
+\subsubsection{非回復性の射程}
+
+\begin{remark}[崩壊の非回復性は本枠組みに相対する]
+\label{rem:collapse_relative_irrecoverability}
+条件 (SC-2) の非回復性、および機能的終端の条件 (FT-2) の非回復性は、
+$\Upsilon_{\mathrm{adm},i}$
+が定める
+許容外的作用域と、
+実現した外生背景成分の列のもとでの
+通常の自律的更新および $g_O$ による継続の記述範囲に
+相対する（\S\ref{sec:acs_def} 定義~\ref{def:collapse} の (SC-2)）。
+
+したがって、
+$\mathrm{Col}_{i,t}=1$
+から、
+考えうるすべての物理作用、
+未知の技術、
+Phase~1 の外側にある操作、
+または本論文がモデル化していない
+介入によっても
+絶対に同一個体として
+回復しえない、
+という主張を本論文は置かない。
+
+本論文が主張するのは、
+\[
+  \text{本枠組みの許容継続の範囲内で非回復}
+\]
+という限定された終端性である。
+\end{remark}
+
+\begin{remark}[$\Upsilon_{\mathrm{adm}}=\emptyset$ と崩壊の関係]
+\label{rem:empty_Xi_not_collapse}
+\S\ref{subsec:external_recovery} で述べたとおり、
+本論文は
+\[
+  \Upsilon_{\mathrm{adm},i}=\emptyset
+\]
+を許容する。
+
+しかし本論文は、
+許容外的作用が
+一つも指定されていないことだけから、
+$\mathrm{Col}_{i,t}=1$
+を一般的な帰結として置かない。
+
+崩壊には、
+少なくとも
+(SC-1) 構造的同一性を成立させる組織関係の喪失と、
+(SC-2) 本枠組みに相対する
+同一個体としての非回復性が
+ある時刻に併せて成立することを要する。
+
+したがって、
+外的作用域の空性と
+崩壊は別の条件である。
+\end{remark}
+
+\begin{remark}[$\mathrm{Recover}=0$ の全称と崩壊の関係]
+\label{rem:all_recover_zero_not_collapse}
+記述的崩壊前状態帯において、
+仮に
+\[
+  \forall\upsilon\in\Upsilon_{\mathrm{adm},i},
+  \quad
+  \mathrm{Recover}_{i,t}(\upsilon)=0
+\]
+であったとしても、
+本論文は、その事実だけから
+崩壊を一般的な帰結として置かない。
+
+第一に、
+$\mathrm{Recover}_{i,t}$
+は
+\S\ref{subsec:external_recovery}
+で定義された
+回復可能性側の分類C補助述語であり、
+崩壊そのものの判定指標ではない。
+
+第二に、
+崩壊には
+(SC-1) の組織関係の喪失が必要である。
+
+第三に、
+(SC-2) は
+同一個体としての
+許容継続全体に関する
+終端条件であり、
+単一時刻における
+$\mathrm{Recover}_{i,t}$
+の値だけへ還元しない。
+
+したがって、
+\[
+  \text{外的回復可能性が確認されない}
+  \neq
+  \text{崩壊}
+\]
+である。
+\end{remark}
+
+\subsubsection{外的回復可能性との整合}
+
+\begin{proposition}[外的回復可能性と終端状態指標]
+\label{prop:recover_excludes_termination}
+時刻 $t$ について $\mathrm{Recover}_{i,t}$ が定義され、
+ある $\upsilon\in\Upsilon_{\mathrm{adm},i}$ について
+$\mathrm{Recover}_{i,t}(\upsilon)=1$ ならば、
+$\mathrm{CS}_{i,t}=0$ である。
+さらに $t\in\mathbb{T}_{\mathrm{FT},i}$ ならば $\mathrm{FTS}_{i,t}=0$ である。
+\end{proposition}
+
+\begin{proof}
+定義~\ref{def:external_recoverability} により、$\upsilon$ を加えた継続のうちの一つの上で、
+(SC-2)・(FT-2) と同じ同一個体の判定基準のもとで、
+(SC-1) の組織・結合関係が保存されるか再び成立し、
+かつ (FT-1) の基礎的な機能のいずれかの機能的活動が同一個体として再び成立すると判定される。
+保存される場合は時刻 $t$ に (SC-1) が成立せず、
+再び成立する場合は、(SC-2) が量化する継続の上で再成立が認められるので (SC-2) が成立しない。
+いずれの場合も $\mathrm{CS}_{i,t}=0$ である。
+同様に、その継続は (FT-2) が量化する継続でもあり、その上で基礎的な機能の活動が再び成立するから、
+$t\in\mathbb{T}_{\mathrm{FT},i}$ ならば (FT-2) が成立せず、$\mathrm{FTS}_{i,t}=0$ である。
+\end{proof}
+
+\begin{remark}[回復可能な状態は崩壊として扱わない]
+\label{rem:C2_and_recoverability}
+\S\ref{subsec:external_recovery} の
+記述的崩壊前状態帯
+$\mathsf{Z}_1$ から
+$\mathsf{Z}_4$
+にある時刻 $t$ について、
+\[
+  \exists\upsilon\in\Upsilon_{\mathrm{adm},i}
+  \quad\text{s.t.}\quad
+  \mathrm{Recover}_{i,t}(\upsilon)=1
+\]
+が成立するならば、
+その状態を
+時刻 $t$ の崩壊状態として扱わない。
+
+すなわち、
+本枠組みの範囲で
+同一個体としての回復が
+可能であると判定される状態は、
+命題~\ref{prop:recover_excludes_termination} により崩壊状態ではなく、
+時刻が機能的終端判定時刻域に属するならば機能的終端状態でもない。
+
+この関係は、
+\S\ref{subsec:external_recovery}
+で確定した依存方向
+\[
+  \text{許容外的作用域}
+  \longrightarrow
+  \text{外的回復可能性}
+  \longrightarrow
+  \text{崩壊定義の非回復性}
+\]
+と整合する。
+
+一方、
+外的回復可能性の定義に
+$\mathrm{Col}_{i,t}$
+を用いていないため、
+循環定義は生じない。
+\end{remark}
+
+\subsubsection{閉塞・状態帯・三原理の時刻別充足述語との区別}
+
+\begin{remark}[閉塞と崩壊の帰結関係の限定]
+\label{rem:collapse_non_implication}
+閉塞
+$A_{i,t}=\emptyset$
+は、
+実現外部環境状態 $e_t$ のもとで
+一ステップ先の可行性を保持する
+行動が存在しないことを表す。
+
+これは、
+機能的終端の条件
+(FT-1)・(FT-2)
+とも、崩壊状態の条件
+(SC-1)・(SC-2)
+とも異なる。
+
+したがって本論文は、閉塞から崩壊を一般的な帰結として置かない
+（\S\ref{sec:acs_def} の備考~\ref{rem:blockage_not_collapse_sec2}）。
+
+特に、
+閉塞状態
+$\mathsf{Z}_4$
+にあっても、
+外的回復可能性が存在する場合、
+その状態は崩壊ではない。
+
+また、
+崩壊の成立に
+閉塞の事前成立を
+必要条件として課さない。
+\end{remark}
+
+\begin{remark}[全機能停止と崩壊の区別]
+\label{rem:full_stop_not_collapse}
+\S\ref{subsec:precollapse_states} の
+全機能停止帯
+$\mathsf{Z}_3$
+は、
+TIPA・PSL・ISL に関係する
+標準機能の作動停止を
+記述する補助的状態帯である。
+
+全機能停止だけから、
+(FT-1)・(FT-2) が
+ともに成立するとも、
+(SC-1)・(SC-2) が
+ともに成立するとも限らない。
+本論文は、全機能停止帯 $\mathsf{Z}_3$ と記述されることだけから、
+機能的終端 $\mathrm{FT}_{i,t}=1$（定義~\ref{def:functional_termination}）も
+一般的な帰結として置かない。
+$\mathsf{Z}_3$ は標準機能形式（分類B）の作動に関する記述であり、
+(FT-1) は原始的な機能の各区分に関して個体が有する基礎的な機能と
+基盤機能の停止に関する条件であって、両者は機能の記述の水準が異なる。
+本節は、両者の間にいずれの向きの含意も置かない。
+
+したがって本論文は、
+全機能停止帯 $\mathsf{Z}_3$ と記述されることだけから、
+$\mathrm{Col}_{i,t}=1$ を一般的な帰結として置かない。
+
+特に、
+全機能停止状態であっても、
+同一個体として
+回復可能である場合を
+本論文は排除しない。
+\end{remark}
+
+\begin{remark}[三原理の時刻別充足述語が偽であることと崩壊の関係]
+\label{rem:principle_failure_not_collapse}
+本論文は、SM・EU・FR の時刻別充足述語の
+いずれか、
+または複数が
+時刻 $t$ に偽であっても、
+それだけから
+$\mathrm{Col}_{i,t}=1$
+を一般的な帰結として置かない。
+
+三原理は
+\S\ref{sec:three_principles} で定める
+制約軸であり、
+その時刻別充足述語は存続中のACSの状態と環境についての条件である。
+これに対し崩壊は、
+\S\ref{sec:acs_def} で定義した構造的個体の終端である。
+
+したがって、
+\[
+  \text{三原理の時刻別充足述語が偽}
+  \neq
+  \text{崩壊判定}
+\]
+である。
+
+また、
+T-STAB の不成立、
+関係品質 $Q<0$、
+または
+$\chi_{\mathrm{EI},t}=0$
+だけからも、
+本論文は崩壊を一般的な帰結として置かない。
+\end{remark}
+
+\subsubsection{崩壊前状態帯を経由しない崩壊}
+
+\begin{remark}[崩壊前状態帯の事前経由を必要条件としない]
+\label{rem:collapse_without_precollapse}
+定義~\ref{def:collapse} は、
+崩壊
+$\mathrm{Col}_{i,t}=1$
+の成立以前に、
+\[
+  \mathsf{Z}_1,
+  \mathsf{Z}_2,
+  \mathsf{Z}_3,
+  \mathsf{Z}_4
+\]
+のいずれかが
+観測または記述されていることを
+必要条件としない。
+
+したがって、
+閉塞、
+部分的機能不全、
+全機能停止等を
+明示的に経由せず、
+本節の意味で
+崩壊終端へ到達する軌道を
+Phase~1 の一般論から排除しない。
+
+逆に、
+$\mathsf{Z}_1$ から
+$\mathsf{Z}_4$
+にある軌道が
+必ず崩壊へ到達するとも
+主張しない。
+
+この区別は、
+後続の
+\S\ref{subsec:col_path_set}
+および
+\S\ref{subsec:inflow_paths}
+で維持する。
+\end{remark}
+
+\subsubsection{崩壊の定義と判定可能性}
+
+\begin{remark}[崩壊の定義と有限観測による判定可能性は異なる]
+\label{rem:collapse_definition_observability}
+命題~\ref{prop:collapse_basic} の
+(C-2) 吸収性および
+定義~\ref{def:collapse} の
+(SC-2) 非回復性は、
+現在時刻だけではなく
+将来の許容継続に関係する。
+
+したがって、
+ある有限時刻の観測だけから
+一般的・決定論的に
+$\mathrm{Col}_{i,t}=1$
+を判定する
+普遍的手続きを、
+Phase~1 は与えない。
+
+これは、
+崩壊の形式的定義が
+不明確であることを意味しない。
+
+本論文は、
+\[
+  \text{理論上の終端状態の定義}
+\]
+と
+\[
+  \text{有限観測からそれを認識する判定法}
+\]
+を区別する。
+
+後者に必要となる
+実装依存の十分条件、
+診断指標、
+観測窓、
+誤判定率、
+確率的推定等は、
+Phase~2 以降の課題とする（\S\ref{subsec:limitations_list} の L9、問題~\ref{prob:collapse_observability}）。
+\end{remark}
+
+\begin{remark}[崩壊指標はACS内部変数である必要はない]
+\label{rem:collapse_indicator_description_level}
+$\mathrm{Col}_{i,t}$ は、
+本論文が
+崩壊状態を記述するために導入する
+理論上の指標である。
+
+したがって、
+ACS個体 $\Sigma_i$ 自身が
+内部に
+$\mathrm{Col}_{i,t}$
+という同一の二値変数を
+保持・計算・認識することを
+要求しない。
+
+また、
+M2 その他の機構が
+真の
+$\mathrm{Col}_{i,t}$
+を直接読み取ることも
+Phase~1 の要件ではない。
+
+この意味で、
+崩壊指標は
+記述・診断側の形式表現であり、
+特定の実装変数と
+一対一対応させない。
+\end{remark}
+
+\subsubsection{崩壊後の通常ACS状態量の扱い}
+
+\begin{remark}[崩壊後に通常ACS動学を要求しない]
+\label{rem:collapse_internal_state}
+$\mathrm{Col}_{i,t}=1$
+が成立した後は、
+条件 (C-2) により、
+終端記録として
+崩壊指標を保持する。
+
+一方、
+崩壊後の時刻について、
+$\Sigma_i$ を
+通常ACSとして
+\[
+  x_s\in X,
+  \qquad
+  e_s\in E_{\mathrm{ext}},
+  \qquad
+  A_{i,s},
+  \qquad
+  \mathrm{Desc}_s
+\]
+によって継続記述することを
+一般には要求しない。
+
+これは、
+崩壊後の物理的対象が
+文字どおり消滅することを
+意味しない。
+
+意味するのは、
+同一ACS個体 $\Sigma_i$ の
+通常の内部動学として
+その後を記述する責務を、
+Phase~1 のACS軌道記述が
+負わないということである。
+
+この終端規約は、
+\S\ref{subsec:blk_path_set}
+で導入する軌道記録空間において
+正式に反映する。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{軌道記録空間と閉塞経路集合}
+\label{subsec:blk_path_set}
+
+\S\ref{subsec:collapse_def} では、
+崩壊
+$\mathrm{Col}_{i,t}=1$
+を、本枠組みにおける
+吸収的・非回復的終端分類として整理し、
+最初の崩壊成立後には
+通常ACS状態量
+\[
+  x_t,\qquad
+  e_t,\qquad
+  A_{i,t},\qquad
+  \mathrm{Desc}_t
+\]
+を継続して要求しないことを確認した。
+
+本小節では、
+この終端規約と整合する
+\emph{軌道記録空間}
+$\mathfrak{P}$ を導入し、
+その部分集合として
+有限時刻内に閉塞へ到達する軌道記録の集合
+$\mathfrak{P}_{\mathrm{blk}}$
+を定義する。
+
+ここでの軌道記録は、
+崩壊前の通常ACS状態の時間発展と、
+全離散時刻上の崩壊終端記録とを
+明示的に分離する。
+
+\subsubsection{ACS記録有効時刻域}
+
+\begin{definition}[ACS記録有効時刻域（分類C）]
+\label{def:acs_valid_time_domain}
+軌道記録 $\sigma$ に付随する
+崩壊指標列
+\[
+  \bigl(
+    \mathrm{Col}_{i,t}
+  \bigr)_{t\in\mathbb{N}_0}
+\]
+が、
+命題~\ref{prop:collapse_basic} の
+吸収性条件 (C-2) を満たすとする。
+
+このとき、
+$\sigma$ において
+通常ACS状態量を記録する時刻域を
+\[
+  I_{\mathrm{ACS}}(\sigma)
+  :=
+  \bigl\{
+    t\in\mathbb{N}_0
+    \bigm|
+    \mathrm{Col}_{i,t}=0
+  \bigr\}
+\]
+と定義し、
+これを
+\emph{ACS記録有効時刻域}
+と呼ぶ。
+
+条件 (C-2) により、
+$I_{\mathrm{ACS}}(\sigma)$ は
+次のいずれかの形をとる。
+
+\begin{enumerate}
+  \item
+  崩壊が一度も成立しない場合：
+  \[
+    I_{\mathrm{ACS}}(\sigma)
+    =
+    \mathbb{N}_0.
+  \]
+
+  \item
+  ある最小時刻 $T\in\mathbb{N}_0$、$T\ge1$ で
+  \[
+    \mathrm{Col}_{i,T}=1
+  \]
+  が初めて成立する場合：
+  \[
+    I_{\mathrm{ACS}}(\sigma)
+    =
+    \{0,1,\ldots,T-1\}.
+  \]
+
+  \item
+  初期時刻ですでに
+  \[
+    \mathrm{Col}_{i,0}=1
+  \]
+  である場合：
+  \[
+    I_{\mathrm{ACS}}(\sigma)
+    =
+    \emptyset.
+  \]
+\end{enumerate}
+
+したがって、
+最初の崩壊成立時刻そのものは
+ACS記録有効時刻域に含めない。
+\end{definition}
+
+\begin{remark}[有効時刻域は崩壊前の通常ACS記述域である]
+\label{rem:acs_valid_time_domain_scope}
+$I_{\mathrm{ACS}}(\sigma)$ は、
+同一個体 $\Sigma_i$ について
+\S\ref{sec:acs_def} および \S\ref{sec:extended_dynamics} の状態量を
+軌道記録の対象として扱う時刻域である。
+
+$I_{\mathrm{ACS}}(\sigma)$ は
+$\mathrm{Col}_{i,t}=0$ によって定まるから、
+機能的終端後の時刻
+（$\mathrm{FT}_{i,t}=1$ かつ $\mathrm{Col}_{i,t}=0$、
+定義~\ref{def:functional_termination}）を含みうる。
+その時刻の記録は、
+構造的個体としての追跡の記録であり、
+$\Sigma_i$ を現に作動するACSの実現として扱うものではない
+（備考~\ref{rem:post_collapse_record}）。
+現に作動するACSとしての機能の記述は、
+$\mathrm{FT}_{i,t}=0$ の時刻に限る。
+
+ここで重要なのは、
+本論文が
+$\mathrm{Col}_{i,t}=0$
+から
+$\mathrm{WF}_{i,t}=1$
+を一般的な帰結として置かないことである。
+したがって、
+$I_{\mathrm{ACS}}(\sigma)$ は、
+崩壊には至っていないが
+一時的に
+$\mathrm{WF}_{i,t}=0$
+である時刻を含みうる。
+
+それでも、
+$t\in I_{\mathrm{ACS}}(\sigma)$
+に対しては、
+崩壊終端後とは区別して、
+少なくとも
+\[
+  x_t\in X,
+  \qquad
+  e_t\in E_{\mathrm{ext}}
+\]
+という通常の状態・外部環境状態を記録できる。
+
+一方、
+$t\notin I_{\mathrm{ACS}}(\sigma)$
+に対しては、
+本節は
+通常ACS状態量としての
+$x_t$、
+$e_t$、
+$A_{i,t}$、
+または
+$\mathrm{Desc}_t$
+を要求しない。
+
+これは、
+崩壊後の物理対象の存在を否定するものではなく、
+同一ACS個体としての
+通常動学記述を終了するという
+Phase~1 の終端規約である。
+\end{remark}
+
+\begin{remark}[崩壊成立時刻に閉塞を自動付与しない]
+\label{rem:no_blockage_at_collapse_time_by_default}
+最初の崩壊成立時刻 $T$ は、
+定義~\ref{def:acs_valid_time_domain} により
+\[
+  T\notin I_{\mathrm{ACS}}(\sigma)
+\]
+である。
+
+したがって本節は、
+崩壊成立時刻 $T$ において
+通常ACS状態量としての
+$A_{i,T}$
+を要求しない。
+
+このため、
+$\mathrm{Col}_{i,T}=1$
+から、
+同じ時刻に
+$A_{i,T}=\emptyset$
+を自動的に付与しない。
+
+崩壊以前のACS記録有効時刻域内で
+閉塞が成立していたか否かは、
+後述の
+$\mathfrak{P}_{\mathrm{blk}}$
+によって別途記録する。
+\end{remark}
+
+\subsubsection{軌道記録空間}
+
+\begin{definition}[軌道記録空間（分類C）]
+\label{def:trajectory_space}
+本節では、
+\emph{軌道記録空間}
+$\mathfrak{P}$ を、
+単一ACS個体 $\Sigma_i$ について、
+ACS記録有効時刻域上の状態記録と
+全離散時刻上の崩壊指標列を
+組として保持する記録の集合として導入する。
+
+各
+\[
+  \sigma\in\mathfrak{P}
+\]
+は、
+少なくとも次の二部分を含む。
+
+第一に、
+全離散時刻上の崩壊指標列
+\[
+  \bigl(
+    \mathrm{Col}_{i,t}
+  \bigr)_{t\in\mathbb{N}_0},
+\]
+ただしこの列は
+命題~\ref{prop:collapse_basic} の
+(C-2) 吸収性を満たす。
+
+第二に、
+その崩壊指標列から定まる
+ACS記録有効時刻域
+$I_{\mathrm{ACS}}(\sigma)$
+上の記録
+\[
+  \bigl(
+    x_t,\,
+    e_t,\,
+    \mathrm{Desc}_t
+  \bigr)_{t\in I_{\mathrm{ACS}}(\sigma)},
+\]
+ここで
+\[
+  x_t\in X,
+  \qquad
+  e_t\in E_{\mathrm{ext}}.
+\]
+
+したがって、
+軌道記録を
+\[
+  \sigma
+  =
+  \left(
+    \bigl(
+      x_t,e_t,\mathrm{Desc}_t
+    \bigr)_{t\in I_{\mathrm{ACS}}(\sigma)},
+    \bigl(
+      \mathrm{Col}_{i,t}
+    \bigr)_{t\in\mathbb{N}_0}
+  \right)
+\]
+と表す。
+
+ここで
+$\mathrm{Desc}_t$ は、
+\S\ref{sec:extended_dynamics}
+で扱われる時刻依存量を整理して参照するための
+\S\ref{sec:extended_dynamics} 由来の組である。
+その成分のうち予測精度係数 $\pi_{\tau,t}$ と実効的時間地平 $\widehat\tau_t$ は
+時刻 $t$ から $t+\tau$ までの記録を用いるので、
+$t+\tau\in I_{\mathrm{ACS}}(\sigma)$ のときに限り記録し、
+それ以外の時刻では定義しない（値 $0$ を割り当てない）。
+したがって、$t+\tau\notin I_{\mathrm{ACS}}(\sigma)$ である $t\in I_{\mathrm{ACS}}(\sigma)$ の
+$\mathrm{Desc}_t$ は、この二成分を未定義とする部分的な組として記録する。
+崩壊後の形式的な作動記録（\S\ref{sec:extended_dynamics} 命題~\ref{prop:s5_continuation}）を
+これらの評価に用いない。
+また、本節は
+$\sigma$ を
+$\mathrm{Desc}_t$ の時系列だけに
+同一視しない。
+
+各
+$t\in I_{\mathrm{ACS}}(\sigma)$
+について、
+可行行動集合
+\[
+  A_{i,t}
+  =
+  A(x_t,e_t)
+  =
+  \bigl\{
+    u\in U
+    \bigm|
+    f(x_t,u,e_t)\in K
+  \bigr\}
+\]
+が、
+定義~\ref{def:blockage_sec2}
+および
+\S\ref{sec:acs_def}
+の可行行動集合の定義に従って定まる。
+
+一方、
+$t\notin I_{\mathrm{ACS}}(\sigma)$
+については、
+通常ACS状態量としての
+$A_{i,t}$ を要求しない。
+
+記号
+$\mathfrak{P}$ は、
+持続評価関数
+$\Pi$
+とは無関係の対象である。
+\end{definition}
+
+\begin{remark}[軌道記録空間の力学的意味]
+\label{rem:trajectory_space_scope}
+$\mathfrak{P}$ は、
+任意の数列を無条件に
+「ACS軌道」と呼ぶための集合ではない。
+
+本論文で
+$\sigma\in\mathfrak{P}$
+をACS個体 $\Sigma_i$ の軌道記録として扱うとき、
+ACS記録有効時刻域上の記録は、
+\S\ref{sec:acs_def}
+および
+\S\ref{sec:extended_dynamics}
+で定める
+対象系の決定論的動学と
+整合する実現記録または
+決定論的シミュレーション記録であることを前提とする。
+
+ただし本小節では、
+その整合性を判定するための
+新しい軌道生成作用素や
+新しい状態方程式を導入しない。
+
+$\mathfrak{P}$ は、
+後続の経路集合を記述するための
+分類Cの台集合である。
+\end{remark}
+
+\begin{remark}[軌道記録と実現記録・シミュレーション記録]
+\label{rem:trajectory_record_origin}
+$\sigma\in\mathfrak{P}$
+は、
+実際に観測された
+実現記録だけに限定しない。
+
+対象系の決定論的モデルに基づいて
+構成された
+決定論的シミュレーション記録、
+すなわち初期値と環境実現（背景成分の列と $g_O$）を固定して
+\S\ref{sec:extended_dynamics} の標準作動記録として生成された記録も、
+当該モデルの動学と整合する限り、
+軌道記録として扱いうる。
+行動の列を記述者が与えて生成した記録は、
+$\Sigma_i$ 自身の作動による記録ではないので、
+本節では $\Sigma_i$ の軌道記録として扱わない。
+
+ただし、
+この記録由来の違いから
+$\mathfrak{P}$ 上に
+確率測度や尤度を
+Phase~1 で導入しない。
+\end{remark}
+
+\begin{remark}[$\mathfrak{P}$ に位相・距離・確率を要求しない]
+\label{rem:trajectory_space_no_extra_structure}
+本論文の Phase~1 では、
+$\mathfrak{P}$ に
+位相、
+距離、
+測度、
+確率測度、
+または順序構造を
+一般には付与しない。
+
+したがって、
+後続節において
+「経路集合への距離」、
+「崩壊軌道への近さ」、
+「閉塞確率」
+などを、
+追加定義なしに用いない。
+
+本節が必要とするのは、
+軌道記録の集合と
+その集合論的部分集合だけである。
+\end{remark}
+
+\subsubsection{閉塞経路集合}
+
+\begin{definition}[閉塞経路集合（分類C）]
+\label{def:blk_path_set}
+\emph{閉塞経路集合}
+$\mathfrak{P}_{\mathrm{blk}}$
+を、
+軌道記録空間
+$\mathfrak{P}$
+の部分集合として
+\[
+  \mathfrak{P}_{\mathrm{blk}}
+  :=
+  \left\{
+    \sigma\in\mathfrak{P}
+    \;\middle|\;
+    \exists T\in I_{\mathrm{ACS}}(\sigma)
+    \text{ s.t. }
+    A_{i,T}=\emptyset
+  \right\}
+\]
+と定義する。
+
+すなわち、
+$\mathfrak{P}_{\mathrm{blk}}$
+は、
+通常ACS状態量が定義されている
+有効時刻域内の
+ある有限時刻において、
+閉塞
+\[
+  A_{i,T}=\emptyset
+\]
+が成立する軌道記録の全体である。
+
+したがって、
+\[
+  \mathfrak{P}_{\mathrm{blk}}
+  \subseteq
+  \mathfrak{P}.
+\]
+
+下付き
+$\mathrm{blk}$
+は
+blockage
+を表す。
+\end{definition}
+
+\begin{remark}[閉塞経路集合は閉塞の持続を要求しない]
+\label{rem:blk_path_no_persistence}
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{blk}}
+\]
+であるために必要なのは、
+ACS記録有効時刻域内の
+少なくとも一つの時刻で
+$A_{i,T}=\emptyset$
+が成立することである。
+
+したがって、
+その後の時刻にも
+閉塞が持続することを
+定義上要求しない。
+
+特に、
+閉塞後に
+同一個体として
+$A_{i,s}\neq\emptyset$
+となる状態へ回復する軌道も、
+一度閉塞へ到達している限り
+$\mathfrak{P}_{\mathrm{blk}}$
+に属する。
+\end{remark}
+
+\begin{remark}[崩壊と閉塞経路集合への帰属の関係]
+\label{rem:collapse_not_blk_membership}
+本論文は、崩壊指標
+$\mathrm{Col}_{i,T}=1$
+がある有限時刻に成立したことだけから、
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{blk}}
+\]
+を一般的な帰結として置かない。
+
+なぜなら、
+$\mathfrak{P}_{\mathrm{blk}}$
+への帰属には、
+崩壊以前の
+ACS記録有効時刻域内で
+実際に
+$A_{i,t}=\emptyset$
+が成立したことを要するからである。
+
+これは、
+\S\ref{subsec:collapse_def}において
+崩壊に閉塞の事前経由を必要条件として課していないことと
+整合する。
+\end{remark}
+
+\subsubsection{閉塞到達時刻}
+
+\begin{definition}[閉塞到達時刻（分類C）]
+\label{def:blk_reaching_time}
+軌道記録
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{blk}}
+\]
+に対して、
+\[
+  T_{\mathrm{blk}}(\sigma)
+  :=
+  \min
+  \left\{
+    T\in I_{\mathrm{ACS}}(\sigma)
+    \;\middle|\;
+    A_{i,T}=\emptyset
+  \right\}
+\]
+を
+$\sigma$ の
+\emph{閉塞到達時刻}
+と呼ぶ。
+
+$\sigma\in\mathfrak{P}_{\mathrm{blk}}$
+であれば、
+定義~\ref{def:blk_path_set} により
+上記集合は非空である。
+
+また、
+\[
+  I_{\mathrm{ACS}}(\sigma)
+  \subseteq
+  \mathbb{N}_0
+\]
+であるため、
+自然数の整列性により
+最小元が存在する。
+
+したがって、
+$T_{\mathrm{blk}}(\sigma)$
+は有限の自然数として定まる。
+\end{definition}
+
+\begin{remark}[閉塞到達時刻は最初の閉塞時刻にすぎない]
+\label{rem:blk_reaching_time}
+$T_{\mathrm{blk}}(\sigma)$ は、
+軌道記録 $\sigma$ において
+閉塞が最初に成立する時刻を表す。
+
+これは、
+$t>T_{\mathrm{blk}}(\sigma)$
+においても
+閉塞が持続すること、
+崩壊へ到達すること、
+または外的回復が生じることを
+意味しない。
+
+したがって、
+$T_{\mathrm{blk}}$
+は
+終端時刻ではなく、
+最初の閉塞成立時刻を記録する
+分類C量である。
+\end{remark}
+
+\subsubsection{閉塞経路集合と他概念の区別}
+
+\begin{remark}[核外性と閉塞経路集合への帰属の関係]
+\label{rem:viab_outside_not_blk_path}
+\S\ref{subsec:blockage}で述べたとおり、本論文は、
+$x_t\notin\mathrm{Viab}_f(K)$
+だけから
+$A_{i,t}=\emptyset$
+を一般的な帰結として置かない。
+
+したがって本論文は、
+ある時刻で
+$x_t\notin\mathrm{Viab}_f(K)$
+であることだけから、
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{blk}}
+\]
+を一般的な帰結として置かない。
+
+同様に、
+ロバスト可行性核の外部にあることを
+「閉塞経路集合への流入」
+と呼ぶことも、
+追加条件なしには行わない。
+\end{remark}
+
+\begin{remark}[SM の時刻別充足述語が偽であること・整形式実現の不成立と閉塞経路集合への帰属の関係]
+\label{rem:sm_wf_not_blk_path}
+本論文は、時刻 $t$ における
+SM の時刻別充足述語が偽であること
+$\Pi(x_t)<0$
+または
+整形式実現の不成立
+$\mathrm{WF}_{i,t}=0$
+だけから、
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{blk}}
+\]
+を一般的な帰結として置かない。
+
+$\mathfrak{P}_{\mathrm{blk}}$
+への帰属は、
+ACS記録有効時刻域内で
+実際に
+$A_{i,T}=\emptyset$
+となる時刻が存在することによってのみ
+定義される。
+\end{remark}
+
+\begin{remark}[閉塞経路集合と崩壊到達経路集合は別対象である]
+\label{rem:blk_vs_col}
+本小節の
+$\mathfrak{P}_{\mathrm{blk}}$
+は、
+有限時間内に
+閉塞へ到達した軌道記録の集合である。
+
+後続の
+\S\ref{subsec:col_path_set}
+で定義する
+崩壊到達経路集合
+$\mathfrak{P}_{\mathrm{col}}$
+は、
+有限時間内に
+$\mathrm{Col}_{i,T}=1$
+となる軌道記録の集合である。
+
+両者は異なる条件によって定まるため、
+Phase~1 では一般に
+\[
+  \mathfrak{P}_{\mathrm{blk}}
+  \subseteq
+  \mathfrak{P}_{\mathrm{col}},
+\]
+\[
+  \mathfrak{P}_{\mathrm{col}}
+  \subseteq
+  \mathfrak{P}_{\mathrm{blk}},
+\]
+または
+\[
+  \mathfrak{P}_{\mathrm{blk}}
+  =
+  \mathfrak{P}_{\mathrm{col}}
+\]
+のいずれも仮定しない。
+\end{remark}
+
+\subsubsection{補集合とPhase~1の限定}
+
+\begin{remark}[$\mathfrak{P}\setminus\mathfrak{P}_{\mathrm{blk}}$ の意味]
+\label{rem:blk_in_trajectory_space}
+補集合
+\[
+  \mathfrak{P}
+  \setminus
+  \mathfrak{P}_{\mathrm{blk}}
+\]
+は、
+各軌道記録 $\sigma$ の
+ACS記録有効時刻域
+$I_{\mathrm{ACS}}(\sigma)$
+のすべての時刻において
+$A_{i,t}\neq\emptyset$
+である軌道記録の集合である。
+
+ただし本論文は、
+この補集合に属することから、
+SM の時刻別充足述語が全時刻で真であること、
+ロバスト可行性核内に
+留まり続けること、
+整形式実現が常に成立すること、
+または崩壊を回避することを
+一般的な帰結として置かない。
+
+特に、
+閉塞を経由せずに
+崩壊へ到達する軌道を
+本論文は排除しない。
+
+なお、
+この補集合に属する軌道記録では、
+$I_{\mathrm{ACS}}(\sigma)\cap\mathbb{T}_{\mathrm{P},i}$（\S\ref{sec:three_principles} 定義~\ref{def:principle_time_domain}）の時刻のうち
+$(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ となる時刻において、
+FR の時刻別充足述語は真である
+（備考~\ref{rem:internal_quantities_not_principles}）。
+\end{remark}
+
+\begin{remark}[閉塞経路集合のPhase~1における限定]
+\label{rem:blk_phase1_scope}
+Phase~1 では、
+$\mathfrak{P}_{\mathrm{blk}}$
+を
+$\mathfrak{P}$ の集合論的部分集合として
+定義するに留める。
+
+本論文は一般に、
+$\mathfrak{P}_{\mathrm{blk}}$ の
+測度、
+確率、
+位相的境界、
+密度、
+距離、
+吸引域、
+または
+「閉塞への近さ」
+を定義しない。
+
+また、
+有限時刻までの観測だけから
+将来
+$\mathfrak{P}_{\mathrm{blk}}$
+へ属することを
+完全に予測する一般手続きも
+Phase~1 では与えない。
+
+後続の
+\S\ref{subsec:inflow_paths}
+で扱う内部動学・関係性の変化も、
+それだけから
+$\mathfrak{P}_{\mathrm{blk}}$
+への帰属を導くものとはしない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{崩壊到達経路集合}
+\label{subsec:col_path_set}
+
+本小節では、
+同じ軌道記録空間
+$\mathfrak{P}$
+を用いて、
+有限時刻内に崩壊終端へ到達する軌道記録の集合
+$\mathfrak{P}_{\mathrm{col}}$
+を定義する。
+
+ここで、
+閉塞は
+通常ACS記録有効時刻域
+$I_{\mathrm{ACS}}(\sigma)$
+内で成立する一時刻・一ステップ条件であるのに対し、
+崩壊は
+全離散時刻上に保持される
+崩壊指標
+$\mathrm{Col}_{i,t}$
+によって記録される終端分類である。
+
+したがって、
+$\mathfrak{P}_{\mathrm{blk}}$
+と
+$\mathfrak{P}_{\mathrm{col}}$
+は、
+同じ軌道記録空間の部分集合であるが、
+異なる条件によって定まる。
+
+\subsubsection{崩壊到達経路集合}
+
+\begin{definition}[崩壊到達経路集合（分類C）]
+\label{def:col_path_set}
+\emph{崩壊到達経路集合}
+$\mathfrak{P}_{\mathrm{col}}$
+を、
+軌道記録空間
+$\mathfrak{P}$
+の部分集合として
+\[
+  \mathfrak{P}_{\mathrm{col}}
+  :=
+  \left\{
+    \sigma\in\mathfrak{P}
+    \;\middle|\;
+    \exists T\in\mathbb{N}_0
+    \text{ s.t. }
+    \mathrm{Col}_{i,T}=1
+  \right\}
+\]
+と定義する。
+
+すなわち、
+$\mathfrak{P}_{\mathrm{col}}$
+は、
+ある有限時刻 $T$ において
+崩壊指標
+\[
+  \mathrm{Col}_{i,T}=1
+\]
+が成立する軌道記録の全体である。
+
+したがって、
+\[
+  \mathfrak{P}_{\mathrm{col}}
+  \subseteq
+  \mathfrak{P}.
+\]
+
+下付き
+$\mathrm{col}$
+は
+collapse
+を表す。
+\end{definition}
+
+\begin{remark}[崩壊到達経路集合は閉塞の成立を要求しない]
+\label{rem:col_path_no_blockage_requirement}
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{col}}
+\]
+であるために必要なのは、
+ある有限時刻に
+$\mathrm{Col}_{i,T}=1$
+が成立することである。
+
+したがって、
+その以前に
+$A_{i,t}=\emptyset$
+が成立していることを
+定義上要求しない。
+
+これは、
+\S\ref{subsec:collapse_def}
+で確定した
+「崩壊は閉塞の事前経由を必要条件としない」
+という方針と整合する。
+\end{remark}
+
+\subsubsection{崩壊到達時刻}
+
+\begin{definition}[崩壊到達時刻（分類C）]
+\label{def:col_reaching_time}
+軌道記録
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{col}}
+\]
+に対して、
+\[
+  T_{\mathrm{col}}(\sigma)
+  :=
+  \min
+  \left\{
+    T\in\mathbb{N}_0
+    \;\middle|\;
+    \mathrm{Col}_{i,T}=1
+  \right\}
+\]
+を
+$\sigma$ の
+\emph{崩壊到達時刻}
+と呼ぶ。
+
+$\sigma\in\mathfrak{P}_{\mathrm{col}}$
+であれば、
+定義~\ref{def:col_path_set} により
+上記集合は非空である。
+
+また、
+$\mathbb{N}_0$
+は整列集合であるため、
+最小元が存在する。
+
+したがって、
+$T_{\mathrm{col}}(\sigma)$
+は有限の自然数として定まる。
+\end{definition}
+
+\begin{remark}[崩壊到達時刻以降の指標]
+\label{rem:col_reaching_time}
+命題~\ref{prop:collapse_basic} の
+吸収性条件 (C-2) により、
+$t\ge T_{\mathrm{col}}(\sigma)$
+ならば、
+$\mathrm{Col}_{i,t}=1$
+である。
+
+したがって、
+$T_{\mathrm{col}}(\sigma)$ は、
+崩壊終端記録が最初に成立する時刻である。
+
+一方、
+\S\ref{subsec:blk_path_set}
+の閉塞到達時刻
+$T_{\mathrm{blk}}(\sigma)$
+は、
+閉塞が最初に成立する時刻にすぎず、
+それ以後の閉塞持続を保証しない。
+
+この意味で、
+$T_{\mathrm{blk}}$
+と
+$T_{\mathrm{col}}$
+は異なる型の到達時刻である。
+\end{remark}
+
+\begin{remark}[崩壊到達時刻とACS記録有効時刻域]
+\label{rem:col_time_and_valid_domain}
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{col}}
+\]
+であり、
+$T_{\mathrm{col}}(\sigma)=T$
+とする。
+
+\S\ref{subsec:blk_path_set}
+の定義~\ref{def:acs_valid_time_domain} より、
+$T\ge1$ の場合は
+\[
+  I_{\mathrm{ACS}}(\sigma)
+  =
+  \{0,1,\ldots,T-1\}
+\]
+であり、$T=0$ の場合は
+\[
+  I_{\mathrm{ACS}}(\sigma)=\emptyset
+\]
+である。
+
+したがって、
+\[
+  T_{\mathrm{col}}(\sigma)
+  \notin
+  I_{\mathrm{ACS}}(\sigma).
+\]
+
+すなわち、
+崩壊到達時刻そのものに
+通常ACS状態量
+\[
+  x_T,\qquad
+  e_T,\qquad
+  A_{i,T},\qquad
+  \mathrm{Desc}_T
+\]
+を要求しない。
+
+この終端規約により、
+崩壊時刻へ
+人工的な通常ACS状態を
+付与する必要がない。
+\end{remark}
+
+\subsubsection{閉塞経路集合との関係}
+
+\begin{remark}[閉塞経路集合と崩壊到達経路集合は一般に別対象である]
+\label{rem:col_vs_blk}
+閉塞経路集合
+$\mathfrak{P}_{\mathrm{blk}}$
+は、
+通常ACS記録有効時刻域内で
+少なくとも一度
+$A_{i,t}=\emptyset$
+が成立する軌道記録の集合である。
+
+一方、
+崩壊到達経路集合
+$\mathfrak{P}_{\mathrm{col}}$
+は、
+ある有限時刻に
+$\mathrm{Col}_{i,t}=1$
+が成立する軌道記録の集合である。
+
+両者は
+異なる形式条件によって定まるため、
+Phase~1 では一般に
+\[
+  \mathfrak{P}_{\mathrm{blk}}
+  \subseteq
+  \mathfrak{P}_{\mathrm{col}},
+\]
+\[
+  \mathfrak{P}_{\mathrm{col}}
+  \subseteq
+  \mathfrak{P}_{\mathrm{blk}},
+\]
+または
+\[
+  \mathfrak{P}_{\mathrm{blk}}
+  =
+  \mathfrak{P}_{\mathrm{col}}
+\]
+のいずれも仮定しない。
+
+したがって本論文は、
+本節の定義と仮定だけから、
+両集合のいずれの方向の包含関係も、
+両集合の一致も、一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[閉塞しても崩壊しない軌道を許容する]
+\label{rem:blk_without_collapse_path}
+\S\ref{subsec:blockage}および\S\ref{subsec:collapse_def}で述べたとおり、
+本論文は、閉塞 $A_{i,t}=\emptyset$ から $\mathrm{Col}_{i,t}=1$ を
+一般的な帰結として置かない。
+これに対応して、
+\[
+  \mathfrak{P}_{\mathrm{blk}}
+  \setminus
+  \mathfrak{P}_{\mathrm{col}}
+\]
+に属する軌道記録を
+Phase~1 は排除しない。
+
+すなわち、
+有限時刻に閉塞へ到達しても、
+その後に回復し、
+いかなる有限時刻にも
+崩壊指標が $1$ とならない軌道を
+一般論から排除しない。
+
+ただし、
+この差集合が
+必ず非空であるとまでは
+主張しない。
+
+その非空性は、
+対象系の動学、
+環境実現（背景成分の列と $g_O$）、
+外的回復可能性等に依存する。
+\end{remark}
+
+\begin{remark}[閉塞を経由せず崩壊する軌道を許容する]
+\label{rem:col_without_blk_path}
+\S\ref{subsec:collapse_def} では、
+崩壊の成立に
+閉塞の事前経由を
+必要条件として課さなかった。
+
+したがって、
+軌道集合の水準でも、
+\[
+  \mathfrak{P}_{\mathrm{col}}
+  \setminus
+  \mathfrak{P}_{\mathrm{blk}}
+\]
+に属する軌道記録を
+Phase~1 は排除しない。
+
+すなわち、
+崩壊到達時刻
+$T_{\mathrm{col}}(\sigma)$
+より前の
+すべての
+$t\in I_{\mathrm{ACS}}(\sigma)$
+について
+$A_{i,t}\neq\emptyset$
+であるにもかかわらず、
+有限時刻で崩壊終端へ到達する軌道を
+一般論から排除しない。
+
+ただし、
+この差集合が
+必ず非空であるとまでは
+主張しない。
+\end{remark}
+
+\begin{remark}[閉塞経路集合と崩壊到達経路集合の交差]
+\label{rem:blk_col_intersection}
+ある軌道記録が
+\[
+  \mathfrak{P}_{\mathrm{blk}}
+  \cap
+  \mathfrak{P}_{\mathrm{col}}
+\]
+に属する場合、
+その軌道は
+崩壊以前の
+通常ACS記録有効時刻域内で
+少なくとも一度閉塞を経験し、
+かつ有限時刻内に崩壊終端へ到達する。
+
+しかし、
+その場合でも、
+閉塞が崩壊の原因であること、
+閉塞が崩壊の十分条件であること、
+または
+最初の閉塞後に
+連続して閉塞が持続したことを、
+本論文は定義からの帰結として置かない。
+
+したがって、
+集合の交差は
+共起を表すだけであり、
+因果関係を表さない。
+\end{remark}
+
+\subsubsection{到達時刻どうしの関係}
+
+\begin{remark}[$T_{\mathrm{blk}}$ と $T_{\mathrm{col}}$ の大小関係]
+\label{rem:blk_col_time_relation}
+軌道記録
+\[
+  \sigma
+  \in
+  \mathfrak{P}_{\mathrm{blk}}
+  \cap
+  \mathfrak{P}_{\mathrm{col}}
+\]
+を考える。
+
+閉塞到達時刻
+$T_{\mathrm{blk}}(\sigma)$
+は
+$I_{\mathrm{ACS}}(\sigma)$
+内に属する。
+
+一方、
+崩壊到達時刻
+$T_{\mathrm{col}}(\sigma)$
+は
+$I_{\mathrm{ACS}}(\sigma)$
+に属さない。
+
+したがって、
+\S\ref{subsec:blk_path_set}の終端規約のもとでは、
+\[
+  T_{\mathrm{blk}}(\sigma)
+  <
+  T_{\mathrm{col}}(\sigma)
+\]
+が成立する。
+
+これは、
+閉塞が崩壊の原因または必要条件であることを
+意味しない。
+
+意味するのは、
+同一軌道が
+両集合に属する場合、
+閉塞は通常ACS記録が有効な時刻に記録され、
+崩壊はその通常ACS記録域を終了させる
+後続の終端時刻として記録されるという
+型上の順序である。
+\end{remark}
+
+\subsubsection{崩壊到達と他の失敗関連概念}
+
+\begin{remark}[整形式実現の不成立と崩壊到達経路集合への帰属の関係]
+\label{rem:wf_not_col_path}
+本論文は、ある時刻 $t$ に
+$\mathrm{WF}_{i,t}=0$
+であっても、
+それだけから
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{col}}
+\]
+を一般的な帰結として置かない。
+
+\S\ref{subsec:collapse_def}で述べたとおり、
+本論文は、$\mathrm{WF}_{i,t}=0$ から $\mathrm{Col}_{i,t}=1$ を
+一般的な帰結として置かない。
+
+したがって、
+整形式実現の不成立は
+崩壊到達経路集合への帰属条件ではない。
+
+$\mathfrak{P}_{\mathrm{col}}$
+への帰属には、
+有限時刻で実際に
+$\mathrm{Col}_{i,T}=1$
+が成立することを要する。
+\end{remark}
+
+\begin{remark}[三原理の時刻別充足述語・T-STAB・関係品質と崩壊到達の関係]
+\label{rem:principles_not_col_path}
+本論文は、ある時刻または有限窓において、
+SM・EU・FR のいずれかの時刻別充足述語が偽であること、
+T-STAB が不成立であること、
+関係品質
+$Q<0$
+であること、
+または
+$\chi_{\mathrm{EI},t}=0$
+であることだけから、
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{col}}
+\]
+を一般的な帰結として置かない。
+
+これらは、
+崩壊到達経路集合への
+定義上の帰属条件ではない。
+
+それらと崩壊前状態への流入との
+記述的接続は、
+\S\ref{subsec:inflow_paths}
+で扱う。
+\end{remark}
+
+\begin{remark}[ロバスト可行性核外と崩壊到達の関係]
+\label{rem:viab_outside_not_col_path}
+本論文は、ある時刻で
+$x_t\notin\mathrm{Viab}_f(K)$
+であっても、
+それだけから
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{col}}
+\]
+を一般的な帰結として置かない。
+
+ロバスト可行性核外であることは、
+$E_{\mathrm{req}}$ に対する
+長期ロバスト不変性が
+保証されないことを意味するが、
+本論文は、そこから崩壊終端への有限時間到達を
+一般的な帰結として置かない。
+
+したがって本論文は、
+$x_t\notin\mathrm{Viab}_f(K)$ から
+$\sigma\in\mathfrak{P}_{\mathrm{col}}$ を
+一般的な帰結として置かない。
+\end{remark}
+
+\subsubsection{補集合とPhase~1の限定}
+
+\begin{remark}[$\mathfrak{P}\setminus\mathfrak{P}_{\mathrm{col}}$ の意味]
+\label{rem:col_avoidance}
+補集合
+\[
+  \mathfrak{P}
+  \setminus
+  \mathfrak{P}_{\mathrm{col}}
+\]
+は、
+いかなる有限時刻においても
+$\mathrm{Col}_{i,t}=1$
+が成立しない軌道記録の集合である。
+
+定義~\ref{def:collapse} の
+崩壊指標は二値であるため、
+これは
+\[
+  \forall t\in\mathbb{N}_0,
+  \quad
+  \mathrm{Col}_{i,t}=0
+\]
+である軌道記録の集合に一致する。
+
+ただし本論文は、
+この補集合に属することから、
+閉塞を経験しないこと、
+SM・EU・FR の時刻別充足述語が定義される全時刻で真であること、
+WF が常に成立すること、
+またはロバスト可行性核内に
+留まり続けることを一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[崩壊到達経路集合のPhase~1における限定]
+\label{rem:col_phase1_scope}
+Phase~1 では、
+$\mathfrak{P}_{\mathrm{col}}$
+を
+$\mathfrak{P}$ の
+集合論的部分集合として定義するに留める。
+
+本論文は一般に、
+$\mathfrak{P}_{\mathrm{col}}$ の
+測度、
+確率、
+位相的境界、
+密度、
+距離、
+吸引域、
+または
+「崩壊への近さ」
+を定義しない。
+
+また、
+有限時刻までの観測から
+将来
+$\mathfrak{P}_{\mathrm{col}}$
+へ属することを
+完全に予測する一般手続きも
+Phase~1 では与えない。
+
+\S\ref{subsec:collapse_def}
+で述べたとおり、
+崩壊の理論上の定義と
+有限観測による判定可能性は
+別問題である。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{内部動学および関係性に由来する崩壊前状態への流入}
+\label{subsec:inflow_paths}
+
+本小節では、
+ACS個体 $\Sigma_i$ の
+内部動学上の変化および
+外部対象との関係に由来する変化が、
+\S\ref{subsec:precollapse_states}で導入した
+記述的崩壊前状態帯
+\[
+  \mathsf{Z}_1,\ldots,\mathsf{Z}_4
+\]
+に関連しうることを、
+\emph{流入傾向}
+という記述レベルで整理する。
+
+ここでいう流入傾向は、
+特定の時刻量または関係状態から
+$\mathsf{Z}_j$、
+閉塞、
+または崩壊への
+決定論的遷移を表すものではない。
+
+また、
+流入傾向は
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{blk}}
+\]
+または
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{col}}
+\]
+という経路集合への帰属とも区別される。
+
+したがって本小節は、
+\[
+  \text{時刻依存量・関係状態の変化}
+\]
+と
+\[
+  \text{記述的崩壊前状態帯}
+\]
+と
+\[
+  \text{閉塞・崩壊経路集合への帰属}
+\]
+の三つを同一視しない。
+
+\subsubsection{流入傾向の記述上の地位}
+
+\begin{remark}[流入傾向は形式的な状態遷移関係ではない]
+\label{rem:inflow_is_descriptive}
+本小節で用いる
+「流入」または
+「流入傾向」という語は、
+状態空間 $X$ 上の
+新しい遷移関係、
+ベクトル場、
+距離関数、
+勾配流、
+または確率遷移を
+導入するものではない。
+
+すなわち、
+状態帯 $\mathsf{Z}_j$ と記述される状態から
+$\mathsf{Z}_k$ と記述される状態への
+形式的遷移規則を本小節では定義しない。
+
+また、
+軌道記録空間
+$\mathfrak{P}$
+には
+Phase~1 で
+距離または位相を一般には付与していないため、
+「$\mathfrak{P}_{\mathrm{blk}}$ への距離」
+または
+「$\mathfrak{P}_{\mathrm{col}}$ への接近」
+という形式量も導入しない。
+
+本小節の流入傾向は、
+崩壊前状態に関連しうる
+時刻変化や関係変化を
+記述的に整理するための概念である。
+\end{remark}
+
+\begin{remark}[流入傾向は分類Cの記述である]
+\label{rem:inflow_description_level}
+本小節で参照する
+\S\ref{sec:extended_dynamics} 由来の時刻依存量、
+\S\ref{sec:rel_min} 由来の関係記述、
+および
+$\mathsf{Z}$ 帯は、
+いずれも理論記述側の対象である。
+
+したがって、
+ACS個体 $\Sigma_i$ 自身が
+「自分は崩壊前状態へ流入している」
+という同一の内部変数や
+離散ラベルを
+保持・計算することを要求しない。
+
+同様に、
+TIPA の M2 その他の機構が
+本小節の
+流入傾向、
+$\mathsf{Z}_j$、
+$\mathfrak{P}_{\mathrm{blk}}$、
+または
+$\mathfrak{P}_{\mathrm{col}}$
+への帰属を
+真値として直接認識することも
+Phase~1 の要件ではない。
+\end{remark}
+
+\subsubsection{時刻依存量との接続}
+
+\begin{remark}[\S\ref{sec:extended_dynamics} の時刻依存量の参照]
+\label{rem:internal_inflow_types}
+\S\ref{sec:extended_dynamics} で定義される
+時刻依存量の整理用タプル
+\[
+  \mathrm{Desc}_t
+  =
+  \bigl(
+    \boldsymbol{\beta}_t,\,
+    d_{\mathrm{eff},t},\,
+    \pi_{\tau,t},\,
+    \widehat{\tau}_{t},\,
+    h_{\mathrm{psl},t},\,
+    h_{\mathrm{mem},t},\,
+    h_{\mathrm{sens},t},\,
+    h_{\mathrm{eff},t}
+  \bigr)
+\]
+を参照する。
+このタプルは分類Cの整理用表記であり、
+独立した状態ベクトルではない。
+
+本小節では、
+これらの量が
+有限時刻区間にわたり変化し、
+その変化が
+通常作動・基準帯
+$\mathsf{Z}_0$
+との差異を大きくする方向に
+記述される場合、
+記述的崩壊前状態帯
+$\mathsf{Z}_1$ から
+$\mathsf{Z}_4$
+との関連を
+検討しうるとする。
+
+ただし、本論文は、
+特定の値、
+特定の符号、
+特定の閾値、
+または特定の有限窓差分から
+特定の
+$\mathsf{Z}_j$
+への帰属を
+一般的な帰結として置かない。
+\end{remark}
+
+健全度量と閉塞・崩壊・状態帯の関係は、
+\S\ref{sec:extended_dynamics} の備考~\ref{rem:s5_health_noncollapse} と
+備考~\ref{rem:health_not_zone_identity} に従う。
+
+\begin{remark}[$d_{\mathrm{eff},t}$ と $\mu_{\mathrm{eff},t}$ は異なる]
+\label{rem:d_eff_not_mu_eff}
+\S\ref{sec:extended_dynamics} の
+$d_{\mathrm{eff},t}$
+と、
+\S\ref{sec:three_principles} で
+分類Cの応答多様度として扱う
+$\mu_{\mathrm{eff},t}$
+は、
+異なる形式対象である。
+
+$\mu_{\mathrm{eff},t}$ は、
+時刻 $t$ の
+$(x_t,e_t)$
+における
+可行行動の
+$E_{\mathrm{req}}(x_t)$ 上の
+可行性プロファイル同値類数として定義される
+局所的な一ステップ応答多様性である。
+
+これに対し、
+$d_{\mathrm{eff},t}$
+は
+\S\ref{sec:extended_dynamics}
+で扱う
+時刻依存の発展自由度・有効多様性側の
+記述量である。
+
+したがって、
+\[
+  d_{\mathrm{eff},t}
+  =
+  \mu_{\mathrm{eff},t}
+\]
+を仮定しない。
+
+また、
+\[
+  d_{\mathrm{eff},t}\downarrow
+  \Longrightarrow
+  \mu_{\mathrm{eff},t}\downarrow
+\]
+や、
+\[
+  d_{\mathrm{eff},t}=0
+  \Longrightarrow
+  \mu_{\mathrm{eff},t}<2
+\]
+も、
+追加条件なしには採用しない。
+
+さらに、
+局所 FR の定義条件は $\mu_{\mathrm{eff},t}$ を用いない。
+局所 FR は
+\S\ref{sec:three_principles} の定義域 $\mathcal{D}_{\mathrm{FR}}$ 上で
+可行行動集合の非空性によって判定されるため、
+本論文は、$\mu_{\mathrm{eff},t}<2$ であることだけから
+局所 FR が偽であることを一般的な帰結として置かない。
+同様に、
+$d_{\mathrm{eff},t}$ の低下を
+局所 FR 条件の不充足そのものとして扱わない。
+\end{remark}
+
+\begin{remark}[時間地平量と崩壊を直接結びつけない]
+\label{rem:time_horizon_not_collapse}
+\S\ref{sec:extended_dynamics} の
+$\pi_{\tau,t}$
+および
+$\widehat{\tau}_{t}$
+は、
+時間地平に関係する
+時刻依存量である。
+
+これらの低下が
+対象系によっては
+予測・評価・応答余裕の縮小と
+関連しうるとしても、
+本論文は一般に
+\[
+  \widehat{\tau}_{t}=0
+  \Longrightarrow
+  A_{i,t}=\emptyset
+\]
+または
+\[
+  \widehat{\tau}_{t}=0
+  \Longrightarrow
+  \mathrm{Col}_{i,t}=1
+\]
+を採用しない。
+
+同様に、本論文は、
+$\pi_{\tau,t}$ の特定値から
+特定の
+$\mathsf{Z}_j$
+への帰属も
+一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[偏向強度の変化を崩壊方向と固定しない]
+\label{rem:beta_not_fixed_collapse_direction}
+\S\ref{sec:extended_dynamics} の
+\[
+  \beta_{\iota,t}\quad(\iota\in\mathcal J_{\beta})
+\]
+は、
+参照基準に相対して定める偏向性 $\iota$（定義~\ref{def:bias_tendency}）について、
+その時刻 $t$ における程度を表す偏向強度である。
+$\beta_{\iota,t}$ の値からは、偏向性の帰属区分も方向も読まない。
+
+本小節では、
+$\beta_{\iota,t}$ の増大または減少の
+一方を
+普遍的に
+「崩壊方向」として固定しない。
+
+対象系における
+偏向性 $\iota$ の参照基準と尺度、
+読み出し規則と担体の遷移、
+他の時刻依存量との組合せにより、
+崩壊前状態との関連は異なりうる。
+
+したがって、
+\[
+  \beta_{\iota,t}\uparrow
+  \Longrightarrow
+  \sigma\in\mathfrak{P}_{\mathrm{blk}}
+\]
+または
+\[
+  \beta_{\iota,t}\uparrow
+  \Longrightarrow
+  \sigma\in\mathfrak{P}_{\mathrm{col}}
+\]
+のような一般的含意を
+Phase~1 では置かない。
+\end{remark}
+
+\subsubsection{三原理の時刻別充足述語との接続}
+
+\begin{remark}[内部時刻量と三原理の時刻別充足述語を同一視しない]
+\label{rem:internal_quantities_not_principles}
+\S\ref{sec:extended_dynamics} の
+時刻依存量の変化は、
+対象系によっては
+SM・EU・FR の時刻別充足述語が偽となる状態変化と
+併存または関連しうる。
+
+しかし、
+本論文は
+\[
+  h_{q,t},
+  \quad
+  d_{\mathrm{eff},t},
+  \quad
+  \boldsymbol{\beta}_t,
+  \quad
+  \widehat{\tau}_{t}
+\]
+のいずれかを
+SM・EU・FR の時刻別充足述語の真理値そのものとはしない。
+
+特に、
+Phase~1 における時刻 $t$ の SM の時刻別充足述語は
+$\Pi(x_t)\ge0$
+によって判定される。
+EU の時刻別充足述語は
+\S\ref{sec:three_principles} の適用域で定義され、
+同節の一段階臨界必要要因集合 $\mathrm{Crit}^{(1)}(x_t)$ に属する必要環境要因の充足によって判定される。
+FR の時刻別充足述語（局所 FR）は同節の定義域
+$\mathcal{D}_{\mathrm{FR}}$
+上で定義され、
+\[
+  \mathrm{FR}_t
+  \Longleftrightarrow
+  A_{i,t}\neq\emptyset
+\]
+によって判定される。
+$\mu_{\mathrm{eff},t}$ は応答多様度を表す分類C量であり、
+局所 FR の真理値そのものではない。
+
+したがって、
+\S\ref{sec:extended_dynamics} の時刻依存量の変化から
+三原理の時刻別充足述語の真偽を
+直接置換的に判定しない。
+\end{remark}
+
+\begin{remark}[三原理の時刻別充足述語が偽であることと経路集合への帰属]
+\label{rem:principle_failure_not_path_membership}
+本論文は、SM の時刻別充足述語が偽であることだけからは、
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{blk}}
+\]
+も
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{col}}
+\]
+も一般的な帰結として置かない（備考~\ref{rem:sm_wf_not_blk_path}、備考~\ref{rem:principles_not_col_path}）。
+
+FR の時刻別充足述語は
+定義域 $\mathcal{D}_{\mathrm{FR}}$ 上で
+$A_{i,t}\neq\emptyset$ と同値に定まる
+（備考~\ref{rem:internal_quantities_not_principles}）。
+したがって、
+FR の時刻別充足述語が時刻 $t$ に偽であれば
+$A_{i,t}=\emptyset$ であり、
+$t\in I_{\mathrm{ACS}}(\sigma)$ のとき、
+定義~\ref{def:blk_path_set} により
+$\sigma\in\mathfrak{P}_{\mathrm{blk}}$ が従う。
+EU の時刻別充足述語が偽であることと閉塞との関係は
+\S\ref{sec:three_principles} で扱い、
+本備考はその関係を前提としない。
+
+一方、本論文は、
+三原理のいずれの時刻別充足述語が偽であることからも、
+それだけから
+$\sigma\in\mathfrak{P}_{\mathrm{col}}$
+を一般的な帰結として置かない（備考~\ref{rem:principles_not_col_path}）。
+
+したがって、
+本小節で
+内部時刻量の変化と
+三原理の時刻別充足述語が偽であることとの
+記述的接続を述べる場合でも、
+それを
+閉塞または崩壊への
+決定論的経路としては扱わない。
+\end{remark}
+
+\subsubsection{関係性に由来する変化との接続}
+
+\begin{remark}[関係記述子と流入傾向]
+\label{rem:relational_inflow}
+\S\ref{sec:rel_min} で扱う
+外部対象との関係記述は、
+ACS個体 $\Sigma_i$ と
+外部対象との間で実現している
+関係状態を記述する。
+
+関係状態の時間変化は、
+対象系によっては、
+内部状態 $x_t$、
+\S\ref{sec:extended_dynamics} の時刻依存量、
+必要環境充足、
+または
+可行行動集合の変化と
+関連しうる。
+
+本小節では、
+このような関係性由来の変化が
+記述的崩壊前状態帯との
+関連を形成しうることを許容する。
+
+ただし、本論文は、
+特定の関係カテゴリ、
+特定の関係記述子成分、
+または特定の関係方向から、
+特定の
+$\mathsf{Z}_j$、
+閉塞、
+または崩壊を
+一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[関係カテゴリは崩壊原因ラベルではない]
+\label{rem:relation_category_not_collapse_cause}
+\S\ref{sec:rel_min} において
+関係カテゴリが導入されている場合でも、
+本節は
+あるカテゴリを
+「崩壊を生じさせるカテゴリ」
+として固定しない。
+
+同じカテゴリ名で記述される関係でも、
+関係の具体的内容、
+持続時間、
+方向性、
+対象状態、
+環境状態、
+内部状態、
+および他の関係との組合せにより、
+ACSへの影響は異なりうる。
+
+したがって、
+関係カテゴリから
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{blk}}
+\]
+または
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{col}}
+\]
+への一般的含意を
+採用しない。
+\end{remark}
+
+\begin{remark}[関係品質 $Q$ の負値と崩壊の関係]
+\label{rem:negative_Q_not_collapse}
+\S\ref{subsec:ro_quality} の
+関係品質
+$Q_{i\leftarrow j,t}$
+は、
+評価可能な関係の品質を
+記述する分類C量である。
+
+$Q_{i\leftarrow j,t}<0$
+であることは、
+当該品質指標上で
+負側の評価であることを表すが、
+本論文は、それだけから
+$\Pi(x_t)$
+の低下方向、
+閉塞、
+整形式実現の不成立、
+または崩壊を
+一般的な帰結として置かない。
+
+したがって本論文は、
+$Q<0$ から
+$\sigma\in\mathfrak{P}_{\mathrm{blk}}$ も
+$\sigma\in\mathfrak{P}_{\mathrm{col}}$ も
+一般的な帰結として置かない。
+
+関係品質の時間的蓄積や
+複数関係の統合評価を
+崩壊経路へ接続する追加モデルは、
+Phase~1 の本小節では導入しない。
+\end{remark}
+
+\begin{remark}[構造的環境結合と実現関係変化を区別する]
+\label{rem:env_coupling_not_relational_inflow}
+\S\ref{sec:three_principles} で定義される
+構造的環境結合条件は、
+ACS と外部環境との構造的な結合可能性に関する背景条件である。
+これは環境利用 EU の前提・背景構造として位置づけられるが、
+EU の時刻別充足述語そのものではない。
+
+これに対して、
+本小節で扱う
+関係性由来の変化は、
+実現した外部対象との関係状態や
+その時間変化に関する記述である。
+
+したがって、
+構造的環境結合条件、実現関係状態および関係性由来の流入傾向は、
+異なる記述対象として扱い、
+相互に同一視しない。
+
+構造的環境結合条件が成立していても
+不利な関係状態が実現する場合を
+排除しないし、
+同条件が不成立であることから
+直ちに閉塞・崩壊を導くこともない。
+\end{remark}
+
+\subsubsection{流入傾向と状態帯の関係}
+
+\begin{remark}[流入傾向から特定の $\mathsf{Z}$ 帯を一意に定めない]
+\label{rem:inflow_not_unique_zone}
+内部時刻量または関係状態に
+変化が観察されたとしても、
+その変化から
+\[
+  \mathsf{Z}_1,
+  \mathsf{Z}_2,
+  \mathsf{Z}_3,
+  \mathsf{Z}_4
+\]
+のいずれか一つを
+一意に決定する
+普遍的写像を
+Phase~1 では定義しない。
+
+同一の変化が、
+ある対象系では
+軽度障害顕在化に関連し、
+別の対象系では
+通常作動範囲内に留まり、
+また別の対象系では
+複数の記述帯と
+同時に関連する場合を
+排除しない。
+
+これは、
+\S\ref{subsec:precollapse_states}で
+$\mathsf{Z}$ 帯を
+状態空間分割または全順序として
+定義しなかったことと整合する。
+\end{remark}
+
+\begin{remark}[流入傾向は基準帯からの単調離脱を意味しない]
+\label{rem:inflow_not_monotone}
+流入傾向という語は、
+$\mathsf{Z}_0$ から $\mathsf{Z}_5$ まで
+添字順に状態帯を経由する
+単調な進行系列を意味しない。
+
+内部量や関係状態の変化後に
+通常作動・基準帯側へ戻ること、
+異なる記述帯へ移ること、
+または
+明示的な崩壊前状態帯を経ずに
+崩壊終端へ到達することを
+Phase~1 は排除しない。
+\end{remark}
+
+\subsubsection{流入傾向と経路集合への帰属}
+
+\begin{remark}[流入と経路集合への帰属の区別]
+\label{rem:inflow_vs_membership}
+本小節でいう
+流入傾向と、
+軌道記録が
+$\mathfrak{P}_{\mathrm{blk}}$
+または
+$\mathfrak{P}_{\mathrm{col}}$
+に属することは
+別の条件である。
+
+ある軌道記録において、
+健全度低下、
+$d_{\mathrm{eff},t}$ の変化、
+時間地平量の変化、
+偏向強度の変化、
+または関係状態の変化が
+崩壊前状態との関連を示していても、
+本論文は、それだけから
+有限時刻内の閉塞または崩壊を
+一般的な帰結として置かない。
+
+したがって本論文は、
+流入傾向から
+$\sigma\in\mathfrak{P}_{\mathrm{blk}}$ も
+$\sigma\in\mathfrak{P}_{\mathrm{col}}$ も
+一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[経路集合への帰属から特定の流入機構を逆算しない]
+\label{rem:membership_not_unique_inflow}
+逆に、本論文は、
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{blk}}
+\]
+または
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{col}}
+\]
+であることから、
+その軌道が
+特定の健全度低下、
+特定の $d_{\mathrm{eff},t}$ 変化、
+特定の関係カテゴリ、
+または特定の $Q$ 変化を
+事前に経由したことを
+一般的な帰結として置かない。
+
+閉塞または崩壊へ至る
+具体的機構は、
+対象系ごとの
+内部動学、
+環境実現（背景成分の列と $g_O$）、
+関係状態、
+外的作用、
+その他の条件に依存しうる。
+
+したがって、
+経路集合への帰属は
+原因機構の一意な同定を
+意味しない。
+\end{remark}
+
+\begin{remark}[崩壊前状態帯を経由しない崩壊との整合]
+\label{rem:inflow_and_direct_collapse}
+\S\ref{subsec:collapse_def}および
+\S\ref{subsec:col_path_set}で確定したとおり、
+崩壊
+$\mathrm{Col}_{i,t}=1$
+は、
+記述的崩壊前状態帯
+$\mathsf{Z}_1$ から
+$\mathsf{Z}_4$
+の事前経由を
+必要条件としない。
+
+したがって、
+本小節で整理する
+「崩壊前状態への流入」は、
+崩壊に至りうる
+全経路を網羅するものではない。
+
+崩壊前状態帯を
+明示的に経由しない
+崩壊到達経路は、
+本小節の流入整理の対象外であるが、
+Phase~1 の軌道記録空間からは
+排除されない。
+\end{remark}
+
+\subsubsection{M2・TIPAとの接続}
+
+\begin{remark}[経路集合・流入傾向はM2の直接入力ではない]
+\label{rem:path_sets_m2_connection}
+本節で導入した
+\[
+  \mathfrak{P}_{\mathrm{blk}},
+  \qquad
+  \mathfrak{P}_{\mathrm{col}},
+  \qquad
+  \mathsf{Z}_1,\ldots,\mathsf{Z}_4,
+\]
+および本小節の
+流入傾向は、
+理論記述側の対象である。
+
+したがって、
+TIPA の M2 が
+これらの集合、
+集合への帰属、
+状態帯ラベル、
+または
+「流入の程度」
+をそのまま内部入力として
+保持・計算することを
+要求しない。
+
+M2 の正式な入力型、
+評価写像、
+Priority、
+その他の標準機能形式は
+\S\ref{sec:tipa}
+の責務であり、
+本小節では再定義しない。
+
+経路集合に属する軌道上で
+可行性関連の状態変化が生じ、
+それがM2に利用可能な
+感知・統合・内部モデル情報へ
+反映される実装は許容される。
+
+しかし、本論文は、
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{blk}}
+\]
+または
+\[
+  \sigma\in\mathfrak{P}_{\mathrm{col}}
+\]
+であることから、
+特定のM2出力や
+特定のPriority値を
+一般的な帰結として置かない。
+\end{remark}
+
+\subsubsection{Phase~1 における限定}
+
+\begin{remark}[流入傾向のPhase~1における限定]
+\label{rem:inflow_phase1_scope}
+Phase~1 の本小節は、
+単一ACS個体 $\Sigma_i$ の
+軌道記録について、
+内部時刻量および
+外部対象との関係状態の変化が
+崩壊前状態と
+関連しうることを
+記述的に整理するに留める。
+
+本小節は、
+次のものを一般には導入しない。
+
+\begin{itemize}
+  \item
+  崩壊前状態への距離またはポテンシャル、
+  \item
+  流入速度または流入率、
+  \item
+  閉塞・崩壊確率、
+  \item
+  特定量から $\mathsf{Z}$ 帯への普遍的閾値写像、
+  \item
+  特定の関係カテゴリから崩壊への因果法則、
+  \item
+  流入傾向から経路集合への帰属を保証する十分条件。
+\end{itemize}
+
+これらを導入するには、
+追加の対象系依存仮定、
+位相・測度・確率構造、
+または実証的根拠を要する。
+
+その精密な形式化は
+Phase~2 以降の課題とする（\S\ref{subsec:limitations_list} の L9）。
+\end{remark}
+
+\subsubsection{本小節の要約}
+
+\begin{remark}[流入記述の要約]
+\label{rem:inflow_summary}
+本小節で維持する関係は、
+次のように要約できる。
+
+\[
+  \text{時刻依存量の変化}
+  \;\dashrightarrow\;
+  \text{崩壊前状態との関連可能性}
+\]
+
+\[
+  \text{関係状態の変化}
+  \;\dashrightarrow\;
+  \text{崩壊前状態との関連可能性}
+\]
+
+ここで
+$\dashrightarrow$
+は
+形式的含意ではなく、
+記述的接続を表す。
+
+したがって本論文は、
+時刻量または関係状態の変化だけから、
+特定の状態帯 $\mathsf{Z}_j$ への分類を一般的な帰結として置かない。
+また本論文は、流入傾向だけから、
+軌道記録 $\sigma$ が閉塞経路集合
+$\mathfrak{P}_{\mathrm{blk}}$ または崩壊到達経路集合
+$\mathfrak{P}_{\mathrm{col}}$ に属することを一般的な帰結として置かない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{組織ACSへの接続}
+\label{subsec:to_section8}
+
+本小節では、
+本節の個体レベルの概念を
+\S\ref{sec:org_acs}
+で扱う組織ACS、
+すなわち組織自身についてACS構造が成立する場合の議論へ接続する。
+
+ただし、
+\S\ref{sec:collapse_cond} の個体レベル概念を
+組織水準へそのまま持ち上げることはしない。
+ACS集団と組織ACSの区別は次の備考で述べる。
+
+\subsubsection{ACS集団と組織ACSの区別}
+
+\begin{remark}[ACS集団はそれだけでは組織ACSではない]
+\label{rem:acs_group_vs_org_acs}
+複数のACS個体
+$\Sigma_1,\ldots,\Sigma_n$
+と、
+それらの間の相互作用または関係構造が存在する場合、
+それらは
+\S\ref{sec:org_acs}
+で扱う
+ACS集団の基体を構成しうる。
+
+しかし本論文は、
+複数個体が存在すること、
+または関係ネットワークが存在することだけから、
+組織水準の構造的自己、
+組織水準の可行性、
+あるいは組織ACSの成立を
+一般的な帰結として置かない。
+
+したがって、
+\[
+  \text{ACS集団}
+  \neq
+  \text{組織ACS}
+\]
+である。
+
+組織ACSとしての成立には、
+\S\ref{sec:org_acs}
+で別途定める
+組織水準のACS構造の成立を要する。
+
+本節は、
+それらの条件を先取りして
+再定義しない。
+\end{remark}
+
+\begin{remark}[本節で扱う対象は個体添字 $i$ に属する]
+\label{rem:individual_level_failure_objects}
+本節で扱った
+\[
+  A_{i,t},
+  \qquad
+  \mathrm{WF}_{i,t},
+  \qquad
+  \mathrm{Col}_{i,t},
+\]
+\[
+  \Upsilon_{\mathrm{adm},i},
+  \qquad
+  \mathrm{Recover}_{i,t},
+\]
+および
+個体 $\Sigma_i$ の軌道記録に関する
+\[
+  \mathfrak{P},
+  \qquad
+  \mathfrak{P}_{\mathrm{blk}},
+  \qquad
+  \mathfrak{P}_{\mathrm{col}}
+\]
+は、
+\S\ref{sec:collapse_cond} の範囲では
+単一ACS個体に対する対象である。
+
+したがって、
+これらに含まれる個体添字 $i$ を除去して、
+組織水準の閉塞・崩壊・回復へ
+自動的に読み替えない。
+
+複数個体を含む系についても、
+各個体の閉塞または崩壊は、
+まず各
+$\Sigma_i$
+について個別に判定される。
+\end{remark}
+
+\subsubsection{個体崩壊と組織水準状態の非同一性}
+
+\begin{remark}[個体の崩壊と組織ACSの崩壊を同一視しない]
+\label{rem:individual_vs_org_collapse}
+ある構成個体について
+$\mathrm{Col}_{i,t}=1$
+が成立したとしても、
+本論文は、それだけから
+組織ACS全体の崩壊を一般的な帰結として置かない。
+
+逆に、
+\S\ref{sec:org_acs}
+または後続Phaseで
+組織水準の崩壊概念を扱う場合でも、
+組織水準の崩壊から
+すべての構成個体について
+$\mathrm{Col}_{i,t}=1$
+を導けるとは限らない。
+
+したがって、
+\[
+  \text{個体ACSの崩壊}
+  \neq
+  \text{組織水準の崩壊}
+\]
+である。
+
+組織水準の崩壊を形式化する場合には、
+組織自身の構造的自己、
+組織水準の可行性、
+組織水準の結合構造その他に対する
+条件を要する。
+その際には、
+\S\ref{sec:org_acs} の組織水準のACS構造のもとで、
+\S\ref{sec:collapse_cond} の崩壊条件を
+組織水準で満たすことを確認する。
+\end{remark}
+
+\begin{remark}[個体閉塞と組織水準可行性を同一視しない]
+\label{rem:individual_blockage_org_viability}
+ある個体
+$\Sigma_i$
+について
+$A_{i,t}=\emptyset$
+が成立しても、
+本論文は、それだけから
+他の個体
+$\Sigma_j$
+の閉塞、
+ACS集団全体の機能停止、
+または組織ACSの可行性喪失を
+一般的な帰結として置かない。
+
+同様に、
+複数個体が同時に閉塞していることだけから、
+組織ACSの崩壊を定義しない。
+
+個体レベルの失敗状態を
+組織水準の状態へ接続するには、
+\S\ref{sec:org_acs}
+で導入される
+組織水準のACS構造を
+別途用いる必要がある。
+\end{remark}
+
+\subsubsection{関係性を介した波及の位置づけ}
+
+\begin{remark}[関係性を介した波及は可能性としてのみ接続する]
+\label{rem:multi_agent_collapse_deferral}
+\S\ref{subsec:inflow_paths} では、
+外部対象との関係状態の変化が、
+単一ACS個体の内部状態や
+時刻依存量の変化と
+関連しうることを記述した。
+
+外部対象が別のACS個体
+$\Sigma_j$
+である場合、
+$\Sigma_j$ の行動または状態変化が
+関係を介して
+$\Sigma_i$ の状態変化に関与する場合を
+Phase~1 の一般論は排除しない。
+
+しかし、
+このことから
+「崩壊が個体間を伝播する」
+という形式法則を、
+本節では一般的な帰結として置かない。
+
+特に、
+\[
+  \mathrm{Col}_{j,t}=1
+  \Longrightarrow
+  \mathrm{Col}_{i,t+k}=1
+\]
+のような
+個体間の崩壊伝播則を
+追加仮定なしには置かない。
+
+多主体的な波及を
+正式な動学として扱うには、
+複数個体の状態・関係構造の
+同時時間発展を記述する
+追加形式が必要である。
+
+その精密化は、
+\S\ref{sec:org_acs}
+での構造的接続を経たうえで、
+主として Phase~2 以降の課題とする（問題~\ref{prob:social_dynamics}）。
+\end{remark}
+
+\begin{remark}[関係カテゴリと多主体的崩壊の関係]
+\label{rem:relation_category_collapse_scope}
+\S\ref{sec:rel_min}
+で用いる関係カテゴリまたは関係記述子は、
+個体間関係を記述するための対象である。
+
+本論文は、特定の関係カテゴリが存在すること、
+特定の関係品質
+$Q$
+が負であること、
+または
+関係状態に大きな変化があることだけから、
+多主体的な閉塞、
+崩壊伝播、
+または組織ACSの崩壊を
+一般的な帰結として置かない。
+
+したがって、
+\S\ref{sec:collapse_cond} から
+組織水準または多主体間の因果法則を
+先取りして構成しない。
+\end{remark}
+
+\subsubsection{外的回復可能性の多主体文脈}
+
+\begin{remark}[他ACSからの作用と $\Upsilon_{\mathrm{adm}}$ を自動同一視しない]
+\label{rem:multi_agent_recovery_scope}
+あるACS個体
+$\Sigma_j$
+から
+$\Sigma_i$
+への作用が存在するとき、
+その作用が
+$\Sigma_i$ の回復に関与する場合はありうる。
+
+しかし、
+$\Sigma_j$ からの任意の作用を
+自動的に
+\[
+  \upsilon\in\Upsilon_{\mathrm{adm},i}
+\]
+とみなさない。
+
+ある外部作用が
+$\Upsilon_{\mathrm{adm},i}$
+の要素として扱われるかは、
+\S\ref{subsec:external_recovery}
+で定めた
+$\Sigma_i$ 側の許容作用域に依存する。
+
+また、
+複数個体が協調して行う回復作用、
+組織構造そのものによる回復作用、
+または組織ACSが構成個体へ与える
+トップダウン作用を
+Phase~1 の本節で
+一般形式化しない。
+
+これらを扱う場合には、
+\S\ref{sec:org_acs}
+の組織構造と整合する
+追加定義を要する。
+\end{remark}
+
+\subsubsection{経路集合の多主体拡張}
+
+\begin{remark}[経路集合の多主体的拡張は本節で導入しない]
+\label{rem:path_set_multi_agent}
+本節の
+\[
+  \mathfrak{P}_{\mathrm{blk}}
+  \quad\text{および}\quad
+  \mathfrak{P}_{\mathrm{col}}
+\]
+は、
+単一ACS個体の
+軌道記録空間
+$\mathfrak{P}$
+の部分集合として定義された。
+
+複数ACS個体を同時に扱うために、
+例えば
+$\prod_{i=1}^{n}\mathfrak{P}_i$
+のような積軌道空間や、
+関係ネットワークの時間発展を含む
+結合軌道空間を導入することは可能である。
+
+しかし、
+Phase~1 の本節では
+そのような多主体軌道空間を
+正式には導入しない。
+
+したがって、
+多主体的な
+閉塞経路集合、
+崩壊到達経路集合、
+同時到達時刻、
+伝播速度、
+連鎖崩壊集合等も
+本節では定義しない。
+
+これらは、
+\S\ref{sec:org_acs}
+の組織構造を前提にした
+後続の拡張課題である。
+\end{remark}
+
+\subsubsection{組織ACSの節への引き渡しインターフェース}
+
+\begin{remark}[組織ACSの節へ渡す個体レベルの確定事項]
+\label{rem:sec7_to_sec8_interface}
+\S\ref{sec:org_acs}
+が個体レベルの失敗状態を参照するとき、
+本節から引き渡す確定事項は
+少なくとも次である。
+
+\begin{enumerate}
+  \item
+  個体閉塞：
+  $A_{i,t}=\emptyset$。
+
+  \item
+  個体崩壊：
+  $\mathrm{Col}_{i,t}=1$、
+  ただし
+  本枠組みにおける
+  (SC-1) 構造的同一性を成立させる組織関係の喪失、
+  (SC-2) 同一個体としての相対的非回復性、
+  および (C-2) 吸収性を伴う。
+
+  \item
+  個体レベルでは、
+  本論文は閉塞 $A_{i,t}=\emptyset$ から
+  $\mathrm{Col}_{i,t}=1$ を一般的な帰結として置かない。
+
+  \item
+  個体崩壊は
+  組織水準の崩壊と同一ではない。
+
+  \item
+  個体の
+  $\mathfrak{P}_{\mathrm{blk}}$
+  と
+  $\mathfrak{P}_{\mathrm{col}}$
+  には、
+  一般的な包含関係を置かない。
+
+  \item
+  内部量・関係状態の変化は、
+  閉塞または崩壊の
+  一般的十分条件ではない。
+\end{enumerate}
+
+\S\ref{sec:org_acs} は、
+これらの個体レベル定義を変更せず参照し、
+組織水準の構造を必要に応じて
+別途定義する。
+\end{remark}
+
+\subsubsection{本節の責務境界}
+
+\begin{remark}[本節の責務境界]
+\label{rem:sec7_scope_boundary}
+\S\ref{sec:collapse_cond} の責務は、
+Phase~1 の単一ACS個体について、
+閉塞と崩壊を区別し、
+回復可能性と終端性を整理し、
+それらを軌道記録集合として記述するところまでである。
+
+本節は、
+次のものを一般理論としては導入しない。
+
+\begin{itemize}
+  \item
+  組織ACSそのものの成立条件、
+  \item
+  組織水準の構造的自己、
+  \item
+  組織水準の崩壊指標、
+  \item
+  個体間の崩壊伝播則、
+  \item
+  多主体軌道空間、
+  \item
+  多主体的な閉塞・崩壊経路集合、
+  \item
+  組織水準の回復作用素。
+\end{itemize}
+
+このうち、
+組織自身をACSとして扱う組織ACSの成立条件および
+組織水準の可行性・閉塞・崩壊は
+\S\ref{sec:org_acs} の責務であり、
+個体間の崩壊伝播則、
+多主体軌道空間、
+および多主体的な経路集合は、
+Phase~2 以降の責務である（問題~\ref{prob:social_dynamics}、\S\ref{subsec:phase_outlook}）。
+
+したがって、
+\S\ref{sec:collapse_cond} から \S\ref{sec:org_acs} への接続は、
+\[
+  \text{個体レベルの確定定義を渡す}
+\]
+ことに限定し、
+\[
+  \text{個体定義を組織水準へ自動拡張しない}
+\]
+という境界を維持する。
+\end{remark}

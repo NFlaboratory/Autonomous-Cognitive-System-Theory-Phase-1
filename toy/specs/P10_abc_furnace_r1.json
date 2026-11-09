@@ -1,0 +1,149 @@
+{
+ "id": "P10_abc_furnace_r1",
+ "model": "e10_exact",
+ "purpose": "Experiments A, B, C (descriptive).  A: how far the antecedents of prop:kernel_maintenance (e_s in E_req(x_s), u_s in U^Viab(x_s)) hold on realised trajectories of the TIPA mechanism.  B1: finite-time selection tendency of kernel-maintaining responses.  B2: acquisition in the sense of def:kernel_response_acquisition, decided exactly on periodic backgrounds by recurrence of the joint state (x, o, M, phase); 'undetermined' otherwise.  C: which antecedent is false at each step (C0 not in Viab, C1 environment only, C2 selection only, C3 both, OK none), recorded beside the realised outcome (stay in / leave the kernel) and the events (blockage, leaving K, collapse), each attributed to the class of the last step spent in the kernel.  The attribution is logical (which antecedent of the proposition failed), not causal; 'estimate error present' is recorded as co-occurrence only.",
+ "hypotheses_note": "No comparative hypothesis is tested.  The only registered check is the regression H1: a step classed OK (both antecedents true, x in the kernel) never leaves the kernel (one-step form of prop:kernel_maintenance); it can fail only through an implementation error.",
+ "tuning_history": "Nothing tuned (furnace model and mechanism of E8).  Smoke test of the unit on tuning seeds 1-2 at one sweep point (hot_len 5, deliv 3, draught 1) before registration.",
+ "periodic_background": "period 12; one hot spell per block at a seed-fixed offset, delivery every deliv_period steps, `draught` bad-draught steps at seed-fixed positions per block.",
+ "sources": [
+  "acsjudge/*.py",
+  "domains/*.py",
+  "domains/furnace/*.py",
+  "minacs/*.py",
+  "e4/*.py",
+  "run_prereg.py"
+ ],
+ "seeds": {
+  "tune": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "eval": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46,
+   47,
+   48,
+   49,
+   50,
+   51,
+   52,
+   53,
+   54,
+   55,
+   56,
+   57,
+   58,
+   59,
+   60
+  ]
+ },
+ "sweep": {
+  "domain": [
+   "furnace"
+  ],
+  "hot_len": [
+   4,
+   5,
+   6
+  ],
+  "deliv_period": [
+   2,
+   3,
+   4
+  ],
+  "draught": [
+   1,
+   2
+  ]
+ },
+ "conditions": [
+  "aper",
+  "periodic"
+ ],
+ "rule_variants": {
+  "R0": {}
+ },
+ "rule_independent_metrics": [],
+ "hypotheses": [
+  {
+   "id": "H1",
+   "kind": "share",
+   "predicate": "ok_steps_never_leave_kernel",
+   "statement": "（回帰検査）両前件が成り立つ時刻（OK）に核から出る例はない（prop:kernel_maintenance の一段の形）。",
+   "how_it_could_fail": "判定層または記録の実装に誤りがあれば、OK の時刻に核から出る例が生じる。命題に反するので、起こるとすれば実装の誤りに限られる。回帰検査として登録する。",
+   "rule": {
+    "support_min": 1.0,
+    "reject_max": 0.999
+   },
+   "conditions": [
+    "aper"
+   ]
+  }
+ ],
+ "source_hashes": {
+  "acsjudge/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "acsjudge/checks.py": "97fefc471c01b703ac201466c311bd1b",
+  "acsjudge/judge.py": "47aada73f5ef0d6eb7ac1c4691e54176",
+  "acsjudge/trajectory.py": "c1c41dadb55a7cc032551b46b3f5e0c5",
+  "domains/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "domains/minacs_domain.py": "afb95928761ec3f98a02b98c45e10476",
+  "domains/furnace/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "domains/furnace/mind.py": "ea7c80151daf769be35577fa58890bc8",
+  "domains/furnace/model.py": "9bcca218621fa0d99edf5a46cdbe56c9",
+  "domains/furnace/policies.py": "b4392e30f05f63f933536b7e2c7ee595",
+  "minacs/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "minacs/analysis.py": "cda1714bc47208bcd7317c13adc7addd",
+  "minacs/mind.py": "d4c750474240b76cbe5e5497947c9627",
+  "minacs/model.py": "f675d770f05d2fda28ae266768cb5836",
+  "minacs/trajectory.py": "119f94104b0558c373518a518fd7b81e",
+  "e4/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "e4/adapters.py": "fee4fb4c5fbf43b3a3e03a8ad0435b7c",
+  "e4/policies_minacs.py": "b3a1c028b6a89af766a93aacec79afe2",
+  "e4/policies_v2.py": "07904f883ac67b70351a57e8984e7495",
+  "e4/prereg.py": "f6cc36bfa4f0d572258cba30a15fe5ac",
+  "run_prereg.py": "7bc66ccc3de8afc56a830158a9e84b61"
+ },
+ "registered_at": "2026-10-27T08:31:58.864712+00:00"
+}

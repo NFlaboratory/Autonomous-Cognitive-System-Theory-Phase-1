@@ -1,0 +1,626 @@
+%======================================================================
+\section{標準作動形式と時刻間の接続}
+\label{sec:extended_dynamics}
+
+本節では、\S\ref{sec:acs_def} の型と更新、\S\ref{sec:three_principles} の記述水準、
+\S\ref{sec:tipa} の同時刻構造を接続する。
+対象は決定論的・離散時間の単一ACSである。原始的な機能の標準写像および
+読み出し規則を固定し、環境実現（定義~\ref{def:env_realization}）を与えた場合に、
+一段の形式的記録が定まり、次時刻へ閉じることを示す。
+数学的記録の存在と、実在個体の機能の活動・整形式実現・存続は区別する。
+本節で新たに用いる主要記号の一覧は付録~\ref{app:symbols_s5} に示す。
+
+%----------------------------------------------------------------------
+\subsection{責務 R1〜R4}
+\label{subsec:update_dependency}
+\label{subsubsec:update_role}
+\begin{definition}[本節の責務]
+\label{def:s5_responsibilities}
+本節の責務を次の四項目とする。
+\begin{description}
+\item[R1] 行動応答成分を含めて、型整合的な一段の作動記録を与える。
+\item[R2] 状態・内部モデル・行動応答成分の次時刻への接続を、
+既存の $f,\mathrm{Update}$ と環境実現の $g_O$ で閉じる。
+\item[R3] 固定した背景成分の列・初期値・標準写像のもとで、数学的記録の存在と一意性を示す。
+\item[R4] 後続節へ可行行動集合、作動記録、分類C記述量を受け渡す。
+\end{description}
+R3 は可行性維持、非閉塞、非崩壊、実装上の活動の継続を意味しない。
+\end{definition}
+
+\begin{remark}[他節との責務境界]
+\label{rem:s5_scope_boundary}
+\S\ref{sec:tipa} の機構・基盤・実装の責務を再定義しない。
+関係記述は \S\ref{sec:rel_min}、実現の終端・崩壊とその記録の解釈は
+\S\ref{sec:acs_def}・\S\ref{sec:collapse_cond} に従う。
+本節の全域写像の評価は、機能的終端後にも実装が作動するとの主張ではない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{一段の作動形式}
+\label{subsec:s5_operation}
+\begin{definition}[標準作動の一段]
+\label{def:s5_standard_step}
+定義~\ref{def:three_primitives} の全域一価写像と、
+環境実現 $\bigl(E^{\mathrm{bg}},O,g_O,(b_t)_{t\ge0}\bigr)$（定義~\ref{def:env_realization}）を固定し、
+$(x_t,M_t,o_t)\in X\times\mathcal M\times O$ と $b_t\in E^{\mathrm{bg}}$ に対して
+\[
+\begin{aligned}
+e_t&=(b_t,o_t),\\
+I_t&=P_{\mathrm{sens}}(x_t,e_t),\\
+r_t&=P_{\mathrm{disc}}(M_t,I_t),\\
+v_t&=P_{\mathrm{val}}(M_t,r_t),\\
+u_t&=P_{\mathrm{act}}(M_t,r_t,v_t),\\
+x_{t+1}&=f(x_t,u_t,e_t),\\
+M_{t+1}&=\mathrm{Update}(M_t,x_t,e_t),\\
+o_{t+1}&=g_O(o_t,x_t,u_t,b_t)
+\end{aligned}
+\]
+とする。$u_t$ は PSL の解決を含む実効行動であり、M3 指令と同一視しない。
+具体化する場合は定義~\ref{def:s4_primitive_composition} による。
+$x_t,M_t,o_t$ はこの段の開始時の値であり、同時刻の出力を入力へ循環させない。
+\S\ref{sec:tipa} の機構出力（目的の集合 $\mathrm{Pur}_t$、目的の状態判断 $\mathrm{stat}_t$ など）は、
+固定した規則のもとで $(M_t,I_t)$ から生成される（定義~\ref{def:s4_carrier_contract}）。
+したがってこの段の値から一意に定まり、作動の一段に別の成分として加えない。
+\end{definition}
+
+\begin{definition}[Updateの参照と一段遷移写像]
+\label{def:update_section5}
+\label{def:s5_step_map}
+\S\ref{sec:acs_def} の $\mathrm{Update}:\mathcal M\times X\times E_{\mathrm{ext}}\to\mathcal M$ と
+定義~\ref{def:env_realization} の $g_O$ を用い、一段遷移写像を
+\[
+\begin{aligned}
+\Phi_{\mathrm{step}} &:X\times\mathcal M\times O\times E^{\mathrm{bg}}\to X\times\mathcal M\times O,\\
+\Phi_{\mathrm{step}}(x,M,o,b)&:=
+\bigl(f(x,u,e),\ \mathrm{Update}(M,x,e),\ g_O(o,x,u,b)\bigr),\\
+e&=(b,o),\qquad r=P_{\mathrm{disc}}(M,P_{\mathrm{sens}}(x,e)),\\
+v&=P_{\mathrm{val}}(M,r),\qquad u=P_{\mathrm{act}}(M,r,v)
+\end{aligned}
+\]
+と定める。$X\times\mathcal M\times O$ は既存の状態と行動応答成分の積であり、第八のタプル成分ではない。
+$g_O$ も7タプルの成分ではなく、環境実現の側の構造である。
+$X$ には既定の部分空間位相、$\mathcal M$ には max 距離の位相、積には積位相を入れる。
+仮定~\ref{ass:compact_spaces}・\ref{ass:M_compact} のもとで $X\times\mathcal M$ はコンパクトである。
+$O$ のコンパクト性は仮定しないので（定義~\ref{def:Eext_decomposition}）、
+$X\times\mathcal M\times O$ のコンパクト性は述べない。
+本節は $\Phi_{\mathrm{step}}$ の連続性を仮定も結論もしない。
+$\mathcal A_O=\emptyset$ のとき $O$ は一点集合であり、第三成分は定値となる。
+\end{definition}
+
+%----------------------------------------------------------------------
+\subsection{学習成分・作動成分と保持記録}
+\label{subsec:memory_dyn}
+\label{subsubsec:s5_memory_update}
+\begin{definition}[保持内容の時刻間読み出し]
+\label{def:memory_intertime_update}
+定義~\ref{def:model_learning_working} の $M_t^{\mathrm L},M_t^{\mathrm W}$ を用いる。
+定義~\ref{def:fast_memory_sets} の固定読み出しによって
+\[
+\mathcal T_{\ell,t}=\rho_\ell(M_t^{\mathrm L}),\qquad
+\mathcal T_{\ell,t+1}=\rho_\ell(\operatorname{pr}_L\mathrm{Update}(M_t,x_t,e_t))
+\]
+とする。空集合値を許し、保持内容に独立更新写像を置かない。
+$\rho_\ell$ は全域写像であるが、保持内容が実際に利用できるかは別の問題である。
+\end{definition}
+
+\begin{remark}[M1内部状態と履歴の担体]
+\label{rem:s5_m1_state_ref}
+$\mathsf S_{M1,t}$ は同時刻出力の束である。
+その後の参照には定義~\ref{def:s4_carrier_contract} の保持記録を用いる。
+本論文は、二成分の直積や包括的Updateの型だけから、任意の履歴を正確に保持すること、
+各機構成分間で任意の情報を書き込めることを一般的な帰結として置かない。
+成分更新の依存順序と、同時刻の M1・M2・M3 の生成依存は区別する。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{一段遷移と作動記録の継続}
+\label{subsec:s5_continuation}
+\begin{proposition}[P1：一段の整形式性]
+\label{prop:s5_one_step}
+定義~\ref{def:three_primitives}、定義~\ref{def:state_transition}、
+定義~\ref{def:update_operator} の全域一価写像と、
+定義~\ref{def:env_realization} の全域一価写像 $g_O$ を固定すると、
+各 $(x,M,o,b)\in X\times\mathcal M\times O\times E^{\mathrm{bg}}$ に対し、
+定義~\ref{def:s5_standard_step} の各値と $\Phi_{\mathrm{step}}(x,M,o,b)$ は
+一意に定まり、後者は $X\times\mathcal M\times O$ に属する。
+\end{proposition}
+\begin{proof}
+定義~\ref{def:Eext_decomposition} より $e=(b,o)\in E_{\mathrm{ext}}$ である。
+$P_{\mathrm{sens}}$ の値は $\mathcal I$ に、次に $P_{\mathrm{disc}}$ の値は
+$\mathcal R_{\mathrm{int}}$ に、$P_{\mathrm{val}}$ の値は $\mathcal V$ に属する。
+したがって $P_{\mathrm{act}}$ の値は $U$ に属し、$f$ の型から次状態は $X$ に属する。
+Updateの型から次内部モデルは $\mathcal M$ に、$g_O$ の型から次の行動応答成分は $O$ に属する。
+各写像は一価であり、入力の決定に同時刻の下流出力を要求しないので一意である。
+\end{proof}
+
+\begin{definition}[標準作動記録]
+\label{def:s5_operation_record}
+環境実現 $\bigl(E^{\mathrm{bg}},O,g_O,(b_t)_{t\ge0}\bigr)$ と
+初期値 $(x_0,M_0,o_0)\in X\times\mathcal M\times O$ を与え、
+定義~\ref{def:s5_standard_step} に従う列
+$(x_t,M_t,o_t,b_t,e_t,I_t,r_t,v_t,u_t)_{t\ge0}$ を標準作動記録と呼ぶ。
+外生的に与えるのは背景成分の列だけであり、
+行動応答成分 $o_t$ は当該ACSの過去の行動に応答しうる（備考~\ref{rem:exogenous_environment}）。
+その状態・環境部分列 $(x_t,M_t,e_t)_{t\ge0}$ の属する集合を
+$\mathcal Z_{\mathrm{op}}\subseteq(X\times\mathcal M\times E_{\mathrm{ext}})^{\mathbb N_0}$
+と書く。これは固定した標準写像と $g_O$ に相対する集合である。
+閉集合性・コンパクト性は要求しない。集合としての存在だけを以下で用いる。
+作動記録の $(x_t,o_t)$ の部分は、記録の $(u_t)$ を実効行動の列として
+定義~\ref{def:env_realization} に続く式により定まる列に一致する。
+$\mathcal A_O=\emptyset$ のとき、本定義は背景成分の列を外部環境状態の列とみなして与えた記録と同じである。
+\end{definition}
+
+\begin{proposition}[P2：数学的作動記録の継続]
+\label{prop:s5_continuation}
+P1の条件のもとで、任意の背景成分の列と初期値に対して、全 $t\in\mathbb N_0$ 上で
+標準作動記録がただ一つ存在する。
+\end{proposition}
+\begin{proof}
+$t=0$ の三つ組 $(x_0,M_0,o_0)$ は与えられている。
+$t$ の三つ組が $X\times\mathcal M\times O$ に属するとき、
+P1により $b_t$ とあわせて当該段の中間値と次の三つ組が一意に定まる。
+自然数上の再帰により全時刻の列が得られる。
+同じ初期値と背景成分の列をもつ二列を比較すれば、帰納法により各時刻で一致する。
+\end{proof}
+
+\begin{proposition}[P3：作動記録の因果性]
+\label{prop:s5_causality}
+固定した標準写像と $g_O$ のもとで、$(x_t,M_t,o_t)$ は $(x_0,M_0,o_0)$ と
+$b_0,\ldots,b_{t-1}$ のみで定まる。同時刻の $e_t,I_t,r_t,v_t,u_t$ は、さらに $b_t$ を用いる。
+\end{proposition}
+\begin{proof}
+$t=0$ は初期値そのものである。$t$ までの主張を仮定すると、
+定義~\ref{def:s5_step_map} は $t$ の三つ組と $b_t$ のみから次の三つ組を返す。
+したがって $t+1$ にも主張が成り立つ。中間値の主張は $e_t=(b_t,o_t)$ と各合成の型から従う。
+$o_t$ は過去の行動に依存しうるので、因果性は背景成分の列に対して述べる。
+\end{proof}
+
+\begin{remark}[形式的継続と実現の継続]
+\label{rem:s5_formal_not_survival}
+P1〜P3 は $K,A_t,\mathrm{WF}_{i,t},\mathrm{FT}_{i,t},\mathrm{Col}_{i,t}$ を前提に用いない。
+$P_{\mathrm{act}}$ は全域写像なので $A_t=\emptyset$ の時刻にも形式的行動値 $u_t$ は定まるが、
+この値を可行行動とはしない。$x_t\notin K$ からも記録は続けられる。
+$\mathrm{WF}_{i,t}=0$ の時刻の機構出力の扱いは定義~\ref{def:s4_output_attribution} による。
+機能的終端後や崩壊後の形式的記録を、同一個体の活動の実現と読み替えない。
+同一ACSの記述域は \S\ref{sec:collapse_cond} の $I_{\mathrm{ACS}}(\sigma)$ に従い、
+原理判定はさらに \S\ref{sec:three_principles} の $\mathbb T_{\mathrm P,i}$ と FR の定義域に従う。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{保持記録の受け渡し}
+\label{subsec:s5_record_handover}
+\begin{definition}[保持記録の一致（分類C）]
+\label{def:s5_record_agreement}
+標準作動記録と定義~\ref{def:s4_carrier_contract} の読み出し $\rho_{\mathrm{past}}$ を固定する。
+$k=1,\ldots,7$ について、$\rho_{\mathrm{past}}$ の値の第 $k$ 成分への射影を $\operatorname{pr}_k$ とし、
+時刻 $t$ の対応する値 $y_{k,t}$ を次のとおり定める。
+\begin{enumerate}
+\item Priority $P_t$。
+\item 実効行動 $u_t$。
+\item 時刻 $\max\{0,t-W+1\}$ から $t$ までの状態推定 $\hat x_s$ の列。
+\item M1 出力の束 $\mathsf S_{M1,t}$。
+\item 時刻 $\max\{0,t-W_{\mathrm{short}}+1\}$ から $t$ までの感知情報 $I_s$ の列。
+\item 目的の集合 $\mathrm{Pur}_t$。
+\item 実効行動についての外部側の予測集合 $\hat G_t(u_t)$（定義~\ref{def:env_set_prediction}）。
+\end{enumerate}
+$\operatorname{pr}_k\bigl(\rho_{\mathrm{past}}(M^{\mathrm W}_{t+1})\bigr)=y_{k,t}$ が成り立つとき、
+第 $k$ 成分の記録は時刻 $t$ で\emph{一致する}という。
+定義~\ref{def:m2_latent_instability} の $\rho_{\mathrm{eval,past}}$ など他の保持記録の読み出しについても、
+対応する過去の値を指定すれば同じ形で定める。
+\end{definition}
+
+記録が一致するかどうかは、Update の詳細型と作動成分の内容に依存する。
+本論文はその一致を一般的な帰結として置かず、仮定としても置かない（定義~\ref{def:s4_carrier_contract}）。
+命題~\ref{prop:s5_continuation} は記録の一致を前提としない。
+\S\ref{sec:tipa} の機構は記録の値によらず値を返す全域写像として与えられるので、
+記録が一致しない時刻を含めて、作動記録はただ一つ定まる。
+
+\begin{remark}[目的の受け渡し]
+\label{rem:s5_purpose_handover}
+時刻 $t+1$ の M3 の入力に現れる前時刻の目的の集合は、第 $6$ 成分の記録値である。
+目的の状態判断 $\mathrm{stat}_{t+1}$ の定義域は、標準形ではこの記録値であり（定義~\ref{def:purpose_status}）、
+第 $6$ 成分の記録が時刻 $t$ で一致する場合に限り、その定義域は $\mathrm{Pur}_t$ に等しい。
+一致しない場合の目的の経過は、定義~\ref{def:purpose_course} の範囲で記述される。
+記録から欠けた目的は判断を経ずに目的の集合から外れうる。
+記録にだけ現れる目的を M3 が継続とした場合、その目的は時刻 $t$ の出力 $\mathrm{Pur}_t$ に含まれないので、
+定義~\ref{def:purpose_course} では時刻 $t+1$ に新たに目的の集合へ入ったものとして扱われる。
+\end{remark}
+
+\begin{remark}[内部対象トークンの持続]
+\label{rem:s5_token_persistence}
+トークンの時刻をまたぐ持続（備考~\ref{rem:token_generation}）は、
+時刻 $t+1$ の M1 が第 $4$ 成分の記録値を入力の一つとして、時刻 $t$ と同じラベルを与えることとして表される。
+同じラベルを与えるかどうかは M1 の写像の値として定まり、本節はこれとは別の持続の規則を置かない。
+したがって、ここでいうトークンの持続は内部ラベルの時刻間継続である。
+ラベルの継続 $k\in\mathcal K_t\cap\mathcal K_{t+1}$ は、二時刻の M1 出力の比較として作動記録の上で定まる。
+同じラベルが時刻をまたいで同じ外部の枠 $a\in\mathcal A_O$ または同じ個物を指すかどうかは、
+記述者がラベルと外部との対応を与えたときに問える別の条件であり、本論文はその対応を定義しない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{Updateの観測経由性}
+\label{subsec:s5_observation}
+\begin{assumption}[Updateの観測経由性]
+\label{ass:s5_observation_factorization}
+全域写像 $\Phi_{\mathrm{upd}}:\mathcal M\times\mathcal I\to\mathcal M$ が存在し、
+\[
+\mathrm{Update}(M,x,e)=\Phi_{\mathrm{upd}}(M,P_{\mathrm{sens}}(x,e))
+\qquad\forall(M,x,e)\in\mathcal M\times X\times E_{\mathrm{ext}}
+\]
+が成立するとする。導入地位：S（構造的）。強さ：中。
+本仮定は観測以外の状態差・環境差が更新へ直接影響する系を除く追加条件であり、
+\S\ref{sec:acs_def} のACSの構成要件とはしない。$\Phi_{\mathrm{upd}}$ の連続性は仮定しない。
+依拠箇所は命題~\ref{prop:s5_observation_causality} であり、P1〜P3は本仮定を要しない。
+\end{assumption}
+
+\begin{proposition}[観測経由性の検査条件と内部モデルの因果性]
+\label{prop:s5_observation_causality}
+仮定~\ref{ass:s5_observation_factorization} は、各固定 $M$ について $P_{\mathrm{sens}}(x,e)=P_{\mathrm{sens}}(x',e')$ ならば
+$\mathrm{Update}(M,x,e)=\mathrm{Update}(M,x',e')$ となることと同値である。
+そのもとで $M_t$ は $M_0$ と $I_0,\ldots,I_{t-1}$ のみで定まる。
+\end{proposition}
+\begin{proof}
+因数分解があれば同じ入力 $M,I$ は同じ更新値を返す。
+逆に同じ感知情報を与える引数上で更新が一致するとする。
+$I\in\operatorname{Im}P_{\mathrm{sens}}$ では、対応する更新値を $\Phi_{\mathrm{upd}}(M,I)$ と定めると一意である。
+像外では $\mathcal M\ne\emptyset$ により固定した一元を値として延長する。
+これで全域 $\Phi_{\mathrm{upd}}$ を得る。後半は $M_{t+1}=\Phi_{\mathrm{upd}}(M_t,I_t)$ の帰納法による。
+$t=0$ では入力履歴は空であり、$M_0$ 自体が必要である。
+\end{proof}
+
+\begin{remark}[因数分解の射程]
+\label{rem:s5_observation_scope}
+観測経由性は真値を知ることと同値ではない。
+真値を知らなくても、未観測の基盤変化が内部モデルへ作用する実現はこの仮定を満たさない場合がある。
+また $\Phi_{\mathrm{upd}}$ の存在だけから \S\ref{sec:acs_def} の Update$_1$〜Update$_3$ の詳細型を実現できるとは限らない。
+本節では既存の成分分解と因数分解の双方を満たす更新を対象とする。
+$\Phi_{\mathrm{upd}}$ は更新成分の表現であり、更新の構造的役割を感知から一意に導くものではない。
+7タプルの非冗長性は備考~\ref{rem:tuple_nonredundancy} の役割分離の意味で維持される。
+\end{remark}
+
+\begin{remark}[予測外と内部モデルの更新]
+\label{rem:s5_prediction_learning}
+定義~\ref{def:prediction_record_check} の理論上の予測外は、実現値 $o_{t+1}$ との照合量である。
+仮定~\ref{ass:s5_observation_factorization} のもとでは
+命題~\ref{prop:s5_observation_causality} により $M_s$ は $M_0$ と $I_0,\ldots,I_{s-1}$ のみで定まるので、
+$o_{t+1}$ が内部モデルに関与するのは感知情報の列を経る範囲に限られる。
+本節は予測外にもとづく更新の規則を与えない（備考~\ref{rem:prediction_reference_difference}）。
+また、予測精度係数 $\pi_{\tau,t}$（定義~\ref{def:s5_prediction_coefficient}）は
+記述者が指定する全域の係数であり、予測集合が $\bot$ の時刻にも値をとる。
+二種類の予測外は $\bot$ の時刻に定まらないので、本論文は両者を同一視せず、一般的な関係も置かない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{時刻間変化}
+\label{subsec:s5_intertime}
+\label{subsubsec:intertime_update}
+\begin{definition}[担体から誘導される時刻間変化]
+\label{def:intertime_update}
+非空集合 $\mathsf D_{\mathrm{rd}}$ と固定読み出し
+$\mathrm{rd}:X\times\mathcal M\times E_{\mathrm{ext}}\to\mathsf D_{\mathrm{rd}}$ を指定した場合、
+$\mathrm{rd}_t=\mathrm{rd}(x_t,M_t,e_t)$ とし、次時刻値は
+\[
+\mathrm{rd}_{t+1}=\mathrm{rd}\bigl(f(x_t,u_t,e_t),\mathrm{Update}(M_t,x_t,e_t),e_{t+1}\bigr),
+\qquad e_{t+1}=\bigl(b_{t+1},g_O(o_t,x_t,u_t,b_t)\bigr)
+\]
+で定める。この型保存に独立更新写像は不要である。
+$e_{t+1}$ を要する場合、$t$ 時点での内部予測とはしない。
+軌道を引数とする量は、当該軌道と指定した読み出し規則から評価する。
+\end{definition}
+
+\begin{definition}[学習・忘却の時刻間的位置づけ（分類B）]
+\label{def:learning_intertime_change}
+学習・忘却に関わる持続的内容の変化は $M_t^{\mathrm L}$ の変化として記述する。
+その変化を改善・悪化と同一視しない。作動成分だけの変更は、この定義では学習と呼ばない。
+系列上の学習停止は定義~\ref{def:update_stop_on_trajectory} に従う。
+$\delta_{M,c,t},\delta_t,\lambda_{T,t}$ は作動成分も含む変化量のままとする。
+\end{definition}
+
+\begin{remark}[高速処理・Automaticityと状態の変化]
+\label{rem:s5_fast_change}
+\S\ref{sec:tipa} の作動形態は、学習成分の変化に伴って形成・変容しうる。
+その成立を学習成分だけの関数とはしない。作動成分、現在入力、基盤・感度の状態も
+各時刻の作動形態に関与しうる。
+本論文は、学習停止から高速処理・Automaticityの不変を一般的な帰結として置かず、独立した形成速度や学習則も置かない。
+感度・基盤・効果器・健全度の時刻変化は $x_t$ の遷移を通じて記述する。
+\end{remark}
+
+\begin{remark}[学習と可行性構造]
+\label{rem:s5_learning_viability}
+学習（定義~\ref{def:learning_intertime_change}）は $M_t^{\mathrm L}$ の変化であり、
+7タプルは時刻によらない（\S\ref{sec:acs_def} の記述水準の規約）。
+したがって $K$、可行行動対応 $A$、$\mathrm{Viab}_f(K)$ および
+核維持応答集合 $U^{\mathrm{Viab}}$（定義~\ref{def:kernel_response}）は学習によって変わらない。
+学習が関与しうるのは、作動記録の上でどの実効行動が選ばれるか、
+とくに $u_t\in U^{\mathrm{Viab}}(x_t)$ が成り立つか（定義~\ref{def:kernel_response_acquisition}）と、
+それを通じた軌道である。
+身体の変化のように状態の変化として表されるものは、$x_t$ の遷移として $f$ を通じて記述され、
+これらの集合を変えない。
+本論文は、学習が核維持応答の獲得を導くことを主張しない（備考~\ref{rem:kernel_response_scope}）。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{分類C記述量}
+\label{subsec:s5_internal_quantities}
+
+\subsubsection{偏向性と偏向強度の位置づけ}
+\label{subsec:beta_dyn}
+
+\begin{definition}[偏向性（分類C）]
+\label{def:bias_tendency}
+原始的な機能（\S\ref{sec:acs_def}、定義~\ref{def:primitive_functions}）の
+いずれかの区分の責務の遂行に、指定した参照基準に相対して現れる一つの偏りの傾向を、\emph{偏向性}と呼ぶ。
+ここでいう責務の遂行には、そのための処理資源・注意その他の配分または利用を含める。
+本節の抽象的構造記述では、記述の対象とする期間を通じて考慮する偏向性を
+添字づける非空集合 $\mathcal J_{\beta}$ を置き、
+各 $\iota\in\mathcal J_{\beta}$ を一つの偏向性の添字とする。
+$\mathcal J_{\beta}$ は時刻によらず固定し、その有限性は仮定しない。
+$\mathcal J_{\beta}$ による偏向性の切り分けは記述の解像度に相対的であり、
+一つの偏向性をより細かい複数の偏向性に分けて記述することも、その逆も排除しない。
+本論文は、複数の偏向性が併存すること、
+およびそれらが互いに異なる方向をもつことを排除しない。
+添字 $\iota$ は記述上の識別子であり、偏向性の方向および内容を表さない。
+各偏向性には、その偏りを定める参照基準を記述の対象ごとに指定する。
+参照基準は、対象とする責務の遂行において偏りがないとする状態の取り決めであり、
+規範的な理想、正しい遂行または最適な遂行を表さない。
+本論文はすべての対象に共通する参照基準を固定しない。
+同じ添字について時刻間の強度を比較する記述では、参照基準と尺度を対象期間を通じて固定する。
+\end{definition}
+
+\begin{definition}[偏向性の帰属区分（分類C）]
+\label{def:bias_attribution}
+原始的な機能の四区分を表す添字の集合を
+\[
+  \mathsf{Prim}:=\{\mathrm{sens},\mathrm{disc},\mathrm{val},\mathrm{act}\}
+\]
+とする。各添字は感知・識別・評価・行動の区分を表し、
+定義~\ref{def:three_primitives} の標準写像形式の添字と対応させて用いる。
+各偏向性に、その偏りが現れる区分の空でない集合を対応させる写像
+\[
+  \mathrm{loc}_{\beta}:\mathcal J_{\beta}\to\mathcal P(\mathsf{Prim})\setminus\{\emptyset\}
+\]
+を\emph{帰属写像}と呼び、$\mathrm{loc}_{\beta}(\iota)$ を偏向性 $\iota$ の\emph{帰属区分}と呼ぶ。
+$|\mathrm{loc}_{\beta}(\iota)|=1$ のとき偏向性 $\iota$ は単一の区分に帰属し、
+$|\mathrm{loc}_{\beta}(\iota)|\ge2$ のとき複数の区分に複合的に帰属する。
+帰属区分は時刻によらず定める。
+定義~\ref{def:bias_tendency} の参照基準は、この帰属区分の責務に対応させて指定する。
+
+
+\end{definition}
+
+\begin{remark}[帰属区分の地位]
+\label{rem:bias_attribution_status}
+帰属区分は、偏向性を原始的な機能のどの区分の偏りとして記述するかを
+理論の側で指定するものであり、
+ACS が自らの偏向性を内部で表現または把握することを要求しない
+（\S\ref{subsec:description_levels_global}）。
+帰属区分は記述の対象ごとに指定するものであり、
+本論文は、観測された振る舞いから帰属区分が一意に定まることを主張しない。
+同じ振る舞いの偏りが、異なる区分に帰属する記述と両立しうるためである。
+知覚的意思決定の研究では、観測される選択の偏りが、偏りの種類や実験条件に応じて、
+証拠蓄積の開始点の変化として説明される場合と証拠蓄積の過程の変化として説明される場合があり、
+いずれに帰するかは拡散モデル等の当てはめと比較によって判別されている~\cite{Mulder2012,Urai2019}。
+こうした判別について、観測者モデルを構築し検証することに重点を置くべきだとする議論がある~\cite{RahnevDenison2018}。
+帰属区分の空でない部分集合は $2^{4}-1=15$ 通りあるが、
+本論文はこれを記述のための分類として用いるにとどめ、
+特定の組み合わせが現れやすいといった規則性を主張しない。
+\end{remark}
+
+\begin{definition}[偏向強度（分類C）]
+\label{def:beta_accumulated}
+各 $\iota\in\mathcal J_{\beta}$ と時刻 $t$ について、
+偏向性 $\iota$ の時刻 $t$ における参照基準からの偏りの程度を表す非負の量を $\beta_{\iota,t}$ と書き、
+偏向性 $\iota$ の\emph{偏向強度}と呼ぶ。
+$\beta_{\iota,t}=0$ は、時刻 $t$ において偏向性 $\iota$ に参照基準からの偏りがないことを表す。
+偏りの程度を非負の実数で表す尺度は偏向性ごとに指定し、
+本論文は異なる偏向性の偏向強度の値どうしが比較可能であることを仮定しない。
+偏向性ごとの偏向強度の族を
+\[
+  \boldsymbol{\beta}_t:=\bigl(\beta_{\iota,t}\bigr)_{\iota\in\mathcal J_{\beta}}
+\]
+と書く。
+ここでは非負実数として定め、本節で採用する有界な読み出しの型は
+後述の定義~\ref{def:s5_readout_types} に従う。
+参照基準または尺度が未指定の場合、あるいは強度が未測定・未同定の場合に、
+そのことだけを理由として $\beta_{\iota,t}=0$ を割り当てない。
+$\beta_{\iota,t}$ は偏向性 $\iota$ の程度を表し、その方向および内容を表さない。
+$\boldsymbol{\beta}_t$ は偏向強度の族であり、
+それらを一つの実数へ集約した量ではない。
+\end{definition}
+
+偏向強度は、能力そのものではなく、能力・資源の使い方に現れる偏向の記述量である。
+\S\ref{sec:acs_def} の認知的処理能力の記述方針
+（備考~\ref{rem:cognitive_capacity_policy}）のとおり、
+本論文は偏向強度を認知的処理能力に含めない。
+偏向性の方向および内容の形式化は Phase~2 の課題とする（\S\ref{subsec:limitations_list} の L7）。
+
+\begin{remark}[偏向性の抽象的構造記述と実装記述の区別]
+\label{rem:beta_multiple_biases}
+定義~\ref{def:bias_tendency} と定義~\ref{def:beta_accumulated} は、
+偏向性と偏向強度を抽象的構造記述の水準で定める。
+この水準では、複数の偏向性が存在しえ、それぞれが偏向強度をもつ。
+
+これに対し実装記述の水準では、一つの偏向性とその偏向強度は、
+更新の内容によって時刻とともに変容しえ、また他の偏向性と統合されうる。
+個体ACSが学習によって形成する偏向性についても、
+実装・設計によって与えられる偏向性についても同様である。
+本論文は、実装上のどの内容が抽象的構造記述のどの添字 $\iota$ に対応するかを
+時刻を通じて固定しない。
+抽象的構造記述でこの変容・統合を表す場合には、
+定義~\ref{def:beta_intertime_update} の読み出しを担う状態・内部モデルの変化として記述する。
+偏向強度の族に独立した更新写像は置かない。
+
+本論文は、複数の偏向強度を一つの実数へ集約する一般式を置かず、
+方向の異なる偏向性が互いに打ち消し合うとも強め合うとも仮定しない。
+実装上の偏向性と添字との対応づけ、各偏向性の方向と内容の表現、
+および偏向性どうしの関係の形式化は Phase~2 の課題とする（\S\ref{subsec:limitations_list} の L7）。
+\end{remark}
+
+\begin{remark}[偏向性の形成と帰属の区別]
+\label{rem:bias_formation_vs_attribution}
+偏向性は、\S\ref{sec:tipa} の TIPA の三機構 $M_1$・$M_2$・$M_3$、PSL および ISL の
+いずれか、またはそれらの複合的な作用によって形成されうる。
+本論文は、偏向性がどの機構の作動によって形成されるかと、
+それがどの区分に帰属するか（定義~\ref{def:bias_attribution}）とを区別し、
+両者の間に一対一の対応を置かない。
+これは、TIPA の三機構と原始的な機能の区分の間に
+一対一の対応を置かない \S\ref{sec:acs_def} の扱いと同じである。
+基盤機能（定義~\ref{def:base_functions}）に関わる PSL・ISL の状態に由来する偏りも、
+それが現れる区分に帰属させて記述する。
+偏向性の形成を機構ごとに記述すること、形成の組み合わせと帰属区分の対応、
+および帰属区分の同定は、Phase~1.$\alpha$ または Phase~2 の課題とする
+（\S\ref{subsec:limitations_list} の L7、\S\ref{subsec:phase1a}）。
+\end{remark}
+
+\begin{remark}[偏向強度の値と良否の区別]
+\label{rem:beta_value_not_quality}
+本論文は、各 $\iota\in\mathcal J_{\beta}$ について、
+$\beta_{\iota,t}$ の値の大小を、改善、悪化、誤りまたは非合理性の
+いずれとしても読まない。
+偏向性が当該ACSの可行性その他にどのように関わるかは、
+偏向性の内容と、それが働く環境および内部状態に依存しうるため、
+$\beta_{\iota,t}$ の値だけからは定めない。
+また、$\beta_{\iota,t}$ の増加、維持、減少をいずれも許し、
+$\beta_{\iota,t}$ の値を定めることと、偏向が一方向へ累積し続けることとを同一視しない。
+本論文は、$\beta_{\iota,t}$ の増減から予測精度の変化方向を一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[偏向強度と状態推定誤差の区別]
+\label{rem:beta_vs_estimation_error}
+偏向強度は、定義~\ref{def:bias_tendency} の参照基準に相対した
+原始的な機能の責務の遂行上の偏りの程度である。
+状態推定誤差 $\varepsilon_{\mathrm{est},t}$
+（定義~\ref{def:s4_state_estimation_error}）は、内部推定と理論上の状態との隔たりであり、
+偏向強度とは参照する対象と尺度が異なる。
+本論文は、偏向強度が正であることと状態推定誤差が正であることの間に、
+いずれの向きの一般的含意も置かない。
+この区別は、それらの間に関係がないことや統計的独立性を主張するものではない。
+\end{remark}
+
+\subsubsection{分類C読み出しの型と偏向強度の時刻間変化}
+\begin{definition}[読み出しの型と解析範囲]
+\label{def:s5_readout_types}
+有限な $\beta_{\max}>0,D_{\max}>0$ と予測段数 $\tau\in\mathbb N$、$\tau\ge1$ を固定する。
+$\mathcal H=\{\mathrm{psl},\mathrm{mem},\mathrm{sens},\mathrm{eff}\}$ とし、
+本節で採用する記述規則を次の全域写像として指定する。
+\[
+\begin{aligned}
+\mathrm{rd}_{\beta,\iota} &:X\times\mathcal M\times E_{\mathrm{ext}}\to[0,\beta_{\max}]
+ &&(\iota\in\mathcal J_\beta),\\
+\mathrm{rd}_{h,q} &:X\to[0,1]&&(q\in\mathcal H),\\
+\mathrm{rd}_d &:X\times\mathcal M\to[0,D_{\max}],\\
+\mathrm{rd}_{\pi,\tau} &: (X\times\mathcal M\times E_{\mathrm{ext}})^{\tau+1}\to[0,1].
+\end{aligned}
+\]
+$\mathcal J_\beta$ は定義~\ref{def:bias_tendency} による。
+$\mathrm{rd}_{\beta,\iota}$ は、同定義の参照基準と定義~\ref{def:beta_accumulated} の尺度に
+対応する偏向強度を返す規則として指定する。
+各偏向性の尺度は、零点の意味を保ったまま $[0,\beta_{\max}]$ に収まるよう正規化する。
+本論文は、共通の値域を用いることから、異なる偏向性どうしの比較可能性を一般的な帰結として置かない。
+これらは具体的規則を一意に導く主張ではなく、対象ごとに指定する記述規則の型である。
+各値域には通常の部分空間位相を入れるが、読み出しの連続性は課さない。
+有限上界への正規化が可能な記述を本節の解析範囲とし、
+任意の現象がこの範囲に収まると主張しない。
+現在の担体だけで定まらない量には、この瞬時読み出しを適用しない。
+履歴を要する別の記述は、独立状態を加えず作動記録上の読み出しとして別途指定する。
+\end{definition}
+
+\begin{definition}[偏向強度の時刻間読み出し]
+\label{def:beta_intertime_update}
+定義~\ref{def:s5_readout_types} の規則を固定し、
+$\beta_{\iota,t}=\mathrm{rd}_{\beta,\iota}(x_t,M_t,e_t)$ とする。
+族 $[0,\beta_{\max}]^{\mathcal J_\beta}$ には積位相を入れる。
+各因子がコンパクトなので積はコンパクトであるが、
+これを独立状態空間や更新写像の定義域として用いない。
+\end{definition}
+
+\subsubsection{予測精度係数と実効的時間地平}
+\label{subsubsec:s5_prediction_coefficient}
+\label{subsec:tau_hat_section5}
+\begin{definition}[予測精度係数（分類C）]
+\label{def:s5_prediction_coefficient}
+標準作動記録の状態・環境部分列 $z_s=(x_s,M_s,e_s)$ について
+$\pi_{\tau,t}=\mathrm{rd}_{\pi,\tau}(z_t,\ldots,z_{t+\tau})\in[0,1]$
+を、時刻 $t$ の予測の有効性を事後的に記述する係数とする。
+採用する規則は予測対象・照合方法を対象ごとに固定する。
+その数値化・測定可能性・予測成功を本節では保証しない。
+未来の実現値を参照する分類C記述であり、ACSの時刻 $t$ の内部入力にはしない。
+\end{definition}
+
+\begin{definition}[実効的時間地平（分類C）]
+\label{def:tau_hat_section5}
+$\widehat\tau_t:=\tau\pi_{\tau,t}\in[0,\tau]$ と定める。
+したがって
+$\widehat\tau_{t+1}-\widehat\tau_t=\tau(\pi_{\tau,t+1}-\pi_{\tau,t})$ である。
+$\tau$ は離散的な予測段数、$\widehat\tau_t$ は実数値の尺度であり、
+$x_{t+\widehat\tau_t}$ のような非整数時刻での状態を導入しない。
+\end{definition}
+
+\subsubsection{実効的発展自由度}
+\label{subsec:D_eff_section5}
+\begin{definition}[実効的発展自由度（分類C）]
+\label{def:deff_section5}
+$d_{\mathrm{eff},t}:=\mathrm{rd}_d(x_t,M_t)\in[0,D_{\max}]$ を、
+発展上の実効的自由度の記述量とする。
+値域と担体を指定するが、算出規則の具体化は Phase~1.$\alpha$ に委ねる。
+これは $|A_t|$、M2の行動多様度または関係品質（\S\ref{subsec:ro_quality}）とは異なる。
+本論文は、その数値から可行行動の存在・増減を一般的な帰結として置かない。
+\end{definition}
+
+\subsubsection{PSL・ISL健全度}
+\label{subsec:health_dyn}
+\begin{definition}[PSL・ISL健全度量（分類C）]
+\label{def:s5_health_quantities}
+$h_{q,t}:=\mathrm{rd}_{h,q}(x_t)\in[0,1]$ と定める。
+$q=\mathrm{psl},\mathrm{mem},\mathrm{sens},\mathrm{eff}$ はそれぞれ
+基盤、記憶実装、感知、作用の健全度を指定する。
+学習内容そのものの評価は記憶実装の健全度と区別する。
+共通単位、相互独立性、直接比較可能性を要求しない。
+\end{definition}
+
+\begin{remark}[健全度・機能軸・診断の区別]
+\label{rem:s5_health_noncollapse}
+健全度と \S\ref{sec:tipa} の機能軸は別の記述量であり、一般的な相互決定関係を置かない。
+ACS内部の診断は利用可能な情報とTIPA機能の状態に依存し、
+外部診断は観測情報と測定規則に依存する。
+本論文は、$h_{q,t}=0$、$d_{\mathrm{eff},t}=0$、$\pi_{\tau,t}=0$ だけから、
+閉塞、FR の時刻別充足述語が偽であること、機能的終端、崩壊を一般的な帰結として置かない。
+\end{remark}
+
+\begin{definition}[時刻依存量の整理用タプル（分類C）]
+\label{def:extended_variable_tuple}
+\label{subsubsec:desc_tuple}
+\[
+\mathrm{Desc}_t=(\boldsymbol\beta_t,d_{\mathrm{eff},t},\pi_{\tau,t},\widehat\tau_t,
+ h_{\mathrm{psl},t},h_{\mathrm{mem},t},h_{\mathrm{sens},t},h_{\mathrm{eff},t})
+\]
+とする。これは読み出した量をまとめる八つ組であり、ACSの7タプルを変更しない。
+独立状態でも、同時刻の内部利用可能情報の束でもない。
+予測係数を含むため、記録の事後的評価としての性格をもつ。
+\end{definition}
+
+%----------------------------------------------------------------------
+\subsection{後続節への受け渡し}
+\label{subsec:s5_summary}
+\label{subsubsec:s5_deff_interface}
+\begin{definition}[後続節への記録インターフェース]
+\label{def:s5_downstream_interface}
+\S\ref{sec:rel_min} へは $A_t,d_{\mathrm{eff},t},\widehat\tau_t$ の列を渡す。
+個体ごとの添字と有限窓差分の定義は \S\ref{sec:rel_min} に従う。
+予測係数を含む窓の評価には窓端より先の実現記録も必要であり、
+同時刻のオンライン診断可能性を含意しない。
+
+\S\ref{sec:collapse_cond} へは標準作動記録と $\mathrm{Desc}_t$ を渡す。
+\S\ref{sec:collapse_cond} の軌道記録に必要な $\mathrm{WF},\mathrm{FT},\mathrm{Col}$ その他の
+実現水準の記録が別途与えられ、同節が軌道記録に前提とする動学との整合（備考~\ref{rem:trajectory_space_scope}）を満たす場合に、
+標準作動記録をその軌道記録へ対応づける。
+P2だけからこれらの指標や許容外的作用下の回復性が一意に定まるとはしない。
+同一ACSとしての解釈は $I_{\mathrm{ACS}}(\sigma)$ に限定する。
+崩壊をまたぐ予測窓を同一ACSの予測評価として用いる場合には、
+その窓全体が同一ACSの記述域に含まれることを確認する。
+\end{definition}
+
+本節の仮定は観測経由性の一件である。
+P1〜P3 は固定した全域写像の合成と自然数上の再帰による。
+有限時間到達・回復・不変性・安定性・実装可能性は別の証明義務であり、
+本節の型保存や分類C量の有界性からは主張しない。

@@ -1,0 +1,225 @@
+{
+ "id": "P6_e7_minacs_estimation_r1",
+ "model": "e7_minacs",
+ "purpose": "E7 (sec.9 prob:estimation_error): degrade the mechanism's observation I = P_sens(x,e) by a fixed map (true x, e, f and the judgment layer untouched) and compare survival with the undegraded mechanism; record the internal-vs-true feasibility sign mismatch, selection-responsibility antecedents (u not in A_t while A_t nonempty) and decision divergence.",
+ "degradations": {
+  "D-en+1": "energy read as en+1 (clipped)",
+  "D-en+2": "energy read as en+2 (clipped)",
+  "D-tp+1": "body temperature read as tp+1 (clipped)",
+  "D-blindcold": "weather never sensed (belief stays at its initial value: not cold)",
+  "D-stalefood": "resource never sensed (belief stays at its initial value: present)"
+ },
+ "structural_notes": [
+  "Energy-only degradations cannot produce a sign mismatch of Pi_eval in MinACS: Pi < 0 through energy only when en = 0, where the base functions are inactive and Pi_eval is undefined.",
+  "Whenever a degraded trajectory differs from the baseline at all, its first differing step has a decision divergence > 0 (same state and M as the baseline at that step); 'shorter survival implies divergence' is therefore not registered as a hypothesis."
+ ],
+ "tuning_history": "No degradation or metric was tuned.  One smoke test on tuning seed 1 (cold 3, regrow 3, no gifts) was run before registration: T_col baseline 11; D-en+1 11, D-en+2 5, D-tp+1 11, D-blindcold 11, D-stalefood 11.  Seeds 11-60 were not run for E7 before registration.",
+ "sources": [
+  "/home/claude/MINACS/minacs/*.py",
+  "/home/claude/E4/e4/*.py",
+  "/home/claude/E4/run_prereg.py"
+ ],
+ "seeds": {
+  "tune": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "eval": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46,
+   47,
+   48,
+   49,
+   50,
+   51,
+   52,
+   53,
+   54,
+   55,
+   56,
+   57,
+   58,
+   59,
+   60
+  ]
+ },
+ "sweep": {
+  "cold_len": [
+   2,
+   3,
+   4
+  ],
+  "regrow_period": [
+   2,
+   3,
+   5
+  ],
+  "gift_events": [
+   0,
+   3
+  ]
+ },
+ "conditions": [
+  "D0",
+  "D-en+1",
+  "D-en+2",
+  "D-tp+1",
+  "D-blindcold",
+  "D-stalefood"
+ ],
+ "rule_variants": {
+  "R0": {}
+ },
+ "rule_independent_metrics": [],
+ "hypotheses": [
+  {
+   "id": "H1",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "D0",
+    "D-en+1"
+   ],
+   "statement": "観測の劣化（D-en+1）のない機構の崩壊到達時刻は、劣化した機構以上である。",
+   "how_it_could_fail": "過大評価が遠回りや無駄な避難を減らし、または古い信念がたまたま有利に働けば、劣化した機構の方が長く存続しうる。試運転では 5 条件中 4 条件で同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H2",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "D0",
+    "D-en+2"
+   ],
+   "statement": "観測の劣化（D-en+2）のない機構の崩壊到達時刻は、劣化した機構以上である。",
+   "how_it_could_fail": "過大評価が遠回りや無駄な避難を減らし、または古い信念がたまたま有利に働けば、劣化した機構の方が長く存続しうる。試運転では 5 条件中 4 条件で同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H3",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "D0",
+    "D-tp+1"
+   ],
+   "statement": "観測の劣化（D-tp+1）のない機構の崩壊到達時刻は、劣化した機構以上である。",
+   "how_it_could_fail": "過大評価が遠回りや無駄な避難を減らし、または古い信念がたまたま有利に働けば、劣化した機構の方が長く存続しうる。試運転では 5 条件中 4 条件で同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H4",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "D0",
+    "D-blindcold"
+   ],
+   "statement": "観測の劣化（D-blindcold）のない機構の崩壊到達時刻は、劣化した機構以上である。",
+   "how_it_could_fail": "過大評価が遠回りや無駄な避難を減らし、または古い信念がたまたま有利に働けば、劣化した機構の方が長く存続しうる。試運転では 5 条件中 4 条件で同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H5",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "D0",
+    "D-stalefood"
+   ],
+   "statement": "観測の劣化（D-stalefood）のない機構の崩壊到達時刻は、劣化した機構以上である。",
+   "how_it_could_fail": "過大評価が遠回りや無駄な避難を減らし、または古い信念がたまたま有利に働けば、劣化した機構の方が長く存続しうる。試運転では 5 条件中 4 条件で同値だった。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H6",
+   "kind": "share",
+   "predicate": "sign_mismatch_present",
+   "conditions": [
+    "D-tp+1"
+   ],
+   "statement": "体温を過大評価する機構では、内部評価 Π_eval と真の Π の符号が食い違う時刻が、25% 以上の単位で少なくとも 1 回生じる。",
+   "how_it_could_fail": "食い違いは tp=0 の時刻にしか生じない。tp=0 は寒波の最中に外にいる場合だけで、機構が避難していればほとんど生じない。",
+   "rule": {
+    "support_min": 0.25,
+    "reject_max": 0.05
+   }
+  }
+ ],
+ "source_hashes": {
+  "/home/claude/MINACS/minacs/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "/home/claude/MINACS/minacs/analysis.py": "cda1714bc47208bcd7317c13adc7addd",
+  "/home/claude/MINACS/minacs/mind.py": "d4c750474240b76cbe5e5497947c9627",
+  "/home/claude/MINACS/minacs/model.py": "f675d770f05d2fda28ae266768cb5836",
+  "/home/claude/MINACS/minacs/trajectory.py": "119f94104b0558c373518a518fd7b81e",
+  "/home/claude/E4/e4/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "/home/claude/E4/e4/adapters.py": "9f9bd1715fc924851163189648fff6bc",
+  "/home/claude/E4/e4/policies_minacs.py": "b3a1c028b6a89af766a93aacec79afe2",
+  "/home/claude/E4/e4/prereg.py": "67496a558dd9971e5326fd47e0c5b5ca",
+  "/home/claude/E4/run_prereg.py": "82aafacb74017ed2bf7b5e4c983a23fe"
+ },
+ "registered_at": "2026-10-26T10:40:42.421990+00:00"
+}

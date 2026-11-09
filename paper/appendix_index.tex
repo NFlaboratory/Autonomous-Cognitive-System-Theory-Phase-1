@@ -1,0 +1,496 @@
+%======================================================================
+\section{定義・命題等の一覧}
+\label{app:index}
+
+本付録は、本文の定義、仮定、命題、補題、観察記録および問題のすべてと、
+本文中で参照される備考を、節ごとに本文での出現順に並べた参照用の一覧である。
+各項目の内容は本文による。
+
+%----------------------------------------------------------------------
+\subsection*{導入（\S\ref{sec:intro}）}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{p{2.4cm} p{10.4cm} r}
+定義~\ref{def:abc_classification} & 構造・機能概念の三分類 & \pageref{def:abc_classification} \\
+備考~\ref{rem:abc_classification_rules} & 三分類の適用規則 & \pageref{rem:abc_classification_rules} \\
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection*{自律認知システムの形式的定義（\S\ref{sec:acs_def}）}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{p{2.4cm} p{10.4cm} r}
+備考~\ref{rem:TSC_character} & TSCの性格 & \pageref{rem:TSC_character} \\
+備考~\ref{rem:Eext_relative} & 外部環境状態空間の個体相対性 & \pageref{rem:Eext_relative} \\
+定義~\ref{def:Eext_decomposition} & 外部環境状態空間の分解 & \pageref{def:Eext_decomposition} \\
+備考~\ref{rem:Eext_decomposition_reading} & 枠と行動応答成分の読み & \pageref{rem:Eext_decomposition_reading} \\
+定義~\ref{def:primitive_functions} & 原始的な機能（分類A） & \pageref{def:primitive_functions} \\
+定義~\ref{def:base_functions} & 基盤機能（分類A） & \pageref{def:base_functions} \\
+備考~\ref{rem:primitive_vs_principles} & 原始的な機能と三原理の記述水準の区別 & \pageref{rem:primitive_vs_principles} \\
+定義~\ref{def:acs} & 自律認知システム & \pageref{def:acs} \\
+備考~\ref{rem:action_space_structure} & 行動空間 $U$ の構造 & \pageref{rem:action_space_structure} \\
+備考~\ref{rem:update_type_two_layers} & Updateの型宣言の二層構造 & \pageref{rem:update_type_two_layers} \\
+備考~\ref{rem:tuple_nonredundancy} & 7タプルの非冗長性 & \pageref{rem:tuple_nonredundancy} \\
+定義~\ref{def:s_struct} & 構造的自己 & \pageref{def:s_struct} \\
+定義~\ref{def:wf_realization} & 整形式実現指標（分類C） & \pageref{def:wf_realization} \\
+備考~\ref{rem:math_vs_realization} & 数学的水準と実現水準の分離 & \pageref{rem:math_vs_realization} \\
+定義~\ref{def:s_dyn} & 動的自己状態 & \pageref{def:s_dyn} \\
+定義~\ref{def:b_se} & 自己--環境境界 & \pageref{def:b_se} \\
+命題~\ref{prop:xi_se_independence} & $\xi_{\mathrm{bnd},t}$ と $S_{\mathrm{struct}}$ の独立性 & \pageref{prop:xi_se_independence} \\
+備考~\ref{rem:xi_se_interpretation} & 認知的識別の失敗と構造の独立性 & \pageref{rem:xi_se_interpretation} \\
+仮定~\ref{ass:no_branching} & 個体同一性関係の非分岐性 & \pageref{ass:no_branching} \\
+定義~\ref{def:time_identity} & 時間的自己同一性の予備条件 & \pageref{def:time_identity} \\
+定義~\ref{def:collapse} & 崩壊状態指標と崩壊指標 & \pageref{def:collapse} \\
+定義~\ref{def:functional_termination} & 機能的終端状態指標と機能的終端指標 & \pageref{def:functional_termination} \\
+命題~\ref{prop:realized_reestablishment} & 実現した軌道上の再成立 & \pageref{prop:realized_reestablishment} \\
+命題~\ref{prop:collapse_basic} & 機能的終端指標と崩壊指標の基本性質 & \pageref{prop:collapse_basic} \\
+命題~\ref{prop:termination_order} & 機能的終端と崩壊の順序および崩壊後の整形式実現 & \pageref{prop:termination_order} \\
+備考~\ref{rem:termination_hierarchy} & 機能的終端・崩壊と他の状態の区別 & \pageref{rem:termination_hierarchy} \\
+備考~\ref{rem:primitive_activity_cessation} & 機能的活動の全面的不成立と待機・静止の区別 & \pageref{rem:primitive_activity_cessation} \\
+備考~\ref{rem:collapse_not_principle_failure} & 機能的終端・崩壊と三原理 & \pageref{rem:collapse_not_principle_failure} \\
+備考~\ref{rem:collapse_wf_relation} & 機能的終端・崩壊と整形式実現指標の関係 & \pageref{rem:collapse_wf_relation} \\
+備考~\ref{rem:post_collapse_record} & 機能的終端後と崩壊後の記録 & \pageref{rem:post_collapse_record} \\
+定義~\ref{def:environment_space} & 必要環境要因と必要環境空間 & \pageref{def:environment_space} \\
+備考~\ref{rem:factor_functional_class} & 必要環境要因は特定の供給手段ではない & \pageref{rem:factor_functional_class} \\
+備考~\ref{rem:eta_coarse_classes} & 必要環境要因の標準的粗分類候補 & \pageref{rem:eta_coarse_classes} \\
+定義~\ref{def:eta_satisfiable_domain} & 要因別充足状態域（分類C） & \pageref{def:eta_satisfiable_domain} \\
+備考~\ref{rem:env_utilization_function} & 必要環境利用機能 & \pageref{rem:env_utilization_function} \\
+備考~\ref{rem:cr1_relativity} & (CR-1a)(i) の外部背景相対性 & \pageref{rem:cr1_relativity} \\
+定義~\ref{def:E_req} & 必要環境充足集合（分類C） & \pageref{def:E_req} \\
+備考~\ref{rem:factor_nonuniqueness} & 要因分解の非一意性 & \pageref{rem:factor_nonuniqueness} \\
+備考~\ref{rem:necessity_identification} & 必要性の存立と同定可能性 & \pageref{rem:necessity_identification} \\
+仮定~\ref{ass:compact_spaces} & $X$・$U$ のコンパクト性 & \pageref{ass:compact_spaces} \\
+仮定~\ref{ass:f_continuity} & $f$ の連続性 & \pageref{ass:f_continuity} \\
+仮定~\ref{ass:Eext_time_fixed} & $E_{\mathrm{ext}}$ の時刻固定性 & \pageref{ass:Eext_time_fixed} \\
+定義~\ref{def:state_transition} & 状態遷移 & \pageref{def:state_transition} \\
+備考~\ref{rem:f_reading} & 状態遷移写像の読みの規約 & \pageref{rem:f_reading} \\
+定義~\ref{def:env_realization} & 行動応答成分の遷移写像と環境実現 & \pageref{def:env_realization} \\
+備考~\ref{rem:exogenous_environment} & 実現外部環境状態の生成について & \pageref{rem:exogenous_environment} \\
+定義~\ref{def:action_difference} & 作用差（分類C） & \pageref{def:action_difference} \\
+仮定~\ref{ass:f_decomposition} & 状態遷移の二成分分解 & \pageref{ass:f_decomposition} \\
+備考~\ref{rem:oplus_neutrality} & $\oplus$ と選択的待機の代数的地位 & \pageref{rem:oplus_neutrality} \\
+仮定~\ref{ass:env_input_nondegeneracy} & 外部環境入力に対する動学的非退化性 & \pageref{ass:env_input_nondegeneracy} \\
+備考~\ref{rem:nondegeneracy_levels} & 非退化条件の水準の区別 & \pageref{rem:nondegeneracy_levels} \\
+定義~\ref{def:Pi} & 持続評価関数 & \pageref{def:Pi} \\
+備考~\ref{rem:min_type_pi} & $\min$ 型 $\Pi$ の採用理由 & \pageref{rem:min_type_pi} \\
+定義~\ref{def:K} & 可行集合 & \pageref{def:K} \\
+命題~\ref{prop:theta_from_pi} & 可行性の等価性と $K$ の導出可能性 & \pageref{prop:theta_from_pi} \\
+定義~\ref{def:at} & 可行行動対応と可行行動集合 & \pageref{def:at} \\
+命題~\ref{prop:At_compact} & 可行行動集合の閉性とコンパクト性 & \pageref{prop:At_compact} \\
+定義~\ref{def:blockage_sec2} & 閉塞 & \pageref{def:blockage_sec2} \\
+備考~\ref{rem:blockage_not_collapse_sec2} & 閉塞と整形式実現の不成立・崩壊の区別 & \pageref{rem:blockage_not_collapse_sec2} \\
+備考~\ref{rem:time_identity_collapse} & 時間的自己同一性と機能的終端・崩壊・閉塞の区別 & \pageref{rem:time_identity_collapse} \\
+備考~\ref{rem:blockage_auto} & 閉塞と状態遷移の記述可能性 & \pageref{rem:blockage_auto} \\
+備考~\ref{rem:blockage_scope_sec2} & 閉塞の意味の範囲 & \pageref{rem:blockage_scope_sec2} \\
+定義~\ref{def:one_step_viable_environment} & 一段階可行環境対応（分類C） & \pageref{def:one_step_viable_environment} \\
+備考~\ref{rem:fixed_environment_and_state_dependent_viability} & 一段階可行性と必要環境充足の区別 & \pageref{rem:fixed_environment_and_state_dependent_viability} \\
+仮定~\ref{ass:env_viable_nondegeneracy} & 可行行動集合に対する環境入力の非退化性 & \pageref{ass:env_viable_nondegeneracy} \\
+命題~\ref{prop:nondegeneracy_implication} & 非退化性の水準間の含意 & \pageref{prop:nondegeneracy_implication} \\
+備考~\ref{rem:nondegeneracy_converse} & 逆向きの含意について & \pageref{rem:nondegeneracy_converse} \\
+仮定~\ref{ass:viable_realizability} & 可行実現可能性 & \pageref{ass:viable_realizability} \\
+備考~\ref{rem:viable_realizability_consequences} & 可行実現可能性から従う事項 & \pageref{rem:viable_realizability_consequences} \\
+定義~\ref{def:basic_functions} & 基礎的な機能 & \pageref{def:basic_functions} \\
+定義~\ref{def:three_primitives} & 原始的な機能の標準写像形式（分類B） & \pageref{def:three_primitives} \\
+命題~\ref{prop:feasibility_sensitivity_scope} & 評価の可行性感応性が要求を課す範囲 & \pageref{prop:feasibility_sensitivity_scope} \\
+備考~\ref{rem:P_dependency} & 原始的な機能の標準写像形式の作動依存 & \pageref{rem:P_dependency} \\
+仮定~\ref{ass:M_compact} & $\mathcal{M}$ のコンパクト性と成分距離の尺度規約 & \pageref{ass:M_compact} \\
+定義~\ref{def:model_learning_working} & 内部モデル状態の学習成分と作動成分 & \pageref{def:model_learning_working} \\
+定義~\ref{def:internal_model} & 内部モデル構造 & \pageref{def:internal_model} \\
+定義~\ref{def:model_parameter_space} & 内部モデル状態空間 & \pageref{def:model_parameter_space} \\
+備考~\ref{rem:M_independence} & $M$ の独立成分としての保持 & \pageref{rem:M_independence} \\
+定義~\ref{def:internal_env_estimate} & 内部環境推定（分類B） & \pageref{def:internal_env_estimate} \\
+備考~\ref{rem:estimate_gap} & 実現外部環境状態と内部環境推定の乖離 & \pageref{rem:estimate_gap} \\
+備考~\ref{rem:M_encodes_representation} & 内部モデル状態と内部表現の保持 & \pageref{rem:M_encodes_representation} \\
+定義~\ref{def:tipa_component_change} & TIPA成分別変化量と最大集約距離（分類C） & \pageref{def:tipa_component_change} \\
+観察記録~\ref{obs:tipa_integration} & $M_1/M_2/M_3$ の機能的分離方針 & \pageref{obs:tipa_integration} \\
+定義~\ref{def:update_operator} & Update作用素の構造 & \pageref{def:update_operator} \\
+定義~\ref{def:update_consistent_sequence} & Update整合系列 & \pageref{def:update_consistent_sequence} \\
+定義~\ref{def:update_stop_on_trajectory} & 系列上の学習停止 & \pageref{def:update_stop_on_trajectory} \\
+定義~\ref{def:update_quality} & 時間平均内部モデル変化量（分類C） & \pageref{def:update_quality} \\
+備考~\ref{rem:env_change_response} & 環境変化応答機能；構成的必要機能候補 & \pageref{rem:env_change_response} \\
+備考~\ref{rem:cognitive_capacity_policy} & 認知的処理能力の記述方針 & \pageref{rem:cognitive_capacity_policy} \\
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection*{三原理：SM・EU・FR（\S\ref{sec:three_principles}）}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{p{2.4cm} p{10.4cm} r}
+定義~\ref{def:three_principles_concept} & 三原理の概念的定義 & \pageref{def:three_principles_concept} \\
+備考~\ref{rem:conv_ro_layers} & 構造的環境結合・実現相互作用・EU・関係評価の水準区別 & \pageref{rem:conv_ro_layers} \\
+備考~\ref{rem:conv_tstab_scope} & T-STAB 地位規約 & \pageref{rem:conv_tstab_scope} \\
+備考~\ref{rem:s3_description_levels} & 本節における記述水準 & \pageref{rem:s3_description_levels} \\
+定義~\ref{def:principle_time_domain} & 原理判定時刻域 & \pageref{def:principle_time_domain} \\
+補題~\ref{lem:principle_time_domain_down} & 原理判定時刻域の下方閉性 & \pageref{lem:principle_time_domain_down} \\
+備考~\ref{rem:principle_time_domain_scope} & 原理判定時刻域と整形式実現・軌道記録 & \pageref{rem:principle_time_domain_scope} \\
+備考~\ref{rem:example_status} & 例示の地位 & \pageref{rem:example_status} \\
+命題~\ref{prop:pi_subdiff} & $\Pi$ の Lipschitz 連続性と Clarke 一般化勾配構造 & \pageref{prop:pi_subdiff} \\
+定義~\ref{def:violation_profile} & 閾値割れ集合と不足量ベクトル（分類C） & \pageref{def:violation_profile} \\
+命題~\ref{prop:pi_violation_profile} & $\Pi$ と閾値割れ集合の関係 & \pageref{prop:pi_violation_profile} \\
+定義~\ref{def:SM} & SM の時刻別充足述語 & \pageref{def:SM} \\
+命題~\ref{prop:sm_K_equiv} & SM と可行集合の同値性 & \pageref{prop:sm_K_equiv} \\
+命題~\ref{prop:sm_one_step_A} & 一段階の $K$ 保持と $A_t$ & \pageref{prop:sm_one_step_A} \\
+備考~\ref{rem:sm_not_collapse} & SM の時刻別充足述語が偽であることと崩壊の区別 & \pageref{rem:sm_not_collapse} \\
+定義~\ref{def:req_domain} & 必要環境充足状態域 & \pageref{def:req_domain} \\
+定義~\ref{def:viab_core} & $E_{\mathrm{req}}$ ロバスト可行性核 & \pageref{def:viab_core} \\
+命題~\ref{prop:viab_core_max} & 最大 $E_{\mathrm{req}}$ 不変集合の存在 & \pageref{prop:viab_core_max} \\
+備考~\ref{rem:viability_relation} & Viability Theory との構造的関係 & \pageref{rem:viability_relation} \\
+備考~\ref{rem:three_layers} & 形式モデル上の核・内部予測・実現軌道の区別 & \pageref{rem:three_layers} \\
+定義~\ref{def:viab_stage} & 有限段 $E_{\mathrm{req}}$ 頑健可行集合（分類C） & \pageref{def:viab_stage} \\
+定義~\ref{def:viab_horizon} & 頑健存続可能段数（分類C） & \pageref{def:viab_horizon} \\
+命題~\ref{prop:viab_stage_nested} & 有限段頑健可行集合の入れ子性 & \pageref{prop:viab_stage_nested} \\
+命題~\ref{prop:viab_stage_core} & $E_{\mathrm{req}}$ ロバスト可行性核と有限段頑健可行集合 & \pageref{prop:viab_stage_core} \\
+命題~\ref{prop:viab_stage_finite} & 有限状態空間における可行性核と有限段頑健可行集合 & \pageref{prop:viab_stage_finite} \\
+備考~\ref{rem:viab_stage_scope} & 頑健存続可能段数の地位と限定 & \pageref{rem:viab_stage_scope} \\
+定義~\ref{def:kernel_all_any} & 全環境頑健核と楽観核（分類C） & \pageref{def:kernel_all_any} \\
+命題~\ref{prop:kernel_standard_comparison} & 可行性核と全環境頑健核・楽観核の包含関係 & \pageref{prop:kernel_standard_comparison} \\
+備考~\ref{rem:kernel_standard_comparison_scope} & 包含関係の読み方と限定 & \pageref{rem:kernel_standard_comparison_scope} \\
+定義~\ref{def:viab_resp} & 応答込み頑健可行性核（分類C） & \pageref{def:viab_resp} \\
+命題~\ref{prop:viab_resp_max} & 応答込み頑健可行性核の不変性 & \pageref{prop:viab_resp_max} \\
+命題~\ref{prop:robust_noninclusion} & 二つの頑健性の非包含 & \pageref{prop:robust_noninclusion} \\
+備考~\ref{rem:robust_noninclusion_reading} & 二つの例の読みと射程 & \pageref{rem:robust_noninclusion_reading} \\
+備考~\ref{rem:same_time_alternatives} & 同じ時刻にありえた外部環境状態にわたる量化 & \pageref{rem:same_time_alternatives} \\
+仮定~\ref{ass:env_response} & 環境応答成分の構造的決定 & \pageref{ass:env_response} \\
+定義~\ref{def:x_E} & 環境応答成分 $x_E$ と座標射影 $\pi_E$ & \pageref{def:x_E} \\
+備考~\ref{rem:env_response_observation} & 環境応答成分の観察的対応 & \pageref{rem:env_response_observation} \\
+定義~\ref{def:env_coupling} & 構造的環境結合条件（分類C） & \pageref{def:env_coupling} \\
+命題~\ref{prop:pi_E_sensitivity} & $\pi_E$ の最小感応性：同値版 & \pageref{prop:pi_E_sensitivity} \\
+備考~\ref{rem:pi_E_local_sensitivity} & $x_E$ 方向の局所感応性 & \pageref{rem:pi_E_local_sensitivity} \\
+定義~\ref{def:ro_related_violation} & 環境応答成分の閾値割れ集合（分類C） & \pageref{def:ro_related_violation} \\
+備考~\ref{rem:diagnostic_role} & $\min$ 型 $\Pi$ の診断限界と補完指標の役割 & \pageref{rem:diagnostic_role} \\
+定義~\ref{def:phi} & 外部相互作用指標 $\chi_{\mathrm{EI},t}$（分類C） & \pageref{def:phi} \\
+定義~\ref{def:terminal_isolation} & 終端的完全孤立 & \pageref{def:terminal_isolation} \\
+定義~\ref{def:eu_critical_domain} & 一段階臨界域（分類C） & \pageref{def:eu_critical_domain} \\
+定義~\ref{def:eu_fire} & 一段階臨界必要要因集合（分類C） & \pageref{def:eu_fire} \\
+備考~\ref{rem:crit_description_level} & 一段階臨界必要要因集合の記述水準 & \pageref{rem:crit_description_level} \\
+定義~\ref{def:EU} & EU の時刻別充足述語 & \pageref{def:EU} \\
+命題~\ref{prop:eu_blockage} & 臨界必要要因の非充足と閉塞 & \pageref{prop:eu_blockage} \\
+命題~\ref{prop:eu_sm_next} & 臨界必要要因の非充足と次時刻の状態 & \pageref{prop:eu_sm_next} \\
+備考~\ref{rem:eu_one_step_scope} & 一段階の必要性の射程 & \pageref{rem:eu_one_step_scope} \\
+備考~\ref{rem:eu_cr1_connection} & EU と構成要件 CR-1 の接続範囲 & \pageref{rem:eu_cr1_connection} \\
+命題~\ref{prop:eu_fire_domain} & 臨界必要要因と要因別充足状態域 & \pageref{prop:eu_fire_domain} \\
+備考~\ref{rem:eu_env_utilization} & 現在状態で充足不能な要因と EU & \pageref{rem:eu_env_utilization} \\
+定義~\ref{def:fr_domain} & FR の定義域 & \pageref{def:fr_domain} \\
+定義~\ref{def:FR} & FR の時刻別充足述語（局所 FR） & \pageref{def:FR} \\
+備考~\ref{rem:fr_scope} & FR の定義上の限定 & \pageref{rem:fr_scope} \\
+定義~\ref{def:mu_eff} & 応答多様度（分類C） & \pageref{def:mu_eff} \\
+命題~\ref{prop:fr_domain_eu} & 定義域と EU の時刻別充足述語 & \pageref{prop:fr_domain_eu} \\
+命題~\ref{prop:fr_one_step} & 系：局所 FR と次状態の $K$ への所属 & \pageref{prop:fr_one_step} \\
+命題~\ref{prop:fr_next_sm} & 局所 FR の偽と次時刻の状態 & \pageref{prop:fr_next_sm} \\
+命題~\ref{prop:fr_mu_eff} & 局所 FR と応答多様度 & \pageref{prop:fr_mu_eff} \\
+備考~\ref{rem:mu_eff_empty_req} & $E_{\mathrm{req}}(x_t)=\emptyset$ の場合の応答多様度 & \pageref{rem:mu_eff_empty_req} \\
+備考~\ref{rem:env_basis_intrinsic} & 環境比較基準の内在性 & \pageref{rem:env_basis_intrinsic} \\
+備考~\ref{rem:sd_local_scope} & 局所 FR と長期の側面の時間的区別 & \pageref{rem:sd_local_scope} \\
+備考~\ref{rem:sd_improvement_aux} & 可行性余裕度の改善可能性 & \pageref{rem:sd_improvement_aux} \\
+命題~\ref{prop:viab_stage_fr} & 有限段頑健可行集合と局所 FR & \pageref{prop:viab_stage_fr} \\
+命題~\ref{prop:selection_responsibility} & 選択の責務 & \pageref{prop:selection_responsibility} \\
+備考~\ref{rem:selection_responsibility} & 選択の責務と構成要件 & \pageref{rem:selection_responsibility} \\
+命題~\ref{prop:blockage_dichotomy} & 閉塞の二分 & \pageref{prop:blockage_dichotomy} \\
+備考~\ref{rem:blockage_dichotomy} & 二分の地位 & \pageref{rem:blockage_dichotomy} \\
+備考~\ref{rem:principles_failure_table} & 三原理の時刻別充足述語と閉塞・整形式実現・崩壊 & \pageref{rem:principles_failure_table} \\
+備考~\ref{rem:principle_linkage} & 三原理の連動 & \pageref{rem:principle_linkage} \\
+備考~\ref{rem:principle_implication_scope} & 含意関係の限定 & \pageref{rem:principle_implication_scope} \\
+仮定~\ref{ass:nonstationary} & 非定常環境 & \pageref{ass:nonstationary} \\
+定義~\ref{def:nonresponse_env_set} & 応答不能環境集合と可行な応答の弱点（分類C） & \pageref{def:nonresponse_env_set} \\
+定義~\ref{def:nonresponse_region} & 応答不能領域（分類C） & \pageref{def:nonresponse_region} \\
+定義~\ref{def:robust_response} & 頑健応答集合と頑健応答不能（分類C） & \pageref{def:robust_response} \\
+命題~\ref{prop:robust_nonresponse_viab} & 頑健応答不能と頑健可行集合 & \pageref{prop:robust_nonresponse_viab} \\
+定義~\ref{def:theta_exterior} & $K$ 外部持続 & \pageref{def:theta_exterior} \\
+仮定~\ref{ass:theta_exterior_blockage} & 可行性核外部持続と閉塞の有限時間接続 & \pageref{ass:theta_exterior_blockage} \\
+命題~\ref{prop:exterior_blockage} & $K$ 外部持続と閉塞 & \pageref{prop:exterior_blockage} \\
+備考~\ref{rem:exterior_without_blockage} & 可行性核の外への持続と閉塞の関係 & \pageref{rem:exterior_without_blockage} \\
+補題~\ref{lem:sd_viab} & 応答多様性縮退と応答の弱点による頑健応答不能 & \pageref{lem:sd_viab} \\
+補題~\ref{lem:finite_exit} & 可行性核外部におけるロバスト可行性の喪失 & \pageref{lem:finite_exit} \\
+備考~\ref{rem:uniform_bound} & 補題~\ref{lem:finite_exit} の射程 & \pageref{rem:uniform_bound} \\
+命題~\ref{prop:sd_robust_nonresponse} & 主命題：応答多様性縮退と応答の弱点の持続による頑健応答不能の持続 & \pageref{prop:sd_robust_nonresponse} \\
+命題~\ref{prop:sd_necessity} & 系：応答多様性縮退の持続からの有限時間閉塞；強仮定のもとで & \pageref{prop:sd_necessity} \\
+命題~\ref{prop:sd_necessity_fr} & 系：応答多様性縮退の持続と局所 FR & \pageref{prop:sd_necessity_fr} \\
+定義~\ref{def:kernel_response} & 核維持応答集合（分類C） & \pageref{def:kernel_response} \\
+命題~\ref{prop:kernel_maintenance} & 核に留まる応答を選び続ける軌道 & \pageref{prop:kernel_maintenance} \\
+定義~\ref{def:kernel_response_acquisition} & 核維持応答の獲得（分類C） & \pageref{def:kernel_response_acquisition} \\
+備考~\ref{rem:kernel_response_scope} & 結果の差と非主張事項 & \pageref{rem:kernel_response_scope} \\
+備考~\ref{rem:sd_degree} & 応答多様度の「程度」命題は Phase~2 の課題 & \pageref{rem:sd_degree} \\
+備考~\ref{rem:mu_measure} & $\mu_{\mathrm{eff}}$ の測度論的位置づけと Phase~2 への委譲 & \pageref{rem:mu_measure} \\
+定義~\ref{def:s3_eval_scales} & 三原理評価表現の参照スケール & \pageref{def:s3_eval_scales} \\
+定義~\ref{def:s_sm} & SM 評価尺度（分類C） & \pageref{def:s_sm} \\
+定義~\ref{def:s_eu} & EU・FR 評価尺度（分類C） & \pageref{def:s_eu} \\
+定義~\ref{def:S3} & 三原理評価ベクトル（分類C） & \pageref{def:S3} \\
+定義~\ref{def:tstab_params} & T-STAB 評価パラメータ & \pageref{def:tstab_params} \\
+定義~\ref{def:tstab} & T-STAB：三原理時間統合評価条件 & \pageref{def:tstab} \\
+命題~\ref{prop:tstab_implies_principles} & T-STAB から有限窓内の時刻別充足述語への含意 & \pageref{prop:tstab_implies_principles} \\
+命題~\ref{prop:tstab_zero_margin} & 時刻別充足述語の真と T-STAB & \pageref{prop:tstab_zero_margin} \\
+備考~\ref{rem:tstab_descriptive_status} & 時間集約条件の記述上の地位 & \pageref{rem:tstab_descriptive_status} \\
+定義~\ref{def:principle_related_functions} & 三原理関連構造的機能（分類A） & \pageref{def:principle_related_functions} \\
+備考~\ref{rem:theory_quantity_vs_internal} & 理論上の量への関連と内部での計算の区別 & \pageref{rem:theory_quantity_vs_internal} \\
+定義~\ref{def:principles_tipa_connection} & 三原理から TIPA への機能的接続 & \pageref{def:principles_tipa_connection} \\
+定義~\ref{def:principles_psl_connection} & 原理関連機能と PSL の接続 & \pageref{def:principles_psl_connection} \\
+定義~\ref{def:principles_isl_connection} & 原理関連機能と ISL の接続 & \pageref{def:principles_isl_connection} \\
+備考~\ref{rem:principle_function_overlap} & 原理別の主な機能接続は重複しうる & \pageref{rem:principle_function_overlap} \\
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection*{TIPA・PSL・ISL（\S\ref{sec:tipa}）}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{p{2.4cm} p{10.4cm} r}
+定義~\ref{def:sel_proj} & 決定論的選択射影（分類B） & \pageref{def:sel_proj} \\
+定義~\ref{def:s4_carrier_contract} & 同時刻作動の担体規約（分類B） & \pageref{def:s4_carrier_contract} \\
+仮定~\ref{ass:functional_concurrency} & TIPA三機構の機能的並行性 & \pageref{ass:functional_concurrency} \\
+備考~\ref{rem:tipa_bidirectional} & 機構間の送受信と同一時刻の記述 & \pageref{rem:tipa_bidirectional} \\
+定義~\ref{def:s4_output_attribution} & 機構出力の個体への帰属（分類B） & \pageref{def:s4_output_attribution} \\
+備考~\ref{rem:internal_steps_time} & 離散時刻と内部処理工程 & \pageref{rem:internal_steps_time} \\
+定義~\ref{def:m1_state} & M1内部状態（分類B） & \pageref{def:m1_state} \\
+定義~\ref{def:m1_map} & 情報統合機構 $M_1$（分類B） & \pageref{def:m1_map} \\
+定義~\ref{def:std_init} & M1-aの予備状態推定（分類B） & \pageref{def:std_init} \\
+定義~\ref{def:m1_integration} & M1-aの動態重みと最終統合（分類B） & \pageref{def:m1_integration} \\
+定義~\ref{def:s4_m1_sources} & M1補助出力の情報源（分類B） & \pageref{def:s4_m1_sources} \\
+備考~\ref{rem:m1_estimate_nontruth} & 状態・環境推定と実現値 & \pageref{rem:m1_estimate_nontruth} \\
+定義~\ref{def:s4_state_estimation_error} & 状態推定誤差（分類C） & \pageref{def:s4_state_estimation_error} \\
+定義~\ref{def:id_vector} & 識別状態と内部対象トークン（分類B） & \pageref{def:id_vector} \\
+備考~\ref{rem:token_generation} & 内部対象トークンの形成と実装依存の範囲 & \pageref{rem:token_generation} \\
+定義~\ref{def:m1_temporal_base} & M1-cの時間的基底表現（分類B） & \pageref{def:m1_temporal_base} \\
+定義~\ref{def:m1_temporal_features} & M1-cの予測整合性と先行時間特徴量（分類C） & \pageref{def:m1_temporal_features} \\
+定義~\ref{def:env_set_prediction} & 外部側の集合値予測（分類B） & \pageref{def:env_set_prediction} \\
+定義~\ref{def:prediction_record_check} & 予測集合の記録と二種類の予測外（分類C） & \pageref{def:prediction_record_check} \\
+備考~\ref{rem:prediction_reference_difference} & 二つの予測の照合基準の違い & \pageref{rem:prediction_reference_difference} \\
+定義~\ref{def:m1_temporal_output} & M1-cの最終時間特徴量（分類B） & \pageref{def:m1_temporal_output} \\
+仮定~\ref{ass:m1c_temporal} & M1-cの時間統合構造 & \pageref{ass:m1c_temporal} \\
+定義~\ref{def:m2_eval_space} & M2内部評価情報空間（分類B） & \pageref{def:m2_eval_space} \\
+定義~\ref{def:request_signal_types} & 要求の一覧と要請信号の型（分類B） & \pageref{def:request_signal_types} \\
+定義~\ref{def:rq_eval_types} & 要求×対象の評価の型（分類B） & \pageref{def:rq_eval_types} \\
+定義~\ref{def:m2_map} & 適応的評価機構 $M_2$（分類B） & \pageref{def:m2_map} \\
+備考~\ref{rem:m2_no_return_scope} & M2 に戻らないことの範囲 & \pageref{rem:m2_no_return_scope} \\
+定義~\ref{def:m2a_threat} & M2-a可行性脅威検出機能（分類B） & \pageref{def:m2a_threat} \\
+定義~\ref{def:s4_internal_viability_check} & 内部可行判定と理論上の可行判定（分類C） & \pageref{def:s4_internal_viability_check} \\
+定義~\ref{def:mech_mu_eff} & 機構層有効行動多様度の一般形（分類C） & \pageref{def:mech_mu_eff} \\
+定義~\ref{def:m2b_vuln} & M2-b構造的脆弱性評価機能（分類B） & \pageref{def:m2b_vuln} \\
+定義~\ref{def:m2c_latent_function} & M2-c潜在的不安定性評価機能（分類B） & \pageref{def:m2c_latent_function} \\
+定義~\ref{def:m2_latent_instability} & 潜在的不安定性の機構層指標（分類C） & \pageref{def:m2_latent_instability} \\
+定義~\ref{def:m2_priority} & Priority警告体系（分類B） & \pageref{def:m2_priority} \\
+定義~\ref{def:m2_request_signal} & M2による要請信号の生成（分類B） & \pageref{def:m2_request_signal} \\
+備考~\ref{rem:error_bounds} & M2評価の情報品質と非定量性 & \pageref{rem:error_bounds} \\
+備考~\ref{rem:m2_need_evaluation} & 内部の必要性評価と臨界必要要因 & \pageref{rem:m2_need_evaluation} \\
+定義~\ref{def:eval_vs_judgment} & 二つの評価と判断の区別（分類B） & \pageref{def:eval_vs_judgment} \\
+定義~\ref{def:m3_map} & 応答行動機構 $M_3$（分類B） & \pageref{def:m3_map} \\
+定義~\ref{def:m3a_info} & M3-a統合入力情報（分類B） & \pageref{def:m3a_info} \\
+定義~\ref{def:purpose_formation} & 目的の型と目的の形成（分類B） & \pageref{def:purpose_formation} \\
+備考~\ref{rem:purpose_hierarchy} & 目的の階層と入れ子 & \pageref{rem:purpose_hierarchy} \\
+定義~\ref{def:purpose_status} & 目的の状態判断（分類B） & \pageref{def:purpose_status} \\
+定義~\ref{def:m3_candidate_set} & M3候補集合（分類B） & \pageref{def:m3_candidate_set} \\
+定義~\ref{def:m3_fit} & 候補適合比較（分類B） & \pageref{def:m3_fit} \\
+定義~\ref{def:s4_candidate_sources} & 候補と適合比較の情報来歴（分類B） & \pageref{def:s4_candidate_sources} \\
+備考~\ref{rem:fit_vs_identity} & 要請適合性と識別の区別 & \pageref{rem:fit_vs_identity} \\
+定義~\ref{def:mode_judgment} & 動作モードの判断（分類B） & \pageref{def:mode_judgment} \\
+定義~\ref{def:request_response_mismatch} & 要請と応答の不一致（分類C） & \pageref{def:request_response_mismatch} \\
+定義~\ref{def:M3_modes} & M3動作モード（分類B） & \pageref{def:M3_modes} \\
+定義~\ref{def:m3_3b_styles} & 3B応答様式（分類B） & \pageref{def:m3_3b_styles} \\
+定義~\ref{def:action_decision} & TIPA行動指令の決定（分類B） & \pageref{def:action_decision} \\
+定義~\ref{def:psl_availability} & 利用可能性（分類C） & \pageref{def:psl_availability} \\
+定義~\ref{def:psl} & PSLの形式的定義（分類B） & \pageref{def:psl} \\
+定義~\ref{def:psl1} & PSL-1の形式的定義（分類B） & \pageref{def:psl1} \\
+定義~\ref{def:psl2} & PSL-2の形式的定義（分類B） & \pageref{def:psl2} \\
+定義~\ref{def:psl3} & PSL-3の形式的定義（分類B） & \pageref{def:psl3} \\
+定義~\ref{def:psl4} & PSL-4：局所急性異常への保護応答（分類B） & \pageref{def:psl4} \\
+定義~\ref{def:effective_action_resolve} & 実効行動解決写像（分類B） & \pageref{def:effective_action_resolve} \\
+備考~\ref{rem:psl4_concurrency} & 局所保護応答と TIPA の並行性 & \pageref{rem:psl4_concurrency} \\
+定義~\ref{def:psl_sensitivity} & PSL感度制御写像（分類B） & \pageref{def:psl_sensitivity} \\
+定義~\ref{def:s4_psl_sources} & PSLの信号・基盤担体と標準写像への接続（分類B） & \pageref{def:s4_psl_sources} \\
+仮定~\ref{ass:psl_minimal} & PSLの最小構造条件と非認知性 & \pageref{ass:psl_minimal} \\
+命題~\ref{prop:purpose_self_attribution} & 目的の自己帰属性 & \pageref{prop:purpose_self_attribution} \\
+備考~\ref{rem:self_attribution_scope} & 自己帰属性の射程と異常域 & \pageref{rem:self_attribution_scope} \\
+定義~\ref{def:req_involvement} & 要求の関与（分類C） & \pageref{def:req_involvement} \\
+定義~\ref{def:action_classes} & 行動の区分（分類C） & \pageref{def:action_classes} \\
+定義~\ref{def:purpose_action_difference} & 目的に関わる作用差と一段の条件充足（分類C） & \pageref{def:purpose_action_difference} \\
+命題~\ref{prop:purpose_ad_slot} & 外部側の区分と枠の作用差 & \pageref{prop:purpose_ad_slot} \\
+定義~\ref{def:result_tuple} & 一つの行動の結果の記述（分類C） & \pageref{def:result_tuple} \\
+定義~\ref{def:purpose_course} & 目的の経過の記述（分類C） & \pageref{def:purpose_course} \\
+定義~\ref{def:impl_layer} & 実装部位層 ISL（分類B） & \pageref{def:impl_layer} \\
+定義~\ref{def:sensor} & 感覚実装役割（分類B） & \pageref{def:sensor} \\
+定義~\ref{def:effector} & 効果実装役割（分類B） & \pageref{def:effector} \\
+定義~\ref{def:mem_substrate} & 記憶実装役割（分類B） & \pageref{def:mem_substrate} \\
+定義~\ref{def:impl_psl_connection} & ISLとPSLの接続規約（分類B） & \pageref{def:impl_psl_connection} \\
+仮定~\ref{ass:impl_structure} & 実装部位層の構造的仮定 & \pageref{ass:impl_structure} \\
+定義~\ref{def:integrated_fast_processing} & 統合的高速処理（分類B） & \pageref{def:integrated_fast_processing} \\
+定義~\ref{def:fast_cross_layer} & 高速処理の三層横断性（分類C） & \pageref{def:fast_cross_layer} \\
+備考~\ref{rem:automaticity_deliberation} & Automaticityと熟慮依存度 & \pageref{rem:automaticity_deliberation} \\
+定義~\ref{def:fast_memory_sets} & 五機能的記憶集合（分類B） & \pageref{def:fast_memory_sets} \\
+仮定~\ref{ass:fast_structural_consistency} & 高速処理時の構造整合条件 & \pageref{ass:fast_structural_consistency} \\
+定義~\ref{def:functional_axis} & 機能軸（分類C） & \pageref{def:functional_axis} \\
+定義~\ref{def:s4_primitive_composition} & 標準作動形式との合成対応（分類B） & \pageref{def:s4_primitive_composition} \\
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection*{標準作動形式と時刻間の接続（\S\ref{sec:extended_dynamics}）}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{p{2.4cm} p{10.4cm} r}
+定義~\ref{def:s5_responsibilities} & 本節の責務 & \pageref{def:s5_responsibilities} \\
+定義~\ref{def:s5_standard_step} & 標準作動の一段 & \pageref{def:s5_standard_step} \\
+定義~\ref{def:update_section5} & Updateの参照と一段遷移写像 & \pageref{def:update_section5} \\
+定義~\ref{def:memory_intertime_update} & 保持内容の時刻間読み出し & \pageref{def:memory_intertime_update} \\
+命題~\ref{prop:s5_one_step} & P1：一段の整形式性 & \pageref{prop:s5_one_step} \\
+定義~\ref{def:s5_operation_record} & 標準作動記録 & \pageref{def:s5_operation_record} \\
+命題~\ref{prop:s5_continuation} & P2：数学的作動記録の継続 & \pageref{prop:s5_continuation} \\
+命題~\ref{prop:s5_causality} & P3：作動記録の因果性 & \pageref{prop:s5_causality} \\
+定義~\ref{def:s5_record_agreement} & 保持記録の一致（分類C） & \pageref{def:s5_record_agreement} \\
+仮定~\ref{ass:s5_observation_factorization} & Updateの観測経由性 & \pageref{ass:s5_observation_factorization} \\
+命題~\ref{prop:s5_observation_causality} & 観測経由性の検査条件と内部モデルの因果性 & \pageref{prop:s5_observation_causality} \\
+定義~\ref{def:intertime_update} & 担体から誘導される時刻間変化 & \pageref{def:intertime_update} \\
+定義~\ref{def:learning_intertime_change} & 学習・忘却の時刻間的位置づけ（分類B） & \pageref{def:learning_intertime_change} \\
+備考~\ref{rem:s5_fast_change} & 高速処理・Automaticityと状態の変化 & \pageref{rem:s5_fast_change} \\
+備考~\ref{rem:s5_learning_viability} & 学習と可行性構造 & \pageref{rem:s5_learning_viability} \\
+定義~\ref{def:bias_tendency} & 偏向性（分類C） & \pageref{def:bias_tendency} \\
+定義~\ref{def:bias_attribution} & 偏向性の帰属区分（分類C） & \pageref{def:bias_attribution} \\
+定義~\ref{def:beta_accumulated} & 偏向強度（分類C） & \pageref{def:beta_accumulated} \\
+備考~\ref{rem:beta_multiple_biases} & 偏向性の抽象的構造記述と実装記述の区別 & \pageref{rem:beta_multiple_biases} \\
+備考~\ref{rem:bias_formation_vs_attribution} & 偏向性の形成と帰属の区別 & \pageref{rem:bias_formation_vs_attribution} \\
+定義~\ref{def:s5_readout_types} & 読み出しの型と解析範囲 & \pageref{def:s5_readout_types} \\
+定義~\ref{def:beta_intertime_update} & 偏向強度の時刻間読み出し & \pageref{def:beta_intertime_update} \\
+定義~\ref{def:s5_prediction_coefficient} & 予測精度係数（分類C） & \pageref{def:s5_prediction_coefficient} \\
+定義~\ref{def:tau_hat_section5} & 実効的時間地平（分類C） & \pageref{def:tau_hat_section5} \\
+定義~\ref{def:deff_section5} & 実効的発展自由度（分類C） & \pageref{def:deff_section5} \\
+定義~\ref{def:s5_health_quantities} & PSL・ISL健全度量（分類C） & \pageref{def:s5_health_quantities} \\
+備考~\ref{rem:s5_health_noncollapse} & 健全度・機能軸・診断の区別 & \pageref{rem:s5_health_noncollapse} \\
+定義~\ref{def:extended_variable_tuple} & 時刻依存量の整理用タプル（分類C） & \pageref{def:extended_variable_tuple} \\
+定義~\ref{def:s5_downstream_interface} & 後続節への記録インターフェース & \pageref{def:s5_downstream_interface} \\
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection*{ACS関係性の最小構造（\S\ref{sec:rel_min}）}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{p{2.4cm} p{10.4cm} r}
+定義~\ref{def:external_object_set} & 外部対象集合 & \pageref{def:external_object_set} \\
+定義~\ref{def:object_type} & 外部対象の三分類 & \pageref{def:object_type} \\
+仮定~\ref{ass:obj_stable} & 外部対象分類の固定 & \pageref{ass:obj_stable} \\
+定義~\ref{def:rel_size_functional} & 可行行動集合の局所的サイズ指標（分類C） & \pageref{def:rel_size_functional} \\
+定義~\ref{def:finite_window_diff} & 有限観測窓における差分記法（分類C） & \pageref{def:finite_window_diff} \\
+備考~\ref{rem:finite_window_diff_limit} & 有限観測窓差分の制限とサイズ汎関数の委譲 & \pageref{rem:finite_window_diff_limit} \\
+定義~\ref{def:rel_unidirect} & 単方向関係記述子（分類C） & \pageref{def:rel_unidirect} \\
+備考~\ref{rem:rel_unidirect_notation} & 記号上の注意 & \pageref{rem:rel_unidirect_notation} \\
+定義~\ref{def:rel_unidirect_type} & 単方向関係記述子の型 & \pageref{def:rel_unidirect_type} \\
+仮定~\ref{ass:unidirect_scope} & 単方向関係記述の対象範囲 & \pageref{ass:unidirect_scope} \\
+仮定~\ref{ass:bidirect_scope} & 双方向合成関係の標準対象 & \pageref{ass:bidirect_scope} \\
+定義~\ref{def:bidirect_relation} & 双方向合成関係（分類C） & \pageref{def:bidirect_relation} \\
+定義~\ref{def:relation_direction} & 方向性指標（分類C） & \pageref{def:relation_direction} \\
+備考~\ref{rem:dir_undefined} & 方向性判定の未定義部分 & \pageref{rem:dir_undefined} \\
+定義~\ref{def:homo_hetero_relation} & 同種相互関係と異種相互関係 & \pageref{def:homo_hetero_relation} \\
+備考~\ref{rem:homo_hetero_rel} & 同種・異種の分類の制限 & \pageref{rem:homo_hetero_rel} \\
+備考~\ref{rem:no_mutual_form} & 同種相互形を持たないカテゴリー & \pageref{rem:no_mutual_form} \\
+定義~\ref{def:bidirectional_category} & 双方向成立カテゴリー（分類C） & \pageref{def:bidirectional_category} \\
+備考~\ref{rem:competition_directionality} & 競争の方向性に関する特殊性 & \pageref{rem:competition_directionality} \\
+備考~\ref{rem:nACS_limit} & 非ACS対象との双方向関係の制限 & \pageref{rem:nACS_limit} \\
+定義~\ref{def:Q_rule} & 関係品質の評価規則（分類C） & \pageref{def:Q_rule} \\
+定義~\ref{def:Q_domain} & 関係品質評価可能域 & \pageref{def:Q_domain} \\
+定義~\ref{def:Q} & 関係品質評価 $Q$ & \pageref{def:Q} \\
+備考~\ref{rem:Q_internal_formal} & 関係品質と内部の評価の区別 & \pageref{rem:Q_internal_formal} \\
+定義~\ref{def:Q_sign} & $Q$ の符号による関係品質分類 & \pageref{def:Q_sign} \\
+命題~\ref{prop:Q_not_RO_condition} & $Q$ と構造的環境結合条件の定義式上の相互非参照 & \pageref{prop:Q_not_RO_condition} \\
+定義~\ref{def:contaminated_ro} & 負の関係品質を伴う環境結合（分類C） & \pageref{def:contaminated_ro} \\
+定義~\ref{def:Q_window_average} & 関係品質の有限窓評価 & \pageref{def:Q_window_average} \\
+備考~\ref{rem:Q_not_tstab_core} & $Q$ を T-STAB の普遍条件へ組み込まない & \pageref{rem:Q_not_tstab_core} \\
+定義~\ref{def:category_set} & 代表カテゴリーラベル集合（分類C） & \pageref{def:category_set} \\
+定義~\ref{def:six_system_classification} & 六系分類（分類C） & \pageref{def:six_system_classification} \\
+備考~\ref{rem:category_phase1a} & カテゴリー成立条件の未定義性 & \pageref{rem:category_phase1a} \\
+備考~\ref{rem:derived_composite_categories} & 派生カテゴリーと複合カテゴリー & \pageref{rem:derived_composite_categories} \\
+備考~\ref{rem:recognized_relation_category} & カテゴリーと認識された関係性 & \pageref{rem:recognized_relation_category} \\
+備考~\ref{rem:phase1a_delegation} & Phase~1.$\alpha$ への委譲事項 & \pageref{rem:phase1a_delegation} \\
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection*{崩壊・閉塞・崩壊経路集合（\S\ref{sec:collapse_cond}）}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{p{2.4cm} p{10.4cm} r}
+備考~\ref{rem:s7_principle_levels} & 本節における三原理と機能の記述水準 & \pageref{rem:s7_principle_levels} \\
+備考~\ref{rem:blockage_time_dependence} & 閉塞は吸収状態として定義されない & \pageref{rem:blockage_time_dependence} \\
+命題~\ref{prop:blockage_viability_kernel} & 閉塞と $E_{\mathrm{req}}$ ロバスト可行性核の関係 & \pageref{prop:blockage_viability_kernel} \\
+備考~\ref{rem:health_not_zone_identity} & 健全度量と状態帯を同一視しない & \pageref{rem:health_not_zone_identity} \\
+定義~\ref{def:admissible_external_action} & 許容外的作用集合（分類C） & \pageref{def:admissible_external_action} \\
+定義~\ref{def:external_recoverability} & 外的回復述語と外的回復可能性（分類C） & \pageref{def:external_recoverability} \\
+命題~\ref{prop:recover_excludes_termination} & 外的回復可能性と終端状態指標 & \pageref{prop:recover_excludes_termination} \\
+定義~\ref{def:acs_valid_time_domain} & ACS記録有効時刻域（分類C） & \pageref{def:acs_valid_time_domain} \\
+定義~\ref{def:trajectory_space} & 軌道記録空間（分類C） & \pageref{def:trajectory_space} \\
+備考~\ref{rem:trajectory_space_scope} & 軌道記録空間の力学的意味 & \pageref{rem:trajectory_space_scope} \\
+定義~\ref{def:blk_path_set} & 閉塞経路集合（分類C） & \pageref{def:blk_path_set} \\
+定義~\ref{def:blk_reaching_time} & 閉塞到達時刻（分類C） & \pageref{def:blk_reaching_time} \\
+備考~\ref{rem:sm_wf_not_blk_path} & SM の時刻別充足述語が偽であること・整形式実現の不成立と閉塞経路集合への帰属の関係 & \pageref{rem:sm_wf_not_blk_path} \\
+定義~\ref{def:col_path_set} & 崩壊到達経路集合（分類C） & \pageref{def:col_path_set} \\
+定義~\ref{def:col_reaching_time} & 崩壊到達時刻（分類C） & \pageref{def:col_reaching_time} \\
+備考~\ref{rem:principles_not_col_path} & 三原理の時刻別充足述語・T-STAB・関係品質と崩壊到達の関係 & \pageref{rem:principles_not_col_path} \\
+備考~\ref{rem:internal_quantities_not_principles} & 内部時刻量と三原理の時刻別充足述語を同一視しない & \pageref{rem:internal_quantities_not_principles} \\
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection*{組織ACS：社会的組織への構造的適用（\S\ref{sec:org_acs}）}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{p{2.4cm} p{10.4cm} r}
+定義~\ref{def:org_terms} & 集団・組織・社会の記述上の区分 & \pageref{def:org_terms} \\
+定義~\ref{def:org_class_terms} & ACS集団・ACS組織・組織ACS & \pageref{def:org_class_terms} \\
+備考~\ref{rem:org_terms_nonimplication} & 組織と関係対象分類 & \pageref{rem:org_terms_nonimplication} \\
+定義~\ref{def:org_participation} & 参加ACSの時刻別記録 & \pageref{def:org_participation} \\
+定義~\ref{def:org_structural_form} & 組織水準のACS構造 & \pageref{def:org_structural_form} \\
+備考~\ref{rem:org_state_closure} & 組織状態と遷移の一価性 & \pageref{rem:org_state_closure} \\
+定義~\ref{def:org_acs} & 組織ACSの記述的適用規約 & \pageref{def:org_acs} \\
+備考~\ref{rem:org_individual_nonimplication} & 個体水準と組織水準の判定の区別 & \pageref{rem:org_individual_nonimplication} \\
+定義~\ref{def:org_viable_action} & 組織水準の可行集合と可行行動集合 & \pageref{def:org_viable_action} \\
+命題~\ref{prop:org_blockage_characterization} & 組織水準の閉塞の特徴づけ & \pageref{prop:org_blockage_characterization} \\
+備考~\ref{rem:org_principles_conditional} & 先行節の定義の組織水準への適用 & \pageref{rem:org_principles_conditional} \\
+備考~\ref{rem:org_qualification_loss} & 時刻別資格と組織の継続 & \pageref{rem:org_qualification_loss} \\
+備考~\ref{rem:org_failure_scope} & 閉塞・崩壊の適用域 & \pageref{rem:org_failure_scope} \\
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection*{限界・未解決問題・Phase~2・3への展望（\S\ref{sec:limitations_and_outlook}）}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{p{2.4cm} p{10.4cm} r}
+問題~\ref{prob:branching_identity} & 分岐を許す場合の同一個体性の再定式化 & \pageref{prob:branching_identity} \\
+問題~\ref{prob:stability} & T-STABパラメータの較正と予測的解釈 & \pageref{prob:stability} \\
+問題~\ref{prob:estimation_error} & 推定誤差と内部更新則の定量的同定 & \pageref{prob:estimation_error} \\
+問題~\ref{prob:kernel_response_acquisition_conditions} & 核維持応答の獲得条件 & \pageref{prob:kernel_response_acquisition_conditions} \\
+問題~\ref{prob:relational_causality} & 関係記述から因果モデルへの拡張 & \pageref{prob:relational_causality} \\
+問題~\ref{prob:collapse_observability} & 閉塞・崩壊・回復の観測可能性 & \pageref{prob:collapse_observability} \\
+問題~\ref{prob:multistep_recovery} & $K$ への多段の回復可能性と必要環境要因 & \pageref{prob:multistep_recovery} \\
+問題~\ref{prob:social_dynamics} & 組織ACSの動態・同一性・集約則 & \pageref{prob:social_dynamics} \\
+問題~\ref{prob:capability_paradox} & 能力の向上と有効な選択肢の縮小（能力逆説） & \pageref{prob:capability_paradox} \\
+問題~\ref{prob:cross_domain} & 横断的対応付けと実証的検証 & \pageref{prob:cross_domain} \\
+問題~\ref{prob:ecit_full} & ECITとの正式接続 & \pageref{prob:ecit_full} \\
+\end{longtable}
+\endgroup

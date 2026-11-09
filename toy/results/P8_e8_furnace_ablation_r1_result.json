@@ -1,0 +1,133 @@
+{
+ "id": "P8_e8_furnace_ablation_r1",
+ "spec_md5": "c19244d8bf6dd063408f573c3e3029e8",
+ "registry_entry": "2026-10-26T11:06:34.354558+00:00\tc19244d8bf6dd063408f573c3e3029e8\t/home/claude/E4/specs/P8_e8_furnace_ablation_r1.json\tP8_e8_furnace_ablation_r1",
+ "run_at": "2026-10-26T11:07:31.453277+00:00",
+ "python": "3.13.16",
+ "seconds": 28.6,
+ "deviation": null,
+ "problems_at_run": [],
+ "n_units_per_variant_condition": 900,
+ "verdicts": [
+  {
+   "id": "H1",
+   "statement": "完全な機構の T_col は、情報取得・統合を除いた機構（M1 の時間統合（燃焼後の温度変化から煙道の煤を推定すること）を外す）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 900,
+      "a>=b": 892,
+      "a>b": 21,
+      "a<b": 8,
+      "a==b": 871
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H2",
+   "statement": "完全な機構の T_col は、可行性感応評価を除いた機構（M2 の Π_eval を定数にし、自己状態の閾値に基づく要請（寒・暑・燃料）を出さない）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 900,
+      "a>b": 900,
+      "a<b": 0,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H3",
+   "statement": "完全な機構の T_col は、応答可能性評価・再構成を除いた機構（目的からの候補生成と一段の先読みを外し、候補を U 全体、適合度を目的と行動の固定表にする）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 888,
+      "a>b": 401,
+      "a<b": 12,
+      "a==b": 487
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H4",
+   "statement": "完全な機構の T_col は、環境利用・外部結合評価を除いた機構（必要環境要因（燃料・煙道）に関わる目的と候補（集める・開ける）を外す）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 900,
+      "a>=b": 750,
+      "a>b": 732,
+      "a<b": 150,
+      "a==b": 18
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5",
+   "statement": "完全な機構の T_col は、応答形成・選択を除いた機構（適合度を一定にし、候補のうち U の順で最初のものを選ぶ）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 900,
+      "a>=b": 723,
+      "a>b": 723,
+      "a<b": 177,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H6",
+   "statement": "完全な機構の T_col は、時間横断的情報保持・更新を除いた機構（Update を恒等写像にする（M は M0 のまま））以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 900,
+      "a>=b": 892,
+      "a>b": 21,
+      "a<b": 8,
+      "a==b": 871
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H7",
+   "statement": "完全な機構の T_col は、物理的感知・作用・基盤維持を除いた機構（PSL-4 の保護応答（暑い外気で tp≥4 のとき開ける）を外す）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 900,
+      "a>=b": 900,
+      "a>b": 0,
+      "a<b": 0,
+      "a==b": 900
+     }
+    }
+   },
+   "rule_dependent": false
+  }
+ ],
+ "consistency": []
+}

@@ -1,0 +1,35 @@
+# 公開日（date-released）・リポジトリの URL・DOI は公開時に記入する。版番号は付けない（公開日で識別する）。
+# このファイルはリポジトリ（原稿の LaTeX ソースとトイモデルのコード）を引用するためのものである（type: software）。
+# 論文そのものの引用（preferred-citation）は、Zenodo 等で DOI が付いてから追加する。
+# 掲載誌は存在しないので、journal の欄は作らない。
+cff-version: 1.2.0
+message: "この研究を引用する場合は、以下の情報を用いてください。"
+type: software
+title: "自律認知システム理論：倫理的協調知性の数理的基盤（Phase 1：決定論的定式化）"
+abstract: >-
+  自律認知システム（ACS）の決定論的・離散時間の形式的枠組み（論文の LaTeX 原稿）と、
+  本文の定義を有限モデル上で計算する付属のトイモデル。
+authors:
+  - alias: "NF"
+keywords:
+  - autonomous cognitive system
+  - viability theory
+  - formal framework
+  - AI alignment
+# license 欄は置かない。CFF 1.2.0 では複数の license は「どれか一つを選べる」（OR）と解釈されるが、
+# このリポジトリはファイルの種類ごとに一方を適用する（文書・データは CC BY-SA 4.0、コードは MIT）。
+# 適用範囲の正本は LICENSE.md。
+# --- 公開時に記入する欄（いまは無効） ---
+# date-released: "YYYY-MM-DD"
+# repository-code: "https://github.com/<owner>/<repo>"
+# --- Zenodo で DOI 取得後に追加する欄（いまは無効） ---
+# identifiers:
+#   - type: doi
+#     value: "10.5281/zenodo.XXXXXXX"
+# preferred-citation:
+#   type: generic        # 掲載誌がないため。Zenodo のレコードの種別に合わせる
+#   title: "自律認知システム理論：倫理的協調知性の数理的基盤（Phase 1：決定論的定式化）"
+#   authors:
+#     - alias: "NF"
+#   doi: "10.5281/zenodo.XXXXXXX"
+#   year: YYYY

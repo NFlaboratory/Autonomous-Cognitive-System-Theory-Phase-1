@@ -1,0 +1,11 @@
+{
+ "id": "P4_e2_v2_ablation_r1",
+ "seconds": 829.9,
+ "units": 4950,
+ "identical": 4950,
+ "different": 0,
+ "not_in_record": 0,
+ "examples": [],
+ "verdicts_differing": [],
+ "verdicts_total": 10
+}

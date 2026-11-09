@@ -1,0 +1,958 @@
+[
+ {
+  "suite": "principles",
+  "check_id": "P01_sm_K_equiv",
+  "labels": [
+   "prop:sm_K_equiv"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 72,
+  "premise_cases": 72,
+  "kind": "exhaustive",
+  "detail": "Pi(x)>=0 <=> x in K (all x)",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P02_sm_one_step_A",
+  "labels": [
+   "prop:sm_one_step_A"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 4608,
+  "premise_cases": 4608,
+  "kind": "exhaustive",
+  "detail": "u in A <=> f in K <=> Pi(f)>=0 (all x,e,u)",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P03_fr_one_step",
+  "labels": [
+   "prop:fr_one_step"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 1152,
+  "premise_cases": 1016,
+  "kind": "exhaustive",
+  "detail": "on D_FR: FR <=> A nonempty <=> exists u with f in K",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P04_fr_next_sm",
+  "labels": [
+   "prop:fr_next_sm"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 1152,
+  "premise_cases": 608,
+  "kind": "exhaustive",
+  "detail": "on D_FR with FR false: A empty and x_{t+1} not in K for every u",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P05_blockage_dichotomy",
+  "labels": [
+   "prop:blockage_dichotomy"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 1152,
+  "premise_cases": 744,
+  "kind": "exhaustive",
+  "detail": "every blockage is exactly one of B1 / B2",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P06_viab_core_max",
+  "labels": [
+   "prop:viab_core_max"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 20,
+  "premise_cases": 18,
+  "kind": "exhaustive",
+  "detail": "|K_req|=20 |Viab|=18: Viab is E_req-invariant and equals the independent gfp",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P07_viab_stage_finite",
+  "labels": [
+   "prop:viab_stage_finite",
+   "prop:viab_stage_nested"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 20,
+  "premise_cases": 20,
+  "kind": "exhaustive",
+  "detail": "stages [20, 18, 18], nu*=1 <= |K_req|=20; Hor=inf <=> Viab",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P08_kernel_standard_comparison",
+  "labels": [
+   "prop:kernel_standard_comparison"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_VACUOUS",
+  "cases": 1,
+  "premise_cases": 0,
+  "kind": "exhaustive",
+  "detail": "|Viab_all|=0 |Viab|=18 |Viab_any|=20; (iii) non-vacuous only if Viab_all nonempty",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P09_robust_nonresponse_viab",
+  "labels": [
+   "prop:robust_nonresponse_viab"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 72,
+  "premise_cases": 45,
+  "kind": "exhaustive",
+  "detail": "U_rob(x) empty => x not in Viab and not in any stage nu>=1",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P10_sd_viab",
+  "labels": [
+   "lem:sd_viab"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 1152,
+  "premise_cases": 16,
+  "kind": "exhaustive",
+  "detail": "x in K, e in E_req, A nonempty, mu_eff=1, weak point => U_rob empty, x not in Viab",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P11_nondegeneracy_implication",
+  "labels": [
+   "prop:nondegeneracy_implication",
+   "ass:env_viable_nondegeneracy",
+   "ass:env_input_nondegeneracy"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 1,
+  "premise_cases": 1,
+  "kind": "exhaustive",
+  "detail": "env_viable_nondegeneracy=True, env_input_nondegeneracy=True",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P12_feasibility_sensitivity_scope",
+  "labels": [
+   "prop:feasibility_sensitivity_scope"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 1,
+  "premise_cases": 1,
+  "kind": "exhaustive",
+  "detail": "|K|=20, |X\\K|=52",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P13_robust_noninclusion",
+  "labels": [
+   "prop:robust_noninclusion"
+  ],
+  "domain": "MinACS",
+  "status": "EXAMPLE_ONLY",
+  "cases": 1,
+  "premise_cases": null,
+  "kind": "example",
+  "detail": "(i) Viab \\ pi_X(resp): 0  (ii) pi_X(resp) \\ Viab: 2",
+  "evidence": {
+   "i": [],
+   "ii": [
+    [
+     0,
+     1,
+     1,
+     1
+    ],
+    [
+     0,
+     1,
+     2,
+     1
+    ]
+   ]
+  }
+ },
+ {
+  "suite": "principles",
+  "check_id": "P14_pi_violation_profile",
+  "labels": [
+   "prop:pi_violation_profile"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 72,
+  "premise_cases": 72,
+  "kind": "exhaustive",
+  "detail": "theta={'en': 1, 'tp': 1, 's': 1}: Pi>=0 <=> V-=empty <=> d-=0 ; Pi<0 <=> V- nonempty",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P15_theta_exterior_blockage",
+  "labels": [
+   "ass:theta_exterior_blockage"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 108,
+  "premise_cases": 108,
+  "kind": "graph",
+  "detail": "holds on the domain for every action/environment sequence",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P18_exterior_blockage",
+  "labels": [
+   "prop:exterior_blockage"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 104,
+  "premise_cases": 104,
+  "kind": "graph",
+  "detail": "under the assumption: persistence outside K reaches a blockage",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P16_sd_robust_nonresponse",
+  "labels": [
+   "prop:sd_robust_nonresponse"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 144,
+  "premise_cases": 100,
+  "kind": "graph",
+  "detail": "(x,o) admitting an infinite path satisfying (a)(b): 100; all outside Viab, U_rob empty in K",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P17_sd_necessity",
+  "labels": [
+   "prop:sd_necessity"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 100,
+  "premise_cases": 100,
+  "kind": "graph",
+  "detail": "under the assumption every (a)(b)-path reaches A=empty in finite time",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P19_sd_necessity_fr",
+  "labels": [
+   "prop:sd_necessity_fr"
+  ],
+  "domain": "MinACS",
+  "status": "PASS_NONVACUOUS",
+  "cases": 690,
+  "premise_cases": 690,
+  "kind": "exhaustive",
+  "detail": "blockages with (a): case (i) x not in K: 682, case (ii) x in K: 8",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P01_sm_K_equiv",
+  "labels": [
+   "prop:sm_K_equiv"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 60,
+  "premise_cases": 60,
+  "kind": "exhaustive",
+  "detail": "Pi(x)>=0 <=> x in K (all x)",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P02_sm_one_step_A",
+  "labels": [
+   "prop:sm_one_step_A"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 3840,
+  "premise_cases": 3840,
+  "kind": "exhaustive",
+  "detail": "u in A <=> f in K <=> Pi(f)>=0 (all x,e,u)",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P03_fr_one_step",
+  "labels": [
+   "prop:fr_one_step"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 960,
+  "premise_cases": 916,
+  "kind": "exhaustive",
+  "detail": "on D_FR: FR <=> A nonempty <=> exists u with f in K",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P04_fr_next_sm",
+  "labels": [
+   "prop:fr_next_sm"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 960,
+  "premise_cases": 540,
+  "kind": "exhaustive",
+  "detail": "on D_FR with FR false: A empty and x_{t+1} not in K for every u",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P05_blockage_dichotomy",
+  "labels": [
+   "prop:blockage_dichotomy"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 960,
+  "premise_cases": 584,
+  "kind": "exhaustive",
+  "detail": "every blockage is exactly one of B1 / B2",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P06_viab_core_max",
+  "labels": [
+   "prop:viab_core_max"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 25,
+  "premise_cases": 19,
+  "kind": "exhaustive",
+  "detail": "|K_req|=25 |Viab|=19: Viab is E_req-invariant and equals the independent gfp",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P07_viab_stage_finite",
+  "labels": [
+   "prop:viab_stage_finite",
+   "prop:viab_stage_nested"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 25,
+  "premise_cases": 25,
+  "kind": "exhaustive",
+  "detail": "stages [25, 19, 19], nu*=1 <= |K_req|=25; Hor=inf <=> Viab",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P08_kernel_standard_comparison",
+  "labels": [
+   "prop:kernel_standard_comparison"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_VACUOUS",
+  "cases": 1,
+  "premise_cases": 0,
+  "kind": "exhaustive",
+  "detail": "|Viab_all|=0 |Viab|=19 |Viab_any|=25; (iii) non-vacuous only if Viab_all nonempty",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P09_robust_nonresponse_viab",
+  "labels": [
+   "prop:robust_nonresponse_viab"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 60,
+  "premise_cases": 41,
+  "kind": "exhaustive",
+  "detail": "U_rob(x) empty => x not in Viab and not in any stage nu>=1",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P10_sd_viab",
+  "labels": [
+   "lem:sd_viab"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 960,
+  "premise_cases": 26,
+  "kind": "exhaustive",
+  "detail": "x in K, e in E_req, A nonempty, mu_eff=1, weak point => U_rob empty, x not in Viab",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P11_nondegeneracy_implication",
+  "labels": [
+   "prop:nondegeneracy_implication",
+   "ass:env_viable_nondegeneracy",
+   "ass:env_input_nondegeneracy"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 1,
+  "premise_cases": 1,
+  "kind": "exhaustive",
+  "detail": "env_viable_nondegeneracy=True, env_input_nondegeneracy=True",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P12_feasibility_sensitivity_scope",
+  "labels": [
+   "prop:feasibility_sensitivity_scope"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 1,
+  "premise_cases": 1,
+  "kind": "exhaustive",
+  "detail": "|K|=25, |X\\K|=35",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P13_robust_noninclusion",
+  "labels": [
+   "prop:robust_noninclusion"
+  ],
+  "domain": "Furnace",
+  "status": "EXAMPLE_ONLY",
+  "cases": 1,
+  "premise_cases": null,
+  "kind": "example",
+  "detail": "(i) Viab \\ pi_X(resp): 0  (ii) pi_X(resp) \\ Viab: 1",
+  "evidence": {
+   "i": [],
+   "ii": [
+    [
+     0,
+     1,
+     1
+    ]
+   ]
+  }
+ },
+ {
+  "suite": "principles",
+  "check_id": "P14_pi_violation_profile",
+  "labels": [
+   "prop:pi_violation_profile"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 60,
+  "premise_cases": 60,
+  "kind": "exhaustive",
+  "detail": "theta={'tp': 1, 's': 1}: Pi>=0 <=> V-=empty <=> d-=0 ; Pi<0 <=> V- nonempty",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P15_theta_exterior_blockage",
+  "labels": [
+   "ass:theta_exterior_blockage"
+  ],
+  "domain": "Furnace",
+  "status": "BLOCKED_ASSUMPTION",
+  "cases": 82,
+  "premise_cases": 82,
+  "kind": "graph",
+  "detail": "does NOT hold: 4 (x,o) outside Viab admit an infinite non-blocked path",
+  "evidence": [
+   [
+    [
+     [
+      0,
+      0,
+      1
+     ],
+     0
+    ],
+    [
+     1,
+     0,
+     0,
+     0
+    ],
+    "wait",
+    [
+     [
+      0,
+      1,
+      1
+     ],
+     0
+    ]
+   ],
+   [
+    [
+     [
+      0,
+      0,
+      1
+     ],
+     0
+    ],
+    [
+     1,
+     0,
+     0,
+     0
+    ],
+    "burn",
+    [
+     [
+      0,
+      1,
+      1
+     ],
+     0
+    ]
+   ]
+  ]
+ },
+ {
+  "suite": "principles",
+  "check_id": "P18_exterior_blockage",
+  "labels": [
+   "prop:exterior_blockage"
+  ],
+  "domain": "Furnace",
+  "status": "BLOCKED_ASSUMPTION",
+  "cases": 70,
+  "premise_cases": null,
+  "kind": "graph",
+  "detail": "assumption fails here; infinite non-blocked paths outside K: 0 (x,o)",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P16_sd_robust_nonresponse",
+  "labels": [
+   "prop:sd_robust_nonresponse"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 120,
+  "premise_cases": 82,
+  "kind": "graph",
+  "detail": "(x,o) admitting an infinite path satisfying (a)(b): 82; all outside Viab, U_rob empty in K",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P17_sd_necessity",
+  "labels": [
+   "prop:sd_necessity"
+  ],
+  "domain": "Furnace",
+  "status": "BLOCKED_ASSUMPTION",
+  "cases": 82,
+  "premise_cases": 82,
+  "kind": "graph",
+  "detail": "assumption fails; (a)(b) hold forever WITHOUT blockage from 4 (x,o) (the main proposition still holds there; this is not a counterexample to the corollary)",
+  "evidence": {
+   "node": [
+    [
+     0,
+     0,
+     1
+    ],
+    0
+   ],
+   "edges": [
+    [
+     [
+      1,
+      0,
+      0,
+      0
+     ],
+     "wait",
+     [
+      [
+       0,
+       1,
+       1
+      ],
+      0
+     ]
+    ],
+    [
+     [
+      1,
+      0,
+      0,
+      0
+     ],
+     "burn",
+     [
+      [
+       0,
+       1,
+       1
+      ],
+      0
+     ]
+    ],
+    [
+     [
+      1,
+      0,
+      0,
+      0
+     ],
+     "gather",
+     [
+      [
+       0,
+       1,
+       1
+      ],
+      0
+     ]
+    ]
+   ],
+   "mu_eff": [
+    1,
+    1,
+    1
+   ],
+   "U_rob": [],
+   "in_K": false,
+   "in_Viab": false
+  }
+ },
+ {
+  "suite": "principles",
+  "check_id": "P19_sd_necessity_fr",
+  "labels": [
+   "prop:sd_necessity_fr"
+  ],
+  "domain": "Furnace",
+  "status": "PASS_NONVACUOUS",
+  "cases": 562,
+  "premise_cases": 562,
+  "kind": "exhaustive",
+  "detail": "blockages with (a): case (i) x not in K: 520, case (ii) x in K: 42",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P01_sm_K_equiv",
+  "labels": [
+   "prop:sm_K_equiv"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 50,
+  "premise_cases": 50,
+  "kind": "exhaustive",
+  "detail": "Pi(x)>=0 <=> x in K (all x)",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P02_sm_one_step_A",
+  "labels": [
+   "prop:sm_one_step_A"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 1800,
+  "premise_cases": 1800,
+  "kind": "exhaustive",
+  "detail": "u in A <=> f in K <=> Pi(f)>=0 (all x,e,u)",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P03_fr_one_step",
+  "labels": [
+   "prop:fr_one_step"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 600,
+  "premise_cases": 510,
+  "kind": "exhaustive",
+  "detail": "on D_FR: FR <=> A nonempty <=> exists u with f in K",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P04_fr_next_sm",
+  "labels": [
+   "prop:fr_next_sm"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 600,
+  "premise_cases": 440,
+  "kind": "exhaustive",
+  "detail": "on D_FR with FR false: A empty and x_{t+1} not in K for every u",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P05_blockage_dichotomy",
+  "labels": [
+   "prop:blockage_dichotomy"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 600,
+  "premise_cases": 530,
+  "kind": "exhaustive",
+  "detail": "every blockage is exactly one of B1 / B2",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P06_viab_core_max",
+  "labels": [
+   "prop:viab_core_max"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 12,
+  "premise_cases": 6,
+  "kind": "exhaustive",
+  "detail": "|K_req|=12 |Viab|=6: Viab is E_req-invariant and equals the independent gfp",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P07_viab_stage_finite",
+  "labels": [
+   "prop:viab_stage_finite",
+   "prop:viab_stage_nested"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 12,
+  "premise_cases": 12,
+  "kind": "exhaustive",
+  "detail": "stages [12, 7, 6, 6], nu*=2 <= |K_req|=12; Hor=inf <=> Viab",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P08_kernel_standard_comparison",
+  "labels": [
+   "prop:kernel_standard_comparison"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_VACUOUS",
+  "cases": 1,
+  "premise_cases": 0,
+  "kind": "exhaustive",
+  "detail": "|Viab_all|=0 |Viab|=6 |Viab_any|=6; (iii) non-vacuous only if Viab_all nonempty",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P09_robust_nonresponse_viab",
+  "labels": [
+   "prop:robust_nonresponse_viab"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 50,
+  "premise_cases": 43,
+  "kind": "exhaustive",
+  "detail": "U_rob(x) empty => x not in Viab and not in any stage nu>=1",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P10_sd_viab",
+  "labels": [
+   "lem:sd_viab"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 600,
+  "premise_cases": 4,
+  "kind": "exhaustive",
+  "detail": "x in K, e in E_req, A nonempty, mu_eff=1, weak point => U_rob empty, x not in Viab",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P11_nondegeneracy_implication",
+  "labels": [
+   "prop:nondegeneracy_implication",
+   "ass:env_viable_nondegeneracy",
+   "ass:env_input_nondegeneracy"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 1,
+  "premise_cases": 1,
+  "kind": "exhaustive",
+  "detail": "env_viable_nondegeneracy=True, env_input_nondegeneracy=True",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P12_feasibility_sensitivity_scope",
+  "labels": [
+   "prop:feasibility_sensitivity_scope"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 1,
+  "premise_cases": 1,
+  "kind": "exhaustive",
+  "detail": "|K|=12, |X\\K|=38",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P13_robust_noninclusion",
+  "labels": [
+   "prop:robust_noninclusion"
+  ],
+  "domain": "Tightrope",
+  "status": "NOT_APPLICABLE",
+  "cases": 1,
+  "premise_cases": null,
+  "kind": "example",
+  "detail": "(i) Viab \\ pi_X(resp): 0  (ii) pi_X(resp) \\ Viab: 0",
+  "evidence": {
+   "i": [],
+   "ii": []
+  }
+ },
+ {
+  "suite": "principles",
+  "check_id": "P14_pi_violation_profile",
+  "labels": [
+   "prop:pi_violation_profile"
+  ],
+  "domain": "Tightrope",
+  "status": "NOT_APPLICABLE",
+  "cases": null,
+  "premise_cases": null,
+  "kind": "",
+  "detail": "Pi is not of the form min_k(x_k - theta_k) in this domain",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P15_theta_exterior_blockage",
+  "labels": [
+   "ass:theta_exterior_blockage"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 44,
+  "premise_cases": 44,
+  "kind": "graph",
+  "detail": "holds on the domain for every action/environment sequence",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P18_exterior_blockage",
+  "labels": [
+   "prop:exterior_blockage"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 38,
+  "premise_cases": 38,
+  "kind": "graph",
+  "detail": "under the assumption: persistence outside K reaches a blockage",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P16_sd_robust_nonresponse",
+  "labels": [
+   "prop:sd_robust_nonresponse"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 50,
+  "premise_cases": 43,
+  "kind": "graph",
+  "detail": "(x,o) admitting an infinite path satisfying (a)(b): 43; all outside Viab, U_rob empty in K",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P17_sd_necessity",
+  "labels": [
+   "prop:sd_necessity"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 43,
+  "premise_cases": 43,
+  "kind": "graph",
+  "detail": "under the assumption every (a)(b)-path reaches A=empty in finite time",
+  "evidence": null
+ },
+ {
+  "suite": "principles",
+  "check_id": "P19_sd_necessity_fr",
+  "labels": [
+   "prop:sd_necessity_fr"
+  ],
+  "domain": "Tightrope",
+  "status": "PASS_NONVACUOUS",
+  "cases": 447,
+  "premise_cases": 447,
+  "kind": "exhaustive",
+  "detail": "blockages with (a): case (i) x not in K: 436, case (ii) x in K: 11",
+  "evidence": null
+ }
+]

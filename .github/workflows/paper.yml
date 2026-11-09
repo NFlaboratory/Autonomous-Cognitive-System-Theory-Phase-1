@@ -1,0 +1,43 @@
+# 論文 PDF のビルド（下書き・GitHub 上では未実行）。full TeX Live を含むコンテナで paper/main.tex を upLaTeX で組む。
+# 失敗の条件：latexmk の失敗、未定義の参照・引用、再実行要求の残存、TeX のエラー、PDF が空または不在。
+# 注：uses と container は可変のタグ（@v4・@v5・latest）を参照している。初回の実行が通ったら、実際に用いたコミット SHA（とイメージの digest）に固定することを検討する（未固定・未実行）。
+name: build-paper
+on:
+  push:
+    paths: ["paper/**", "tools/ci_gate.py", ".github/workflows/paper.yml"]
+  pull_request:
+    paths: ["paper/**"]
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: danteev/texlive:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure python3 (the image may not include it; unverified)
+        run: |
+          set -euo pipefail
+          command -v python3 || { apt-get update && apt-get install -y --no-install-recommends python3; }
+      - name: Build with latexmk (upLaTeX, biber, dvipdfmx)
+        working-directory: paper
+        run: |
+          set -euo pipefail
+          latexmk main.tex
+      - name: Fail on undefined references or citations
+        run: |
+          set -euo pipefail
+          python3 -I tools/ci_gate.py log paper/main.log
+          echo "overfull boxes (reported, not gated): $(grep -c '^Overfull' paper/main.log || true)"
+      - name: PDF exists and is not empty
+        run: |
+          set -euo pipefail
+          test -s paper/main.pdf
+      - uses: actions/upload-artifact@v4
+        with:
+          name: acs-phase1-pdf
+          path: paper/main.pdf
+          if-no-files-found: error

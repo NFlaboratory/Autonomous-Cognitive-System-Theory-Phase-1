@@ -1,0 +1,113 @@
+{
+ "id": "P6_e7_minacs_estimation_r1",
+ "spec_md5": "797ea647abdaf73848a842caa4321986",
+ "registry_entry": "2026-10-26T10:40:42.421990+00:00\t797ea647abdaf73848a842caa4321986\t/home/claude/E4/specs/P6_e7_minacs_estimation_r1.json\tP6_e7_minacs_estimation_r1",
+ "run_at": "2026-10-26T10:41:28.601496+00:00",
+ "python": "3.13.16",
+ "seconds": 46.1,
+ "deviation": null,
+ "problems_at_run": [],
+ "n_units_per_variant_condition": 900,
+ "verdicts": [
+  {
+   "id": "H1",
+   "statement": "観測の劣化（D-en+1）のない機構の崩壊到達時刻は、劣化した機構以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 840,
+      "a>b": 574,
+      "a<b": 60,
+      "a==b": 266
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H2",
+   "statement": "観測の劣化（D-en+2）のない機構の崩壊到達時刻は、劣化した機構以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 899,
+      "a>b": 676,
+      "a<b": 1,
+      "a==b": 223
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H3",
+   "statement": "観測の劣化（D-tp+1）のない機構の崩壊到達時刻は、劣化した機構以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 900,
+      "a>=b": 900,
+      "a>b": 0,
+      "a<b": 0,
+      "a==b": 900
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H4",
+   "statement": "観測の劣化（D-blindcold）のない機構の崩壊到達時刻は、劣化した機構以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 900,
+      "a>=b": 728,
+      "a>b": 386,
+      "a<b": 172,
+      "a==b": 342
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5",
+   "statement": "観測の劣化（D-stalefood）のない機構の崩壊到達時刻は、劣化した機構以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 900,
+      "a>=b": 900,
+      "a>b": 0,
+      "a<b": 0,
+      "a==b": 900
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H6",
+   "statement": "体温を過大評価する機構では、内部評価 Π_eval と真の Π の符号が食い違う時刻が、25% 以上の単位で少なくとも 1 回生じる。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 900,
+      "holds": 166
+     }
+    }
+   },
+   "rule_dependent": false
+  }
+ ],
+ "consistency": []
+}

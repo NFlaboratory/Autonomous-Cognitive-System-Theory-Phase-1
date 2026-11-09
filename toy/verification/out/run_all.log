@@ -1,0 +1,197 @@
+
+$ python3 verification/check_principles.py
+--- MinACS
+[OK  ] P01_sm_K_equiv                     MinACS       cases=72 premise=72 Pi(x)>=0 <=> x in K (all x)
+[OK  ] P02_sm_one_step_A                  MinACS       cases=4608 premise=4608 u in A <=> f in K <=> Pi(f)>=0 (all x,e,u)
+[OK  ] P03_fr_one_step                    MinACS       cases=1152 premise=1016 on D_FR: FR <=> A nonempty <=> exists u with f in K
+[OK  ] P04_fr_next_sm                     MinACS       cases=1152 premise=608 on D_FR with FR false: A empty and x_{t+1} not in K for every u
+[OK  ] P05_blockage_dichotomy             MinACS       cases=1152 premise=744 every blockage is exactly one of B1 / B2
+[OK  ] P06_viab_core_max                  MinACS       cases=20 premise=18 |K_req|=20 |Viab|=18: Viab is E_req-invariant and equals the independent gfp
+[OK  ] P07_viab_stage_finite              MinACS       cases=20 premise=20 stages [20, 18, 18], nu*=1 <= |K_req|=20; Hor=inf <=> Viab
+[VAC ] P08_kernel_standard_comparison     MinACS       cases=1 premise=0 |Viab_all|=0 |Viab|=18 |Viab_any|=20; (iii) non-vacuous only if Viab_all nonempty
+[OK  ] P09_robust_nonresponse_viab        MinACS       cases=72 premise=45 U_rob(x) empty => x not in Viab and not in any stage nu>=1
+[OK  ] P10_sd_viab                        MinACS       cases=1152 premise=16 x in K, e in E_req, A nonempty, mu_eff=1, weak point => U_rob empty, x not in Viab
+[OK  ] P11_nondegeneracy_implication      MinACS       cases=1 premise=1 env_viable_nondegeneracy=True, env_input_nondegeneracy=True
+[OK  ] P12_feasibility_sensitivity_scope  MinACS       cases=1 premise=1 |K|=20, |X\K|=52
+[EXAM ] P13_robust_noninclusion            MinACS       cases=1 premise=None (i) Viab \ pi_X(resp): 0  (ii) pi_X(resp) \ Viab: 2
+[OK  ] P14_pi_violation_profile           MinACS       cases=72 premise=72 theta={'en': 1, 'tp': 1, 's': 1}: Pi>=0 <=> V-=empty <=> d-=0 ; Pi<0 <=> V- nonempty
+[OK  ] P15_theta_exterior_blockage        MinACS       cases=108 premise=108 holds on the domain for every action/environment sequence
+[OK  ] P18_exterior_blockage              MinACS       cases=104 premise=104 under the assumption: persistence outside K reaches a blockage
+[OK  ] P16_sd_robust_nonresponse          MinACS       cases=144 premise=100 (x,o) admitting an infinite path satisfying (a)(b): 100; all outside Viab, U_rob empty in K
+[OK  ] P17_sd_necessity                   MinACS       cases=100 premise=100 under the assumption every (a)(b)-path reaches A=empty in finite time
+[OK  ] P19_sd_necessity_fr                MinACS       cases=690 premise=690 blockages with (a): case (i) x not in K: 682, case (ii) x in K: 8
+--- Furnace
+[OK  ] P01_sm_K_equiv                     Furnace      cases=60 premise=60 Pi(x)>=0 <=> x in K (all x)
+[OK  ] P02_sm_one_step_A                  Furnace      cases=3840 premise=3840 u in A <=> f in K <=> Pi(f)>=0 (all x,e,u)
+[OK  ] P03_fr_one_step                    Furnace      cases=960 premise=916 on D_FR: FR <=> A nonempty <=> exists u with f in K
+[OK  ] P04_fr_next_sm                     Furnace      cases=960 premise=540 on D_FR with FR false: A empty and x_{t+1} not in K for every u
+[OK  ] P05_blockage_dichotomy             Furnace      cases=960 premise=584 every blockage is exactly one of B1 / B2
+[OK  ] P06_viab_core_max                  Furnace      cases=25 premise=19 |K_req|=25 |Viab|=19: Viab is E_req-invariant and equals the independent gfp
+[OK  ] P07_viab_stage_finite              Furnace      cases=25 premise=25 stages [25, 19, 19], nu*=1 <= |K_req|=25; Hor=inf <=> Viab
+[VAC ] P08_kernel_standard_comparison     Furnace      cases=1 premise=0 |Viab_all|=0 |Viab|=19 |Viab_any|=25; (iii) non-vacuous only if Viab_all nonempty
+[OK  ] P09_robust_nonresponse_viab        Furnace      cases=60 premise=41 U_rob(x) empty => x not in Viab and not in any stage nu>=1
+[OK  ] P10_sd_viab                        Furnace      cases=960 premise=26 x in K, e in E_req, A nonempty, mu_eff=1, weak point => U_rob empty, x not in Viab
+[OK  ] P11_nondegeneracy_implication      Furnace      cases=1 premise=1 env_viable_nondegeneracy=True, env_input_nondegeneracy=True
+[OK  ] P12_feasibility_sensitivity_scope  Furnace      cases=1 premise=1 |K|=25, |X\K|=35
+[EXAM ] P13_robust_noninclusion            Furnace      cases=1 premise=None (i) Viab \ pi_X(resp): 0  (ii) pi_X(resp) \ Viab: 1
+[OK  ] P14_pi_violation_profile           Furnace      cases=60 premise=60 theta={'tp': 1, 's': 1}: Pi>=0 <=> V-=empty <=> d-=0 ; Pi<0 <=> V- nonempty
+[BLOC ] P15_theta_exterior_blockage        Furnace      cases=82 premise=82 does NOT hold: 4 (x,o) outside Viab admit an infinite non-blocked path
+[BLOC ] P18_exterior_blockage              Furnace      cases=70 premise=None assumption fails here; infinite non-blocked paths outside K: 0 (x,o)
+[OK  ] P16_sd_robust_nonresponse          Furnace      cases=120 premise=82 (x,o) admitting an infinite path satisfying (a)(b): 82; all outside Viab, U_rob empty in K
+[BLOC ] P17_sd_necessity                   Furnace      cases=82 premise=82 assumption fails; (a)(b) hold forever WITHOUT blockage from 4 (x,o) (the main proposition still holds there; this is not a counterexample to the
+[OK  ] P19_sd_necessity_fr                Furnace      cases=562 premise=562 blockages with (a): case (i) x not in K: 520, case (ii) x in K: 42
+--- Tightrope
+[OK  ] P01_sm_K_equiv                     Tightrope    cases=50 premise=50 Pi(x)>=0 <=> x in K (all x)
+[OK  ] P02_sm_one_step_A                  Tightrope    cases=1800 premise=1800 u in A <=> f in K <=> Pi(f)>=0 (all x,e,u)
+[OK  ] P03_fr_one_step                    Tightrope    cases=600 premise=510 on D_FR: FR <=> A nonempty <=> exists u with f in K
+[OK  ] P04_fr_next_sm                     Tightrope    cases=600 premise=440 on D_FR with FR false: A empty and x_{t+1} not in K for every u
+[OK  ] P05_blockage_dichotomy             Tightrope    cases=600 premise=530 every blockage is exactly one of B1 / B2
+[OK  ] P06_viab_core_max                  Tightrope    cases=12 premise=6 |K_req|=12 |Viab|=6: Viab is E_req-invariant and equals the independent gfp
+[OK  ] P07_viab_stage_finite              Tightrope    cases=12 premise=12 stages [12, 7, 6, 6], nu*=2 <= |K_req|=12; Hor=inf <=> Viab
+[VAC ] P08_kernel_standard_comparison     Tightrope    cases=1 premise=0 |Viab_all|=0 |Viab|=6 |Viab_any|=6; (iii) non-vacuous only if Viab_all nonempty
+[OK  ] P09_robust_nonresponse_viab        Tightrope    cases=50 premise=43 U_rob(x) empty => x not in Viab and not in any stage nu>=1
+[OK  ] P10_sd_viab                        Tightrope    cases=600 premise=4 x in K, e in E_req, A nonempty, mu_eff=1, weak point => U_rob empty, x not in Viab
+[OK  ] P11_nondegeneracy_implication      Tightrope    cases=1 premise=1 env_viable_nondegeneracy=True, env_input_nondegeneracy=True
+[OK  ] P12_feasibility_sensitivity_scope  Tightrope    cases=1 premise=1 |K|=12, |X\K|=38
+[NOT_ ] P13_robust_noninclusion            Tightrope    cases=1 premise=None (i) Viab \ pi_X(resp): 0  (ii) pi_X(resp) \ Viab: 0
+[NOT_ ] P14_pi_violation_profile           Tightrope    cases=None premise=None Pi is not of the form min_k(x_k - theta_k) in this domain
+[OK  ] P15_theta_exterior_blockage        Tightrope    cases=44 premise=44 holds on the domain for every action/environment sequence
+[OK  ] P18_exterior_blockage              Tightrope    cases=38 premise=38 under the assumption: persistence outside K reaches a blockage
+[OK  ] P16_sd_robust_nonresponse          Tightrope    cases=50 premise=43 (x,o) admitting an infinite path satisfying (a)(b): 43; all outside Viab, U_rob empty in K
+[OK  ] P17_sd_necessity                   Tightrope    cases=43 premise=43 under the assumption every (a)(b)-path reaches A=empty in finite time
+[OK  ] P19_sd_necessity_fr                Tightrope    cases=447 premise=447 blockages with (a): case (i) x not in K: 436, case (ii) x in K: 11
+== principles: 57 rows, FAIL 0 -> verification/out/principles.json
+
+$ python3 verification/microuniverse.py
+--- family A2
+[OK  ] MU_viab_core_max                   MU-A2        cases=16384 premise=16384 16384 candidate models
+[OK  ] MU_viab_stage_finite               MU-A2        cases=16384 premise=16384 16384 candidate models
+[OK  ] MU_kernel_standard_comparison      MU-A2        cases=16384 premise=7680 16384 candidate models
+[OK  ] MU_robust_nonresponse_viab         MU-A2        cases=32768 premise=10496 16384 candidate models
+[OK  ] MU_blockage_dichotomy              MU-A2        cases=65536 premise=24576 16384 candidate models
+[OK  ] MU_fr_next_sm                      MU-A2        cases=65536 premise=23040 16384 candidate models
+[OK  ] MU_sd_viab                         MU-A2        cases=65536 premise=1280 16384 candidate models
+[OK  ] MU_nondegeneracy_implication       MU-A2        cases=16384 premise=7680 16384 candidate models
+[OK  ] MU_feasibility_sensitivity_scope   MU-A2        cases=16384 premise=7680 16384 candidate models
+[OK  ] MU_finite_exit                     MU-A2        cases=30976 premise=5440 16384 candidate models; cases = (model, policy) pairs
+[OK  ] MU_sd_robust_nonresponse           MU-A2        cases=16384 premise=11912 16384 candidate models
+[OK  ] MU_sd_necessity                    MU-A2        cases=7582 premise=4960 16384 candidate models
+[OK  ] MU_exterior_blockage               MU-A2        cases=7582 premise=5216 16384 candidate models
+[OK  ] MU_sd_necessity_fr                 MU-A2        cases=22528 premise=22528 16384 candidate models
+[EXAM ] MU_boundary_A2                     MU-A2        cases=16384 premise=None boundary cases present in the family (counts)
+--- family A3
+[OK  ] MU_viab_core_max                   MU-A3        cases=531441 premise=531441 531441 candidate models
+[OK  ] MU_viab_stage_finite               MU-A3        cases=531441 premise=531441 531441 candidate models
+[OK  ] MU_kernel_standard_comparison      MU-A3        cases=531441 premise=322866 531441 candidate models
+[OK  ] MU_robust_nonresponse_viab         MU-A3        cases=1594323 premise=177147 531441 candidate models
+[OK  ] MU_blockage_dichotomy              MU-A3        cases=3188646 premise=354294 531441 candidate models
+[OK  ] MU_fr_next_sm                      MU-A3        cases=3188646 premise=196830 531441 candidate models
+[VAC ] MU_sd_viab                         MU-A3        cases=3188646 premise=0 531441 candidate models
+[OK  ] MU_nondegeneracy_implication       MU-A3        cases=531441 premise=515816 531441 candidate models
+[OK  ] MU_feasibility_sensitivity_scope   MU-A3        cases=531441 premise=515816 531441 candidate models
+[OK  ] MU_finite_exit                     MU-A3        cases=2125764 premise=446148 531441 candidate models; cases = (model, policy) pairs
+[OK  ] MU_sd_robust_nonresponse           MU-A3        cases=531441 premise=447201 531441 candidate models
+[OK  ] MU_sd_necessity                    MU-A3        cases=135091 premise=51783 531441 candidate models
+[OK  ] MU_exterior_blockage               MU-A3        cases=135091 premise=135091 531441 candidate models
+[OK  ] MU_sd_necessity_fr                 MU-A3        cases=236196 premise=236196 531441 candidate models
+[EXAM ] MU_boundary_A3                     MU-A3        cases=531441 premise=None boundary cases present in the family (counts)
+--- family B2
+[EXAM ] MU_robust_noninclusion             MU-B2        cases=16484 premise=None witnesses for (i) and (ii) found (existence search; E_bg single point, so b is omitted)
+[OK  ] MU_viab_resp_max                   MU-B2        cases=16484 premise=16484 response kernel invariant on every candidate visited by the search
+== microuniverse: 32 rows, FAIL 0 -> verification/out/microuniverse.json
+
+$ python3 verification/check_structure.py
+--- MinACS
+[OK  ] S01_MinACS                         MinACS       cases=13824 premise=2304 Update(M,x,e) depends on (M, P_sens(x,e)) only
+[OK  ] S02_MinACS                         MinACS       cases=13824 premise=2304 u = P_act(M, P_disc, P_val) depends on (M, I) only
+[OK  ] S03_MinACS                         MinACS       cases=13824 premise=2304 (Pur, sig, Priority, mode) depend on (M, I) only
+[OK  ] S04_MinACS                         MinACS       cases=4608 premise=4608 M2 output unchanged when only the M3 purpose record changes
+[OK  ] S05_MinACS                         MinACS       cases=13824 premise=13824 every (M,x,e): u in U, f(x,u,e) in X, Update in the declared M-space
+[OK  ] S07_MinACS                         MinACS       cases=24 premise=24 re-running with the same x0, M0, o0 and background gives the same record (40 steps)
+[OK  ] S08_MinACS                         MinACS       cases=48 premise=48 changing the background from t on leaves (x,M,o) up to t unchanged (t = 5, 20)
+[OK  ] S09_MinACS                         MinACS       cases=702 premise=235 M_t is determined by M_0 and I_0..I_{t-1} (premise: non-empty I-prefixes shared by runs that differ in x or o)
+--- Furnace
+[OK  ] S01_Furnace                        Furnace      cases=2313600 premise=325350 Update(M,x,e) depends on (M, P_sens(x,e)) only
+[OK  ] S02_Furnace                        Furnace      cases=2313600 premise=325350 u = P_act(M, P_disc, P_val) depends on (M, I) only
+[OK  ] S03_Furnace                        Furnace      cases=2313600 premise=325350 (Pur, sig, Priority, mode) depend on (M, I) only
+[OK  ] S04_Furnace                        Furnace      cases=462720 premise=462720 M2 output unchanged when only the M3 purpose record changes
+[OK  ] S05_Furnace                        Furnace      cases=2313600 premise=2313600 every (M,x,e): u in U, f(x,u,e) in X, Update in the declared M-space
+[OK  ] S06_Furnace                        Furnace      cases=960 premise=5280 r_local from I only (every M sampled 1/7); r != bot => u = r and r != u_empty
+[OK  ] S07_Furnace                        Furnace      cases=20 premise=20 re-running with the same x0, M0, o0 and background gives the same record (40 steps)
+[OK  ] S08_Furnace                        Furnace      cases=40 premise=40 changing the background from t on leaves (x,M,o) up to t unchanged (t = 5, 20)
+[OK  ] S09_Furnace                        Furnace      cases=391 premise=390 M_t is determined by M_0 and I_0..I_{t-1} (premise: non-empty I-prefixes shared by runs that differ in x or o)
+--- mutations (each must be detected)
+[OK  ] MUT_S04_MutM2ReadsPurpose          Furnace-mut  cases=462720 premise=192800 mutation 'M2 reads the M3 purpose record' detected by S04 (192800 violations)
+[OK  ] MUT_S01_MutUpdateReadsHiddenFlue   Furnace-mut  cases=2313600 premise=241000 mutation 'Update reads the true flue state o (not sensed)' detected by S01 (241000 violations)
+[OK  ] MUT_S02_MutActionReadsHidden       MinACS-mut   cases=13824 premise=168 mutation 'action reads the resource state r where it is not sensed' detected by S02 (168 violations)
+[OK  ] MUT_S06_MutProtReadsMemory         Furnace-mut  cases=960 premise=80 mutation 'PSL-4 protective response reads M (purpose record)' detected by S06 (80 violations)
+[OK  ] MUT_S06_MutResolveCancels          Furnace-mut  cases=960 premise=2640 mutation 'M3 command overrides an issued protective response' detected by S06 (2640 violations)
+--- v2 (static / finite resolution map)
+[OK  ] S06_v2_resolve                     v2           cases=65 premise=52 Phi_resolve on U x (DIRS u {bot}): bot => u_M3 ; r != bot => pr_loc kept, pr_loc(r) != pr_loc(u_empty)
+[EXAM ] S10_v2_psl_sensitivity             v2           cases=1 premise=None static reading: Gamma_in,t reads ['x.alert', 'x.hsens']; x_t is fixed before the TIPA step of t (no same-time loop)
+== structure: 24 rows, FAIL 0 -> verification/out/structure.json
+
+$ python3 verification/dormancy.py
+[OK  ] D1_realized_reestablishment_CS     Dormancy     cases=26460 premise=1701 (SC-1) at t and re-established later on the realised path => CS_t = 0
+[OK  ] D1_realized_reestablishment_FTS    Dormancy     cases=26460 premise=2757 (FT-1) at t in T_FT and revival later on the realised path => FTS_t = 0
+[OK  ] D2_termination_order               Dormancy     cases=274 premise=274 (i) FTS=1 at t_C, (ii) FT=1, (iii) no new FT judgement after t_C, (iv) WF=0 when Col=1
+[OK  ] D3_principle_time_domain_down      Dormancy     cases=26460 premise=18645 T_P is downward closed and Col=0 on T_P
+[OK  ] D4_histories                       Dormancy     cases=26460 premise=26460 Col and FT never revert
+[EXAM ] D5_census                          Dormancy     cases=26460 premise=None temporary (SC-1)/(FT-1), Upsilon-dependence and threshold cases (counts)
+{'CS_differs_without_Upsilon': 286, 'times': 26460, 'defined_principle_times': 18645, 'FT1_but_FTS0': 4825, 'SC1_but_CS0': 2020, 'SC1_CS0_recoverable_only_with_mist': 319, 'undefined_principle_times': 7815, 'boundary_d_eq_DLIM': 360, 'runs_with_Col': 274, 'runs_FT_before_or_without_Col': 45, 'prem_reest_FTS': 2757, 'runs_temporary_stop_then_revival': 399, 'prem_reest_CS': 1701}
+[EXAM ] D6_domain_sets                     Dormancy     cases=72 premise=None |K|=18, |Viab|=18
+== dormancy: 7 rows, FAIL 0 -> verification/out/dormancy.json
+
+$ python3 verification/update_rules.py
+--- orig
+[OK  ] U_S01_orig                         Furnace[orig] cases=2313600 premise=325350 Update(M,x,e) depends on (M, P_sens(x,e)) only
+[OK  ] U_S07_orig                         Furnace[orig] cases=20 premise=20 re-running with the same x0, M0, o0 and background gives the same record (40 steps)
+[OK  ] U_S08_orig                         Furnace[orig] cases=40 premise=40 changing the background from t on leaves (x,M,o) up to t unchanged (t = 5, 20)
+[OK  ] U_S09_orig                         Furnace[orig] cases=391 premise=390 M_t is determined by M_0 and I_0..I_{t-1} (premise: non-empty I-prefixes shared by runs that differ in x or o)
+[EXAM ] U_census_orig                      Furnace[orig] cases=504 premise=None exact eventually-periodic runs (initial states x 1/4, background patterns of period 1-2)
+{'runs': 504, 'M_converges': 278, 'learning_stops': 504, 'steps_only_MW_changed': 2029, 'M_keeps_changing': 226, 'steps_ML_changed': 60}
+--- frozen
+[OK  ] U_S01_frozen                       Furnace[frozen] cases=2313600 premise=325350 Update(M,x,e) depends on (M, P_sens(x,e)) only
+[OK  ] U_S07_frozen                       Furnace[frozen] cases=20 premise=20 re-running with the same x0, M0, o0 and background gives the same record (40 steps)
+[OK  ] U_S08_frozen                       Furnace[frozen] cases=40 premise=40 changing the background from t on leaves (x,M,o) up to t unchanged (t = 5, 20)
+[OK  ] U_S09_frozen                       Furnace[frozen] cases=391 premise=390 M_t is determined by M_0 and I_0..I_{t-1} (premise: non-empty I-prefixes shared by runs that differ in x or o)
+[EXAM ] U_census_frozen                    Furnace[frozen] cases=504 premise=None exact eventually-periodic runs (initial states x 1/4, background patterns of period 1-2)
+{'runs': 504, 'M_converges': 278, 'learning_stops': 504, 'steps_only_MW_changed': 2089, 'M_keeps_changing': 226}
+--- flip
+[OK  ] U_S01_flip                         Furnace[flip] cases=2313600 premise=325350 Update(M,x,e) depends on (M, P_sens(x,e)) only
+[OK  ] U_S07_flip                         Furnace[flip] cases=20 premise=20 re-running with the same x0, M0, o0 and background gives the same record (40 steps)
+[OK  ] U_S08_flip                         Furnace[flip] cases=40 premise=40 changing the background from t on leaves (x,M,o) up to t unchanged (t = 5, 20)
+[OK  ] U_S09_flip                         Furnace[flip] cases=391 premise=390 M_t is determined by M_0 and I_0..I_{t-1} (premise: non-empty I-prefixes shared by runs that differ in x or o)
+[EXAM ] U_census_flip                      Furnace[flip] cases=504 premise=None exact eventually-periodic runs (initial states x 1/4, background patterns of period 1-2)
+{'runs': 504, 'M_converges': 185, 'learning_stops': 185, 'steps_ML_changed': 2754, 'steps_only_MW_changed': 313, 'M_keeps_changing': 319, 'learning_never_stops': 319}
+--- forget
+[OK  ] U_S01_forget                       Furnace[forget] cases=2313600 premise=325350 Update(M,x,e) depends on (M, P_sens(x,e)) only
+[OK  ] U_S07_forget                       Furnace[forget] cases=20 premise=20 re-running with the same x0, M0, o0 and background gives the same record (40 steps)
+[OK  ] U_S08_forget                       Furnace[forget] cases=40 premise=40 changing the background from t on leaves (x,M,o) up to t unchanged (t = 5, 20)
+[OK  ] U_S09_forget                       Furnace[forget] cases=391 premise=390 M_t is determined by M_0 and I_0..I_{t-1} (premise: non-empty I-prefixes shared by runs that differ in x or o)
+[EXAM ] U_census_forget                    Furnace[forget] cases=504 premise=None exact eventually-periodic runs (initial states x 1/4, background patterns of period 1-2)
+{'runs': 504, 'M_converges': 278, 'learning_stops': 504, 'steps_only_MW_changed': 2029, 'M_keeps_changing': 226, 'steps_ML_changed': 60}
+== update_rules: 20 rows, FAIL 0 -> verification/out/update_rules.json
+
+$ python3 verification/check_v2_records.py
+15 trace files, 5100 records
+[OK  ] R01_tstab_zero_margin              v2-records   cases=5100 premise=57 on T_P with SM, EU, FR true and Pi = 0: T-STAB not satisfied
+[OK  ] R02_principle_time_domain_down     v2-records   cases=5100 premise=2630 T_P downward closed, Col = 0 on T_P
+[OK  ] R03_undefined_outside_TP           v2-records   cases=5100 premise=2470 outside T_P: SM, EU, FR, T-STAB are undefined (not false)
+[OK  ] R04_sm_K_equiv                     v2-records   cases=5100 premise=2630 on T_P: SM <=> x in K <=> Pi >= 0
+[OK  ] R05_fr_undefined_when_eu_false     v2-records   cases=5100 premise=38 outside D_FR the local FR is undefined
+[OK  ] R06_fr_next_sm                     v2-records   cases=5100 premise=138 FR false => x_{t+1} not in K (and SM_{t+1} false on T_P)
+[OK  ] R07_sm_one_step_A                  v2-records   cases=5100 premise=5085 (ii) x_{t+1} in K <=> u_t in A_t
+[OK  ] R08_output_attribution             v2-records   cases=5100 premise=2447 WF = 0: mechanism outputs are not attributed to the individual (recorded as undef, not 0 / empty)
+[OK  ] R09_modes_styles                   v2-records   cases=5100 premise=2653 mode in {3A,3B,3C}; style is one of the three 3B styles iff mode = 3B, else none
+[OK  ] R10_resolve_on_records             v2-records   cases=5100 premise=2 an issued protective response is the effective action
+[OK  ] R11_readout_ranges                 v2-records   cases=5100 premise=5100 F and health in [0,1]; beta, d_eff, tau_hat >= 0 (values 'undef' skipped)
+[OK  ] R12_tau_hat                        v2-records   cases=5100 premise=2608 tau_hat = tau * pi_tau (tau = 3 in the v2 configuration; both columns are rounded to 3 decimals)
+[OK  ] R13_termination_order              v2-records   cases=5100 premise=2447 Col = 1 => FT = 1 and WF = 0 (parts (ii) and (iv))
+== v2_records: 13 rows, FAIL 0 -> verification/out/v2_records.json
+
+$ python3 verification/build_coverage.py
+coverage_83: {'PASS_NONVACUOUS': 24, 'NOT_RUN': 40, 'EXAMPLE_ONLY': 19} total 83
+rows 153, FAIL 0, labels touched 76
+
+RESULT: no FAIL -> verification/out

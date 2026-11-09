@@ -1,0 +1,97 @@
+{
+ "id": "P1_minacs_learning_r2",
+ "spec_md5": "ee137f3bbd66b4e3470eaf97b524ce28",
+ "registry_entry": "2026-10-26T07:24:22.200530+00:00\tee137f3bbd66b4e3470eaf97b524ce28\t/home/claude/E4/specs/P1_minacs_learning_r2.json\tP1_minacs_learning_r2",
+ "run_at": "2026-10-26T07:24:58.571960+00:00",
+ "python": "3.13.16",
+ "seconds": 36.3,
+ "deviation": null,
+ "problems_at_run": [],
+ "n_units_per_variant_condition": 900,
+ "verdicts": [
+  {
+   "id": "H1",
+   "statement": "Update が働く個体（learn）の崩壊到達時刻は、信念を更新しない個体（no-learn）以上である（崩壊なしは +∞ とみなす）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 880,
+      "a>b": 267,
+      "a<b": 20,
+      "a==b": 613
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H2",
+   "statement": "崩壊した軌道では、崩壊直前の生存時刻に Recover=1 となる許容外的作用が 3 種すべてではない（外的回復可能性が狭まっている）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1251,
+      "holds": 1251
+     }
+    },
+    "R1": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1251,
+      "holds": 1251
+     }
+    },
+    "R2": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1251,
+      "holds": 1251
+     }
+    },
+    "R3": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1251,
+      "holds": 1251
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H3",
+   "statement": "（モデル記述の仮説）MinACS では崩壊した軌道のすべてで、崩壊前に少なくとも一度閉塞が生じる。本文の『崩壊は閉塞の事前経由を要しない』とは別の、このモデルについての記述。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1251,
+      "holds": 1251
+     }
+    }
+   },
+   "rule_dependent": false
+  }
+ ],
+ "consistency": [
+  {
+   "metric": "T_col",
+   "units_differing_across_variants": 0
+  },
+  {
+   "metric": "blocked",
+   "units_differing_across_variants": 0
+  },
+  {
+   "metric": "B1",
+   "units_differing_across_variants": 0
+  },
+  {
+   "metric": "B2",
+   "units_differing_across_variants": 0
+  }
+ ]
+}

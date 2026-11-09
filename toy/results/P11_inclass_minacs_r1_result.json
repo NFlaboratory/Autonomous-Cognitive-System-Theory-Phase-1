@@ -1,0 +1,133 @@
+{
+ "id": "P11_inclass_minacs_r1",
+ "spec_md5": "66e287239232e3418e9bb60295d5296d",
+ "registry_entry": "2026-10-27T09:18:12.366020+00:00\t66e287239232e3418e9bb60295d5296d\t/home/claude/release/acs-toy/specs/P11_inclass_minacs_r1.json\tP11_inclass_minacs_r1",
+ "run_at": "2026-10-27T09:18:14.643050+00:00",
+ "python": "3.13.16",
+ "seconds": 2.2,
+ "deviation": null,
+ "problems_at_run": [],
+ "n_units_per_variant_condition": 900,
+ "verdicts": [
+  {
+   "id": "H1",
+   "statement": "base の崩壊到達時刻は est-2 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 878,
+      "a>b": 289,
+      "a<b": 22,
+      "a==b": 589
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H2",
+   "statement": "est-2 の崩壊到達時刻は est-3 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 304,
+      "a>b": 6,
+      "a<b": 596,
+      "a==b": 298
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H3",
+   "statement": "base の崩壊到達時刻は est-3 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 545,
+      "a>b": 9,
+      "a<b": 355,
+      "a==b": 536
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H4",
+   "statement": "base の崩壊到達時刻は upd-2 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 900,
+      "a>=b": 887,
+      "a>b": 153,
+      "a<b": 13,
+      "a==b": 734
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5",
+   "statement": "upd-2 の崩壊到達時刻は upd-4 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 900,
+      "a>=b": 837,
+      "a>b": 143,
+      "a<b": 63,
+      "a==b": 694
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H6",
+   "statement": "upd-4 の崩壊到達時刻は upd-none 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "indeterminate",
+     "counts": {
+      "n": 900,
+      "a>=b": 865,
+      "a>b": 99,
+      "a<b": 35,
+      "a==b": 766
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H7",
+   "statement": "base の崩壊到達時刻は upd-none 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 852,
+      "a>b": 274,
+      "a<b": 48,
+      "a==b": 578
+     }
+    }
+   },
+   "rule_dependent": false
+  }
+ ],
+ "consistency": []
+}

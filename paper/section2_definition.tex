@@ -1,0 +1,4651 @@
+%======================================================================
+\section{自律認知システムの形式的定義}
+\label{sec:acs_def}
+
+本節では、\S\ref{sec:intro} で予告した自律認知システム（ACS）の概念を、
+後続節が共通に参照できる単一ACSの形式的基礎として定義する。
+
+\S\ref{sec:intro} で述べた理論的位置づけ、Phase~1 の全体的スコープ、
+構造・機能概念の三分類の一般規則、および論文全体の動機は本節では再論せず、
+ACSの基礎型、構成要件、整形式な実現、可行性、原始的な機能、内部モデルおよび
+更新構造の定義に必要な範囲のみを確認する。
+
+本節は、ACSの発生起源、実装史または進化過程を扱わず、
+ある対象が本論文の意味でACSとして記述されるための抽象的構造を与える。
+以下では一貫して「主張の強さ $\leq$ 証明の強さ」という方針を採用する。
+本節は閉塞、機能的終端および崩壊を定義するが（定義~\ref{def:blockage_sec2}、定義~\ref{def:functional_termination}、定義~\ref{def:collapse}）、
+本節単独で主張しない事項は、本節末尾の「本節が主張しない事項と Phase 委譲」に列挙する。
+
+%----------------------------------------------------------------------
+\subsection{本節の記述範囲と共通規約}
+\label{subsec:s2_scope}
+\label{subsec:sec2_intro}
+
+本小節では、本節全体を貫く \S\ref{sec:intro} との責務分離、
+規約・構成要件・仮定の地位の区別、
+および Phase~1 における責務境界を整理する。
+本節で新たに用いる主要記号の一覧は付録~\ref{app:symbols_s2} に示す。
+
+\subsubsection{導入節との責務分離}
+\label{subsubsec:s2_s1_boundary}
+
+論文全体の動機・理論的位置づけ・Phase 区分・三分類の一般規則は
+\S\ref{sec:intro} に委ね、本節では形式的定義に必要な内容のみを扱う。
+ここでの「定義」は、対象クラスの記述に用いる型と条件を固定する作業を指す。
+一般的な倫理的評価、対象実装の経験的同定、既存理論に対する優越性の主張は
+本節の結論に含めない。
+\S\ref{sec:intro} の分類A・B・Cは、
+7タプルそれ自体の成分数を変更する規則ではない（備考~\ref{rem:abc_classification_rules}）。
+
+\subsubsection{規約・構成要件・仮定の地位の区別}
+\label{subsubsec:s2_requirement_status}
+
+本節では、記述上の取り決めである規約、ACSとして成立するための構成要件、
+および個別命題の成立範囲を限定する仮定を、互いに異なる地位のものとして扱う。
+
+\begin{description}[style=nextline]
+  \item[規約（Convention）]
+  論文が形式対象をどのように書き分けるかを指定する取り決めである。
+  型分離規約 TSC（\S\ref{subsec:wellformedness}）および
+  記述水準の規約（\S\ref{subsec:acs_7tuple}）が
+  これに当たる。規約はACS自身の機能的能力ではない。
+  \item[構成要件（Constitutive Requirement; CR）]
+  本論文がACSと呼ぶ対象の成立条件を指定する。
+  必要環境整合性 CR-1（\S\ref{subsec:environment_space}）
+  および原始的な機能と基盤機能の具備 CR-2
+  （\S\ref{subsec:three_primitive_functions}）が
+  これに当たる。CR-1・CR-2 は7タプルから機械的に検査できる条件ではなく、
+  その実現に対する意味論的条件であり、通常の数学的仮定の件数には数えない。
+  \item[仮定（Assumption）]
+  定義された対象について追加的な結果を論じる際に用いる条件であり、
+  各仮定には導入地位（A・S・O）と強さ（弱・中・強）を付す。
+  本節の仮定は \S\ref{subsec:assumption_list_sec2} に一覧する。
+\end{description}
+
+したがって、TSC をACS自身の機能的能力として解釈せず、
+CR-1・CR-2 を数学的な追加仮定として数えない。
+定義~\ref{def:acs} は、規約 TSC のもとで CR-1 および CR-2 を満たす実現を備える
+構造をACSとして扱う。
+
+\subsubsection{Phase~1 における責務境界と本節の構成}
+\label{subsubsec:s2_phase1_boundary}
+
+本節は決定論的・離散時間・コンパクト内部状態空間の単一ACS構造を対象とする。
+時間添字は $t\in\mathbb N_0$、状態更新は $t\mapsto t+1$ とする。
+外部環境状態は外生背景成分と行動応答成分に分解し、
+外生背景成分の列は決定論的な解析において与えられる実現列として扱い、
+その生成法則や発生頻度を本節では規定しない。
+行動応答成分は、環境の側の遷移写像に従って当該ACSの行動に応答しうる
+（定義~\ref{def:env_realization}）。
+確率的拡張、連続時間化、非コンパクト空間への一般化、
+必要環境要因の経験的同定手続き、自己--環境境界の動的再編成、
+および社会的組織への構造的適用は、それぞれ本節の形式定義とは別の問題であり、
+後続節または後続 Phase の課題とする。
+
+本節の構成は次のとおりである。
+\S\ref{subsec:wellformedness} で外部背景と自己--環境型分離および規約 TSC を、
+\S\ref{subsec:primitive_functions} で原始的な機能と基盤機能を定義し、
+\S\ref{subsec:acs_7tuple} でACSの7タプルと各成分の基本型を定める。
+続いて \S\ref{subsec:self_formal_definition} で構造的自己・整形式実現・
+時間的自己同一性と機能的終端・崩壊を、\S\ref{subsec:environment_space} で必要環境空間と CR-1 を、
+\S\ref{subsec:state_space_basic_variables} で状態遷移・行動・外部環境入力を、
+\S\ref{subsec:viability_function_and_blockage} で持続評価・可行性・
+一段階可行環境を扱う。
+\S\ref{subsec:three_primitive_functions} で基礎的な機能、CR-2 および原始的な機能の標準写像形式を、
+\S\ref{subsec:internal_model_M} で内部モデル構造 $M$ を、
+\S\ref{subsec:update_operator} で更新作用素 $\mathrm{Update}$ と時間平均内部モデル変化量を、
+\S\ref{subsec:cognitive_capacity_policy} で認知的処理能力の記述方針を述べ、
+\S\ref{subsec:assumption_list_sec2} で規約・構成要件・仮定を整理する。
+
+%----------------------------------------------------------------------
+\subsection{外部背景と自己--環境型分離}
+\label{subsec:wellformedness}
+
+本小節では、ACS定義に先立ち、内部状態と外部環境状態を
+異なる型として扱うための型分離規約を定める。
+本論文における「外部」（external）は普遍的な世界分類ではなく、
+対象とするACS個体の境界に相対的な概念である。
+したがって、複数のACS個体を区別する必要がある場合には、
+個体 $\Sigma_i$ に相対的な外部環境状態空間を
+$E_{\mathrm{ext},i}$ と書くことができる。
+単一ACSのみを扱う本節では、混同の生じない範囲で
+個体添字を省略して $E_{\mathrm{ext}}$ と書く。
+
+$E_{\mathrm{ext}}$ は、当該ACSの状態遷移、感知その他の
+外部入力記述に用いうる外部環境状態候補の型である。
+その元を $e\in E_{\mathrm{ext}}$ とし、
+時刻 $t$ の実現外部環境状態を
+$e_t\in E_{\mathrm{ext}}$
+と書く。
+$E_{\mathrm{ext}}$ はACS 7タプルの独立成分ではなく、
+7タプルが相対的に定義される外部背景型である。
+Phase~1 では $E_{\mathrm{ext}}$ を位相空間として扱い、
+状態遷移写像 $f$ の連続性を述べるための基盤とする。
+$E_{\mathrm{ext}}$ のコンパクト性は一般には仮定せず、
+これを要する命題ではその箇所で追加仮定として明示する。
+
+本論文では、ACSの定義を支える基礎条件を、規約と構成要件の二種に区別する。
+規約は、本論文が記述のために採用する取り決めであり、
+当該ACSが満たすべき条件ではない。
+以下で定める型分離規約 TSC（Type Separation Convention）は、
+内部状態型と外部環境状態型を集合表現上でも分離するために採用する規約である。
+構成要件系列 CR（Constitutive Requirement）は、
+当該7タプル構造体が本論文におけるACSとして成立するために
+満たされねばならない条件を表す。
+本節では、必要環境整合性を CR-1（\S\ref{subsec:environment_space}）、
+原始的な機能と基盤機能の具備を CR-2（\S\ref{subsec:three_primitive_functions}）とする。
+いずれも、後続命題の成立範囲を限定する通常の仮定とは区別し、
+仮定一覧には含めない。
+構成要件の番号は本節における初出順である。
+
+\subsubsection*{型分離規約 TSC（内部状態型と外部環境状態型の分離）}
+\label{conv:TSC}
+
+ACS個体 $\Sigma_i$ の内部状態空間 $X$ と、
+その個体に相対的な外部環境状態空間 $E_{\mathrm{ext}}$ は、
+本論文の集合表現上では異なる型として扱う。
+Phase~1 では、この型分離を明示するためタグ付きの互いに素な表現を採用し、
+\[
+  X\cap E_{\mathrm{ext}}=\emptyset
+\]
+と書く。
+
+ここでこの式は、内部状態を表す数学的対象と外部環境状態を表す
+数学的対象を無標識の集合表現上で混同しないための構成上の規約である。
+したがって、物理世界においてACS内部を構成する物質と外部環境を構成する
+物質が存在論的に異なる種類であることを主張するものではない。
+また、同一の数値列その他の表現が内部状態と外部環境状態の双方に
+現れうる場合でも、型タグを付した対象としては区別される。
+
+\begin{remark}[TSCの性格]
+\label{rem:TSC_character}
+$X\cap E_{\mathrm{ext}}\neq\emptyset$ となる無標識の集合表現を採用した場合でも、
+内部状態引数と外部環境状態引数を異なるsortとして指定すれば、
+後続の状態遷移写像の型自体は定義可能である。
+したがって、TSC は写像の数学的整形式性そのものに不可欠な条件ではなく、
+自己と環境の型を集合表現上でも明示的に分離するために本論文が採用する規約である。
+タグ付きの互いに素な表現はその実装手段であり、
+TSC が要求するのは型分離そのものである。
+Phase~2 において自己--環境境界の流動化または再編成を扱う場合には、
+本規約の扱いを改めて明示する。
+\end{remark}
+
+\begin{remark}[外部環境状態空間の個体相対性]
+\label{rem:Eext_relative}
+$E_{\mathrm{ext}}$ は対象ACSの境界に相対的であるため、
+一般には異なるACS個体 $\Sigma_i,\Sigma_j$ が同一の
+外部環境状態空間をもつことを要求しない。
+例えば、$\Sigma_i$ にとって他個体 $\Sigma_j$ は
+$\Sigma_i$ の外部環境の一部として現れうる一方、
+$\Sigma_j$ 自身の内部状態は $\Sigma_j$ の状態空間に属する。
+Phase~1 の単一ACS定義では、異なる個体に相対的な
+$E_{\mathrm{ext}}$ 間の変換写像または共通母空間を新たに要求しない。
+本論文では、これらの対応構造を導入せずに定式化を与える。
+個体別の外部環境状態空間を相互に対応づける構造を要する定式化は
+Phase~2 の課題とする。
+\end{remark}
+
+\begin{definition}[外部環境状態空間の分解]
+\label{def:Eext_decomposition}
+外部環境状態空間 $E_{\mathrm{ext}}$ を、二つの位相空間の積
+\[
+  E_{\mathrm{ext}}
+  =
+  E^{\mathrm{bg}}\times O,
+  \qquad
+  O
+  :=
+  \prod_{a\in\mathcal A_O} O_a
+\]
+として表し、積位相を与える。
+その元を $e=(b,o)$、時刻 $t$ の実現外部環境状態を
+$e_t=(b_t,o_t)$ と書く。
+各成分は次のとおりである。
+\begin{enumerate}[label=(\roman*)]
+  \item $E^{\mathrm{bg}}$ を\emph{外生背景成分}の空間と呼ぶ。
+  その元 $b$ は、当該ACSの行動に応答しない外部側の条件を表す。
+  \item $\mathcal A_O$ は有限集合であり、時刻によらず固定する。
+  その元 $a$ を\emph{枠}と呼ぶ。
+  \item 各 $O_a$ は位相空間であり、区別された元 $\bot_a\in O_a$ を含む。
+  $\bot_a$ を枠 $a$ の\emph{不在状態}と呼ぶ。
+  $O$ を\emph{行動応答成分}の空間と呼び、
+  $o\in O$ の第 $a$ 成分を $o_a\in O_a$ と書く。
+\end{enumerate}
+$\mathcal A_O=\emptyset$ のとき $O$ は一点集合であり、
+$E^{\mathrm{bg}}$ が一点集合であることも排除しない。
+\end{definition}
+
+任意の外部環境状態空間は、$\mathcal A_O=\emptyset$、
+$E^{\mathrm{bg}}=E_{\mathrm{ext}}$ とすることで
+定義~\ref{def:Eext_decomposition} の形に表せる。
+したがって、この分解は対象とするACSの範囲を狭めない。
+行動応答成分を置くかどうか、どの成分を枠に割り当てるかは、
+対象系の記述における選択である。
+規約 TSC は分解の後も維持され、
+\[
+  X\cap\bigl(E^{\mathrm{bg}}\times O\bigr)=\emptyset
+\]
+である。
+
+\begin{remark}[枠と行動応答成分の読み]
+\label{rem:Eext_decomposition_reading}
+定義~\ref{def:Eext_decomposition} について、次の読みを定める。
+\begin{enumerate}[label=(\alph*)]
+  \item 枠 $a$ は個物そのものではなく、
+  外部環境のうち当該ACSの行動に応答しうる成分を記述するための位置である。
+  個物が現れることや消えることは、
+  $o_a$ が $\bot_a$ と $\bot_a$ 以外の値の間を移ることとして表す。
+  同一の枠を時刻をまたいで再び用いて、異なる個物を表してよい。
+  本論文は、枠の状態の列から個物の同一性を追跡しない。
+  \item 行動応答成分は個物に限らない。
+  当該ACSの行動に応答しうる外部側の量であれば、
+  蓄積量（例えば当該ACSの排出物が周囲に蓄積した量）や
+  局所の場（例えば当該ACSの発熱によって変わる周囲の温度）も
+  枠に割り当てうる。
+  \item $E^{\mathrm{bg}}$ と $O$ の区別は、当該ACSの行動に応答しうるか否かによる
+  記述上の区別であり、外部世界の存在論的な分割ではない。
+  \item 「対象」「目的対象」の語は、当該ACSの内部での識別に関わる語として
+  \S\ref{sec:tipa} で用いる。
+  枠の添字集合 $\mathcal A_O$ は理論水準の添字であり、
+  ACS内部の対象表現と同一視しない。
+  \S\ref{sec:rel_min} の外部対象集合 $\mathcal Y_{-i}$ とも同一視しない。
+\end{enumerate}
+記号について次を注意する。
+外生背景成分の空間 $E^{\mathrm{bg}}$ は、
+必要環境要因の集合 $E$（\S\ref{subsec:environment_space}）とは無関係である。
+$O$ は \S\ref{sec:org_acs} の組織を表す記号 $\mathcal O$ とは無関係である。
+不在状態 $\bot_a$ は、\S\ref{sec:tipa} で局所保護応答がないことを表す記号 $\bot$ とは別の記号である。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{原始的な機能と基盤機能}
+\label{subsec:primitive_functions}
+
+本小節では、7タプルによるACSの定義に先立ち、
+本論文がACSの機能を記述するときに用いる抽象的な機能区分と、
+それを支える基盤機能を定める。
+ここでは両者の意味だけを与え、
+基礎的な機能、構成要件 CR-2 および型をもつ標準写像形式は
+\S\ref{subsec:three_primitive_functions} で与える。
+
+\begin{definition}[原始的な機能（分類A）]
+\label{def:primitive_functions}
+本論文は、情報を得てから応答を生成するまでのACSの機能的責務を、
+次の四つの抽象的な機能区分に分けて記述し、
+各区分を\emph{原始的な機能}と呼ぶ。
+\begin{description}[style=nextline]
+  \item[感知]
+  自己の内部状態および外部環境状態から情報を得る機能的責務。
+  \item[識別]
+  得られた情報を区別し、後続の評価および行動に利用可能な
+  内部表現を形成する機能的責務。
+  \item[評価]
+  内部表現、自己の現在の状態、応答の候補その他の評価の対象を、
+  自己の状態に関わる内部基準に照らして非等価に扱う機能的責務。
+  評価の対象としてこれらのすべてを扱うことは要求しない。
+  \item[行動]
+  利用可能な内部表現、評価または現在の状態の少なくともいずれかに応じて
+  応答を生成する機能的責務。
+  これらのすべてにもとづくことは要求しない。
+\end{description}
+
+ここでいう「原始的」とは、本論文の機能記述において
+他の概念から定義せず、それ以上の区分に分けない単位として
+採用することを指す。
+生物学的・進化的な起源や古さ、または物理的な分解不能性を意味しない。
+
+原始的な機能は、個体が有する具体的な機能
+（基礎的な機能、定義~\ref{def:basic_functions}）の上位にある
+抽象的な区分であり、特定の物理部位、計算モジュール、写像
+または実装の分割を指さない。
+一つの区分の責務を複数の機能が共同して担うこと、
+および一つの機能が複数の区分の責務に関与することを排除しない。
+四区分の列挙の順序は情報依存の典型を示すにとどまり、
+時刻ごとの逐次実行または固定的な処理系列を意味しない。
+
+本定義における「自己」は、ACSとして記述される対象系自身を指す
+非形式的な用法であり、その形式的な対応物は
+\S\ref{subsec:self_formal_definition} で定める。
+評価における内部基準は、ACSが自ら担う選別の基準であり、
+\S\ref{subsec:viability_function_and_blockage} で定義する
+持続評価関数 $\Pi$ とは異なる。
+本論文は、ACSが $\Pi$ を内部で保持または計算することを要求しない
+（\S\ref{subsec:description_levels_global}）。
+\end{definition}
+
+\begin{definition}[基盤機能（分類A）]
+\label{def:base_functions}
+原始的な機能の各区分の責務を担う機能の活動を支え、
+その担い手を持続させる機能を\emph{基盤機能}と呼ぶ。
+基盤機能には、物質およびエネルギーの供給と輸送、代謝、修復、
+基盤状態の調整その他が含まれうる。
+基盤機能は原始的な機能の区分には含めず、
+原始的な機能と同じ意味での「それ以上分けない単位」としても扱わない。
+基盤機能は情報の取得から応答の生成までの責務を担うものではなく、
+その責務を担う機能が作動できる条件を維持するものである。
+一つの機能が、ある側面では原始的な機能の区分の責務に関与し、
+別の側面では基盤機能として働くことを排除しない。
+\end{definition}
+
+身体の調整のうち、内部状態を感知し、設定された基準との差を識別・評価し、
+内部へ作用して状態を調整する制御の働きは、
+原始的な機能の四区分の責務が内部状態に向けて働く場合として扱いうる。
+本論文はこの場合のために区分を加えない。
+これに対し、物質の輸送や代謝のように機能の担い手を持続させる働きは、
+基盤機能として扱う。
+一つの過程が両方の働きに関与する場合、本論文はその過程を
+いずれか一方に割り当てることを求めず、
+同一の過程について、制御の責務を担う側面と
+担い手を持続させる側面とを区別して記述しうるものとする
+（定義~\ref{def:base_functions}）。
+各側面をどの区分の責務または基盤機能として記述するかは
+対象系の記述における選択であり、
+本論文はその一般的な判定基準を Phase~1 では与えない。
+
+\begin{remark}[原始的な機能と三原理の記述水準の区別]
+\label{rem:primitive_vs_principles}
+原始的な機能（定義~\ref{def:primitive_functions}）と
+基盤機能（定義~\ref{def:base_functions}）は、機能の水準の概念である。
+これに対し、\S\ref{sec:three_principles} の
+自己維持（SM）・環境利用（EU）・可行応答（FR）の三原理は、
+存続中のACSに対する制約軸であり、
+本論文は原理そのものについて成立・不成立を述べない。
+真偽をもつのは、同節で定める各原理の時刻別充足述語である。
+本論文は、原始的な機能のいずれかの区分を特定の原理に一対一に対応させず、
+原理ごとの専用の機能も置かない。
+また本論文は、原始的な機能の各区分に関して個体が有する基礎的な機能
+（定義~\ref{def:basic_functions}）または基盤機能が作動していることから
+時刻別充足述語が真であることを、
+時刻別充足述語が偽であることから特定の基礎的な機能または基盤機能の停止を、
+いずれも一般的な帰結として置かない。
+原始的な機能と、\S\ref{sec:three_principles} の三原理に関連する構造的機能
+（定義~\ref{def:principle_related_functions}）との対応は、同節で扱う。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{ACS 7タプルと基本型}
+\label{subsec:acs_7tuple}
+
+本小節では、外部環境状態空間 $E_{\mathrm{ext}}$ に相対的な
+ACS個体の基礎形式を7タプルとして定義する。
+7タプルとは、ACSを記述する7個の基本成分を
+順序つきの組として並べたものである。
+本小節では各成分の基本型を定め、
+構造的自己の意味は \S\ref{subsec:self_formal_definition}、
+必要環境空間 $E$ の存続必要性の意味論は
+\S\ref{subsec:environment_space}、
+原始的な機能に関する構成要件は
+\S\ref{subsec:three_primitive_functions} でそれぞれ与える。
+原始的な機能そのものは \S\ref{subsec:primitive_functions} で定義した。
+
+\begin{definition}[自律認知システム]
+\label{def:acs}
+外部環境状態空間 $E_{\mathrm{ext}}$ に相対的に、
+型分離規約 TSC（\S\ref{subsec:wellformedness}）のもとで、
+構成要件 CR-1（必要環境整合性、\S\ref{subsec:environment_space}）および
+構成要件 CR-2（原始的な機能と基盤機能の具備、\S\ref{subsec:three_primitive_functions}）を
+満たす実現を備える以下の7タプル構造体を、\emph{自律認知システム}
+（ACS: Autonomous Cognitive System）と定義する：
+\[
+  \Sigma
+  =
+  \bigl(
+    X,\,
+    U,\,
+    E,\,
+    f,\,
+    \Pi,\,
+    M,\,
+    \mathrm{Update}
+  \bigr).
+\]
+
+\medskip
+\noindent\textbf{(1) 状態空間 $X$：}
+$X$ はACSがとりうる内部状態の空間であり、
+時刻 $t$ の内部状態を $x_t\in X$ と書く。
+Phase~1 では $X\subseteq\mathbb{R}^n$ とし、
+$X$ をコンパクト集合として扱う
+（仮定~\ref{ass:compact_spaces}）。
+$X$ はACSを構成する物質そのものではなく、
+当該ACSが同一個体として実現されている間に取りうる
+内部状態を形式的に表す状態空間である。
+
+\medskip
+\noindent\textbf{(2) 行動空間 $U$：}
+$U$ はACSが選択しうる実効行動の空間であり、
+時刻 $t$ の実効行動を $u_t\in U$ と書く。
+Phase~1 では $U\subseteq\mathbb{R}^m$ とし、
+$U$ をコンパクト集合として扱う
+（仮定~\ref{ass:compact_spaces}）。
+$U$ の内部には、外部環境へ作用する行動、内的認知状態に
+作用する行動、および選択的待機を区別するラベル構造を
+導入することがある（備考~\ref{rem:action_space_structure}）。
+後続の機構記述において複数の内部指令源または局所応答が
+区別される場合でも、状態遷移写像 $f$ に入力される $u_t$ は、
+それらが当該実装の規則に従って解決された後の実効行動を表す。
+
+\medskip
+\noindent\textbf{(3) 必要環境空間 $E$：}
+$E$ は、当該ACSが同一個体として存続するために不可欠な
+外部環境要因を表す集合である。
+ここでいう存続は、数学的対象としての7タプルが存在することではなく、
+同一ACS個体としての整形式な実現が継続することを指す
+（\S\ref{subsec:self_formal_definition}）。
+Phase~1 では各必要環境要因を、内部状態 $x\in X$ と
+外部環境状態 $e\in E_{\mathrm{ext}}$ の組に対する
+二値の充足判定写像として表し、
+\[
+  E
+  \subseteq
+  \{0,1\}^{X\times E_{\mathrm{ext}}},
+  \qquad
+  E\neq\emptyset
+\]
+とする。
+したがって任意の $\eta\in E$ について
+\[
+  \eta:
+  X\times E_{\mathrm{ext}}
+  \longrightarrow
+  \{0,1\}
+\]
+である。
+$\eta(x,e)=1$ は当該内部状態と外部環境状態の組において
+その必要環境要因が充足されていることを、
+$\eta(x,e)=0$ は非充足であることを表す。
+Phase~1 では $\eta$ に連続性その他の正則性を課さない。
+これを要する命題ではその箇所で追加仮定として明示する。
+$E$ の元は外部環境状態そのものではないため、
+実現外部環境状態は $e_t\in E$ ではなく
+$e_t\in E_{\mathrm{ext}}$ と書く。
+$E$ の各元がなぜ「必要」と呼ばれるかを拘束する構成要件 CR-1、
+必要要因の外部依存性と共同充足、および要因分解の非一意性は
+\S\ref{subsec:environment_space} で定める。
+
+\medskip
+\noindent\textbf{(4) 状態遷移写像 $f$：}
+状態遷移写像は、内部状態、実効行動および実現外部環境状態から
+次の内部状態を与える写像
+\[
+  f:
+  X\times U\times E_{\mathrm{ext}}
+  \longrightarrow
+  X
+\]
+である。
+したがって状態遷移は
+\[
+  x_{t+1}
+  =
+  f(x_t,u_t,e_t),
+  \qquad
+  x_t\in X,\quad
+  u_t\in U,\quad
+  e_t\in E_{\mathrm{ext}}
+\]
+と表される。
+Phase~1 では $f$ を連続写像として扱う
+（仮定~\ref{ass:f_continuity}）。
+7タプル成分 $f$ は、必要環境空間上への制限としてではなく、
+外部環境状態空間 $E_{\mathrm{ext}}$ 全体の上で定義する。
+これにより、存続に必須ではないが状態遷移へ影響する外部入力、
+中立的外部入力、および有害な外部入力も同一の型の下で記述できる。
+$f$ の自律的機能過程と指向的過程への分解は
+後続小節で扱う（仮定~\ref{ass:f_decomposition}）。
+
+\medskip
+\noindent\textbf{(5) 持続評価関数 $\Pi$：}
+$\Pi$ はACSの内部状態の可行性を評価する実数値関数であり、
+その型は
+\[
+  \Pi:X\longrightarrow\mathbb{R}
+\]
+である。
+本論文では基本的に $\Pi(x_t)\geq0$ であるとき、
+状態 $x_t$ は可行であると解釈する。
+可行集合 $K$ は7タプルの独立成分ではなく、
+\[
+  K
+  =
+  \{\,x\in X\mid \Pi(x)\geq0\,\}
+\]
+として $\Pi$ から導出される
+（定義~\ref{def:K}）。
+
+\medskip
+\noindent\textbf{(6) 内部モデル構造 $M$：}
+$M$ はACSが外部環境、自己状態および行動可能性に関する情報を処理し、
+応答形成に利用する内部モデル構造である。
+本論文では
+\[
+  M=(M_1,M_2,M_3)
+\]
+とし、$M_1$ を情報統合機構、$M_2$ を適応的評価機構、
+$M_3$ を応答行動機構とする三機構情報処理アーキテクチャ
+（TIPA: Triadic Information-Processing Architecture）として扱う。
+内部モデル状態の空間を $\mathcal{M}$ と書き、
+時刻 $t$ の内部モデル状態を $M_t\in\mathcal{M}$ とする。
+$M$ は機構構造を表す記号、$\mathcal{M}$ はその状態がとる空間、
+$M_t$ は時刻 $t$ における内部モデル状態であり、これらを区別する。
+内部モデルの最小構造は \S\ref{subsec:internal_model_M}、
+TIPAの標準機能形式の詳細は \S\ref{sec:tipa} で扱う。
+
+\medskip
+\noindent\textbf{(7) 内部モデル更新作用素 $\mathrm{Update}$：}
+$\mathrm{Update}$ は、実現内部状態および実現外部環境状態に応じて
+内部モデル状態 $M_t\in\mathcal{M}$ を更新する作用素であり、
+7タプルにおける包括的型は
+\[
+  \mathrm{Update}:
+  \mathcal{M}\times X\times E_{\mathrm{ext}}
+  \longrightarrow
+  \mathcal{M}
+\]
+である。
+構成要素別の詳細な更新型は
+\S\ref{subsec:update_operator}（定義~\ref{def:update_operator}）で与え、
+抽象型と詳細型の関係は備考~\ref{rem:update_type_two_layers} で整理する。
+
+\medskip
+以上の七成分により、ACSは、内部状態可能性、行動可能性、
+外部世界に対する不可欠な存続依存性、状態遷移、可行性評価、
+内部モデル構造および内部モデル更新を明示的に区別して記述される。
+複数のACS個体を区別する必要がある場合には、個体添字を用いて
+\[
+  \Sigma_i
+  =
+  \bigl(
+    X_i,\,
+    U_i,\,
+    E_i,\,
+    f_i,\,
+    \Pi_i,\,
+    M_i,\,
+    \mathrm{Update}_i
+  \bigr)
+\]
+と表記し、その個体に相対的な外部環境状態空間を
+$E_{\mathrm{ext},i}$ とする。
+ただし本節では単一ACSの形式的定義を主対象とするため、
+成分添字および $E_{\mathrm{ext}}$ の個体添字は
+必要な場合を除き省略する。
+\end{definition}
+
+\subsubsection*{記述水準の規約（抽象構造型・個体・時刻別の値）}
+\label{conv:structure_levels}
+
+本論文では、ACSに関わる記号を次の三つの水準で書き分ける。
+本規約は記述上の取り決めであり、ACS自身の機能的能力でも、
+後続命題の成立範囲を限定する仮定でもない。
+
+\begin{description}[style=nextline]
+  \item[抽象構造型]
+  定義~\ref{def:acs} が定める7タプル構造の型である。
+  抽象構造型を集合として扱うことは要求しない。
+  したがって個体 $\Sigma_i$ を抽象構造型の元とは書かず、
+  「$\Sigma_i$ は抽象構造型の実現である」と書く。
+  \item[個体 $\Sigma_i$]
+  抽象構造型の一つの実現として識別されるACS個体の7タプル
+  $\Sigma_i=(X_i,U_i,E_i,f_i,\Pi_i,M_i,\mathrm{Update}_i)$ である。
+  Phase~1 では、個体の7タプル $\Sigma_i$ を時刻に依存しない形式的構造体として扱う
+  （定義~\ref{def:s_struct}）。
+  時刻とともに変わりうるのは、状態 $x_{i,t}\in X_i$、内部モデル状態その他の
+  時刻別の値である。
+  とくに内部モデル構造 $M_i$ の機構構成は固定し、
+  各機構の状態 $M_{c,t}$、機能的記憶内容その他の時刻別の値の変化を、
+  内部モデル更新および \S\ref{sec:extended_dynamics} の時刻間変化として記述する。
+  機構構成そのものの時間変化は扱わない。
+  \item[時刻別の値]
+  個体の実現（状態列・環境列）に依存する量は、
+  構造を入力とする関数形にせず、個体添字と時刻添字を下付きに置く。
+  時刻に依存しない写像または対応と、その時刻評価値とを二段で書く。
+  例えば可行行動集合については、対応 $A_i(x,e)$ と時刻評価値
+  \[
+    A_{i,t}:=A_i(x_{i,t},e_{i,t})
+  \]
+  を区別する（定義~\ref{def:at}）。
+  時刻評価値の記号は、本文で定義したものに限って用いる。
+\end{description}
+
+内部モデルについては、機構構造 $M$（7タプルの成分）、
+その状態空間 $\mathcal M$、時刻 $t$ の内部モデル状態 $M_t\in\mathcal M$ を区別する
+（\S\ref{subsec:internal_model_M}）。
+TIPA の第 $c$ 機構 $M_c$ と、その時刻 $t$ の状態 $M_{c,t}\in\mathcal M_c$ も、
+時刻添字の有無によって型が異なる。
+単一ACSのみを扱う文脈では個体添字を省略する。
+個体の7タプルそのものが時刻とともに変化する場合の記述は
+Phase~2 の課題とする（\S\ref{subsec:limitations_list} の L16）。
+
+\subsubsection{基本型と各成分に関する補足}
+
+\begin{remark}[可行集合 $K$ の位置づけ]
+\label{rem:K_position}
+可行集合 $K$ は7タプルの独立成分として保持されない。
+$K$ は持続評価関数 $\Pi$ と本論文の可行性判定規約から
+$K = \{\,x\in X\mid \Pi(x)\geq0\,\}$
+として導出される派生的対象である。
+$\Pi$ の具体的構成、$K$ の形式的定義、およびこれらの関係は
+\S\ref{subsec:viability_function_and_blockage} で与える。
+したがって $K$ はACS 7タプルの独立成分ではない。
+\end{remark}
+
+\begin{remark}[行動空間 $U$ の構造]
+\label{rem:action_space_structure}
+$U$ はコンパクト集合として与えられる
+（仮定~\ref{ass:compact_spaces}）。
+本論文では、$U$ の内部に
+$U_{\mathrm{ext}}\subseteq U$（外部環境へ直接作用する行動）、
+$U_{\mathrm{int}}\subseteq U$（内的認知状態を意図的に変化させる行動）、
+$u_{\emptyset}\in U$（選択的待機）というラベル構造を識別する。
+$U_{\mathrm{ext}}$ と $U_{\mathrm{int}}$ は $U$ の部分集合、
+$u_{\emptyset}$ は $U$ の要素として識別されるラベル構造であり、
+$U$ のコンパクト性を変更しない。
+$u_{\emptyset}$ は行動の不在を表す記号ではなく、$U$ の正規の元であり、
+他の元と同じく状態遷移写像 $f$ の行動引数となる。
+位相構造への影響は Phase~2 の課題とする。
+$u_{\emptyset}$ の選択時における自律的機能過程との関係は
+後続の状態遷移分解で定める
+（仮定~\ref{ass:f_decomposition}）。
+行動が行動応答成分へ及ぼす作用は、ラベル $U_{\mathrm{ext}}$ によってではなく、
+作用差（定義~\ref{def:action_difference}）によって記述する。
+外部による強制は当該ACSの行動ではなく、
+外部環境状態 $e_t$ を通じて $f$ に入る状態変化として表す。
+同じ時刻に、当該ACSの行動 $u_t$ と外部による強制は共存しうる。
+行動の区分は \S\ref{sec:tipa} の定義~\ref{def:action_classes} で、
+目的の基準が当該ACSの内部の担体から読み出されることは
+同節の命題~\ref{prop:purpose_self_attribution} で扱う。
+\end{remark}
+
+\begin{remark}[Updateの型宣言の二層構造]
+\label{rem:update_type_two_layers}
+7タプルにおける $\mathrm{Update}$ の型宣言
+\[
+  \mathcal{M}\times X\times E_{\mathrm{ext}}
+  \longrightarrow
+  \mathcal{M}
+\]
+は包括的な抽象型である。
+構成要素別の詳細型
+（定義~\ref{def:update_operator}、
+\S\ref{subsec:update_operator}）は、
+実装上利用可能な追加引数を含む写像族として定義されうる。
+したがって抽象型と詳細型は直接同一の型である必要はなく、
+抽象化レベルの差として整合的に扱う（under stated assumptions）。
+詳細型に現れる追加引数は、同一ステップまたは先行処理により得られる
+中間値・補助情報であり、それだけを理由として7タプルの独立成分を
+追加しない。
+\end{remark}
+
+\subsubsection{7タプルの非冗長性}
+
+\begin{remark}[7タプルの非冗長性]
+\label{rem:tuple_nonredundancy}
+本論文は、7タプル
+$\Sigma=(X,U,E,f,\Pi,M,\mathrm{Update})$ を
+Phase~1 のACS定義における基礎成分として採用する。
+これらは、本論文が採用する表現体系の下で、それぞれ
+内部状態可能性、行動可能性、外部世界に対する存続必要性、
+状態遷移、可行性評価、内部モデル構造、内部モデル更新という
+異なる構造的役割を担う。
+
+特に、必要環境空間 $E$ は実現外部環境状態の型
+$E_{\mathrm{ext}}$ そのものでも、その部分集合でもなく、
+当該ACSが外部世界に対してもつ存続上の不可欠な依存性を
+必要環境要因の集合として表す原始的構成情報である。
+Phase~1 では $E$ を $X,f,\Pi$ その他の成分から
+一意に導出される派生量として定義しない。
+本論文は、$f$ が記述する環境差のうち何が同一ACSの存続に
+構成的に不可欠であるかを $f$ から一意に定める規則を与えず、
+また $\Pi$ から必要環境要因の分解粒度を一意に定める規則も与えない。
+必要環境性の意味論的拘束と分解の非一意性は
+\S\ref{subsec:environment_space} で扱う。
+
+したがって、内部状態、行動、存続必要環境、状態遷移、可行性評価、
+内部モデル、内部モデル更新という区別を保存する本論文の表現要件の下では、
+いずれかの成分を削除すると、少なくとも一つの構造的役割が
+明示的には保持されなくなるという意味で七成分を非冗長とみなす。
+
+ただし本論文は、任意の数学的再符号化に対する絶対的最小性を主張しない。
+例えば、拡張状態空間 $Y:=X\times\mathcal{M}$ と拡張遷移写像を用いて、
+内部モデル状態と更新作用素を状態遷移側へ吸収する再符号化は
+形式的には可能である。
+その場合、本論文が明示的に保存する内部状態と内部モデル状態の区別、
+および状態遷移と内部モデル更新の区別は失われる。
+本備考が述べるのは、これらの役割分離を保存する
+現在の形式体系の範囲内での非冗長性である
+（within present framework）。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{構造的自己と時間的自己同一性}
+\label{subsec:self_formal_definition}
+
+本小節では、ACS個体の「自己」を形式的に定義する。
+ここでいう自己とは、主観的な意識や記憶の同一性ではなく、
+ACSが同一の個体として同定される構造的な基盤を指す。
+本論文では自己を三つの水準に分けて整理する。
+構造的自己（個体そのもの）、動的自己状態（時刻ごとの状態）、
+自己--環境境界（自己と環境の区別）である。
+あわせて、これら三水準とは別に、
+当該個体が各時刻において整形式に実現されているか否かを表す
+実現水準を導入する。
+この実現水準は、必要環境空間 $E$ の各要因がなぜ「必要」と呼ばれるかを
+\S\ref{subsec:environment_space} で拘束する際に用いる語彙を与える。
+本小節の末尾では、これとは別の対象として、
+原始的な機能の各区分に関して構造的個体が有する基礎的な機能の活動と、
+その活動を支える基盤機能にもとづく機能的終端と、
+構造的個体としての同一性を成立させる組織関係にもとづく崩壊を定義する。
+また、対象となる情報を自己側と環境側のいずれに帰属するものとして
+識別したかを表す内部出力を、
+\S\ref{sec:tipa} の識別成分として参照する。
+
+本小節で新たに用いる記号は、構造的自己
+$S_{\mathrm{struct}}(\Sigma_i)$、動的自己状態
+$S_{\mathrm{dyn},t}$、自己--環境境界 $B_{SE}$、
+整形式実現指標 $\mathrm{WF}_{i,t}$、
+機能的終端判定時刻域 $\mathbb{T}_{\mathrm{FT},i}$、
+機能的終端状態指標 $\mathrm{FTS}_{i,t}$、機能的終端指標 $\mathrm{FT}_{i,t}$、
+崩壊状態指標 $\mathrm{CS}_{i,t}$、崩壊指標 $\mathrm{Col}_{i,t}$
+および許容外的作用集合 $\Upsilon_{\mathrm{adm},i}$ である。
+下付き $\mathrm{struct}$ は structural（構造的）、
+$\mathrm{dyn}$ は dynamic（動的）に対応し、
+$B_{SE}$ の $SE$ は self--environment（自己--環境）、
+$\mathrm{WF}$ は well-formed（整形式）を表す。
+あわせて、認知的な境界帰属識別の結果を表す成分として
+\S\ref{sec:tipa} で定義される $\xi_{\mathrm{bnd},t}$ を参照する。
+下付き $\mathrm{bnd}$ は boundary（境界）に対応する。
+
+\subsubsection{構造的自己と整形式実現}
+
+\begin{definition}[構造的自己]
+\label{def:s_struct}
+ACS個体 $\Sigma_i$ の\emph{構造的自己}を
+\[
+  S_{\mathrm{struct}}(\Sigma_i) := \Sigma_i
+\]
+として定義する。
+ここで $\Sigma_i$ は定義~\ref{def:acs} で定義された7タプル
+$\Sigma_i = ( X_i , U_i, E_i, f_i, \Pi_i, M_i, \mathrm{Update}_i)$
+であり、構造的自己 $S_{\mathrm{struct}}(\Sigma_i)$ は
+時刻に依存しない形式的構造体である。
+個体添字 $i$ は対象とするACS個体を区別するための識別子であって、
+冪を表さない。
+
+構造的自己は、ACS個体 $\Sigma_i$ が同一の個体として
+同定される基盤を与える。
+ただし、数学的対象としての7タプルが存在することと、
+その7タプルが記述する構造が各時刻において整形式に実現され、
+かつ時刻をまたいで同一のACS個体として継続していることとは
+区別される。
+各時刻の実現を表す指標は定義~\ref{def:wf_realization} で導入し、
+時刻間の同一個体性は定義~\ref{def:time_identity} で整理する。
+両者と数学的対象としての存在との関係は
+備考~\ref{rem:math_vs_realization} で述べる。
+個体添字 $i$ を省略した $\Sigma$ および
+$S_{\mathrm{struct}}(\Sigma)$ は、文脈上ただ一つの
+ACS個体のみを扱う場合の略記であり、個体添字付きの
+表記と同一の対象を指す。
+\end{definition}
+
+\begin{definition}[整形式実現指標（分類C）]
+\label{def:wf_realization}
+$\Sigma_i$ が定義~\ref{def:acs} の意味でACSであるとき、
+各離散時刻 $t$ に対し、
+$\Sigma_i$ に対応する構造が時刻 $t$ において
+整形式（well-formed）に実現されているか否かを表す指標
+\[
+  \mathrm{WF}_{i,t}\in\{0,1\}
+\]
+を導入する。
+
+$\mathrm{WF}_{i,t}=1$ は、時刻 $t$ において、
+$\Sigma_i$ の七成分が当該実現においてその型のとおりに
+与えられていることを表す。
+$\mathrm{WF}_{i,t}=0$ はこれが成立しないことを表す。
+
+$\mathrm{WF}_{i,t}$ は各時刻について個別に定まる指標であり、
+異なる時刻の実現が同一のACS個体に属するか否かを
+それ自体では述べない。
+時刻間の同一個体性は、$\mathrm{WF}$ とは別に
+定義~\ref{def:time_identity} の予備条件によって整理する。
+
+$\mathrm{WF}_{i,t}$ は7タプルの成分ではなく、
+実現の成否を記述するための時刻依存の指標である。
+Phase~1 では $\mathrm{WF}_{i,t}$ の値を有限観測から
+判定する操作的手続きを与えず、その定式化は Phase~2 の課題とする。
+\end{definition}
+
+\begin{remark}[数学的水準と実現水準の分離]
+\label{rem:math_vs_realization}
+定義~\ref{def:s_struct} の
+$S_{\mathrm{struct}}(\Sigma_i)=\Sigma_i$ は
+時刻に依存しない数学的対象であり、
+その存在は $\mathrm{WF}_{i,t}$ の値に依存しない。
+$\mathrm{WF}_{i,t}=0$ となる場合でも、
+7タプル $\Sigma_i$ が数学的対象として消滅するのではない。
+失われるのは、その7タプルが記述する構造が同一のACS個体として
+実現され続けている状態である。
+
+本論文において「存続」というとき、それは数学的対象としての
+$\Sigma_i$ が存在し続けることではなく、
+各時刻において $\mathrm{WF}_{i,t}=1$ が保たれ、
+かつ時間的自己同一性の予備条件（定義~\ref{def:time_identity}）が
+成立し続けることを指す。
+
+この区別は、構成要件と実現指標の役割の違いに対応する。
+構成要件 CR-1（\S\ref{subsec:environment_space}）および
+CR-2（\S\ref{subsec:three_primitive_functions}）は、
+個々の時刻における診断値ではなく、
+当該7タプル構造体を本論文におけるACSのクラスへ
+属させるための条件である。
+これに対し $\mathrm{WF}_{i,t}$ は、
+そのようにして定まったACS個体の実現が
+時刻 $t$ において成立しているか否かを記録する時刻依存の指標である。
+
+したがって、必要環境空間 $E$ の各要因が
+「当該ACSの存続に必要である」という CR-1 の要求は、
+$E$ を含む数学的構造 $\Sigma_i$ の存在についての条件ではなく、
+$\mathrm{WF}_{i,t}$ の推移についての条件として述べられる。
+この水準分離により、$E$ の意味論的拘束が
+$E$ 自身を含む対象の存在を前提とするという循環は生じない。
+\end{remark}
+
+\subsubsection{動的自己と自己--環境境界}
+
+\begin{definition}[動的自己状態]
+\label{def:s_dyn}
+ACS個体 $\Sigma_i$ の時刻 $t$ における
+\emph{動的自己状態}を
+\[
+  S_{\mathrm{dyn},t} := (x_t,\ A_t)
+\]
+として定義する。
+$x_t\in X$ は時刻 $t$ の状態ベクトル、
+$A_t$ は可行行動集合（定義~\ref{def:at}）である。
+$A_t = \emptyset$ は $S_{\mathrm{dyn},t}$ の消滅ではなく、
+可行行動が存在しないこと（閉塞、定義~\ref{def:blockage_sec2}）を
+意味する（within present framework）。
+\end{definition}
+
+\begin{definition}[自己--環境境界]
+\label{def:b_se}
+規約 TSC のもとで、自己--環境境界を表す構造的分離
+$B_{SE}$ を
+\[
+  B_{SE}:=(X,E_{\mathrm{ext}}),
+  \qquad
+  X\cap E_{\mathrm{ext}}=\emptyset
+\]
+と定義する。
+実現状態については、任意の時刻 $t$ において
+\[
+  x_t\in X,
+  \qquad
+  e_t\in E_{\mathrm{ext}}
+\]
+とする。
+$B_{SE}$ は Phase~1 では固定された構造的分離であり、
+内部状態の型 $X$ と外部環境状態の型 $E_{\mathrm{ext}}$ を
+集合表現上で区別する。
+この分離は、物理的・空間的境界または自己と非自己の
+存在論的に完備した分割を主張するものではない。
+
+必要環境空間 $E$（\S\ref{subsec:environment_space}）は
+$B_{SE}$ が表す型分離とは別の対象である。
+$B_{SE}$ は内部状態型と外部環境状態型の区別を表すのに対し、
+$E$ は外部環境状態と内部状態の組に対する充足判定写像の集合として、
+当該ACSが外部世界に対してもつ存続上の依存性を表す。
+したがって $E$ は $E_{\mathrm{ext}}$ の部分集合ではなく、
+$B_{SE}$ の第二成分と同一視されない。
+\end{definition}
+
+\begin{remark}[境界帰属識別の参照（分類B）]
+\label{rem:xi_bnd_reference}
+自己と環境の区別に関する認知的な識別結果は、
+\S\ref{sec:tipa} において M1-b の識別状態
+$\xi_t$ の全体の行の境界帰属成分
+\[
+  \xi_{\mathrm{bnd},t}
+  \in
+  \Xi_{\mathrm{bnd}}
+  =
+  \{\mathsf{self},\mathsf{env},\mathsf{und}\}
+\]
+として定義される。
+本節ではこれを再定義せず、参照するにとどめる。
+値 $\mathsf{self}$ は対象となる情報が自己側に帰属すると
+識別されたこと、$\mathsf{env}$ は環境側に帰属すると
+識別されたこと、$\mathsf{und}$ はいずれとも確定されなかったことを表す。
+
+$\xi_{\mathrm{bnd},t}$ の値は識別の内容を表し、
+識別機能が正しく作動していることを表さない。
+M1-b の作動水準および実装部位の健全性は、
+\S\ref{sec:tipa} の機能軸および
+\S\ref{sec:extended_dynamics} の健全度指標により
+別途記述される。
+本節はそれらを再定義しない。
+\end{remark}
+
+\begin{proposition}[$\xi_{\mathrm{bnd},t}$ と $S_{\mathrm{struct}}$ の独立性]
+\label{prop:xi_se_independence}
+規約 TSC のもとで、構造的自己
+$S_{\mathrm{struct}}(\Sigma_i)$ の存在は
+$\xi_{\mathrm{bnd},t}$ の値に依存しない
+（within present framework）。
+\end{proposition}
+
+\begin{proof}
+$S_{\mathrm{struct}}(\Sigma_i) = \Sigma_i$ は7タプルとして
+時刻に依存しない数学的対象である。
+$\xi_{\mathrm{bnd},t}$ は M1-b の時刻 $t$ における出力であり、
+$S_{\mathrm{struct}}(\Sigma_i)$ の定義に登場しない。
+よって $\xi_{\mathrm{bnd},t}$ のいずれの値も
+$S_{\mathrm{struct}}(\Sigma_i)$ の存在への論理的含意を持たない。
+\end{proof}
+
+\begin{remark}[認知的識別の失敗と構造の独立性]
+\label{rem:xi_se_interpretation}
+M1-b の識別機能が正しく作動しない場合、
+ACSは自己と環境の識別を信頼可能に利用できない状態を生じうる。
+本節では、この状態が可行性維持、閉塞または整形式実現に対して
+及ぼす影響を一般的な帰結として置かず、本論文はその記述を Phase~1 では与えない。
+ただし、$K$ と可行行動集合は内部モデルの状態によらず定まるので
+（定義~\ref{def:at}）、識別の結果が状態の可行性に関わるのは、
+実効行動の選択（\S\ref{sec:tipa}）を通じた範囲に限られる。
+
+M1-b 自体が外部から書き換えられた場合、
+出力値が $\mathsf{self}$、$\mathsf{env}$ または $\mathsf{und}$ の
+いずれであるかにかかわらず、
+構造的分離 $B_{SE}$ に対する誤分類を生じる状態が理論上生じうる。
+この構造的分離 $B_{SE}$ と M1-b による自己・環境分類結果との
+不整合は、Phase~1 では操作的判定基準が未定義の
+中間状態として記録し、M 整合性検証機構の導入を
+Phase~2 の課題とする。
+
+なお、命題~\ref{prop:xi_se_independence} が述べるのは
+$S_{\mathrm{struct}}(\Sigma_i)$ の存在についての独立性であり、
+$\mathrm{WF}_{i,t}$ の値が
+$\xi_{\mathrm{bnd},t}$ から独立であることを述べるものではない。
+\end{remark}
+
+\subsubsection{後続実現の非分岐性}
+
+\begin{assumption}[個体同一性関係の非分岐性]
+\label{ass:no_branching}
+ACS個体 $\Sigma_i$ の時間的自己同一性を追跡する際、
+時刻 $t$ におけるACS個体実現に対して、
+同一個体の継続として対応づけられる時刻 $t+1$ の
+ACS個体実現は高々一つである。
+
+本仮定は、状態遷移写像
+\[
+  f:X\times U\times E_{\mathrm{ext}}\to X
+\]
+の一価性とは別の仮定である。
+$f$ の一価性は、固定された入力
+$(x_t,u_t,e_t)$ に対する次状態値 $x_{t+1}$ を
+一意に定めるが、同一の次状態値をもつ複数の個体実現、
+またはコピー個体の生成を排除しない。
+
+\medskip
+\noindent
+導入地位：A（公理的）。強さ：強。
+これは、同一ACS個体の継続として対応づけられる
+後続の個体実現が複数に分岐する場合を、
+Phase~1 の対象から除外する仮定である。
+本仮定はコピー個体の生成可能性そのものを数学的に
+否定するものではなく、コピーまたは複数の後続実現が
+生じた場合の個体同一性を Phase~1 では定義しないことを表す。
+
+同一個体性の分岐を許す場合には、時間的自己同一性関係、
+構造的自己、および後続個体の対応関係を再定式化する必要がある。
+その定式化は
+\S\ref{sec:limitations_and_outlook} の
+未解決問題として扱う。
+\end{assumption}
+
+\subsubsection{時間的自己同一性の予備条件}
+
+\begin{definition}[時間的自己同一性の予備条件]
+\label{def:time_identity}
+本定義は、後掲の崩壊定義（定義~\ref{def:collapse}）、
+および \S\ref{sec:extended_dynamics} における時間地平
+$\widehat{\tau}_{t}$ の導入を先取りする予備的整理である。
+本節では、時間的自己同一性の完全な存在・一意性・
+到達性を主張しない。
+
+ACS個体 $\Sigma_i$ の時刻 $t$ と時刻 $t+1$ の
+動的自己状態が\emph{同一のACS個体に属する}ための
+予備条件を、以下の三条件が同時に成立することとして
+整理する（under stated assumptions）。
+
+\medskip
+\noindent\textbf{(TI-1) 構造的連続性の必要条件：}
+構造的自己を担う個体実現が、時刻 $t$ から $t+1$ にかけて
+同一個体として継続するための必要条件として、
+\[
+  \mathrm{WF}_{i,t}=1
+  \quad\text{かつ}\quad
+  \mathrm{WF}_{i,t+1}=1
+\]
+が成立することを要請する。
+
+本条件は、両時刻において整形式な実現が成立していることを表す。
+同一個体としての継続そのものは $\mathrm{WF}$ が単独で表すものではなく、
+(TI-1) から (TI-3) を合わせて予備条件として整理される。
+機能的終端・崩壊・閉塞との区別は備考~\ref{rem:time_identity_collapse} で述べる。
+
+\medskip
+\noindent\textbf{(TI-2) 動的自己状態の遷移整合性：}
+時刻 $t$ の動的自己状態
+\[
+  S_{\mathrm{dyn},t}=(x_t,A_t)
+\]
+から時刻 $t+1$ の動的自己状態
+\[
+  S_{\mathrm{dyn},t+1}=(x_{t+1},A_{t+1})
+\]
+への継続が、同一のACS動学に従って定まることを要請する。
+具体的には、
+\[
+  x_{t+1}=f(x_t,u_t,e_t),
+  \qquad
+  x_t\in X,\quad
+  u_t\in U,\quad
+  e_t\in E_{\mathrm{ext}}
+\]
+によって次状態 $x_{t+1}$ が生成され、さらに時刻 $t+1$ の
+実現外部環境状態 $e_{t+1}\in E_{\mathrm{ext}}$ のもとで
+\[
+  A_{t+1}
+  =
+  \left\{
+    u\in U
+    \;\middle|\;
+    f(x_{t+1},u,e_{t+1})\in K
+  \right\}
+\]
+として可行行動集合 $A_{t+1}$ が定まることとする。
+
+したがって、
+\[
+  (x_t,A_t)
+  \longrightarrow
+  (x_{t+1},A_{t+1})
+\]
+は、状態遷移写像 $f$ および可行行動集合の定義
+（定義~\ref{def:state_transition}、定義~\ref{def:at}）
+と整合する同一の状態遷移系上で記述される。
+
+本条件は、$A_{t+1}$ が非空であることを要求しない。
+したがって
+\[
+  A_{t+1}=\emptyset
+\]
+であっても、これは時刻 $t+1$ における閉塞
+（定義~\ref{def:blockage_sec2}）を意味するにとどまる。
+本論文は、これから動的自己状態
+\[
+  S_{\mathrm{dyn},t+1}
+  =
+  (x_{t+1},\emptyset)
+\]
+そのものの消滅、または
+$\mathrm{WF}_{i,t+1}=0$
+を一般的な帰結として置かない。
+
+\medskip
+\noindent\textbf{(TI-3) 個体同一性関係の非分岐性：}
+時刻 $t$ のACS個体実現に対して、同一個体の継続として
+対応づけられる時刻 $t+1$ のACS個体実現が高々一つであること
+（仮定~\ref{ass:no_branching}）。
+本条件は、状態遷移写像 $f$ の決定論性とは別に、
+同一ACS個体から複数の後続個体が生じる場合を
+Phase~1 の対象から除外する個体同一性上の仮定である。
+
+\medskip
+コピー自己を生じる分岐は、状態遷移写像 $f$ の一価性によってではなく、
+仮定~\ref{ass:no_branching} により Phase~1 の対象から明示的に除外する。
+非分岐性の緩和、および分岐を許す場合の時間的自己同一性の
+再定式化は、\S\ref{sec:limitations_and_outlook} の
+未解決問題~\ref{prob:branching_identity} として扱う。
+本論文において自己は $S_{\mathrm{struct}}(\Sigma_i)$
+として定義され、認識内容（$M_1$ の記憶内容）は
+構造的存続の判定に影響しない。
+主観的自己・意識・記憶の同一性は Phase~1 の記述対象に
+含まれない（under stated assumptions）。
+\end{definition}
+
+\subsubsection{機能的終端と崩壊}
+\label{subsubsec:collapse_sec2}
+
+本項では、ACS個体の終端を二段に分けて定義する。
+第一は\emph{機能的終端}であり、
+原始的な機能（感知・識別・評価・行動）の各区分に関して構造的個体が有する
+基礎的な機能の活動と、その活動を支える基盤機能のすべてが停止し、
+そのいずれも同一個体として再び成立しない状態をいう。
+第二は\emph{崩壊}（構造崩壊）であり、
+構造的個体としての同一性を成立させていた組織関係が、
+同一個体として回復しない形で失われた状態をいう。
+本論文で単に「崩壊」というときは後者を指す。
+いずれも、終端へ至る原因や到達の条件ではなく、
+ある時刻の個体がすでにその状態にあると判定するための状態条件である。
+本節はこれらを定義するが、
+機能的終端または崩壊への到達、その十分条件または到達時刻を主張しない。
+閉塞および記述的状態帯との関係、外的回復可能性、
+および到達経路の整理は \S\ref{sec:collapse_cond} で扱う。
+定義の順序は、機能的終端状態を判定する時刻域が崩壊状態指標を用いて定まるため、
+崩壊を先に置く。
+これは二つの状態が成立する時間的な順序を表すものではない。
+
+機能的終端と崩壊に含まれる非回復性は、
+考えうるあらゆる物理作用に対する不可能性ではなく、
+本枠組みが考慮対象とする外的作用の範囲に相対して定める。
+そのため、各ACS個体 $\Sigma_i$ に対し、
+外的回復可能性の評価で考慮対象とする外的作用の集合を
+$\Upsilon_{\mathrm{adm},i}$ と書き、その元を
+$\upsilon\in\Upsilon_{\mathrm{adm},i}$ と書く。
+本節では記号と型のみを宣言する。
+$\Upsilon_{\mathrm{adm},i}$ は集合であり、本節ではその位相・測度・代数構造を定めず、
+非空であることも仮定しない。
+その内容は \S\ref{sec:collapse_cond}（定義~\ref{def:admissible_external_action}）で定める。
+$\upsilon$ はACS自身が行動空間から選択する $u\in U$ とは役割の異なる変数であり、
+状態遷移写像 $f$ の引数へ暗黙に代入しない。
+(SC-2) および (FT-2) に現れる行動応答成分の遷移写像 $g_O$ の型は、定義~\ref{def:env_realization} で定める。
+記号 $\Upsilon_{\mathrm{adm},i}$ は、\S\ref{sec:tipa} の M1-b の識別状態の値域 $\Xi$ とは
+無関係である。
+
+\begin{definition}[崩壊状態指標と崩壊指標]
+\label{def:collapse}
+ACS個体 $\Sigma_i$ と時刻 $t\in\mathbb{N}_0$ について、
+次の (SC-1) および (SC-2) がともに成立するとき
+\[
+  \mathrm{CS}_{i,t}=1,
+\]
+それ以外のとき $\mathrm{CS}_{i,t}=0$ と定め、
+$\mathrm{CS}_{i,t}\in\{0,1\}$ を\emph{崩壊状態指標}と呼ぶ。
+
+\begin{description}[style=nextline]
+  \item[(SC-1) 構造的同一性を成立させる組織関係の喪失]
+  時刻 $t$ において、$\Sigma_i$ を構成していた構成要素の間にあって、
+  構造的個体としての $\Sigma_i$ の同一性を成立させていた
+  組織・結合関係が失われている。
+  構成要素そのものが残存しているか否かは問わない。
+  \item[(SC-2) 本枠組みに相対する同一個体としての非回復性]
+  時刻 $t$ 以後について、実現した外生背景成分の列 $(b_s)_{s\geq t}$ のもとでの
+  $\Sigma_i$ 自身の通常の自律的更新と行動応答成分の遷移 $g_O$ による継続、
+  およびこれに許容外的作用 $\upsilon\in\Upsilon_{\mathrm{adm},i}$ を加えた別の継続の範囲内では、
+  (SC-1) の組織・結合関係が同一個体 $\Sigma_i$ として再び成立する継続を、
+  本枠組みは認めない。
+\end{description}
+
+(SC-1) および (SC-2) の判定は、対象系ごとに当該判定に先立って固定された判定規則に従う。
+この判定規則は (SC-2) における同一個体性の判定基準を含み、
+判定対象の経過または結果に応じて事後的に変更しない。
+本論文は、この判定規則の一般形式を Phase~1 では与えない。
+
+さらに、$\mathrm{CS}_{i,t}=1$ となる時刻 $t$ 以後については、
+本枠組みは $\Sigma_i$ に同一個体として帰属する実現を認めない
+（以下、\emph{帰属の規定}と呼ぶ）。
+したがって、その時刻以後の各時刻 $s$ について、
+$\Sigma_i$ に帰属する機能的活動および基盤機能は成立しない。
+また、時刻 $s$ には定義~\ref{def:wf_realization} の意味での $\Sigma_i$ の実現が存在しないから、
+$\mathrm{WF}_{i,s}=0$ である。
+
+$\Sigma_i$ の\emph{崩壊指標} $\mathrm{Col}_{i,t}\in\{0,1\}$ を
+\[
+  \mathrm{Col}_{i,t}=1
+  \quad:\Longleftrightarrow\quad
+  \exists t'\in\{0,1,\ldots,t\}:\ \mathrm{CS}_{i,t'}=1
+\]
+と定め、それ以外のとき $\mathrm{Col}_{i,t}=0$ とする。
+$\mathrm{Col}_{i,t}=1$ は、時刻 $t$ までに崩壊状態が成立したことを表す履歴である。
+$\mathrm{Col}_{i,t}=1$ であるとき、
+時刻 $t$ までに $\Sigma_i$ の\emph{崩壊}が成立済みであるという。
+これは、時刻 $t$ に $\Sigma_i$ に帰属する実現が存在し、
+その実現が崩壊した状態にあることを表すものではない。
+\end{definition}
+
+\begin{definition}[機能的終端状態指標と機能的終端指標]
+\label{def:functional_termination}
+ACS個体 $\Sigma_i$ について、
+\[
+  \mathbb{T}_{\mathrm{FT},i}
+  :=
+  \bigl\{
+    t\in\mathbb{N}_0
+    \bigm|
+    \forall s\in\mathbb{N}_0\ (s<t \Rightarrow \mathrm{CS}_{i,s}=0)
+  \bigr\}
+\]
+を\emph{機能的終端判定時刻域}と呼ぶ。
+$\mathbb{T}_{\mathrm{FT},i}$ は、崩壊状態が一度も成立していない時刻と、
+崩壊状態が初めて成立する時刻からなる。
+
+各 $t\in\mathbb{T}_{\mathrm{FT},i}$ について、
+次の (FT-1) および (FT-2) がともに成立するとき
+\[
+  \mathrm{FTS}_{i,t}=1,
+\]
+それ以外のとき $\mathrm{FTS}_{i,t}=0$ と定め、
+$\mathrm{FTS}_{i,t}\in\{0,1\}$ を\emph{機能的終端状態指標}と呼ぶ。
+$t\notin\mathbb{T}_{\mathrm{FT},i}$ については $\mathrm{FTS}_{i,t}$ を定めない。
+
+\begin{description}[style=nextline]
+  \item[(FT-1) 全面的機能停止]
+  時刻 $t$ において、次の (a) および (b) がともに成立する。
+  \begin{enumerate}[label=(\alph*)]
+    \item 原始的な機能（感知・識別・評価・行動、定義~\ref{def:primitive_functions}）の
+    各区分に関して構造的個体 $\Sigma_i$ が有する基礎的な機能
+    （定義~\ref{def:basic_functions}）について、
+    その機能的活動がすべて停止している。
+    これは時刻 $t$ における機能的活動の全面的な不成立を指す状態条件であり、
+    それ以前に活動が成立していたことを要求しない。
+    また、選択的待機 $u_{\emptyset}$ の選択その他の
+    待機または静止ではない（備考~\ref{rem:primitive_activity_cessation}）。
+    \item (a) の基礎的な機能の活動を支える基盤機能
+    （定義~\ref{def:base_functions}）が、
+    すべて停止している。
+  \end{enumerate}
+  \item[(FT-2) 本枠組みに相対する同一個体としての非回復性]
+  時刻 $t$ 以後について、実現した外生背景成分の列 $(b_s)_{s\geq t}$ のもとでの
+  $\Sigma_i$ 自身の通常の自律的更新と行動応答成分の遷移 $g_O$ による継続、
+  およびこれに許容外的作用 $\upsilon\in\Upsilon_{\mathrm{adm},i}$ を加えた別の継続の範囲内では、
+  (a) の基礎的な機能のいずれかの機能的活動、
+  または (b) の基盤機能のいずれかが、
+  同一個体 $\Sigma_i$ として再び成立する継続を、
+  本枠組みは認めない。
+\end{description}
+
+$\Sigma_i$ の\emph{機能的終端指標} $\mathrm{FT}_{i,t}\in\{0,1\}$ を、
+すべての $t\in\mathbb{N}_0$ について
+\[
+  \mathrm{FT}_{i,t}=1
+  \quad:\Longleftrightarrow\quad
+  \exists t'\in\mathbb{T}_{\mathrm{FT},i}\cap\{0,1,\ldots,t\}:\ \mathrm{FTS}_{i,t'}=1
+\]
+と定め、それ以外のとき $\mathrm{FT}_{i,t}=0$ とする。
+$\mathrm{FT}_{i,t}=1$ は、時刻 $t$ までに機能的終端状態が成立したことを表す履歴であり、
+時刻 $t$ に $\Sigma_i$ が機能的終端状態にあることを表すものではない。
+$\mathrm{FT}_{i,t}=1$ かつ $\mathrm{Col}_{i,t}=0$ であるとき、
+$\Sigma_i$ は時刻 $t$ において\emph{機能的終端後}にあるという。
+
+(FT-1) における機能的活動および基盤機能の判定、
+および (FT-2) の判定は、対象系ごとに当該判定に先立って固定された判定規則に従う。
+この判定規則は (FT-2) における同一個体性の判定基準を含み、
+定義~\ref{def:collapse} の帰属の規定と整合するように固定され、
+判定対象の経過または結果に応じて事後的に変更しない。
+本論文は、この判定規則の一般形式を Phase~1 では与えない。
+\end{definition}
+
+(SC-2) と (FT-2) が量化する継続は、
+定義~\ref{def:env_realization} と備考~\ref{rem:exogenous_environment} に従い、
+外生的に与えられる背景成分の列を実現したものに固定したうえで、
+当該ACSの自律的更新と行動応答成分の遷移によって生成される継続、
+およびそれに許容外的作用を加えた継続である。
+背景成分の列として起こりえた他の列を量化の対象としない。
+
+\begin{proposition}[実現した軌道上の再成立]
+\label{prop:realized_reestablishment}
+時刻 $t$ について、実現した軌道の上のある時刻 $s>t$ に、
+(SC-1) の組織・結合関係が同一個体 $\Sigma_i$ として再び成立していると
+定義~\ref{def:collapse} の判定規則により判定されるならば、$\mathrm{CS}_{i,t}=0$ である。
+同様に、$t\in\mathbb{T}_{\mathrm{FT},i}$ について、実現した軌道の上のある時刻 $s>t$ に、
+(FT-1) の (a) の基礎的な機能のいずれかの機能的活動、
+または (b) の基盤機能のいずれかが同一個体 $\Sigma_i$ として再び成立していると
+定義~\ref{def:functional_termination} の判定規則により判定されるならば、
+$\mathrm{FTS}_{i,t}=0$ である。
+\end{proposition}
+
+\begin{proof}
+実現した軌道の時刻 $t$ 以後の部分は、実現した背景成分の列のもとで、
+$\Sigma_i$ 自身の自律的更新と $g_O$ による遷移によって生成される
+（備考~\ref{rem:exogenous_environment}）。
+したがってそれは (SC-2) および (FT-2) が量化する継続の一つである。
+その継続の上で再成立が判定されるから、本枠組みは再成立する継続を認めることになり、
+(SC-2) は成立しない。よって $\mathrm{CS}_{i,t}=0$ である。
+(FT-2) についても同様であり、$\mathrm{FTS}_{i,t}=0$ である。
+\end{proof}
+
+命題~\ref{prop:realized_reestablishment} の逆、
+すなわち実現した軌道の上で再成立しないことから $\mathrm{CS}_{i,t}=1$ を導くことは置かない。
+(SC-2) と (FT-2) の量化には、許容外的作用を加えた別の継続も含まれるからである。
+実現した救助は軌道の上で記述し、許容外的作用は回復可能性の判定にだけ用いる。
+
+状態指標 $\mathrm{CS}_{i,t}$・$\mathrm{FTS}_{i,t}$ はその時刻に各状態が成立したか否かを表し、
+指標 $\mathrm{Col}_{i,t}$・$\mathrm{FT}_{i,t}$ は、
+それが時刻 $t$ までに一度でも成立したことを保持する履歴指標である。
+各時刻の状態指標が与えられれば、対応する履歴指標は一意に定まる。
+これらの指標と時刻域 $\mathbb{T}_{\mathrm{FT},i}$ は7タプルの成分ではなく、
+当該ACSがこれらを内部に保持または計算することを要求しない
+（\S\ref{subsec:description_levels_global}）。
+
+\begin{proposition}[機能的終端指標と崩壊指標の基本性質]
+\label{prop:collapse_basic}
+定義~\ref{def:collapse} および定義~\ref{def:functional_termination} のもとで、
+次が成り立つ。
+\begin{description}[style=nextline]
+  \item[(C-2) 吸収性]
+  $\mathrm{Col}_{i,t}=1$ ならば、すべての $s>t$ について $\mathrm{Col}_{i,s}=1$ である。
+  同様に、$\mathrm{FT}_{i,t}=1$ ならば、すべての $s>t$ について $\mathrm{FT}_{i,s}=1$ である。
+  \item[(C-3) 崩壊状態成立時刻の存在]
+  $\mathrm{Col}_{i,t}=1$ ならば、ある $t'\leq t$ が存在して、
+  時刻 $t'$ において (SC-1) および (SC-2) が成立している。
+\end{description}
+\end{proposition}
+
+\begin{proof}
+(C-3)：$\mathrm{Col}_{i,t}=1$ ならば、定義から $\mathrm{CS}_{i,t'}=1$ となる $t'\leq t$ が
+存在し、$\mathrm{CS}_{i,t'}=1$ は (SC-1) および (SC-2) の成立を意味する。
+(C-2)：この $t'$ はすべての $s>t$ について $t'\leq s$ を満たすから、
+定義から $\mathrm{Col}_{i,s}=1$ である。
+$\mathrm{FT}$ についても、$t'\in\mathbb{T}_{\mathrm{FT},i}$ かつ $\mathrm{FTS}_{i,t'}=1$ となる
+$t'\leq t$ をとれば同様である。
+\end{proof}
+
+吸収性 (C-2) は履歴指標についての性質である。
+$\mathrm{FT}_{i,s}=1$ は、時刻 $s$ に機能的終端状態にあることではなく、
+時刻 $s$ までに機能的終端状態が成立したことを表す。
+
+\begin{proposition}[機能的終端と崩壊の順序および崩壊後の整形式実現]
+\label{prop:termination_order}
+定義~\ref{def:collapse} および定義~\ref{def:functional_termination} のもとで、
+$\mathrm{Col}_{i,t}=1$ とし、
+\[
+  t_{\mathrm{C}} := \min\{t'\in\mathbb{N}_0 \mid \mathrm{CS}_{i,t'}=1\}
+\]
+とおく（$\mathrm{Col}_{i,t}=1$ よりこの集合は空でなく、$t_{\mathrm{C}}\leq t$ である）。
+このとき次が成り立つ。
+\begin{enumerate}[label=(\roman*)]
+  \item $t_{\mathrm{C}}\in\mathbb{T}_{\mathrm{FT},i}$ であり、$\mathrm{FTS}_{i,t_{\mathrm{C}}}=1$ である。
+  \item $\mathrm{FT}_{i,t}=1$ である。
+  すなわち、崩壊が成立している時刻 $t$ までに機能的終端状態は成立済みであり、
+  機能的終端状態が初めて成立する時刻は $t_{\mathrm{C}}$ より後にならない。
+  \item $t>t_{\mathrm{C}}$ ならば $t\notin\mathbb{T}_{\mathrm{FT},i}$ である。
+  すなわち、崩壊が初めて成立した時刻より後に、機能的終端状態が新たに判定されることはない。
+  \item $\mathrm{WF}_{i,t}=0$ である。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i)：$t_{\mathrm{C}}$ の最小性から、すべての $s<t_{\mathrm{C}}$ について $\mathrm{CS}_{i,s}=0$ であり、
+$t_{\mathrm{C}}\in\mathbb{T}_{\mathrm{FT},i}$ である。
+$\mathrm{CS}_{i,t_{\mathrm{C}}}=1$ であるから、定義~\ref{def:collapse} の帰属の規定により、
+時刻 $t_{\mathrm{C}}$ において $\Sigma_i$ に帰属する機能的活動および基盤機能は成立せず、
+(FT-1) の (a) および (b) が成立する。
+また、時刻 $t_{\mathrm{C}}$ 以後に (a) の基礎的な機能のいずれかの機能的活動、
+または (b) の基盤機能のいずれかが同一個体 $\Sigma_i$ として再び成立する継続は、
+$\Sigma_i$ に同一個体として帰属する実現を含む。
+本枠組みは時刻 $t_{\mathrm{C}}$ 以後にそのような実現を認めないから、(FT-2) が成立する。
+よって $\mathrm{FTS}_{i,t_{\mathrm{C}}}=1$ である。
+
+(ii)：(i) と $t_{\mathrm{C}}\leq t$ より、定義から $\mathrm{FT}_{i,t}=1$ である。
+機能的終端状態が初めて成立する時刻は、(i) により $t_{\mathrm{C}}$ 以下である。
+
+(iii)：$t>t_{\mathrm{C}}$ ならば $s=t_{\mathrm{C}}\in\{0,1,\ldots,t-1\}$ について
+$\mathrm{CS}_{i,s}=1$ であるから、$t\notin\mathbb{T}_{\mathrm{FT},i}$ である。
+
+(iv)：帰属の規定と定義~\ref{def:wf_realization} により、
+$t_{\mathrm{C}}$ 以後の各時刻 $s$ で $\mathrm{WF}_{i,s}=0$ であり、$t\geq t_{\mathrm{C}}$ である。
+\end{proof}
+
+崩壊が初めて成立する時刻 $t_{\mathrm{C}}$ における $\mathrm{FTS}_{i,t_{\mathrm{C}}}$ は、
+崩壊後の実現について状態を評価した値ではなく、
+同一個体の終端の境界時刻における判定値である。
+その値は、帰属の規定により (FT-1) および (FT-2) が成立することから定まる。
+この境界の規定により、機能的終端と崩壊が同じ時刻に初めて成立する場合を、
+離散時刻の上で表すことができる。
+
+\begin{remark}[機能的終端・崩壊と他の状態の区別]
+\label{rem:termination_hierarchy}
+本論文は、次の状態を互いに区別する。
+\begin{description}[style=nextline]
+  \item[構造の破損・欠損]
+  ACS個体を構成する部位、結合、情報構造または機能的構造の一部が、
+  損傷・欠落・切断・劣化している状態。
+  同一個体としての組織関係がなお維持されている限り、崩壊ではない。
+  \item[部分的な機能不全・機能喪失]
+  原始的な機能の各区分に対応する基礎的な機能その他の機能の一部が低下・停止し、
+  またはその一部が回復しない形で失われている状態。
+  原始的な機能のいずれかの区分に対応する基礎的な機能の一部が
+  回復しない形で失われても、
+  また一つ以上の区分に対応する基礎的な機能が
+  回復しない形で全面的に失われても、
+  他の区分の基礎的な機能または基盤機能の活動が残る限り、
+  それだけでは機能的終端でも崩壊でもない。
+  そのような喪失は $\Sigma_i$ のACS個体としての同定を取り消さない
+  （構成要件 CR-2 の直後の説明）。
+  \item[機能的終端]
+  定義~\ref{def:functional_termination} の状態。ACS個体としての活動の終端であり、
+  構造的個体そのものの崩壊ではない。
+  \item[崩壊]
+  定義~\ref{def:collapse} の状態。構造的個体としての同一性を成立させていた
+  組織関係の、同一個体として回復しない喪失である。
+  離散、分解、散逸、結合関係の断絶、構造的同一性を担う情報組織の消失などは
+  その例となりうるが、定義そのものではない。
+  構成要素が残存していても、それらの間の組織関係が回復しない形で失われていれば
+  (SC-1)・(SC-2) は成立しうる。
+  一方、修理または再組立により同一個体として組織関係が再び成立しうる分解・破損は、
+  (SC-2) を満たさない。
+\end{description}
+
+構造の破損・欠損は、機能の低下を経て機能的終端に至る経路、
+または崩壊に至る経路の要因となりうる。
+ただし本論文は、構造の破損・欠損から機能的終端または崩壊を一般的な帰結として置かず、
+部分的な機能喪失から機能的終端または崩壊を一般的な帰結として置かない。
+冗長な構造、残存機能、代替経路、補償、修復または機能の縮退によって、
+損傷後もACSとしての活動が続きうるためである。
+また本論文は、機能的終端から同じ時刻の崩壊を一般的な帰結として置かない。
+本論文が採用する時間関係は、命題~\ref{prop:termination_order} の
+「崩壊が成立している時刻までに機能的終端状態は成立済みである」ことと、
+「崩壊が初めて成立した時刻より後に機能的終端状態が新たに判定されることはない」ことだけである。
+
+(FT-2) の非回復性は、(FT-1)(a) の原始的な機能の各区分に関する
+基礎的な機能の活動と、(FT-1)(b) の基盤機能の両方について要求する。
+したがって、基礎的な機能の活動または基盤機能のいずれか一つでも
+同一個体として再び成立しうる時刻は、機能的終端状態の時刻ではない。
+
+本論文は、閉塞 $A_{i,t}=\emptyset$（定義~\ref{def:blockage_sec2}）、
+整形式実現の不成立 $\mathrm{WF}_{i,t}=0$、
+および \S\ref{sec:three_principles} の三原理の時刻別充足述語が偽であることからは、
+機能的終端も崩壊も一般的な帰結として置かない。
+また、ある $\eta\in E$ について $x_{i,t}\notin D_\eta$
+（定義~\ref{def:eta_satisfiable_domain}）であることは、
+当該要因が自己側の状態のために充足不能であるという状態側の診断であり、
+(FT-1)(b) の基盤機能の停止そのものとは同一視しない。
+
+自己に関する記憶、自己認識の様式、その他の認識内容の喪失または
+回復しない変化は、構造的自己の終端とは区別される。
+定義~\ref{def:time_identity} のとおり、
+認識内容は構造的存続の判定に影響しない。
+したがって本論文は、これらの喪失から機能的終端または崩壊を一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[機能的活動の全面的不成立と待機・静止の区別]
+\label{rem:primitive_activity_cessation}
+(FT-1)(a) は、原始的な機能の各区分に関して構造的個体が有する
+基礎的な機能の活動の一部がなお成立している時刻を、
+機能的終端から除くための条件である。
+感知・識別・評価・行動は抽象的な機能区分であり、判定の対象は
+定義~\ref{def:three_primitives} の標準写像形式そのものではなく、
+構成要件 CR-2 が要請する責務を担う個体の基礎的な機能である。
+したがって、機能的に等価な別の実現についても同じ責務の活動として判定する。
+
+選択的待機 $u_{\emptyset}$（備考~\ref{rem:action_space_structure}）は、
+行動の機能的責務による選択の結果であるから、
+その選択が行われている時刻には行動の機能的活動は不成立ではない。
+感知、識別または評価の活動が続く休止・静止も同様である。
+また、自律的機能過程 $f_{\mathrm{auto}}$（仮定~\ref{ass:f_decomposition}）による状態変化、
+および化学反応・温度変化・慣性運動・残留電流その他の物理的な変化の継続は、
+それ自体では基礎的な機能の活動ではない。
+したがって、(FT-1)(a) の成立時刻にも状態 $x_{i,t}$ は変化しうる。
+ただし、$f_{\mathrm{auto}}$ に表される変化のうち基盤機能
+（定義~\ref{def:base_functions}）の作動にあたるものは、
+(FT-1)(b) の判定の対象である。
+例えば、基礎的な機能の活動が停止していても、
+物質の輸送のような基盤機能がなお作動している時刻には、
+(FT-1)(b) は成立しない。
+(FT-1) は、物理的な活動が一切存在しないことを要求しない。
+本論文は、外部から観測される出力の不変、顕在的な運動の欠如、
+または入力の変化の欠如のみから、(FT-1)(a) の成立を一般的な帰結として置かない。
+(FT-1)(a) の判定規則は、当該の機能的活動が実際に担われているか否かを判定するものとする。
+
+(FT-1)(b) は、(a) の活動を支える基盤機能のすべての停止を求める条件であり、
+構成要素が物理的に残存していることを妨げない。
+本論文は (FT-1) の (a) と (b) の相互の独立性・排反性を要求しない。
+\end{remark}
+
+\begin{remark}[機能的終端・崩壊と三原理]
+\label{rem:collapse_not_principle_failure}
+(FT-1) は原始的な機能の各区分に関して構造的個体が有する
+基礎的な機能の活動と基盤機能に関する条件であり、
+(SC-1) は構造的同一性を成立させる組織関係に関する条件である。
+いずれも機能または構造的同一性に関する条件であり、
+\S\ref{sec:three_principles} の三原理の時刻別充足述語の否定ではない。
+機能的終端は、原始的な機能の各区分に関して構造的個体が有する
+基礎的な機能の活動と、それを支える基盤機能のすべてが停止し、
+そのいずれも同一個体として回復しない状態であり、
+崩壊は、構造的個体そのものの終端である。
+一方、三原理は存続中のACSに対する制約軸であり、
+真偽をもつのはその時刻別充足述語である
+（備考~\ref{rem:primitive_vs_principles}）。
+したがって本論文は、機能的終端も崩壊も時刻別充足述語が偽であることとして定義せず、
+機能的終端状態が成立した時刻以後の時刻別充足述語を偽と評価するのでもなく、
+\S\ref{sec:three_principles} の時刻別充足述語の判定を
+$\mathrm{FT}_{i,t}=0$ の時刻に適用する。
+命題~\ref{prop:termination_order}(ii) により、そのような時刻では $\mathrm{Col}_{i,t}=0$ でもある。
+ある量が機能的終端の後も形式上計算できることと、
+それが時刻別充足述語の判定として意味をもつこととは区別する。
+\end{remark}
+
+\begin{remark}[機能的終端・崩壊と整形式実現指標の関係]
+\label{rem:collapse_wf_relation}
+整形式実現指標 $\mathrm{WF}_{i,t}$（定義~\ref{def:wf_realization}）は、
+時刻 $t$ に $\Sigma_i$ の7成分が同一個体の実現において型のとおりに与えられているか否かを表し、
+機能的活動が成立しているか否かを表さない。
+したがって本論文は、$\mathrm{FT}_{i,t}$ と $\mathrm{WF}_{i,t}$ の間に
+いずれの向きの含意も仮定しない。
+機能的終端後で $\mathrm{WF}_{i,t}=1$ である時刻、
+すなわち機能的活動は回復しない形で失われているが
+7成分は型のとおりに与えられている時刻を排除しない。
+機能的終端の後に整形式実現が失われることを述べる場合には、
+構成要件 CR-1 の (CR-1a)(ii) の前件、すなわち
+ある要因 $\eta\in E$ とある時刻 $t_0\geq1$ について
+$\mathrm{WF}_{i,t_0-1}=1$、$\eta(x_{t_0-1},e_{t_0-1})=1$ であり、
+すべての $s\geq t_0$ で $\eta(x_s,e_s)=0$ となることを、
+別途示す必要がある。
+本論文は、この前件を (FT-1)・(FT-2) からの一般的な帰結として置かない。
+
+これに対し崩壊については、命題~\ref{prop:termination_order}(iv) により
+$\mathrm{Col}_{i,t}=1$ ならば $\mathrm{WF}_{i,t}=0$ である。
+この帰結は、崩壊状態の時刻以後に $\Sigma_i$ に帰属する実現を認めないという
+本枠組みの規約（帰属の規定）と、整形式実現指標の定義とから従うものであり、
+対象系の物理的過程についての主張ではない。
+逆に本論文は、$\mathrm{WF}_{i,t}=0$ から $\mathrm{Col}_{i,t}=1$ も $\mathrm{FT}_{i,t}=1$ も一般的な帰結として置かない。
+一時的に整形式実現を失っているが、機能的終端後にも崩壊にもない時刻を排除しない。
+\end{remark}
+
+\begin{remark}[機能的終端後と崩壊後の記録]
+\label{rem:post_collapse_record}
+機能的終端後の時刻にも、個体 $\Sigma_i$ の識別と記録は維持されうる。
+状態 $x_{i,t}$ や外部環境状態 $e_{i,t}$ は、
+構造的個体が崩壊していない限り記録の対象となりうる。
+一方で、機能的終端後の実現は、現に作動するACSの実現としては扱わない。
+$\mathrm{Col}_{i,t}=1$ となった後は、
+本枠組みは $\Sigma_i$ に同一個体として帰属する実現を認めず、
+機能的活動を帰属させる構造的個体そのものが終端している。
+崩壊後の時刻を「機能的終端状態が続いている」時刻としては扱わない
+（命題~\ref{prop:termination_order}(iii)）。
+構成要件 CR-2 は、時刻ごとの診断値ではなく、
+$\Sigma_i$ をACS個体として同定する条件である
+（備考~\ref{rem:math_vs_realization}）。
+本論文は、機能的終端後または崩壊後の実現を、時刻ごとに改めて CR-2 を満たす
+現に作動するACSとして再判定することはしない。
+また、部分的な機能喪失、一つ以上の区分の全面的な機能喪失、
+機能的終端または崩壊によって、
+それ以前に $\Sigma_i$ がACS個体として同定された履歴
+および個体識別が遡って取り消されることはない。
+
+\S\ref{sec:collapse_cond} のACS記録有効時刻域は $\mathrm{Col}_{i,t}=0$ の時刻からなり、
+機能的終端後の時刻を含みうる。
+そこでの記録は構造的個体としての追跡の記録であり、
+現に作動するACSとしての機能の記述は $\mathrm{FT}_{i,t}=0$ の時刻に限る。
+状態帯および到達経路を機能的終端と崩壊の二段に対してどのように記述するかは、
+同節で扱う。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{必要環境空間 $E$ と必要環境充足}
+\label{subsec:environment_space}
+
+本小節では、7タプルの第三成分である必要環境空間 $E$ の意味論を定める。
+$E$ の基本型は定義~\ref{def:acs}(3) で
+\[
+  E\subseteq\{0,1\}^{X\times E_{\mathrm{ext}}},
+  \qquad
+  E\neq\emptyset
+\]
+として宣言済みであり、本小節では、その各元がなぜ「必要」と
+呼ばれるかを拘束する構成要件 CR-1 を与える。
+あわせて、必要要因がすべて充足される外部環境状態の集合
+$E_{\mathrm{req}}(x)$ を派生的に定義し、
+一時的な非充足と持続的な欠損の区別、
+要因分解の非一意性、および必要性の同定可能性について整理する。
+
+CR-1 は、\S\ref{subsec:self_formal_definition} で導入した
+整形式実現指標 $\mathrm{WF}_{i,t}$
+（定義~\ref{def:wf_realization}）を用いて記述する。
+崩壊指標 $\mathrm{Col}_{i,t}$（定義~\ref{def:collapse}）は用いない。
+これにより、$E$ の意味論的拘束が
+崩壊定義に依存することを避ける。
+
+本小節で新たに用いる記号は、必要環境要因 $\eta$、
+要因別充足状態域 $D_\eta$、
+必要環境充足集合 $E_{\mathrm{req}}(x)$ である。
+下付き $\mathrm{req}$ は required（要求される）に対応する。
+$E_{\mathrm{req}}(x)$ は $E_{\mathrm{ext}}$ の部分集合であり、
+必要環境空間 $E$ そのものとは異なる対象である。
+
+\begin{definition}[必要環境要因と必要環境空間]
+\label{def:environment_space}
+定義~\ref{def:acs}(3) のもとで、$E$ の各元
+\[
+  \eta:X\times E_{\mathrm{ext}}\to\{0,1\}
+\]
+を、ACS個体 $\Sigma_i$ の\emph{必要環境要因}と呼び、
+$E$ を $\Sigma_i$ の\emph{必要環境空間}と呼ぶ。
+
+$\eta(x,e)=1$ は、内部状態 $x$ と外部環境状態 $e$ の組において
+当該要因が充足されていることを表し、
+$\eta(x,e)=0$ は非充足であることを表す。
+$\eta$ が内部状態 $x$ を引数に取るのは、
+同一の外部環境状態のもとでも、内部の蓄え、活動水準、
+または必要環境を利用する自己側の機能の状態
+（備考~\ref{rem:env_utilization_function}）に応じて
+充足の成否が異なりうるためである。
+ただし、$\eta$ が外部環境状態に依存しない内部状態のみの条件となることは、
+構成要件 CR-1 の (CR-1c) によって排除される。
+
+$E$ の元は集合 $\{0,1\}^{X\times E_{\mathrm{ext}}}$ の元であるから、
+同一の充足判定を与える二つの要因は同一視される。
+Phase~1 では $E$ の濃度に制限を課さない。
+\end{definition}
+
+\begin{remark}[必要環境要因は特定の供給手段ではない]
+\label{rem:factor_functional_class}
+$E$ の元は、特定の物質、特定の供給経路または特定の装置ではなく、
+それらを充足しうる経路を束ねた充足判定として与える。
+例えば、代謝に要するエネルギーおよび栄養素の取得可能性、
+または持続的な電力供給の可能性は、それぞれ一つの $\eta$ として
+表されうるのに対し、その充足を実現する個別の供給手段は
+$E$ の元ではない。
+
+この扱いは、代替可能性を $\eta$ の内部に吸収するためである。
+特定の供給手段を $E$ の元とすると、代替手段が存在する場合に
+当該元は構成要件 CR-1 を満たさなくなる。
+どの粒度で機能的な束ね方を行うかは実装依存であり、
+その扱いは備考~\ref{rem:factor_nonuniqueness} で述べる。
+\end{remark}
+
+\begin{remark}[必要環境要因の標準的粗分類候補]
+\label{rem:eta_coarse_classes}
+本論文では、必要環境要因 $\eta\in E$ を粗く分類するための
+標準的候補として、次の四つのラベルからなる集合
+\[
+  \mathsf{Cls}_\eta
+  :=
+  \{\,
+    \mathrm{pow},\
+    \mathrm{mat},\
+    \mathrm{sink},\
+    \mathrm{cond}
+  \,\}
+\]
+を挙げる。
+各ラベルの指す範囲は次のとおりである。
+
+\begin{description}[style=nextline]
+  \item[$\mathrm{pow}$（動力・利用可能自由エネルギー関係）]
+  当該ACSの作動に要する動力または利用可能な自由エネルギーの
+  取得可能性に関する必要性。
+  \item[$\mathrm{mat}$（構造・物質資源関係）]
+  構造の維持および補修・交換に要する物質資源の
+  取得可能性に関する必要性。
+  \item[$\mathrm{sink}$（散逸・排出関係）]
+  熱、老廃物その他の副産物を外部へ散逸または排出しうることに
+  関する必要性。
+  \item[$\mathrm{cond}$（外部作動・境界条件関係）]
+  $\mathrm{pow}$、$\mathrm{mat}$ または $\mathrm{sink}$ に
+  還元されない外部側の条件、すなわち当該ACSが作動しうる
+  物理的・環境的な境界状態、制約、必要な信号の受領可能性、
+  対象への接近可能性、および相互作用の可能性が
+  保たれていることに関する必要性。
+\end{description}
+
+本備考は分類候補の提示であり、定義、構成要件または仮定では
+ない。
+本論文は、この四分類が任意のACSに対して網羅的または排他的で
+あることを証明していない。
+したがって次の限定を付す。
+
+\begin{enumerate}[label=(\alph*)]
+  \item $\mathsf{Cls}_\eta$ による分類は $E$ の集合論的分割
+  ではない。
+  \item 同一の具体的な外部環境対象が複数のラベルに関わる
+  必要性を充足しうる。
+  \item 分類の対象は具体的な供給手段ではなく機能的必要性で
+  ある（備考~\ref{rem:factor_functional_class}）。
+  \item 各ACSが四つのラベルすべてに対応する要因をもつことを
+  要求しない。
+  \item 非常時に要する必要性を独立した第五のラベルとして
+  立てない。
+  \item 非常時の必要性についても、四つのラベルのいずれかに
+  よって記述できる場合には、対応する要因が内部状態 $x$ に
+  応じて条件付きで発動するものとして扱いうる。
+  $\eta$ が $x$ を引数に取ること
+  （定義~\ref{def:environment_space}）がこれを可能にする。
+  本論文は、あらゆる非常時の必要性が四つのラベルによって
+  記述されることを主張しない。
+  \item より細かな分類は実装依存であり、Phase~1 では固定しない。
+\end{enumerate}
+
+概念的には
+$\mathsf{Cls}_\eta\times\{\text{通常発動},\text{条件付き発動}\}$
+という理解も可能であるが、本論文はこの積集合を新たな
+正式な型として導入しない。
+
+なお、外部環境の変化に対してACS側がどのように応答しうるかは、
+$\eta$ が記述する外部依存とは理論階層の異なる事項であり、
+\S\ref{subsec:update_operator} で別に扱う。
+\end{remark}
+
+\begin{definition}[要因別充足状態域（分類C）]
+\label{def:eta_satisfiable_domain}
+各必要環境要因 $\eta\in E$ に対し、
+\[
+  D_\eta
+  :=
+  \bigl\{\,
+    x\in X
+    \;\bigm|\;
+    \exists e\in E_{\mathrm{ext}}:\ \eta(x,e)=1
+  \,\bigr\}
+  \subseteq X
+\]
+を $\eta$ の\emph{要因別充足状態域}と呼ぶ。
+$x\in D_\eta$ は、内部状態 $x$ において、
+ある外部環境状態のもとで当該要因が充足されうることを表し、
+$x\notin D_\eta$ は、いかなる外部環境状態のもとでも
+当該要因が充足されないことを表す。
+
+$D_\eta$ は $\eta$、$X$ および $E_{\mathrm{ext}}$ から定まる派生集合であり、
+7タプルの独立成分ではない。
+定義式は状態遷移写像 $f$ を用いない。
+記号 $D_\eta$ は、\S\ref{sec:tipa} の $M_1$ 出力成分 $D_{M1,t}$ とは無関係である。
+\S\ref{sec:three_principles} の必要環境充足状態域 $D_{\mathrm{req}}$ との関係は、
+同節の定義~\ref{def:req_domain} で述べる。
+\end{definition}
+
+\begin{remark}[必要環境利用機能]
+\label{rem:env_utilization_function}
+要因 $\eta$ と外部環境状態空間 $E_{\mathrm{ext}}$ を固定したもとでは、
+内部状態 $x$ が $D_\eta$ に属するか否かは、
+実現外部環境状態 $e_t$ の値には依存せず、内部状態 $x$ の性質として定まる。
+ただし $D_\eta$ 自体は $E_{\mathrm{ext}}$ の取り方に相対的である。
+本論文は、内部状態を $D_\eta$ に属させる自己側の条件の成立に関与する
+一つまたは複数の既存機能の関与・協働を総称して、
+当該要因に関する\emph{必要環境利用機能}と呼ぶ。
+ここでいう既存機能には、原始的な機能の各区分に対応する基礎的な機能
+（\S\ref{subsec:three_primitive_functions}）、
+内部モデル構造とその更新
+（\S\ref{subsec:internal_model_M}、\S\ref{subsec:update_operator}）、
+および \S\ref{sec:tipa} の TIPA・PSL・ISL の標準機能形式が担う機能が含まれうる。
+例えば、呼吸可能な大気の取得可能性を一つの必要環境要因とする場合、
+呼吸・循環に関わる自己側の諸機能の協働がこれに当たりうる。
+\S\ref{sec:three_principles} の環境利用（EU）との関係では、
+必要環境利用機能は、EU の原理応答項目に関与する
+既存機能（単一の機能である場合を含む）の協働の総称として位置づけられる。
+
+本備考は総称を与えるものであり、
+新たな写像、変数、7タプルの成分、機構、構成要件または仮定を導入しない。
+必要環境利用機能を、既存の機能群と並ぶ独立の機能群としては扱わない。
+また、構成的必要機能の候補としての記録にとどめ、
+分類A表記を付与しない。
+その構成的必要性の検討は Phase~1.$\alpha$ の課題とする（\S\ref{subsec:phase1a}）。
+
+以下の限定を付す。
+
+\begin{enumerate}[label=(\alph*)]
+  \item ある $\eta\in E$ について $x\notin D_\eta$ ならば、
+  $E_{\mathrm{req}}(x)=\emptyset$ である（定義~\ref{def:E_req}）。
+  すなわち、当該要因に関する自己側の条件が成立しない内部状態では、
+  外部環境状態のいかんにかかわらず必要環境充足は成立しない。
+  \item 逆に、本論文は、すべての $\eta\in E$ について $x\in D_\eta$ であることから、
+  $E_{\mathrm{req}}(x)\neq\emptyset$ を一般的な帰結として置かない。
+  要因ごとの充足可能性から共同充足可能性への含意も仮定しない。
+  \item 本論文は、$x\notin D_\eta$ それ自体から、
+  $x\notin K$、閉塞 $A_t=\emptyset$（定義~\ref{def:blockage_sec2}）、
+  $\mathrm{WF}_{i,t}=0$（定義~\ref{def:wf_realization}）、
+  機能的終端（定義~\ref{def:functional_termination}）
+  または崩壊（定義~\ref{def:collapse}）を一般的な帰結として置かない。
+  これらとの関係は $\Pi$、$f$ および構成要件 CR-1 に依存する。
+  \item 必要環境利用機能は、備考~\ref{rem:env_change_response} の
+  環境変化応答機能とは区別される。
+  前者は所与の必要環境を自己側で利用しうる状態にあるか否かに関わり、
+  後者は外部環境の変化に対して現在または将来の応答を変化させうる
+  横断的機能に関わる。
+\end{enumerate}
+\end{remark}
+
+\subsubsection*{構成要件 CR-1（必要環境整合性）}
+\label{req:CR1}
+
+7タプル構造体 $\Sigma_i$ が本論文におけるACSであるためには、
+その必要環境空間 $E$ について次の (CR-1a)、(CR-1b) および (CR-1c) が
+成立することを要求する。
+
+\medskip
+\noindent\textbf{(CR-1a) 存続必要性：}
+以下では、\emph{状態遷移列}を
+\[
+  (x_s,u_s,e_s)_{s\geq0},
+  \qquad
+  x_{s+1}=f(x_s,u_s,e_s),
+  \quad
+  u_s\in U,
+  \quad
+  e_s\in E_{\mathrm{ext}}
+\]
+を満たす列（定義~\ref{def:state_transition}）と呼ぶ。
+状態遷移列は7タプルに従う数学的な列であり、
+その定義は、各時刻において整形式な実現が成立していることを要件として含まない。
+各時刻の実現の成否は $\mathrm{WF}_{i,s}$ が別に記述する。
+
+各 $\eta\in E$ について、次の (i) および (ii) が成立することを要求する。
+
+\begin{enumerate}
+  \item[(i)] \textbf{欠損の実現可能性：}
+  ある状態遷移列とある時刻 $t_0\geq1$ が存在して
+  \[
+    \mathrm{WF}_{i,t_0-1}=1,
+    \qquad
+    \eta(x_{t_0-1},e_{t_0-1})=1
+  \]
+  かつ
+  \[
+    \eta(x_s,e_s)=0
+    \qquad
+    \text{（すべての } s\geq t_0 \text{ について）}
+  \]
+  が成立する。
+
+  \item[(ii)] \textbf{欠損時の存続不能性：}
+  (i) の条件を満たす任意の状態遷移列と時刻 $t_0$ の組について、
+  ある有限時刻 $T$（$T\geq t_0$）が存在して
+  \[
+    \mathrm{WF}_{i,s}=0
+    \qquad
+    \text{（すべての } s\geq T \text{ について）}
+  \]
+  が成立する。
+\end{enumerate}
+
+\medskip
+\noindent\textbf{(CR-1b) 共同充足可能性：}
+\[
+  \exists x\in X:\quad
+  \bigl\{
+    e\in E_{\mathrm{ext}}
+    \;\bigm|\;
+    \forall \eta\in E,\ \eta(x,e)=1
+  \bigr\}
+  \neq\emptyset
+\]
+が成立する。
+
+\medskip
+\noindent\textbf{(CR-1c) 外部依存性（外部環境状態による非充足の実現可能性）：}
+各 $\eta\in E$ について、ある状態遷移列とある時刻 $t_0\geq1$ が存在して
+\[
+  \mathrm{WF}_{i,t_0-1}=1,
+  \qquad
+  \eta(x_{t_0-1},e_{t_0-1})=1,
+  \qquad
+  x_{t_0}\in D_\eta
+\]
+かつ
+\[
+  \eta(x_s,e_s)=0
+  \qquad
+  \text{（すべての } s\geq t_0 \text{ について）}
+\]
+が成立する（$D_\eta$ は定義~\ref{def:eta_satisfiable_domain}）。
+
+\medskip
+(CR-1a)(i) は、$\eta$ の持続的な非充足が状態遷移列として
+実現しうることを要求する。
+この条件がなければ、たとえば
+$\eta(x,e)=1$ が恒真である写像を $E$ に含めても
+(ii) の前件が一度も成立せず、(ii) が空虚に成立してしまう。
+(i) はこれを排除し、(ii) とあわせて、存続に不要な要因が $E$ に含まれないことを要求する。
+時刻 $t_0-1$ において
+$\mathrm{WF}_{i,t_0-1}=1$ および
+$\eta(x_{t_0-1},e_{t_0-1})=1$ を課すのは、
+非充足の開始時刻を $t_0$ として特定し、
+かつ開始直前に整形式な実現が成立していた列のみを
+証拠として用いるためである。
+これにより (ii) において $T=t_0$ を取ることが可能となり、
+非充足の開始と同時に実現が失われる場合と、
+遅れて失われる場合とをともに表現できる。
+
+(CR-1a)(ii) は、そのような非充足が持続する場合に、
+有限時刻以降の実現が回復しないことを要求する。
+
+(CR-1b) は、必要要因集合の全体が共同で充足不能となる
+退化的構成を排除する。
+これは (CR-1a)(i) が要求する各要因ごとの非空虚性とは別の条件であり、
+本論文は両者の間にいずれの向きの含意も仮定しない。
+
+(CR-1c) は、各要因について、持続的な非充足の開始時点の内部状態を固定したとき、
+外部環境状態の違いによって当該要因の充足・非充足が分かれる
+状態遷移列が少なくとも一つ存在することを要求する。
+すなわち、非充足の開始時刻 $t_0$ において内部状態は $D_\eta$ に属し、
+ある外部環境状態のもとでは当該要因が充足されうるにもかかわらず、
+実現外部環境状態 $e_{t_0}$ のもとでは充足されない。
+本条件は、非充足の原因が外部環境状態にあることを同定するものではない。
+時刻 $t_0-1$ から $t_0$ にかけて内部状態も変化しうるからである。
+この条件がなければ、ある $\rho:X\to\{0,1\}$ により
+$\eta(x,e)=\rho(x)$ と書ける、外部環境状態に依存しない写像も、
+$\rho$ の持続的な非充足が整形式実現の喪失を導く限り (CR-1a) を満たし、
+内部状態のみの条件が必要環境要因として $E$ に含まれうる。
+そのような $\eta$ では $D_\eta=\{x\in X\mid\rho(x)=1\}$ であり、
+$\eta(x_{t_0},e_{t_0})=0$ は $x_{t_0}\notin D_\eta$ を意味するから、
+(CR-1c) は成立しない。
+
+(CR-1c) の証拠列においては
+$x_{t_0}\in D_\eta$ かつ $\eta(x_{t_0},e_{t_0})=0$ であるから、
+ある $e'\in E_{\mathrm{ext}}$ について $\eta(x_{t_0},e')=1$ であり、
+\[
+  \exists x\in X,\ \exists e,e'\in E_{\mathrm{ext}}:\quad
+  \eta(x,e)\neq\eta(x,e')
+\]
+が成立する。
+すなわち (CR-1c) は、充足判定が外部環境状態に依存することを含意する。
+また (CR-1c) は (CR-1a)(i) の存在要求を含意する。
+(CR-1a)(i) を独立に残すのは、(CR-1a)(ii) の量化範囲を、
+開始時点の内部状態が $D_\eta$ に属する非充足に限らず、
+$D_\eta$ に属さない内部状態で開始される非充足を含む
+持続的な非充足の全体とするためである。
+
+(CR-1c) は、$\eta$ が内部状態に依存することを排除しない
+（定義~\ref{def:environment_space}、備考~\ref{rem:env_utilization_function}）。
+また本条件は、外部環境状態への依存の程度、および上記の意味の非充足が
+開始されうる内部状態の範囲を定量化しない。
+外部依存が一部の内部状態においてのみ現れる要因をどこまで
+必要環境要因として認めるか、およびその程度の定量化は
+Phase~2 の課題とする。
+
+CR-1 は、当該7タプル構造体を本論文におけるACSのクラスへ
+属させるための条件であり、
+個々の時刻における診断値でも、後続命題の成立範囲を限定する
+仮定でもない（備考~\ref{rem:math_vs_realization}）。
+CR-1 の充足を有限観測から判定する手続きは Phase~1 では与えず、
+その定式化は Phase~2 の課題とする
+（備考~\ref{rem:necessity_identification}）。
+
+\begin{remark}[(CR-1a)(i) の外部背景相対性]
+\label{rem:cr1_relativity}
+(CR-1a)(i) は、$\eta$ の持続的非充足が状態遷移列として
+実現しうることを要求するため、
+外部環境状態空間 $E_{\mathrm{ext}}$ の取り方に相対的である。
+$E_{\mathrm{ext}}$ に $\eta$ の非充足を伴う環境状態が
+含まれない場合、当該 $\eta$ は (i) を満たさず、
+その記述の下では $E$ の元とならない。
+(CR-1c) も同様に $E_{\mathrm{ext}}$ の取り方に相対的であり、
+内部状態が $D_\eta$ に属する時点で当該要因を非充足とする
+外部環境状態を含む状態遷移列が実現しえない場合、
+当該 $\eta$ は (CR-1c) を満たさない。
+
+これは、ACSの7タプルが $E_{\mathrm{ext}}$ に相対的に定義される
+という本論文の枠組み（\S\ref{subsec:wellformedness}）と整合する。
+必要環境要因の同定が外部背景の取り方にどのように依存するかの
+検討は Phase~2 の課題とする。
+\end{remark}
+
+\begin{remark}[(CR-1a)(ii) の量化の読み方]
+\label{rem:cr1_quantification}
+(CR-1a)(ii) の前件は、$\eta$ の非充足が時刻 $t_0$ 以降のすべての時刻に
+わたって成立することを述べる。
+$\eta$ は内部状態 $x_s$ と外部環境状態 $e_s$ の双方を引数に取るため、
+この前件は次の二つの場合をともに排除している。
+第一に、内部の蓄えその他により $\eta(x_s,e_s)=1$ が回復する場合。
+第二に、行動 $u_s$ の選択を通じて後続の
+$(x_{s'},e_{s'})$ が変化し $\eta(x_{s'},e_{s'})=1$ が回復する場合。
+したがって、内部補償および許容行動による回復可能性は
+前件の側に吸収されており、
+(CR-1a)(ii) はこれらによって回復しない非充足のみを対象とする。
+
+後件は、ある有限時刻以降すべての時刻で
+$\mathrm{WF}_{i,s}=0$ となることを述べる。
+時刻 $T$ の値は要因ごとに、また状態遷移列ごとに異なりうる。
+本条件は $T$ の一様な上界を与えず、
+$T=t_0$ となる場合、すなわち非充足の開始時点で
+ただちに実現が失われる場合も排除しない。
+\end{remark}
+
+\begin{remark}[必要条件であって十分条件ではない]
+\label{rem:cr1_one_way}
+CR-1 が述べるのは、必要環境要因の回復しない非充足から
+整形式実現の非回復への一方向の含意である。
+必要環境要因の充足が整形式実現の継続に十分であること、すなわち
+\[
+  \forall \eta\in E:\ \eta(x_t,e_t)=1
+  \;\Longrightarrow\;
+  \mathrm{WF}_{i,t+1}=1
+\]
+を、本論文は主張しない。
+必要環境要因がすべて充足されている場合であっても、
+内部構造の損壊、行動の選択、外部からの作用その他により
+整形式実現が失われる場合を排除しない。
+
+したがって $E$ は、当該ACSの存続に関する必要条件の側を記述する
+構成成分であり、存続の十分条件を与えるものではない。
+\end{remark}
+
+\begin{remark}[一時的な非充足と持続的な欠損]
+\label{rem:cr1_timing}
+ある時刻において
+$\eta(x_t,e_t)=0$
+が成立することから、本論文は、それ自体では
+$\mathrm{WF}_{i,t}=0$ も
+$\mathrm{WF}_{i,t+1}=0$ も一般的な帰結として置かない。
+(CR-1a)(ii) の前件は時刻 $t_0$ 以降の持続を要求しており、
+単発または断続的な非充足はこれを満たさない。
+
+内部の蓄え、回復行動、および外部環境状態の変化によって
+非充足が解消される場合、当該状態遷移列は (CR-1a)(ii) の前件を
+満たさないため、後件についての帰結も生じない。
+一時的な非充足がどの程度まで許容されるか、
+すなわち回復余裕の定量化は Phase~1 では扱わず、
+Phase~2 の課題とする（\S\ref{subsec:limitations_list} の L9）。
+\end{remark}
+
+\begin{definition}[必要環境充足集合（分類C）]
+\label{def:E_req}
+状態 $x\in X$ に対し、
+$E$ のすべての必要環境要因が充足される外部環境状態の集合を
+\[
+  E_{\mathrm{req}}(x)
+  :=
+  \bigl\{
+    e\in E_{\mathrm{ext}}
+    \;\bigm|\;
+    \forall \eta\in E,\ \eta(x,e)=1
+  \bigr\}
+  \subseteq
+  E_{\mathrm{ext}}
+\]
+と定める。
+これにより (CR-1b) は
+\[
+  \exists x\in X:\ E_{\mathrm{req}}(x)\neq\emptyset
+\]
+と書ける。
+
+$E_{\mathrm{req}}$ は $X$ から $E_{\mathrm{ext}}$ への対応であり、
+$E$、$X$ および $E_{\mathrm{ext}}$ から定まる派生的対象である。
+定義式は状態遷移写像 $f$ を用いない。
+ただし、$E$ の各元がなぜ必要と呼ばれるかを拘束する構成要件 CR-1 自体は、
+状態遷移列と $\mathrm{WF}$ の推移を参照するため $f$ に依存する。
+$E_{\mathrm{req}}$ は7タプルの独立成分ではない。
+\end{definition}
+
+\begin{remark}[$E_{\mathrm{req}}$ の性質と他の環境集合との区別]
+\label{rem:E_req_properties}
+定義~\ref{def:acs}(3) のとおり、Phase~1 では $\eta$ に
+連続性その他の正則性を課さない。
+したがって $E_{\mathrm{req}}(x)$ は一般に $E_{\mathrm{ext}}$ の
+閉部分集合でもコンパクト部分集合でもない。
+例えば $E_{\mathrm{ext}}=[0,1]$ に通常の位相を入れ、$E=\{\eta\}$、
+$\eta(x,e)=1\iff e<1/2$ とすれば、$E_{\mathrm{req}}(x)=[0,1/2)$ は閉でなく、コンパクトでもない
+（型の水準の例）。
+これらの性質を要する命題では、その箇所で追加仮定として明示する。
+
+$E_{\mathrm{req}}(x)$ は、必要環境要因の充足のみによって定まる集合であり、
+当該環境状態のもとで可行な行動が存在するか否かを述べない。
+一段階可行性に関する環境集合は
+\S\ref{subsec:viability_function_and_blockage} で別に定義し、
+両者を区別する。
+すなわち、必要環境要因がすべて充足されている外部環境状態のもとでも
+可行行動が存在しない場合、および
+必要環境要因が充足されていない外部環境状態のもとでも
+一段階の可行行動が存在する場合を、いずれも排除しない。
+\end{remark}
+
+\begin{remark}[要因分解の非一意性]
+\label{rem:factor_nonuniqueness}
+$E$ は、必要環境要因への分解の粒度まで一意に定まるとは限らない。
+例えば $\eta_1,\eta_2\in E$ に対して連言
+\[
+  \eta_\wedge(x,e)
+  :=
+  \eta_1(x,e)\wedge\eta_2(x,e)
+\]
+を作り
+\[
+  E'
+  :=
+  \bigl(E\setminus\{\eta_1,\eta_2\}\bigr)\cup\{\eta_\wedge\}
+\]
+とすると、$E'$ は $E$ と同一の必要環境充足集合
+$E_{\mathrm{req}}(x)$
+を与え、CR-1 についても $E$ と同じ地位をもつ場合がある。
+
+したがって本論文は、$E$ が要因分解の粒度まで一意であることを
+要求しない。
+Phase~1 では、対象とするACS個体について一つの必要環境要因分解 $E$ を
+固定し、同一の必要環境充足集合を与える別の粗視化または細分化表現の
+存在を排除しない。
+分解の一意性を与える追加条件の検討は Phase~2 の課題とする。
+\end{remark}
+
+\begin{remark}[必要性の存立と同定可能性]
+\label{rem:necessity_identification}
+本論文は、必要環境要因が当該ACS個体について定まることを
+観測者の知識から独立に扱う。
+すなわち、ある $\eta$ が CR-1 の意味で必要であることは、
+それが観測または記述されているか否かに依存しない。
+
+一方で本論文は、未知のACS個体について $E$ を有限観測から
+同定する手続きを与えない。
+異なる外部環境状態のもとでの応答の観測、または内部モデルによる
+予測は、その手がかりとなりうるが、
+本論文はこれらから $E$ を復元する規則を提示しない。
+必要環境要因の経験的同定、および同定誤差の扱いは
+Phase~2 の課題とする。
+この意味で、必要性の存立に関する記述と、
+必要性の同定可能性に関する記述とを区別する。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{状態遷移・行動・外部環境入力}
+\label{subsec:state_space_basic_variables}
+
+本小節では、ACSの離散時間動学を記述する。
+定義~\ref{def:acs}(4) で型を宣言した状態遷移写像 $f$ による
+一ステップの状態発展を定め、あわせて動学の記述に用いる
+基本仮定を導入する。
+これらの仮定は、\S\ref{subsec:acs_7tuple} の基本型宣言から
+前方参照されているものを含む。
+また、行動選択を経ない自律的成分と行動選択に媒介される
+指向的成分への分解、および外部環境入力に対する
+動学的非退化性を扱う。
+
+必要環境空間 $E$ に関する意味論は
+\S\ref{subsec:environment_space} で与えた。
+本小節が扱う状態遷移写像は $E_{\mathrm{ext}}$ 全体の上で
+定義されており、必要環境要因が充足されているか否かに
+かかわらず、同一の型のもとで状態発展を記述する。
+
+本小節で新たに用いる記号は、自律的機能過程
+$f_{\mathrm{auto}}$、指向的過程 $f_{\mathrm{dir}}$、
+結合演算 $\oplus$、および一ステップ差分 $\Delta Y_t$ である。
+下付き $\mathrm{auto}$ は autonomous（自律的）、
+$\mathrm{dir}$ は directional（指向的）に対応する。
+ここでいう自律性は、状態遷移成分が行動選択に依存しないことを指し、
+\S\ref{sec:tipa} で扱う自動性（automaticity）とは別の概念である。
+後者は機構の作動形態に関する概念であり、
+本小節の $f_{\mathrm{auto}}$ と対応関係をもたない。
+記号 $\oplus$ は二つの状態値を結合する二項演算であり、
+群または環の加法を表すものではない。
+
+\subsubsection{空間のコンパクト性と連続性}
+
+\begin{assumption}[$X$・$U$ のコンパクト性]
+\label{ass:compact_spaces}
+状態空間 $X\subseteq\mathbb{R}^n$ および
+行動空間 $U\subseteq\mathbb{R}^m$ はコンパクト
+（閉かつ有界）である。
+
+\medskip
+\noindent
+導入地位：S（構造的）。強さ：強。
+本仮定は、$X$ および $U$ 上の閉部分集合のコンパクト性、
+連続実数値関数の極値存在、および
+可行行動集合 $A_t$ のコンパクト性
+（命題~\ref{prop:At_compact}）等を扱うための
+構造的基盤を与える。
+コンパクト性・閉集合・連続写像に関する標準的事実は、
+一般位相の通常の結果に従う\cite{Munkres2000}。
+本仮定は外部環境状態空間 $E_{\mathrm{ext}}$ には課さない。
+Phase~2 では非コンパクト空間または局所コンパクト空間への
+緩和を検討する。
+\end{assumption}
+
+\begin{assumption}[$f$ の連続性]
+\label{ass:f_continuity}
+状態遷移写像
+\[
+  f:X\times U\times E_{\mathrm{ext}}\to X
+\]
+は連続である。
+
+\medskip
+\noindent
+導入地位：S（構造的）。強さ：中。
+本仮定は、状態遷移に関する閉性と極限操作の扱いを
+安定させるための構造的仮定である。
+特に、可行集合 $K$ の閉性とあわせて、
+可行行動集合 $A_t$ の閉性を導くために用いられる
+（命題~\ref{prop:At_compact}）。
+連続性は $E_{\mathrm{ext}}$ の位相
+（\S\ref{subsec:wellformedness}）に関して述べられる。
+必要環境要因 $\eta$ には連続性その他の正則性を課していないため
+（定義~\ref{def:acs}(3)）、本仮定は
+$E_{\mathrm{req}}(x)$ の開性・閉性その他の位相的性質を規定しない。
+\end{assumption}
+
+\begin{assumption}[$E_{\mathrm{ext}}$ の時刻固定性]
+\label{ass:Eext_time_fixed}
+Phase~1 において、外部環境状態空間 $E_{\mathrm{ext},t}$ は
+時刻によらず同一の位相空間 $E_{\mathrm{ext}}$ として扱う。
+
+\medskip
+\noindent
+導入地位：S（構造的）。強さ：中。
+これは Phase~1 の決定論的・離散時間枠組みを単純化するための
+構造的仮定である。
+本仮定は、各時刻の実現外部環境状態 $e_t$ が時刻により
+変化することを排除しない。
+時間依存する外部環境状態空間への拡張は Phase~2 の課題とする。
+\end{assumption}
+
+\subsubsection{状態遷移写像}
+
+\begin{definition}[状態遷移]
+\label{def:state_transition}
+ACS個体 $\Sigma_i$ の状態は離散時間で以下のように
+発展する：
+\[
+  x_{t+1} = f(x_t, u_t, e_t).
+\]
+$x_t\in X$ は時刻 $t$ の状態ベクトル、
+$u_t\in U$ は実効行動、
+$e_t\in E_{\mathrm{ext}}$ は実現外部環境状態である。
+この離散時間状態遷移は、離散時間制御系の標準的記法と
+整合する\cite{Bertsekas2017}。
+
+時刻に依存する実数値またはベクトル値の量 $Y_t$ について、
+その一ステップ差分を
+\[
+  \Delta Y_t:=Y_{t+1}-Y_t
+\]
+と定義する。
+この記法は、減算が定義されない集合値・分類値・関係には
+適用しない。
+状態空間 $X$ 自体は集合であり、時間差分の対象とはしない。
+
+離散時間定式化は、Aubin の Viability Theory における
+可行集合・可行行動という発想と概念的に整合する\cite{Aubin1991}。
+ここでいう整合とは、数学的同値性や包含関係ではなく、
+可行性保存制約を中心に状態遷移を記述するという点での
+概念的矛盾の不在を意味する。
+連続時間への拡張は Phase~2 の課題とする。
+\end{definition}
+
+\begin{remark}[状態遷移写像の読みの規約]
+\label{rem:f_reading}
+本論文では、$u\in U$ をモデル上の行動入力とし、
+$f(x,u,e)$ を、内部状態 $x$、行動入力 $u$ および外部環境状態 $e$ のもとで
+定まる次状態と読む。
+この読みのもとでは、行動の試行、行動を実行できなかった場合、
+および実行の成功の度合いを、$f$ の記述の中で互いに区別しない。
+Phase~1 では、実行の成否または実行の度合いを表す独立の変数を導入しない。
+それらの差異をモデルに含める場合には、状態 $x$、外部環境状態 $e$、
+行動入力 $u$ の取り方、または $f$ の定義へ吸収する。
+固定された $(x,u,e)$ に対しては、写像 $f$ が一つの次状態を与える。
+定義~\ref{def:acs}(2) の実効行動 $u_t$ も、現実に実行が成功したことを意味せず、
+内部の指令が解決された後に $f$ へ入力されるモデル上の行動入力をいう。
+行動入力の実行可能性を $U$ とは別に表す構造は Phase~1 では導入しない。
+この規約によって表現されない区別は、
+\S\ref{sec:limitations_and_outlook} で理論的限界として扱う。
+\end{remark}
+
+\begin{definition}[行動応答成分の遷移写像と環境実現]
+\label{def:env_realization}
+定義~\ref{def:Eext_decomposition} の分解のもとで、全域・一価の写像
+\[
+  g_O:O\times X\times U\times E^{\mathrm{bg}}\longrightarrow O
+\]
+を\emph{行動応答成分の遷移写像}と呼び、
+行動応答成分の実現値は
+\[
+  o_{t+1}=g_O(o_t,x_t,u_t,b_t)
+\]
+に従って発展するものとする。
+$g_O(o,x,u,b)$ の第 $a$ 成分を $g_O(o,x,u,b)_a$ と書く。
+外生背景成分の列 $(b_t)_{t\geq0}$ は外生的に与えられる列とする。
+四つ組 $\bigl(E^{\mathrm{bg}},O,g_O,(b_t)_{t\geq0}\bigr)$ を、
+当該ACSの\emph{環境実現}と呼ぶ。
+
+$g_O$ はACS 7タプルの成分ではなく、
+解析に用いる環境の側の構造である。
+ACSが $g_O$ を内部に保持すること、または計算することは要求しない。
+本論文は $g_O$ に連続性その他の正則性を課さない。
+\end{definition}
+
+定義~\ref{def:state_transition} と定義~\ref{def:env_realization} から、
+初期値 $(x_0,o_0)$、背景成分の列 $(b_t)_{t\geq0}$ および実効行動の列
+$(u_t)_{t\geq0}$ が与えられれば、
+\[
+  x_{t+1}=f\bigl(x_t,u_t,(b_t,o_t)\bigr),
+  \qquad
+  o_{t+1}=g_O(o_t,x_t,u_t,b_t)
+\]
+によって $(x_t,o_t)_{t\geq0}$ が一意に定まる。
+$\mathcal A_O=\emptyset$ のとき $g_O$ は一点集合への定値写像であり、
+実現外部環境状態の列は背景成分の列だけで定まる。
+これは外部環境状態の列全体を外生的に与える場合に一致する。
+
+\begin{remark}[実現外部環境状態の生成について]
+\label{rem:exogenous_environment}
+定義~\ref{def:state_transition} は、実現外部環境状態の列
+$(e_t)_{t\geq0}$ の生成規則を7タプルの内部に置かない。
+Phase~1 では、外生的に与えるのは背景成分の列 $(b_t)_{t\geq0}$ だけとし、
+行動応答成分は定義~\ref{def:env_realization} の $g_O$ に従って
+当該ACSの行動に応答しうるものとする。
+したがって、ACSの軌道は7タプル $\Sigma$ だけからは定まらず、
+$\Sigma$ と環境実現に相対して定まる。
+この相対性は、外部環境状態の列全体を外生的に与える場合にも同じである。
+
+背景成分の列の生成則、
+他のACS個体を自身の遷移写像をもつ個体として同時に扱う結合動学、
+および確率的な環境は Phase~2 の課題とする（\S\ref{subsec:limitations_list} の L2）。
+他のACS個体の振る舞いを行動応答成分として $g_O$ に含める記述は、
+環境実現の側のモデルであり、その個体自身の遷移写像を与えるものではない。
+当該ACSと外部対象との関係構造は \S\ref{sec:rel_min} で扱う。
+\S\ref{sec:rel_min} は関係の記述構造を与えるものであり、
+外部環境状態の遷移則を与えるものではない。
+\end{remark}
+
+\begin{definition}[作用差（分類C）]
+\label{def:action_difference}
+$(o,x,b)\in O\times X\times E^{\mathrm{bg}}$、行動 $u\in U$ および枠 $a\in\mathcal A_O$ について、
+\[
+  g_O(o,x,u,b)_a\neq g_O(o,x,u_{\emptyset},b)_a
+\]
+が成り立つとき、行動 $u$ は $(o,x,b)$ において枠 $a$ に\emph{作用差}をもつという。
+ここで $u_{\emptyset}$ は選択的待機である（備考~\ref{rem:action_space_structure}）。
+\end{definition}
+
+定義から直ちに、選択的待機 $u_{\emptyset}$ はどの $(o,x,b)$ においても
+どの枠にも作用差をもたない。
+また $\mathcal A_O=\emptyset$ のとき、作用差は定義されない。
+
+\begin{remark}[作用差の射程]
+\label{rem:action_difference_scope}
+作用差は、待機と比べた一段階の値の違いの有無だけを表す。
+次の限定を付す。
+\begin{enumerate}[label=(\alph*)]
+  \item 作用差は、成分 $O_a$ の取り方（どの区別を値として表すか）に相対的である。
+  同じ物理的過程でも、$O_a$ の値が区別しない違いは作用差として現れない。
+  したがって、作用差がないことは、物理的な接触や影響がないことを意味しない。
+  \item 作用差は、比較の基準を $u_{\emptyset}$ に固定した量である。
+  他の行動と比べた違いは、本定義の対象ではない。
+  \item 作用差の大きさ（距離）は定めない。
+  \item 作用差は、行動が結果を引き起こしたという因果的寄与の判定ではない。
+  結果が他の原因によっても同時に生じる場合（過剰決定）や、
+  他の原因が先に結果を生じさせる場合（先取り）の区別は与えない
+  （\S\ref{sec:limitations_and_outlook}）。
+  \item 本論文は、$u\in U_{\mathrm{ext}}$ であることと
+  作用差をもつことの間に一般的な含意を置かない。
+  距離、身体条件その他の事情により、外部へ向けた行動が作用差をもたない場合を排除しない。
+\end{enumerate}
+\end{remark}
+
+\begin{remark}[自己の側への取り込みの表現]
+\label{rem:intake_joint_transition}
+外部の物や量が当該ACSの自己の側へ移ること（取り込み）は、
+本論文では、型をまたいで同一の数学的対象が移動することとしては表さず、
+同一の一段階における二つの遷移の対として表す。
+すなわち、ある枠 $a$ について $o_{t,a}\neq\bot_a$ かつ
+$g_O(o_t,x_t,u_t,b_t)_a\neq o_{t,a}$（値が $\bot_a$ となる場合を含む）であることと、
+$f(x_t,u_t,e_t)$ が $o_{t,a}$ に依存しうることの組として表す。
+規約 TSC は維持され、物質の同一性を $X$ と $O$ の型をまたいで追跡しない。
+必要環境要因 $\eta$ の観点からは、
+取り込みの前には $\eta(x_t,e_t)=1$ が外部側の状態を通じて成り立ち、
+取り込みの後には同じ要因の充足が内部状態 $x_{t+1}$ を通じて成り立つ、
+という読みが可能である（備考~\ref{rem:env_utilization_function}）。
+本備考は新たな写像、変数、構成要件または仮定を導入しない。
+取り込みの型の分類、および外部と内部に共通する資源量の収支は
+Phase~1 では扱わない。
+\end{remark}
+
+\subsubsection{状態遷移の二成分分解}
+
+\begin{assumption}[状態遷移の二成分分解]
+\label{ass:f_decomposition}
+Phase~1 で扱う状態遷移写像 $f$ は、自律的機能過程
+$f_{\mathrm{auto}}$ と指向的過程 $f_{\mathrm{dir}}$、
+および連続な二項演算 $\oplus$ により、
+\[
+  f(x_t,u_t,e_t)
+  =
+  \oplus\bigl(
+    f_{\mathrm{auto}}(x_t,e_t),
+    f_{\mathrm{dir}}(x_t,u_t,e_t)
+  \bigr)
+\]
+と表される。
+
+ここで
+\[
+  f_{\mathrm{auto}}:X\times E_{\mathrm{ext}}\to X,
+\]
+\[
+  f_{\mathrm{dir}}:X\times U\times E_{\mathrm{ext}}\to X,
+\]
+\[
+  \oplus:X\times X\to X
+\]
+であり、$\oplus$ は連続である。
+
+$f_{\mathrm{auto}}$ は行動選択に依存せず、
+内部状態と外部環境状態によって定まる自律的成分を表し、
+$f_{\mathrm{dir}}$ は実効行動 $u_t$ を引数として受け、
+これに依存しうる指向的成分を表す。
+本仮定は、$f_{\mathrm{dir}}$ が実際に $u_t$ に依存すること、
+すなわち $u\neq u'$ に対して
+$f_{\mathrm{dir}}(x,u,e)\neq f_{\mathrm{dir}}(x,u',e)$ となる組が
+存在することを要求しない。
+
+さらに、自律的機能過程は定数写像ではないとする。
+すなわち
+\[
+  \exists (x,e),(x',e')\in X\times E_{\mathrm{ext}}:
+  \quad
+  f_{\mathrm{auto}}(x,e)\neq f_{\mathrm{auto}}(x',e')
+\]
+が成立する。
+
+選択的待機 $u_{\emptyset}$（備考~\ref{rem:action_space_structure}）
+については、任意の $x\in X$ および
+$e\in E_{\mathrm{ext}}$ に対し、
+\[
+  \oplus\bigl(
+    f_{\mathrm{auto}}(x,e),
+    f_{\mathrm{dir}}(x,u_{\emptyset},e)
+  \bigr)
+  =
+  f_{\mathrm{auto}}(x,e)
+\]
+が成立する。
+
+\medskip
+\noindent
+導入地位：S（構造的）。強さ：強。
+一般の連続写像 $f$ がこの二成分分解をもつとは限らないため、
+本分解は Phase~1 の構造的仮定として明示する。
+これは、行動選択を経ない自律的成分と、
+行動選択に媒介される指向的成分を数学的記述上で分離し、
+選択的待機
+\[
+  f(x,u_{\emptyset},e)
+  =
+  f_{\mathrm{auto}}(x,e)
+\]
+を記述するための仮定である。
+
+ただし本仮定は、閉塞状態において
+$f_{\mathrm{auto}}$ に対応する実装上の自律的機能過程が
+実際に作動し続けること、または
+実効的時間地平 $\widehat{\tau}_{t}>0$ が成立することを
+規定しない（備考~\ref{rem:blockage_auto}）。
+また本仮定は、$f_{\mathrm{auto}}$ の作動時に
+$\mathrm{WF}_{i,t}=1$ が保たれることを要求しない。
+$f_{\mathrm{auto}}$、$f_{\mathrm{dir}}$、$\oplus$ の具体的
+実装形式は Phase~2 以降の課題とする。
+\end{assumption}
+
+\begin{remark}[$\oplus$ と選択的待機の代数的地位]
+\label{rem:oplus_neutrality}
+仮定~\ref{ass:f_decomposition} は、$\oplus$ に対して
+結合律・交換律・大域的単位元の存在等の一般的な代数構造を
+要求しない。
+選択的待機 $u_{\emptyset}$ について必要なのは、
+各 $(x,e)\in X\times E_{\mathrm{ext}}$ に対して
+\[
+  \oplus\bigl(
+    f_{\mathrm{auto}}(x,e),
+    f_{\mathrm{dir}}(x,u_{\emptyset},e)
+  \bigr)
+  =
+  f_{\mathrm{auto}}(x,e)
+\]
+が成立することのみであり、
+$f_{\mathrm{dir}}(x,u_{\emptyset},e)$ が
+$\oplus$ の大域的単位元であることを要求しない。
+したがって、$u_{\emptyset}$ の中立性は
+$f_{\mathrm{auto}}$ の値に対する局所的な条件として扱う。
+\end{remark}
+
+\subsubsection{外部環境入力の非退化性}
+
+\begin{assumption}[外部環境入力に対する動学的非退化性]
+\label{ass:env_input_nondegeneracy}
+状態遷移写像 $f$ は外部環境入力に対して非退化である。
+すなわち
+\[
+  \exists x\in X,\
+  \exists u\in U,\
+  \exists e,e'\in E_{\mathrm{ext}},\
+  e\neq e':
+  \quad
+  f(x,u,e)\neq f(x,u,e')
+\]
+が成立する。
+
+\medskip
+\noindent
+導入地位：S（構造的）。強さ：弱。
+本仮定は、外部環境状態の差異が状態遷移に一切影響しない
+退化的な系を Phase~1 の対象から除くためのものである。
+本仮定は、環境差が可行性または可行行動集合に影響することを
+述べるものではない。
+可行行動集合の水準における非退化性は
+\S\ref{subsec:viability_function_and_blockage} で扱う。
+\end{assumption}
+
+\begin{remark}[非退化条件の水準の区別]
+\label{rem:nondegeneracy_levels}
+本論文では、外部環境入力に関する非退化性を三つの水準で
+区別する。
+第一は本小節の仮定~\ref{ass:env_input_nondegeneracy} が
+述べる状態遷移の水準であり、
+環境差が次状態に影響しうることを要求する。
+第二は \S\ref{subsec:viability_function_and_blockage} で扱う
+可行行動集合の水準であり、
+環境差が可行行動の集合に影響しうることを要求する。
+第三は \S\ref{subsec:three_primitive_functions} で扱う
+感知の水準であり、
+環境差が感知出力に影響しうることを要求する。
+
+可行行動集合の水準における非退化性は
+仮定~\ref{ass:env_input_nondegeneracy} を含意する
+（命題~\ref{prop:nondegeneracy_implication}）。
+逆は一般には成立しない
+（備考~\ref{rem:nondegeneracy_converse}）。
+感知の水準については、本論文は、別途接続条件を置かない限り、
+他の二つの水準との間に相互含意を仮定しない。
+
+いずれの水準の非退化性も、必要環境空間 $E$ の
+構成要件 CR-1（\S\ref{subsec:environment_space}）とは
+別の条件である。
+本論文はこれらの非退化性から必要環境要因の存在を一般的な帰結として置かず、
+また CR-1 からこれらの非退化性を一般的な帰結として置かない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{持続評価・可行性・一段階環境可行性}
+\label{subsec:viability_function_and_blockage}
+
+本小節では、状態の可行性を評価する持続評価関数 $\Pi$ を定義し、
+そこから可行集合 $K$ と可行行動集合を導く。
+これらの可行性概念は、制御系における制御不変集合の発想と
+接続する\cite{Blanchini1999}。
+さらに、可行行動が一つも存在しない状態を閉塞として定義し、
+一段階可行性を許す外部環境状態の集合を派生的に定める。
+
+崩壊は閉塞とは区別される事象であり、その定義は
+\S\ref{subsec:self_formal_definition}（定義~\ref{def:collapse}）で与えた。
+本小節では、本論文が閉塞から整形式実現の不成立
+（$\mathrm{WF}_{i,t}=0$、定義~\ref{def:wf_realization}）も
+崩壊も一般的な帰結として置かないことを明示する。
+
+本小節の可行性概念は、必要環境要因の充足
+（\S\ref{subsec:environment_space}）とは別の対象である。
+必要環境充足集合 $E_{\mathrm{req}}(x)$ が必要環境要因の充足のみで
+定まるのに対し、本小節で定める一段階可行環境対応は
+可行行動の存在によって定まる。
+両者の関係は備考~\ref{rem:fixed_environment_and_state_dependent_viability}
+で整理する。
+
+本小節で新たに用いる記号は、持続評価関数 $\Pi$、閾値ベクトル
+$\theta$、可行集合 $K$、可行行動対応 $A(x,e)$、
+時刻 $t$ の可行行動集合 $A_t$、および一段階可行環境対応
+$\mathcal{E}_{\mathrm{viab}}^{(1)}(x)$ である。
+上付き $(1)$ は一段階を表す識別子であって冪ではない。
+記号 $\rightrightarrows$ は集合値対応を表す。
+
+\subsubsection{持続評価関数と可行集合}
+
+\begin{definition}[持続評価関数]
+\label{def:Pi}
+閾値ベクトル $\theta = (\theta_1, \ldots, \theta_n)
+\in\mathbb{R}^n$ を所与とする。
+\emph{持続評価関数} $\Pi : X \to\mathbb{R}$ を
+以下で定義する：
+\[
+  \Pi(x) := \min_{k\in\{1,\ldots,n\}}
+  \bigl(x_k - \theta_k\bigr),
+  \qquad
+  x\in X.
+\]
+$x_k$ は状態ベクトル $x$ の第 $k$ 成分、
+$\theta_k$ はその次元の可行閾値である。
+すなわち $\Pi(x)$ は、各次元の余裕
+$x_k - \theta_k$ のうち最小のものを与える
+（最弱次元による評価；備考~\ref{rem:min_type_pi}）。
+時刻 $t$ の状態への適用は
+$\Pi(x_t)=\min_k(x_{k,t}-\theta_k)$ と書く。
+Phase~1 では各 $\theta_k$ を時間不変の定数として扱う。
+動的閾値への拡張は Phase~2 以降の課題とする。
+\end{definition}
+
+\begin{remark}[$\min$ 型 $\Pi$ の採用理由]
+\label{rem:min_type_pi}
+各次元の閾値 $\theta_k$ が、その次元の最低可行水準、
+すなわちこれを下回ると他次元の状態にかかわらず可行性が
+損なわれる水準として定義される場合、
+可行性判定には各次元の条件
+\[
+  x_k\geq\theta_k
+  \qquad (k=1,\ldots,n)
+\]
+が同時に要求される。
+この非補償的な閾値規約のもとでは、
+\[
+  \Pi(x) = \min_{k\in\{1,\ldots,n\}} (x_k-\theta_k)
+\]
+は、最も余裕の小さい次元によって可行性を評価する形式となり、
+各次元の最低可行水準を直接的に表す。
+加重線形型や一部のノルム型のように次元間の補償を許す形式は、
+本小節で採用する各 $\theta_k$ の非補償的な意味とは整合しない。
+したがって Phase~1 では、この閾値規約を直接表現する
+基礎形式として $\min$ 型の $\Pi$ を採用する。
+ただし、同一の可行集合 $K$ を $0$ 以上の水準集合として与える
+他の連続関数表現の存在を排除するものではない
+（命題~\ref{prop:theta_from_pi}；under stated assumptions）。
+\end{remark}
+
+\begin{definition}[可行集合]
+\label{def:K}
+$\Pi$（定義~\ref{def:Pi}）から、\emph{可行集合} $K$ を
+以下の派生定義として構成する：
+\[
+  K := \{x\in X \mid \Pi(x)\geq 0\}.
+\]
+$K$ は $X$ の閉部分集合である（$\Pi$ の連続性と
+$\{x\in\mathbb{R}\mid x\geq 0\}$ の閉性による）。
+\end{definition}
+
+\begin{proposition}[可行性の等価性と $K$ の導出可能性]
+\label{prop:theta_from_pi}
+(i)\ $\Pi$ の定義（定義~\ref{def:Pi}）のもとで、
+\[
+  \forall x\in X:
+  \quad
+  \Pi(x)\geq 0 \iff x\in K .
+\]
+(ii)\ $K\neq\emptyset$ および $K$ の閉性のもとで、
+$\Pi$ の定義形式に依らず $K$ は適切な連続関数
+$\Pi : X \to\mathbb{R}$ の $0$ 以上の水準集合として
+表現できる。
+したがって、(ii) は空でない閉集合 $K$ が連続実数値関数の $0$ 以上の水準集合として
+表現できることを示す。
+ただし、当該関数が定義~\ref{def:Pi} の $\min$ 型で表せることまでは主張しない。
+\end{proposition}
+
+\begin{proof}
+(i)：任意の $x\in X$ について
+$\Pi(x) = \min_k(x_k - \theta_k)\geq 0
+\iff \forall k,\ x_k\geq\theta_k
+\iff x\in K$。
+
+\smallskip
+(ii)：$K\neq\emptyset$ のもとで、距離関数
+$\operatorname{dist}(x, K)$ は $X$ 上で実数値をとり
+well-defined である。
+さらに $K\neq\emptyset$ より
+$x\mapsto\operatorname{dist}(x, K)$ は $X$ 上で $1$-Lipschitz であり、
+したがって連続である。
+ゆえに距離型関数
+$\Pi_d(x) := -\operatorname{dist}(x, K)$ も $X$ 上連続である。
+$K$ の閉性より $\operatorname{dist}(x, K)=0 \iff x\in K$ であり、
+$\Pi_d(x)\leq 0$ とあわせて
+$K = \{x \mid \Pi_d(x)\geq 0\}$ が成立する。
+\end{proof}
+
+\subsubsection{可行行動集合と閉塞}
+
+\begin{definition}[可行行動対応と可行行動集合]
+\label{def:at}
+状態 $x\in X$ と外部環境状態 $e\in E_{\mathrm{ext}}$ に対し、
+\emph{可行行動対応}
+\[
+  A:X\times E_{\mathrm{ext}}\rightrightarrows U
+\]
+を
+\[
+  A(x,e) := \{u\in U \mid f(x, u, e)\in K\}
+\]
+によって定義する。
+時刻 $t$ における\emph{可行行動集合}を
+\[
+  A_t := A(x_t,e_t)
+\]
+と書く。
+$A(x,e)$ は時刻に依存しない対応であり、
+$A_t$ はその時刻 $t$ の実現値である。
+個体を明示する場合には、個体 $\Sigma_i$ の成分を用いて、対応
+\[
+  A_i:X_i\times E_{\mathrm{ext},i}\rightrightarrows U_i,
+  \qquad
+  A_i(x,e):=\{u\in U_i\mid \Pi_i\bigl(f_i(x,u,e)\bigr)\geq0\}
+\]
+と、その時刻評価値
+\[
+  A_{i,t}:=A_i(x_{i,t},e_{i,t})
+\]
+を書く（\S\ref{subsec:acs_7tuple} の記述水準の規約）。
+$\Pi_i(f_i(x,u,e))\geq0$ は、$\Pi_i$ から定義~\ref{def:K} と同じ規則で定まる
+可行集合に $f_i(x,u,e)$ が属することと同値である。
+単一ACSのみを扱う文脈では $A_i=A$、$A_{i,t}=A_t$ である。
+
+$A(x,e)$ は、状態 $x$ と外部環境状態 $e$ のもとでの
+一ステップ遷移後の次状態を $K$ に属させる行動の全体である。
+特に $x\in K$ の場合には、次状態を $K$ 内に留める行動の全体を表す。
+$A$ を集合値対応として読む場合は、
+集合値解析の枠組みと接続する\cite{AubinFrankowska1990}。
+\end{definition}
+
+\begin{remark}[可行行動集合の読み]
+\label{rem:at_reading}
+定義~\ref{def:at} の可行行動対応は、本備考によって変更しない。
+本論文では、$A(x,e)$ を、状態 $x$ と外部環境状態 $e$ のもとで
+次状態を可行集合 $K$ に属させる行動入力の全体、
+すなわち当該の $(x,e)$ における\emph{構造的応答ポテンシャルの集合}と読む。
+この読みは記述上の呼称である。
+この読みも定義~\ref{def:at} も、
+$A(x,e)$ の元が実際に選択されること、
+および複数時刻にわたって可行性が維持されることを要件として含まない。
+選択的待機 $u_{\emptyset}$（備考~\ref{rem:action_space_structure}）も $U$ の元であり、
+$f(x,u_{\emptyset},e)\in K$ であれば $u_{\emptyset}\in A(x,e)$ である。
+行動の選択と可行行動集合との関係は \S\ref{sec:three_principles} で扱う。
+\end{remark}
+
+\begin{proposition}[可行行動集合の閉性とコンパクト性]
+\label{prop:At_compact}
+仮定~\ref{ass:compact_spaces}（$U$ のコンパクト性）および
+仮定~\ref{ass:f_continuity}（$f$ の連続性）のもとで、任意の
+$x\in X$ および $e\in E_{\mathrm{ext}}$ に対し、可行行動対応の値
+$A(x,e)$ は $U$ の閉部分集合であり、したがってコンパクトである
+（$A(x,e)=\emptyset$ の場合を含む）。
+\end{proposition}
+
+\begin{proof}
+写像 $u\mapsto f(x,u,e)$ は $f$ の連続性より $U$ 上連続であり、
+$K$ は $X$ の閉部分集合である（定義~\ref{def:K}）。
+したがって
+\[
+  A(x,e)=\{u\in U \mid f(x,u,e)\in K\}
+\]
+は、閉集合 $K$ の連続写像による逆像として $U$ において閉である。
+$U$ はコンパクトであるから、その閉部分集合である $A(x,e)$ は
+コンパクトである。
+空集合はコンパクトであるから、$A(x,e)=\emptyset$ の場合も
+結論は成立する。
+\end{proof}
+
+\begin{definition}[閉塞]
+\label{def:blockage_sec2}
+時刻 $t$ において可行行動集合が空であること
+\[
+  A_{i,t} = \emptyset
+\]
+が成立するとき、ACS個体 $\Sigma_i$ は\emph{閉塞}状態に
+あるという。
+閉塞においては、いかなる $u\in U$ を選択しても、
+一ステップ後の次状態を $K$ に属させることができない。
+すなわち
+\[
+  \forall u\in U,\qquad f(x_t,u,e_t)\notin K
+\]
+が成立する。
+\end{definition}
+
+\begin{remark}[閉塞と整形式実現の不成立・崩壊の区別]
+\label{rem:blockage_not_collapse_sec2}
+閉塞
+$A_{i,t}=\emptyset$
+は、崩壊とは区別される事象である。
+本論文では「崩壊」の語を、構造的個体としての同一性を成立させていた組織関係が
+同一個体として回復しない形で失われた状態が
+時刻 $t$ までに成立したこと、すなわち
+$\mathrm{Col}_{i,t}=1$
+が成立する場合に限定して用いる
+（定義~\ref{def:collapse}）。
+これに対して閉塞は、現在状態および実現外部環境状態のもとで、
+次状態を可行集合 $K$ に属させる行動が存在しないことを表す。
+したがって本論文は、閉塞 $A_{i,t}=\emptyset$ から
+崩壊 $\mathrm{Col}_{i,t}=1$ を一般的な帰結として置かない。
+
+また本論文は、閉塞から当該時刻の整形式実現の不成立
+$\mathrm{WF}_{i,t}=0$ も一般的な帰結として置かない（定義~\ref{def:wf_realization}）。
+閉塞が成立する場合であっても、同一ACS個体としての
+整形式な実現が保たれている限り
+$\mathrm{WF}_{i,t}=1$ でありうる
+（備考~\ref{rem:time_identity_collapse}）。
+閉塞と崩壊の区別、および両者に至る経路の整理は
+\S\ref{sec:collapse_cond} で扱う。
+\end{remark}
+
+\begin{remark}[時間的自己同一性と機能的終端・崩壊・閉塞の区別]
+\label{rem:time_identity_collapse}
+予備条件 (TI-1) は、時間的自己同一性の比較が
+両時刻における整形式な実現を前提とすることを述べる。
+ただし本論文は、$\mathrm{WF}_{i,t}=0$ であることだけから
+機能的終端または崩壊を一般的な帰結として置かず、
+閉塞 $A_{i,t}=\emptyset$ からも機能的終端または崩壊を一般的な帰結として置かない。
+また、閉塞が成立していても $\mathrm{WF}_{i,t}=1$ である時刻を排除せず、
+その場合には予備条件 (TI-1) は成立しうる。
+機能的終端・崩壊と整形式実現との関係は
+備考~\ref{rem:collapse_wf_relation} に従う。
+\end{remark}
+
+閉塞・整形式実現の不成立・機能的終端・崩壊の論理関係を図~\ref{fig:s2_termination} に示す。
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}[
+  font=\footnotesize,
+  box/.style={draw, rounded corners=2pt, align=center, inner sep=3pt},
+  cond/.style={font=\scriptsize, inner sep=1pt},
+  note/.style={font=\scriptsize, align=center, inner sep=1pt},
+  plabel/.style={font=\small, anchor=west, inner sep=0pt},
+  imp/.style={-{Latex[length=1.8mm]}, thick},
+  bar/.style={line width=3pt},
+  tick/.style={densely dotted, gray},
+]
+\node[plabel] at (0,0.9) {(a)\ 同じ時刻 $t$ における含意};
+\node[box] (col) at (4.2,0) {崩壊\\$\mathrm{Col}_{i,t}=1$};
+\node[box] (ft)  at (1.6,-1.9) {機能的終端\\$\mathrm{FT}_{i,t}=1$};
+\node[box] (wf)  at (6.8,-1.9) {整形式実現の不成立\\$\mathrm{WF}_{i,t}=0$};
+\node[box] (bl)  at (10.4,-0.95) {閉塞\\$A_{i,t}=\emptyset$};
+\draw[imp] (col) -- node[cond, above left]{命題~\ref{prop:termination_order}(ii)} (ft);
+\draw[imp] (col) -- node[cond, above right]{命題~\ref{prop:termination_order}(iv)} (wf);
+\node[note, anchor=north] at (bl.south) {他の三つとの間に\\線を引かない};
+
+\begin{scope}[yshift=-4.3cm]
+\node[plabel] at (0,0.7) {(b)\ 崩壊が成立する場合の時刻別指標（$\mathrm{Col}_{i,t}=1$ となる $t$ があるとき）};
+\draw[-{Latex[length=1.6mm]}] (2.4,-3.7) -- (12.3,-3.7);
+\node[cond, anchor=north east] at (12.3,-3.75) {時刻};
+\node[cond, anchor=north] at (2.4,-3.75) {$0$};
+\coordinate (sF) at (6.0,0);
+\coordinate (tC) at (9.0,0);
+\draw[tick] (sF |- 0,-0.1) -- (sF |- 0,-3.7);
+\draw[tick] (tC |- 0,-0.1) -- (tC |- 0,-3.7);
+\node[note, anchor=north] at (sF |- 0,-3.8) {機能的終端状態が\\初めて成立する時刻};
+\node[note, anchor=north] at (tC |- 0,-3.8) {$t_{\mathrm{C}}$：崩壊状態が\\初めて成立する時刻};
+\node[cond] at (7.5,-4.05) {$\leq$};
+\node[anchor=east] at (2.3,-0.4) {$\mathrm{FT}_{i,t}$};
+\draw[bar, gray!45] (2.4,-0.4) -- (sF |- 0,-0.4);
+\draw[bar] (sF |- 0,-0.4) -- (12.1,-0.4);
+\node[cond, above] at (4.2,-0.35) {$0$};
+\node[cond, above] at (10.6,-0.35) {$1$（以後 $1$）};
+\node[anchor=east] at (2.3,-1.1) {$\mathrm{Col}_{i,t}$};
+\draw[bar, gray!45] (2.4,-1.1) -- (tC |- 0,-1.1);
+\draw[bar] (tC |- 0,-1.1) -- (12.1,-1.1);
+\node[cond, above] at (5.7,-1.05) {$0$};
+\node[cond, above] at (10.6,-1.05) {$1$（以後 $1$）};
+\node[anchor=east] at (2.3,-1.8) {$\mathrm{WF}_{i,t}$};
+\draw[bar] (tC |- 0,-1.8) -- (12.1,-1.8);
+\node[cond, above] at (10.6,-1.75) {$0$};
+\node[cond, above] at (5.7,-1.75) {（この図は値を定めない）};
+\node[anchor=east, align=right, font=\scriptsize] at (2.3,-2.5) {原理判定\\時刻域};
+\draw[|-] (2.4,-2.5) -- (sF |- 0,-2.5);
+\draw[fill=white, line width=0.45pt] (sF |- 0,-2.5) circle (1.4pt);
+\node[cond, above] at (4.2,-2.45) {$\mathrm{FT}_{i,t}=0$ の時刻};
+\node[anchor=east] at (2.3,-3.2) {$\mathbb{T}_{\mathrm{FT},i}$};
+\draw[|-|] (2.4,-3.2) -- (tC |- 0,-3.2);
+\node[cond, above] at (5.7,-3.15) {$t_{\mathrm{C}}$ 以前の時刻};
+\node[cond, above] at (10.5,-3.15) {機能的終端状態を判定しない};
+\end{scope}
+\end{tikzpicture}
+\caption{閉塞・整形式実現の不成立・機能的終端・崩壊の論理関係。
+(a) 矢印は同じ時刻 $t$ における含意を表す。
+線のない組については、本図は含意関係を表示しない（備考~\ref{rem:blockage_not_collapse_sec2}・備考~\ref{rem:termination_hierarchy}・備考~\ref{rem:collapse_wf_relation}）。
+(b) 図は機能的終端状態が $t_{\mathrm{C}}$ より前に初めて成立する場合を描くが、両者が同じ時刻に初めて成立する場合を含む（命題~\ref{prop:termination_order}(i)(ii)）。
+$\mathrm{FT}_{i,t}$ と $\mathrm{Col}_{i,t}$ は履歴指標であり、一度 $1$ になると以後 $1$ である（命題~\ref{prop:collapse_basic}）。
+$t_{\mathrm{C}}$ より後の時刻には機能的終端状態を判定しない（命題~\ref{prop:termination_order}(iii)）。
+崩壊後の横棒は履歴指標および帰属の規定による値の表示であり、同一個体としての実現軌道の継続を表さない（定義~\ref{def:collapse}）。
+閉塞は時刻の上の段階として置かない。}
+\label{fig:s2_termination}
+\end{figure}
+
+\begin{remark}[閉塞と状態遷移の記述可能性]
+\label{rem:blockage_auto}
+閉塞
+$A_{i,t}=\emptyset$
+は、いかなる行動を選択しても一ステップ後の次状態を
+可行集合 $K$ に属させることができないことを表す。
+
+一方、閉塞の成立は、状態遷移写像 $f$ またはその自律的成分
+$f_{\mathrm{auto}}$ が数学的に未定義になることを意味しない。
+したがって、任意の $u\in U$ に対する
+$f(x_t,u,e_t)$
+は、状態遷移写像の定義域上で引き続き定義される。
+ただし、その次状態は $K$ に属さない。
+
+$\mathrm{WF}_{i,t}=1$ が保たれ、状態遷移に必要な
+実現条件が保たれている場合には、閉塞後の状態変化も
+$x_{t+1}=f(x_t,u_t,e_t)$
+によって記述できる。
+
+ただし本論文は、閉塞状態において $f_{\mathrm{auto}}$ に対応する
+実装上の自律的機能過程が実際に作動し続けること、
+および実効的時間地平
+$\widehat{\tau}_{t}>0$
+が成立することを、閉塞の定義または
+仮定~\ref{ass:f_decomposition} のみからの一般的な帰結として置かない。
+本論文はこれらの成立条件を与えない。
+なお $\widehat{\tau}_{t}>0$ は予測精度係数が正であることと同値であり
+（\S\ref{sec:extended_dynamics} 定義~\ref{def:tau_hat_section5}）、
+その値は記述者が指定する読み出し規則に依存する。
+\end{remark}
+
+\begin{remark}[閉塞の意味の範囲]
+\label{rem:blockage_scope_sec2}
+閉塞 $A_{i,t}=\emptyset$ は、現在の状態と実現外部環境状態のもとで、
+次の一段の状態を $K$ に置く行動が存在しないことだけを表す。
+\begin{enumerate}[label=(\alph*)]
+  \item $x_t\in K$ の時刻の閉塞を\emph{維持の局面における閉塞}と読み、
+  次の時刻に $K$ を外れることがどの行動によっても避けられないことを表す。
+  $x_t\notin K$ の時刻の閉塞を\emph{回復の局面における閉塞}と読み、
+  一段では $K$ に戻れないことを表す。
+  これらは読みの呼称であり、定義と記号を追加しない
+  （\S\ref{sec:three_principles} の維持の局面と回復の局面の区別に対応する）。
+  \item 本論文は、回復の局面における閉塞から、有限段で $K$ に戻れないことを一般的な帰結として置かない。
+  数段を要する回復の途中にある個体は、回復が完了する直前の段に至るまで、
+  各時刻に回復の局面における閉塞にありうる。
+  \item 可行行動集合と閉塞は、採用した離散時間の一段遷移仕様、
+  すなわち時間解像度と、それに対応して定める行動空間 $U$ および状態遷移写像 $f$ に相対して定まる。
+  本論文は、異なる一段遷移仕様による形式化のあいだで閉塞の判定が保存されることを仮定しない。
+  \item 本論文は、次のいずれの成立からも $A_{i,t}=\emptyset$ を一般的な帰結として置かない。
+  物理的に移動できないこと、目的や課題が進まないこと、
+  数段先に可行性の喪失が避けられないこと、
+  当該ACSが内部で有効な行動候補を見いだせないこと、
+  当該ACSが打つ手がないと評価すること。
+  これらと閉塞が同じ時刻に成り立つことは排除しない。
+\end{enumerate}
+\end{remark}
+
+\subsubsection{一段階環境可行性}
+
+\begin{definition}[一段階可行環境対応（分類C）]
+\label{def:one_step_viable_environment}
+各状態 $x\in X$ に対し、一段階可行環境対応
+\[
+  \mathcal{E}_{\mathrm{viab}}^{(1)}:X\rightrightarrows E_{\mathrm{ext}}
+\]
+を
+\[
+  \mathcal{E}_{\mathrm{viab}}^{(1)}(x)
+  :=\{\,e\in E_{\mathrm{ext}}\mid A(x,e)\neq\emptyset\,\}
+\]
+によって定義する。
+すなわち $\mathcal{E}_{\mathrm{viab}}^{(1)}(x)$ は、状態 $x$ に
+おいて少なくとも一つの一段階可行行動を残す外部環境状態の
+集合である。
+
+この対応は $f$、$K$、$U$ および $E_{\mathrm{ext}}$ から導かれる
+派生構造であり、ACSの7タプルへ新たな独立成分を追加するもの
+ではない。
+\end{definition}
+
+\begin{remark}[一段階可行性と必要環境充足の区別]
+\label{rem:fixed_environment_and_state_dependent_viability}
+Phase~1 の一つの分析内では $E_{\mathrm{ext}}$ を固定する
+（仮定~\ref{ass:Eext_time_fixed}）。
+一方、$\mathcal{E}_{\mathrm{viab}}^{(1)}(x)$ は
+内部状態 $x$ に依存して変化しうる。
+したがって、内部状態の変化によって対応可能な環境範囲が
+変化する事態は、固定された $E_{\mathrm{ext}}$ の内部における
+$\mathcal{E}_{\mathrm{viab}}^{(1)}(x)$ の変化として表される。
+
+$\mathcal{E}_{\mathrm{viab}}^{(1)}(x)$ は、各要素が個別に必要で
+あることを表す集合ではなく、一段階可行性を許す外部環境状態の
+集合である。
+必要環境充足集合 $E_{\mathrm{req}}(x)$
+（定義~\ref{def:E_req}）とは定まり方が異なり、
+本論文は両者の間にいずれの向きの包含関係も要求しない。
+すなわち、必要環境要因がすべて充足されている外部環境状態の
+もとで可行行動が存在しない場合、および必要環境要因が
+充足されていない外部環境状態のもとで一段階の可行行動が
+存在する場合を、いずれも排除しない。
+
+また本論文は、一段階可行性それ自体から、複数時点にわたる可行性、
+周期的な環境要請または将来の環境状態への到達可能性を
+一般的な帰結として置かない。
+周期的または遅延を伴う環境要請の記述には、
+複数時点にわたる環境列および状態軌道の別途定式化を要する。
+
+実現外部環境状態 $e_t$ について、
+\[
+  e_t\notin\mathcal{E}_{\mathrm{viab}}^{(1)}(x_t)
+  \quad\Longleftrightarrow\quad
+  A(x_t,e_t)=\emptyset
+\]
+である。
+このとき閉塞が成立する（定義~\ref{def:blockage_sec2}）が、
+崩壊 $\mathrm{Col}_{i,t}=1$（定義~\ref{def:collapse}）とは区別される。
+\end{remark}
+
+\begin{remark}[実現外部環境状態と内部推定の区別についての予告]
+\label{rem:actual_environment_and_internal_estimate}
+本小節に現れる $e_t\in E_{\mathrm{ext}}$ は、システム記述上の
+実現外部環境状態である。
+これは、内部モデルが形成する環境推定とは区別される対象であり、
+両者の一致を仮定しない。
+内部環境推定の型、および実現外部環境状態との関係は
+\S\ref{subsec:internal_model_M} で定める。
+本小節では $E_{\mathrm{ext}}$ 上の距離、擬距離または推定誤差
+評価写像を導入しないため、両者の乖離を定量化しない。
+\end{remark}
+
+\begin{assumption}[可行行動集合に対する環境入力の非退化性]
+\label{ass:env_viable_nondegeneracy}
+外部環境状態の差異は可行行動集合に影響しうる。
+すなわち
+\[
+  \exists x\in X,\
+  \exists e,e'\in E_{\mathrm{ext}},\
+  e\neq e':
+  \quad
+  A(x,e)\neq A(x,e')
+\]
+が成立する。
+
+\medskip
+\noindent
+導入地位：S（構造的）。強さ：弱。
+本仮定は、外部環境状態の差異が可行行動の集合に一切影響しない
+退化的な系を Phase~1 の対象から除くためのものである。
+本仮定は、当該の差異が必要環境要因の充足に由来することを
+述べるものではない。
+\end{assumption}
+
+\begin{proposition}[非退化性の水準間の含意]
+\label{prop:nondegeneracy_implication}
+仮定~\ref{ass:env_viable_nondegeneracy} は
+仮定~\ref{ass:env_input_nondegeneracy}
+（状態遷移の水準における非退化性）を含意する。
+\end{proposition}
+
+\begin{proof}
+仮定~\ref{ass:env_viable_nondegeneracy} により、
+ある $x\in X$ と $e\neq e'$ について
+$A(x,e)\neq A(x,e')$ である。
+一般性を失うことなく
+$u\in A(x,e)\setminus A(x,e')$ を取る。
+定義~\ref{def:at} より $f(x,u,e)\in K$ かつ
+$f(x,u,e')\notin K$ である。
+$K$ への所属が異なるから
+$f(x,u,e)\neq f(x,u,e')$ であり、
+これは仮定~\ref{ass:env_input_nondegeneracy} の
+条件を満たす組を与える。
+\end{proof}
+
+\begin{remark}[逆向きの含意について]
+\label{rem:nondegeneracy_converse}
+命題~\ref{prop:nondegeneracy_implication} の逆は一般には成立しない。
+$f(x,u,e)\neq f(x,u,e')$ であっても、
+両者がともに $K$ に属するか、ともに $K$ に属さない場合には
+$u$ の可行性は変化せず、
+$A(x,e)=A(x,e')$ となりうるためである。
+したがって本論文は、状態遷移の水準における非退化性から
+可行行動集合の水準における非退化性を一般的な帰結として置かない。
+感知の水準における非退化性との関係は
+\S\ref{subsec:three_primitive_functions} で整理する。
+本論文は、別途接続条件を置かない限り、
+感知の水準と、状態遷移の水準および可行行動集合の水準との間に
+相互含意を仮定しない。
+\end{remark}
+
+\begin{assumption}[可行実現可能性]
+\label{ass:viable_realizability}
+必要環境要因が充足された外部環境状態のもとで、
+可行性を保つ一ステップ遷移が少なくとも一つ存在する。
+すなわち
+\[
+  \exists x\in K,\
+  \exists e\in E_{\mathrm{req}}(x),\
+  \exists u\in U:
+  \quad
+  f(x,u,e)\in K
+\]
+が成立する。
+
+\medskip
+\noindent
+導入地位：S（構造的）。強さ：中。
+本仮定は、いかなる状態および必要環境充足状態においても
+可行性を保つ遷移が存在しない退化的な系を
+Phase~1 の対象から除く。
+本仮定は、状態遷移列上の各時刻において
+$e_t\in E_{\mathrm{req}}(x_t)$ が成立することを要求しない。
+\end{assumption}
+
+\begin{remark}[可行実現可能性から従う事項]
+\label{rem:viable_realizability_consequences}
+仮定~\ref{ass:viable_realizability} から、次が従う。
+
+第一に、$\exists x\in K$ であるから
+$K\neq\emptyset$
+である。
+これにより、命題~\ref{prop:theta_from_pi}(ii) が仮説として
+置く $K\neq\emptyset$ は、本仮定のもとで充足される。
+
+第二に、当該の $x$ と $e$ について $u\in A(x,e)$ であるから
+$A(x,e)\neq\emptyset$ であり、
+\[
+  e\in\mathcal{E}_{\mathrm{viab}}^{(1)}(x)
+  \cap
+  E_{\mathrm{req}}(x)
+\]
+である。
+したがって、必要環境充足集合と一段階可行環境対応の
+共通部分が空でない状態が少なくとも一つ存在する。
+
+第三に、構成要件 CR-1 の (CR-1b)（共同充足可能性、
+\S\ref{subsec:environment_space}）が要求する
+$E_{\mathrm{req}}(x)\neq\emptyset$ なる $x$ の存在は、
+本仮定から $x\in K$ の範囲で従う。
+ただし本論文は、本仮定から CR-1 の全体が従うこと、
+および CR-1 から本仮定が従うことを一般的な帰結として置かない。
+CR-1 は当該7タプル構造体をACSのクラスへ属させる構成要件であり、
+本仮定は後続命題の成立範囲を限定する仮定である。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{原始的な機能と基盤機能の具備および標準写像形式}
+\label{subsec:three_primitive_functions}
+
+本小節では、\S\ref{subsec:primitive_functions} で定めた原始的な機能に関して、
+7タプル構造の実現が有する\emph{基礎的な機能}を定義し、
+その具備を要請する構成要件 CR-2 を与える。
+そのうえで、原始的な機能を本論文の形式体系で分析するための
+標準写像形式 $P_{\mathrm{sens}}$（感知）、$P_{\mathrm{disc}}$（識別）、
+$P_{\mathrm{val}}$（評価）、$P_{\mathrm{act}}$（行動）と、
+それらの非退化条件および作動上の依存関係を述べる。
+
+構成要件 CR-2 は、定義~\ref{def:acs} が前方参照している
+二つの構成要件のうちの一方である。
+他方の CR-1（必要環境整合性）は
+\S\ref{subsec:environment_space} で与えた。
+両者はいずれも当該7タプル構造体を本論文におけるACSのクラスへ
+属させるための条件であるが、対象が異なる。
+CR-1 は必要環境空間 $E$ の各元が存続に必要であることを拘束し、
+CR-2 は原始的な機能の各区分に対応する基礎的な機能の具備とその機能的非退化性、
+およびそれらの活動を支える基盤機能の具備を要請する。
+本論文は一方から他方を一般的な帰結として置かない。
+
+本小節で新たに用いる記号は、感知情報の空間 $\mathcal{I}$、
+内部表現の空間 $\mathcal{R}_{\mathrm{int}}$ および
+評価値の集合 $\mathcal{V}$ である。
+下付き $\mathrm{int}$ は internal（内部）に対応する。
+
+\begin{definition}[基礎的な機能]
+\label{def:basic_functions}
+定義~\ref{def:acs} の7タプル構造 $\Sigma$ の実現が、
+原始的な機能（定義~\ref{def:primitive_functions}）の
+各区分に関して有する機能を、
+その実現の\emph{基礎的な機能}と呼ぶ。
+ACS個体 $\Sigma_i$ については、$\Sigma_i$ の基礎的な機能という。
+基礎的な機能は機能的責務に関する記述であり、
+特定の物理部位、計算モジュール、標準写像
+または一対一の実装分割を意味しない。
+一つの区分の責務を複数の基礎的な機能が共同して担うこと、
+および一つの基礎的な機能が複数の区分の責務に関与することを排除しない。
+\end{definition}
+
+本定義の対象を「ACS個体」ではなく「7タプル構造の実現」とするのは、
+次の構成要件 CR-2 が、ACSであるための条件として本定義を用いるためである。
+
+\subsubsection*{構成要件 CR-2（原始的な機能と基盤機能の具備）}
+\label{req:CR2}
+
+ACSであるための構成要件として、7タプル $\Sigma$ の実現が
+次の (CR-2a)〜(CR-2c) を満たすことを要請する。
+\begin{description}[style=nextline]
+  \item[(CR-2a) 基礎的な機能の具備]
+  原始的な機能の四区分（感知・識別・評価・行動）のそれぞれについて、
+  基礎的な機能（定義~\ref{def:basic_functions}）を具備する。
+  \item[(CR-2b) 機能的非退化性]
+  (CR-2a) の基礎的な機能は、各区分について次の意味で退化していない。
+  \begin{enumerate}[label=(\roman*)]
+    \item 感知：外部環境状態を固定したとき、異なる内部状態から
+    異なる情報が得られる場合が少なくとも一つ存在し、
+    かつ内部状態を固定したとき、異なる外部環境状態から
+    異なる情報が得られる場合が少なくとも一つ存在する。
+    \item 識別：少なくとも一つの内部状態において、
+    外部環境状態の違いが、得られた情報を経て異なる内部表現に至る場合が存在する。
+    \item 評価：評価の対象となる入力の違いを非等価に扱う場合が
+    少なくとも一つ存在する。
+    さらに、可行集合 $K$（定義~\ref{def:K}）について
+    $K\neq\emptyset$ かつ $X\setminus K\neq\emptyset$ であるときは、
+    $K$ に属する状態と属さない状態の違いに対して
+    感知・識別を通じて評価が異なる場合が少なくとも一つ存在する（可行性感応性）。
+    標準写像形式では、同じ内部モデル状態・外部環境状態のもとで比較する。
+    \item 行動：利用可能な内部表現、評価または現在の状態の
+    少なくともいずれかの違いに応じて、生成される応答が異なる場合が
+    少なくとも一つ存在する。
+    これらのすべての違いに応答が依存することは要求しない。
+  \end{enumerate}
+  \item[(CR-2c) 基盤機能の具備]
+  (CR-2a) の基礎的な機能の活動を支える基盤機能
+  （定義~\ref{def:base_functions}）を具備する。
+\end{description}
+
+(CR-2a) および (CR-2c) の具備は、当該の機能が実現の構成として備わっていることを
+指し、各時刻においてその機能が作動していることを要求しない。
+(CR-2b) も、各時刻の作動の有無ではなく、具備された機能が
+退化していないことに関する条件である。
+時刻ごとの作動の停止は、機能的終端の判定
+（定義~\ref{def:functional_termination}）で扱う。
+
+(CR-2b) は分類Aの水準で述べた機能的条件であり、
+特定の写像の性質として与えたものではない。
+定義~\ref{def:three_primitives} の非退化条件は、
+本論文が標準写像形式を用いて記述する場合に、
+(CR-2b) の各項を写像の性質として表したものである。
+ある実現の基礎的な機能と標準写像形式との対応づけは
+対象系の記述における選択であり、本論文はその一般的な判定基準を
+Phase~1 では与えない。
+
+ここで CR-2 は、7タプルに追加される独立成分を導入するもの
+ではなく、7タプル $\Sigma$ がACSとして適格であるための
+条件である。
+定義~\ref{def:three_primitives} は、原始的な機能の機能的責務を
+本論文の形式体系において分析するための標準写像形式
+$P_{\mathrm{sens}},P_{\mathrm{disc}},P_{\mathrm{val}},P_{\mathrm{act}}$ を与える。
+CR-2 は、当該実現がこの標準写像形式そのものを
+部品として備えることを要求せず、
+同じ機能的責務を満たす機能的に等価な実現を許す。
+$P_{\mathrm{sens}},P_{\mathrm{disc}},P_{\mathrm{val}},P_{\mathrm{act}}$ は7タプル
+$\Sigma=(X,U,E,f,\Pi,M,\mathrm{Update})$ の成分でも、
+そこから一意に導出される対象でもない。
+
+原始的な機能のいずれかの区分について基礎的な機能を構成として欠く系は、
+本論文におけるACSの定義を充足しない。
+
+構成要件 CR-2 は、時刻ごとの診断ではなく、
+$\Sigma_i$ をACS個体として同定する条件である
+（備考~\ref{rem:post_collapse_record}）。
+したがって、ACS個体として同定された $\Sigma_i$ が、
+その後の損傷その他により、原始的な機能の一つ以上の区分について
+基礎的な機能を回復しない形で全面的に失った場合にも、
+そのことのみによって $\Sigma_i$ のACS個体としての同定は
+取り消されない。
+本論文は、そのような時刻に改めて CR-2 を判定して
+$\Sigma_i$ をACSでないとすることはせず、
+それ以前の同定を遡って取り消すこともしない。
+このとき $\Sigma_i$ の機能の状態は、
+機能的終端（定義~\ref{def:functional_termination}）の成否、
+および \S\ref{sec:collapse_cond} の記述的状態帯によって記述する。
+一つ以上の区分の全面的な喪失は、それだけでは機能的終端でも崩壊でもない
+（備考~\ref{rem:termination_hierarchy}）。
+
+構成要件 CR-2 は、後続命題の成立範囲を制限する仮定ではなく、
+ACSという対象を定義するための構成要件である。
+したがって、本論文では CR-2 を通常の仮定一覧には含めず、
+構成要件 CR-1 および規約 TSC と同様に、
+ACS定義を支える基礎条件として扱う。
+
+\begin{remark}[原始的な機能の構成的必要性（分類A）]
+\label{rem:three_primitives_necessity}
+\S\ref{sec:intro} で述べた環境において長期的な可行性の維持を
+指向するACSには、原始的な機能（定義~\ref{def:primitive_functions}）の
+各区分について、次の機能的責務が構成的に要求される。
+第一に、自己の内部状態および外部環境状態から情報を得る責務（感知）である。
+第二に、得られた情報を区別し、内部表現を形成する責務（識別）である。
+第三に、内部表現、自己の現在の状態、応答の候補その他の評価の対象を、
+自己の状態に関わる内部基準に照らして非等価に扱う責務（評価）である。
+第四に、利用可能な内部表現、評価または現在の状態の少なくともいずれかに応じて
+応答を生成する責務（行動）である。
+評価と行動のいずれについても、列挙した対象または情報のすべてを
+用いることは要求しない
+（構成要件 CR-2 の (CR-2b)、定義~\ref{def:three_primitives}）。
+
+評価の責務を区分として置くのは、
+感知・識別・行動の三つの責務だけでは、
+応答の生成を自己の状態に関わる基準へ結びつける責務が含まれず、
+長期的な可行性の維持を「指向する」という対象規定を
+担う責務が欠けるためである。
+評価の区分は機能の水準の概念であり、
+\S\ref{sec:three_principles} の三原理に関連する
+構造的機能のうち評価に関わるものと整合するが、
+三原理の時刻別充足述語の真偽を表すものではない
+（備考~\ref{rem:primitive_vs_principles}）。
+ただし、評価の内部基準は持続評価関数 $\Pi$ ではなく、
+本論文はACSが $\Pi$ を内部で保持または計算することを要求しない。
+
+時刻をまたいで内部表現を保持する機能は、
+原始的な機能の区分とは区別し、内部モデル構造
+（\S\ref{subsec:internal_model_M}）および
+\S\ref{sec:tipa} で扱う。
+保持する機能は、基礎的な機能の活動を支える限りで基盤機能
+（定義~\ref{def:base_functions}）に含まれうる。
+この場合、機能的終端の条件 (FT-1)(b) の対象となる
+（定義~\ref{def:functional_termination}）。
+内部モデル更新は区分として加えるものではなく、
+対象系においていずれかの区分の責務を担う場合には、
+その区分に関する基礎的な機能として扱いうる。
+
+これらの機能的要請は、それぞれが独立した物理部位、
+計算モジュールまたは明示的な写像として実装されることを要求しない。
+同じ機能的要請を満たす機能的に等価な実現を許す。
+また、本備考は、これらの責務の必要性が
+あらゆる数学的環境について証明済みであることを主張しない。
+その必要性の射程は \S\ref{sec:intro} の規定に従う。
+
+以下の定義~\ref{def:three_primitives} は、
+この機能的要請を本論文の形式体系において
+分析・比較・記述するために採用する標準写像形式である。
+構成要件 CR-2 が要求するのは、
+原始的な機能の各区分に対応する基礎的な機能の具備、
+その機能的非退化性 (CR-2b) および基盤機能の具備であり、
+特定の写像分解の実装を要求するものではない。
+同定義の非退化条件は、(CR-2b) を標準写像形式の上で表したものである。
+\end{remark}
+
+\begin{definition}[原始的な機能の標準写像形式（分類B）]
+\label{def:three_primitives}
+非空集合 $\mathcal I,\mathcal R_{\mathrm{int}},\mathcal V$ をそれぞれ
+感知情報、内部表現、評価値の型とする。以下の全域一価写像を固定する。
+\[
+\begin{aligned}
+P_{\mathrm{sens}}&:X\times E_{\mathrm{ext}}\to\mathcal I,\\
+P_{\mathrm{disc}}&:\mathcal M\times\mathcal I\to\mathcal R_{\mathrm{int}},\\
+P_{\mathrm{val}}&:\mathcal M\times\mathcal R_{\mathrm{int}}\to\mathcal V,\\
+P_{\mathrm{act}}&:\mathcal M\times\mathcal R_{\mathrm{int}}\times\mathcal V\to U.
+\end{aligned}
+\]
+これらは原始的な機能を記述する標準写像であり、機能区分そのものでも
+7タプルの追加成分でもない。7タプルだけから一意に導出されるとはしない。
+$\mathcal I,\mathcal R_{\mathrm{int}},\mathcal V$ には、本定義では位相・順序を課さず、
+写像の連続性も要求しない。評価値は候補別の評価情報を含む束であってよい。
+真の状態・環境への直接アクセスを内部機構に要求せず、同時刻の入力は
+\[
+ I_t=P_{\mathrm{sens}}(x_t,e_t),\quad
+ r_t=P_{\mathrm{disc}}(M_t,I_t),\quad
+ v_t=P_{\mathrm{val}}(M_t,r_t),\quad
+ u_t=P_{\mathrm{act}}(M_t,r_t,v_t)
+\]
+として接続する。内部表現は利用可能情報を保持する成分を含めてよく、
+すべての引数への実質的依存を要求しない。
+
+標準写像を用いる記述では、CR-2b の非退化性を次の条件で表す。
+\begin{enumerate}
+\item 感知の内部状態差への感応：
+$\exists e\in E_{\mathrm{ext}},\ x,x'\in X:
+P_{\mathrm{sens}}(x,e)\ne P_{\mathrm{sens}}(x',e)$。
+\item 感知の外部環境差への感応：
+$\exists x\in X,\ e,e'\in E_{\mathrm{ext}}:
+P_{\mathrm{sens}}(x,e)\ne P_{\mathrm{sens}}(x,e')$。
+\item 識別：ある $M\in\mathcal M,x\in X,e,e'\in E_{\mathrm{ext}}$ について
+\[
+P_{\mathrm{disc}}(M,P_{\mathrm{sens}}(x,e))
+\ne P_{\mathrm{disc}}(M,P_{\mathrm{sens}}(x,e')).
+\]
+\item 評価：$P_{\mathrm{val}}$ はその定義域上で非定数である。
+さらに $\emptyset\ne K\ne X$ のとき、ある
+$M\in\mathcal M,e\in E_{\mathrm{ext}},x\in K,x'\in X\setminus K$ について
+\[
+\begin{split}
+P_{\mathrm{val}}(M,P_{\mathrm{disc}}(M,P_{\mathrm{sens}}(x,e)))\\
+\ne P_{\mathrm{val}}(M,P_{\mathrm{disc}}(M,P_{\mathrm{sens}}(x',e))).
+\end{split}
+\]
+\item 行動：$P_{\mathrm{act}}$ はその定義域上で非定数である。
+\end{enumerate}
+感知の条件は $|X|\ge2$、識別の条件は $|\mathcal R_{\mathrm{int}}|\ge2$、
+評価の条件は $|\mathcal V|\ge2$、行動の条件は $|U|\ge2$ を含意する。
+$\mathcal M$ が単点でも、情報の差による非退化な作動は許される。
+可行性感応性は同じ $M,e$ のもとで比較する存在条件であり、
+すべての状態差の識別、評価の正確性、$\Pi$ との単調対応、可行行動の選択を要求しない。
+$K=\emptyset$ または $K=X$ では可行性感応性の追加条件を課さない。
+$\emptyset\ne K\ne X$ の場合には、この追加条件から評価の非定数性が従う。
+本論文は、評価・行動の非定数性だけから、実行時の入力像上での非定数性を一般的な帰結として置かない。
+
+$U$ の選択的待機 $u_\emptyset$ および指向的内部・外部行動の区別は
+備考~\ref{rem:action_space_structure} に従う。
+自律的機能過程 $f_{\mathrm{auto}}$ は選択対象ではない。
+\end{definition}
+
+\begin{proposition}[評価の可行性感応性が要求を課す範囲]
+\label{prop:feasibility_sensitivity_scope}
+仮定~\ref{ass:env_viable_nondegeneracy} のもとで、
+\[
+  K\neq\emptyset,
+  \qquad
+  X\setminus K\neq\emptyset
+\]
+が成り立つ。
+したがって、この仮定のもとでは、
+定義~\ref{def:three_primitives} の評価の可行性感応性は
+「何も要求しない」場合に該当せず、要求を課す条件となる。
+\end{proposition}
+
+\begin{proof}
+仮定~\ref{ass:env_viable_nondegeneracy} により、ある $x\in X$ と
+$e\neq e'$ について $A(x,e)\neq A(x,e')$ である。
+したがって、一方に属し他方に属さない $u\in U$ が存在する。
+一般性を失わず $u\in A(x,e)\setminus A(x,e')$ とすると、
+可行行動対応の定義（定義~\ref{def:at}）により
+$f(x,u,e)\in K$ かつ $f(x,u,e')\notin K$ である
+（命題~\ref{prop:nondegeneracy_implication} の証明と同じ推論）。
+前者から $K\neq\emptyset$ である。
+$f:X\times U\times E_{\mathrm{ext}}\to X$ であるから
+$f(x,u,e')\in X\setminus K$ であり、$X\setminus K\neq\emptyset$ である。
+\end{proof}
+
+構成要件 CR-2 は、本節の仮定に依存せずACSのクラスを定める条件である。
+命題~\ref{prop:feasibility_sensitivity_scope} は CR-2 の内容を変更せず、
+上記の仮定を用いる範囲では、評価について
+可行性感応性まで要求されることを述べるにとどまる。
+
+\begin{remark}[感知の非退化性と他の水準との関係]
+\label{rem:sensing_nondegeneracy_relation}
+定義~\ref{def:three_primitives} の感知の外部環境状態入力に関する
+非退化性は、外部環境入力に関する非退化性の第三の水準である
+（備考~\ref{rem:nondegeneracy_levels}）。
+第一の水準は状態遷移に関するもの
+（仮定~\ref{ass:env_input_nondegeneracy}）、
+第二の水準は可行行動集合に関するもの
+（仮定~\ref{ass:env_viable_nondegeneracy}）である。
+
+本論文は、別途接続条件を置かない限り、
+感知の水準と他の二つの水準との間に相互含意を仮定しない。
+感知の標準写像形式 $P_{\mathrm{sens}}$ と状態遷移写像 $f$ の間に接続条件を置いていない
+ためであり、これは両者が独立であることを証明したという
+主張ではない。
+
+また、感知の非退化性は必要環境空間 $E$ の構成要件 CR-1
+（\S\ref{subsec:environment_space}）とも別の条件である。
+ある外部環境状態差が感知されることと、
+その差が必要環境要因の充足に関わることとは、
+本論文では区別される。
+\end{remark}
+
+\begin{remark}[原始的な機能の標準写像形式の作動依存]
+\label{rem:P_dependency}
+定義~\ref{def:three_primitives} の合成は同時刻の情報生成上の接続規約であり、
+CR-2 の機能具備からその特定の写像分解を導くものではない。
+可行性感応性はこの接続を通じた差異の伝達を要求する。
+$P_{\mathrm{act}}$ は $r_t,v_t$ のすべての成分を利用する必要はない。
+局所保護応答を含む標準形式では、局所情報を $r_t$ の成分として利用可能にし、
+詳細評価の結果を用いない応答も表現できる。
+この合成規約は物理的な逐次実行や遅延の下限を要求しない。
+\end{remark}
+
+\begin{remark}[作動依存と形式的存在の区別]
+\label{rem:functional_vs_existential}
+備考~\ref{rem:P_dependency} は機能的作動依存を述べる
+ものであり、形式的存在の依存ではない。
+写像としての $P_{\mathrm{disc}} : \mathcal M\times\mathcal{I}\to\mathcal{R}_{\mathrm{int}}$
+は、$P_{\mathrm{sens}}$ の存在とは独立に型として定義可能である。
+$P_{\mathrm{val}}$ と $P_{\mathrm{act}}$ についても同様である。
+本備考が主張するのは、ACS 内部で各機能が意味のある入力を
+得て作動するための依存順序であって、写像の数学的存在性の
+順序ではない。
+\end{remark}
+
+\begin{remark}[情報依存と物理的時間順序の区別]
+\label{rem:primitive_no_temporal_order}
+同時刻の合成順序は、入力がどの出力に由来するかを指定する。
+各写像の実装を物理的な逐次モジュールへ固定しない。
+$M_t$ は先行時刻の情報を保持しうるが、同時刻の $r_t,v_t$ が
+あらかじめ $M_t$ に含まれることを要求しない。
+実効行動の効果は $x_{t+1}=f(x_t,u_t,e_t)$ を介して後続の感知に反映されうる。
+$f$ の行動引数への非退化な依存は一般には要求しない
+（仮定~\ref{ass:f_decomposition}）。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{内部モデル構造 $M$}
+\label{subsec:internal_model_M}
+
+本小節では、ACSが環境・自己状態・行動可能性を処理するための
+内部モデル構造 $M$ を定義する。
+本論文では $M$ を情報統合・適応的評価・応答行動の三機構に
+分解して扱い、この三成分構造を
+\emph{三機構情報処理アーキテクチャ}
+（TIPA: Triadic Information-Processing Architecture）
+と呼ぶ。
+TIPA は $M_1,M_2,M_3$ の機構構成および相互接続を表す総称であり、
+7タプルの新たな独立成分ではない。
+また、TIPA の三機構は、原始的な機能という抽象的な機能区分とも、
+定義~\ref{def:three_primitives} の標準写像形式とも区別される。
+三機構と原始的な機能の区分の間に一対一の対応を置かない。
+
+各機構の動作原理と相互接続の詳細は
+\S\ref{sec:tipa} で述べ、本小節では7タプルの一成分
+としての $M$ の型と基本性質を与える。
+あわせて、\S\ref{subsec:viability_function_and_blockage} から
+委譲された内部環境推定の型、および
+\S\ref{subsec:three_primitive_functions} から委譲された
+内部表現の符号化の扱いを本小節で定める。
+
+本小節で新たに用いる記号は、内部モデル状態の空間
+$\mathcal{M}$（花文字エム）、その直積成分
+$\mathcal{M}_1,\mathcal{M}_2,\mathcal{M}_3$、
+直積距離 $d_{\mathcal{M}}$、
+TIPA成分別変化量 $\delta_{M,c,t}$、
+TIPA成分別変化ベクトル
+$\boldsymbol{\delta}_{M,t}$、
+最大集約変化量 $\delta_t$、
+および内部環境推定 $\hat{e}_t$ である。
+
+\subsubsection{内部モデルの型と状態空間}
+
+\begin{assumption}[$\mathcal{M}$ のコンパクト性と成分距離の尺度規約]
+\label{ass:M_compact}
+
+各 $c=1,2,3$ について、非空コンパクト距離空間
+$(\mathcal M_c^{\mathrm L},d_c^{\mathrm L})$ と $(\mathcal M_c^{\mathrm W},d_c^{\mathrm W})$ を与え、
+\[
+ \mathcal M_c=\mathcal M_c^{\mathrm L}\times\mathcal M_c^{\mathrm W},\qquad
+ d_c((l,w),(l',w'))=\max\{d_c^{\mathrm L}(l,l'),d_c^{\mathrm W}(w,w')\}
+\]
+とする。上付き $L,W$ は学習成分・作動成分の識別ラベルであり、冪ではない。
+各因子には距離位相、直積には積位相を入れる。
+各因子が非単点なら距離を直径 $1$ に正規化し、単点なら距離は $0$ とする。
+有限直積はコンパクトであり、上の max 距離は積位相を与える。
+いずれかの因子が非単点なら $d_c$ の直径は $1$、両方単点なら $0$ である。
+この分解は状態担体の指定であり、学習成分と作動成分の更新の独立性、
+時間尺度の分離、既存の任意の計量との等長性を主張しない。
+
+内部モデル状態空間の各成分
+$\mathcal{M}_c$（$c=1,2,3$）は、非空なコンパクト距離空間
+\[
+  (\mathcal{M}_c,d_c),
+  \qquad
+  \mathcal{M}_c\neq\emptyset
+\]
+として与えられる。
+非空性は、各時刻において内部モデル状態
+$M_{c,t}\in\mathcal{M}_c$ が存在するために要する。
+
+Phase~1 では、三成分間で距離尺度の任意な選択が
+最大集約距離に影響することを避けるため、
+各成分距離 $d_c$ は、非退化な
+$\mathcal{M}_c$ に対して
+\[
+  \operatorname{diam}_{d_c}(\mathcal{M}_c)=1
+  \qquad
+  \text{if }|\mathcal{M}_c|\geq2
+\]
+を満たすよう正規化された距離として採用する。
+
+$\mathcal{M}_c$ が一点集合である場合には
+\[
+  d_c\equiv0
+\]
+とする。
+
+この尺度規約は、三機構の機能的重要性または
+実装上のコストが等しいことを仮定するものではなく、
+各成分距離を共通の相対尺度上で比較可能にするための
+計量上の規約である。
+
+\medskip
+\noindent
+導入地位：S（構造的）。強さ：強。
+各成分のコンパクト性から、有限直積
+\[
+  \mathcal{M}
+  =
+  \mathcal{M}_1
+  \times
+  \mathcal{M}_2
+  \times
+  \mathcal{M}_3
+\]
+のコンパクト性が従う。
+また、各 $\mathcal{M}_c$ の直径が有限であることにより、
+本仮定の尺度規約による成分距離の正規化が可能となる。
+この直積構造は、機構間の情報依存
+\[
+  M_1\to M_2\to M_3
+\]
+を否定しない。
+Phase~2 では局所コンパクト化等の緩和を検討する。
+\end{assumption}
+
+\begin{definition}[内部モデル状態の学習成分と作動成分]
+\label{def:model_learning_working}
+$\mathcal M^{\mathrm L}:=\prod_{c=1}^3\mathcal M_c^{\mathrm L}$、
+$\mathcal M^{\mathrm W}:=\prod_{c=1}^3\mathcal M_c^{\mathrm W}$ とし、
+$M_t^{\mathrm L}=(M_{c,t}^{\mathrm L})_{c=1}^3$、$M_t^{\mathrm W}=(M_{c,t}^{\mathrm W})_{c=1}^3$ を
+$M_t$ の座標射影とする。
+学習成分は持続的な内容・学習・忘却を、作動成分は後続時刻へ持ち越す
+短期履歴、前時刻の評価・行動の記録等を担う。
+どの記録をどの機構成分に保持するかは、更新写像の依存制約に従って指定する。
+$\mathcal M^{\mathrm W}$ からの読み出しが実際の過去の値と一致すること、
+任意の履歴を符号化できることは、この直積構造からは従わない。
+$\mathcal M^{\mathrm L}$ と $\mathcal M^{\mathrm W}$ は $\mathcal M$ の座標の整理であり、
+7タプルに追加する状態ではない。
+\end{definition}
+
+
+\begin{definition}[内部モデル構造]
+\label{def:internal_model}
+
+内部モデル構造を
+\[
+  M=(M_1,M_2,M_3)
+\]
+とする。
+各成分の機能的役割の概要は次のとおりである。
+
+$M_1$ は情報統合機構であり、感知情報の統合・境界管理・
+時間的連続性の維持を担う。
+$M_2$ は適応的評価機構であり、三原理に関連する
+機構層代理評価と Priority 警告等の生成を担う。
+$M_3$ は応答行動機構であり、行動決定に必要な情報整理、
+候補構成・評価結果の利用および TIPA 行動指令の決定を担う。
+
+$M_1$・$M_2$・$M_3$ は機能的に並行して作動しうる
+（仮定~\ref{ass:functional_concurrency}、
+\S\ref{sec:tipa}）。
+この機能的並行性は、三機構が逐次的にのみ作動するのではなく、
+必要な上流出力が下流機構の入力として利用可能となる
+$M_1\to M_2\to M_3$ の生成依存関係と両立することを表す。
+定義~\ref{def:update_operator} の更新式に現れる
+\[
+  M_1\to M_2\to M_3
+\]
+の順序は情報依存関係を表すものであり、
+三機構が実時間上で逐次的にしか作動しないことを意味しない。
+
+本小節は、三機構が同一時刻に相互作用することを述べない。
+機構間の同時刻における情報授受の可否、およびその時刻規約は
+\S\ref{sec:tipa} で扱う。
+
+各成分の詳細な定義・動作原理・相互接続構造は
+\S\ref{sec:tipa}
+（TIPA：三機構情報処理アーキテクチャ）で与える。
+\end{definition}
+
+\begin{definition}[内部モデル状態空間]
+\label{def:model_parameter_space}
+
+仮定~\ref{ass:M_compact} のもとで、
+内部モデル構造 $M$ に対応する内部モデル状態空間
+$\mathcal{M}$ を
+\[
+  \mathcal{M}
+  =
+  \mathcal{M}_1
+  \times
+  \mathcal{M}_2
+  \times
+  \mathcal{M}_3
+\]
+と定義する。
+
+各 $\mathcal{M}_c$ は、仮定~\ref{ass:M_compact} で
+与えられた非空なコンパクト距離空間
+\[
+  (\mathcal{M}_c,d_c),
+  \qquad
+  c=1,2,3
+\]
+である。
+
+さらに、各成分距離 $d_c$ について、
+仮定~\ref{ass:M_compact} の尺度規約に従い、
+$|\mathcal{M}_c|\geq2$ の場合には
+\[
+  \operatorname{diam}_{d_c}(\mathcal{M}_c)=1
+\]
+とし、$\mathcal{M}_c$ が単点集合である場合には
+\[
+  d_c\equiv0
+\]
+とする。
+この正規化は各成分距離の乗法的尺度を共通の相対範囲へ
+揃えるための規約であり、
+三機構の機能的重要性、実装コスト、または物理的変化量が
+等しいことを意味しない。
+
+任意の
+\[
+  m=(m_1,m_2,m_3),
+  \qquad
+  m'=(m'_1,m'_2,m'_3)
+  \in\mathcal{M}
+\]
+に対し、直積距離 $d_{\mathcal{M}}$ を
+\[
+  d_{\mathcal{M}}(m,m')
+  :=
+  \max\left\{
+    d_1(m_1,m'_1),
+    d_2(m_2,m'_2),
+    d_3(m_3,m'_3)
+  \right\}
+\]
+と定義する。
+
+時刻 $t$ の内部モデル状態を
+\[
+  M_t
+  =
+  (M_{1,t},M_{2,t},M_{3,t})
+  \in\mathcal{M}
+\]
+と記し、
+\[
+  M_{c,t}\in\mathcal{M}_c,
+  \qquad
+  c=1,2,3
+\]
+とする。
+
+仮定~\ref{ass:M_compact} と有限直積の性質により
+$\mathcal{M}$ はコンパクトである。
+
+なお、直積距離 $d_{\mathcal{M}}$ は、
+$\mathcal{M}$ の距離空間構造およびコンパクト性を
+記述するための計量であり、
+TIPA 三機構の変化内容を余すところなく表す量としては
+解釈しない。
+各機構の動的変化は、
+定義~\ref{def:tipa_component_change} の
+TIPA成分別変化ベクトル
+$\boldsymbol{\delta}_{M,t}$ により別途記述する。
+\end{definition}
+
+\begin{remark}[$M$ の独立成分としての保持]
+\label{rem:M_independence}
+
+本論文では、状態遷移写像 $f$ から
+内部モデル構造 $M$ が一意に復元可能であることを仮定しない。
+
+内部モデル構造
+$M=(M_1,M_2,M_3)$
+は、内部モデル状態空間
+\[
+  \mathcal{M}
+  =
+  \mathcal{M}_1
+  \times
+  \mathcal{M}_2
+  \times
+  \mathcal{M}_3
+\]
+の三成分分解に機構的解釈を与える。
+
+行動の標準写像形式
+\[
+  P_{\mathrm{act}}:\mathcal M\times\mathcal R_{\mathrm{int}}\times\mathcal V\to U
+\]
+および更新作用素
+\[
+  \mathrm{Update}:
+  \mathcal{M}\times X\times E_{\mathrm{ext}}
+  \to\mathcal{M}
+\]
+が直接作用する対象は、
+機構構造 $M$ そのものではなく、
+その状態空間 $\mathcal{M}$ の元 $M_t$ である。
+
+本論文では、状態遷移 $f$ と内部モデル構造 $M$ を
+異なる構造的役割として明示的に分離する表現方針のもとで、
+$M$ を7タプルの独立成分として保持する。
+
+本記述は、$f$ から $M$ が導出不能であることの
+一般定理を主張するものではない。
+
+同一の $f$ に対応しうる内部モデル構造 $M$ の
+一意性または非一意性に関する形式的検討は、
+TIPA の具体的写像構造が確定する
+\S\ref{sec:tipa} 以降、
+および Phase~2 の課題とする。
+\end{remark}
+
+\subsubsection{内部環境推定}
+
+\begin{definition}[内部環境推定（分類B）]
+\label{def:internal_env_estimate}
+
+時刻 $t$ において内部モデルが形成する外部環境状態の推定を
+\[
+  \hat{e}_t\in E_{\mathrm{ext}}
+\]
+と書き、\emph{内部環境推定}と呼ぶ。
+上付きハットは推定量であることを表す識別子である。
+
+$\hat{e}_t$ は実現外部環境状態 $e_t$ と同一の空間
+$E_{\mathrm{ext}}$ に値をとるが、本論文は両者の一致を仮定しない。
+$\hat{e}_t$ は7タプルの成分ではなく、
+内部モデル状態 $M_t$ を含む利用可能な機構入力に基づき、
+$M_1$ の処理によって生成される派生量である。
+本論文は $\hat{e}_t$ が $M_t$ のみから定まることを要求しない。
+$\hat{e}_t$ を生成する具体的な写像は $M_1$ に置き、
+その形式は \S\ref{sec:tipa} で与える。
+\end{definition}
+
+\begin{remark}[実現外部環境状態と内部環境推定の乖離]
+\label{rem:estimate_gap}
+
+定義~\ref{def:internal_env_estimate} は、
+$e_t$ と $\hat{e}_t$ の関係について
+一致、近接またはいかなる誤差限界も要求しない。
+この区別は、実現外部環境状態に基づくシステム水準の記述と、
+内部モデルが生成する環境推定に基づく機構水準の記述とを
+同一視しないためのものである。
+
+Phase~1 では $E_{\mathrm{ext}}$ 上の距離、擬距離または推定誤差
+評価写像を導入しないため、両者の乖離を定量化しない。
+推定誤差の定量化、およびそれが可行性維持に及ぼす影響の評価は
+\S\ref{sec:tipa} および Phase~2 の課題とする（\S\ref{subsec:limitations_list} の L6）。
+
+本論文の状態遷移
+$x_{t+1}=f(x_t,u_t,e_t)$
+（定義~\ref{def:state_transition}）に現れるのは
+実現外部環境状態 $e_t$ であり、$\hat{e}_t$ ではない。
+\end{remark}
+
+\begin{remark}[内部モデル状態と内部表現の保持]
+\label{rem:M_encodes_representation}
+同時刻の内部表現と評価値は定義~\ref{def:three_primitives} の中間出力である。
+その一部を後続時刻で再利用する場合、保持内容は
+定義~\ref{def:model_learning_working} の学習成分または作動成分から読み出す。
+読み出し規則は対象の記述ごとに固定し、過去の真値の復元、任意の履歴の保持、
+単射・全射・連続な符号化を要求しない。
+各成分への書き込みは定義~\ref{def:update_operator} の型に従う。
+包括的型に十分な引数があることだけでは、制限された各成分更新による
+任意の記録の実現可能性は保証されない。
+\end{remark}
+
+\subsubsection{機構成分とTIPA統合}
+
+\begin{definition}[TIPA成分別変化量と最大集約距離（分類C）]
+\label{def:tipa_component_change}
+
+時刻 $t$ および $t+1$ の内部モデル状態を
+\[
+  M_t
+  =
+  (M_{1,t},M_{2,t},M_{3,t}),
+  \qquad
+  M_{t+1}
+  =
+  (M_{1,t+1},M_{2,t+1},M_{3,t+1})
+  \in\mathcal{M}
+\]
+とする。
+
+TIPA の各機構における一ステップ変化量を、
+各成分距離 $d_c$ を用いて
+\[
+  \delta_{M,c,t}
+  :=
+  d_c(M_{c,t+1},M_{c,t}),
+  \qquad
+  c=1,2,3
+\]
+と定義する。
+
+これら三成分をまとめた
+\emph{TIPA成分別変化ベクトル}を
+\[
+  \boldsymbol{\delta}_{M,t}
+  :=
+  \bigl(
+    \delta_{M,1,t},
+    \delta_{M,2,t},
+    \delta_{M,3,t}
+  \bigr)
+  \in\mathbb{R}_{\geq0}^{3}
+\]
+と定義する。
+
+$\boldsymbol{\delta}_{M,t}$ は、
+$M_1$・$M_2$・$M_3$ の変化を相互に集約せずに記述する
+一次的な動的記述量である。
+これは本論文が分析のために導入する記述量であり、
+当該ACSがこの量を内部に保持することを要求しない。
+
+各成分距離 $d_c$ は、
+仮定~\ref{ass:M_compact} の尺度規約により
+共通の相対尺度へ正規化されているため、
+\[
+  0\leq\delta_{M,c,t}\leq1,
+  \qquad
+  c=1,2,3
+\]
+である。
+
+したがって
+$\boldsymbol{\delta}_{M,t}$ は、
+各TIPA機構がそれぞれの状態空間全体に対して
+どの程度相対的に変化したかを成分別に記述する。
+この正規化は、
+三機構の機能的重要性または実装上のコストが
+等しいことを意味しない。
+
+一方、内部モデル状態空間 $\mathcal{M}$ 上の
+直積距離による最大集約値を
+\[
+\begin{aligned}
+  \delta_t
+  &:=
+  d_{\mathcal{M}}(M_{t+1},M_t)\\
+  &=
+  \max\left\{
+    \delta_{M,1,t},
+    \delta_{M,2,t},
+    \delta_{M,3,t}
+  \right\}\\
+  &=
+  \|\boldsymbol{\delta}_{M,t}\|_{\infty}
+\end{aligned}
+\]
+とする。
+
+したがって $\delta_t$ は、
+内部モデル変化の全成分情報そのものではなく、
+三機構のうち最大の一ステップ変化を表す
+二次的な集約量である。
+
+特に、
+\[
+  \delta_t=0
+  \iff
+  \boldsymbol{\delta}_{M,t}=(0,0,0)
+\]
+であるが、異なる成分別変化ベクトルが
+同一の $\delta_t$ を与えることがある。
+
+したがって Phase~1 では、
+TIPA の動的変化を分析する際には
+$\boldsymbol{\delta}_{M,t}$ を一次的記述として用い、
+$d_{\mathcal{M}}$ および $\delta_t$ は、
+直積空間の距離、コンパクト性、および
+最大成分変化の集約を必要とする場合に用いる
+（within present framework）。
+\end{definition}
+
+\begin{observation}[$M_1/M_2/M_3$ の機能的分離方針]
+\label{obs:tipa_integration}
+
+本論文では、TIPA の三機構
+$M_1,M_2,M_3$ を、それぞれ異なる機能的役割を担う
+構成要素として分離して記述する。
+
+第一に、$M_1$ と $M_2$ の分離は、
+情報統合・状態推定を担う機構と、
+その情報に基づいて可行性および警告を評価する機構とを
+区別して記述するために保持される。
+この区別は、\S\ref{sec:tipa} で定義される
+Priority~3 警告を含む評価構造の記述上の基盤となる。
+
+第二に、$M_2$ と $M_3$ の分離は、
+評価を担う機構と、行動空間 $U$ への応答生成を担う機構とを
+異なる機能的役割として記述するために保持される。
+両者の具体的写像の定義域・値域および相互接続は
+\S\ref{sec:tipa} で与える。
+
+本観察は、二機構の統合が数学的に不可能であること、
+または任意の統合が必ず機能低下を生じさせることを
+主張するものではない。
+三機構を分離して保持することは、
+Phase~1 における TIPA の記述上の構成方針である。
+
+機構統合を許す再定式化およびその機能的等価性の検討は、
+Phase~1.$\alpha$ 以降の課題とする
+（within present framework）。
+\end{observation}
+
+\begin{remark}[$M$ と $\mathrm{Update}$ の相互関係]
+\label{rem:M_update_relation}
+
+内部モデル構造 $M$ と、その状態を更新する規則
+$\mathrm{Update}$（\S\ref{subsec:update_operator}）は、
+7タプルにおいて異なる構造的役割をもつ独立成分として
+保持される。
+
+時刻 $t$ の内部モデル状態は
+$M_t\in\mathcal{M}$
+であり、行動の標準写像形式
+\[
+  P_{\mathrm{act}}:\mathcal M\times\mathcal R_{\mathrm{int}}\times\mathcal V\to U
+\]
+は $M_t$、同時刻の内部表現 $r_t$ と評価値 $v_t$ を入力として行動を生成する。
+したがって、内部モデル構造 $M$ は、
+その状態空間 $\mathcal{M}$ と内部モデル状態 $M_t$ を介して、
+ACSの行動生成を支える機構的基盤として位置づけられる。
+
+$M$ と $\mathrm{Update}$ の基本的な形式関係は
+\S\ref{subsec:update_operator} で定める。
+これらを TIPA の標準機構形式へ対応づける記述は
+\S\ref{sec:tipa} で扱い、
+時刻間の変化に関する事項は
+\S\ref{sec:extended_dynamics} で扱う。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{内部モデル更新作用素 $\mathrm{Update}$}
+\label{subsec:update_operator}
+
+本小節では、内部モデル状態を更新する作用素
+$\mathrm{Update}$ を構成要素別に定義し、
+更新に伴って実際に生じた内部モデル変化の時間平均を導入する。
+これは実現した変化の記述量であり、認知的処理能力を表す量ではない
+（\S\ref{subsec:cognitive_capacity_policy}）。
+
+一ステップの内部モデル変化量そのもの、すなわち
+TIPA成分別変化量 $\delta_{M,c,t}$、
+TIPA成分別変化ベクトル $\boldsymbol{\delta}_{M,t}$、
+および最大集約変化量 $\delta_t$ は
+\S\ref{subsec:internal_model_M}
+（定義~\ref{def:tipa_component_change}）で定義済みである。
+本小節ではこれらを再定義せず、
+$\mathrm{Update}$ によって生じた一ステップ変化量として参照する。
+
+本小節で新たに用いる記号は、
+最大成分時間平均更新速度 $\lambda_{T,t}$、
+成分別時間平均更新速度 $\lambda_{M,c,T,t}$ および
+$\boldsymbol{\lambda}_{M,T,t}$ である。
+
+$T\in\mathbb{N}$, $T\ge1$ は評価に用いる有限時間窓の長さを表す。
+時間窓の開始時刻が $0$ である場合には、
+$\lambda_{T,0}$、
+$\lambda_{M,c,T,0}$、
+$\boldsymbol{\lambda}_{M,T,0}$ をそれぞれ
+$\lambda_T$、
+$\lambda_{M,c,T}$、
+$\boldsymbol{\lambda}_{M,T}$ と略記する。
+
+\subsubsection{更新作用素の定義}
+
+\begin{definition}[Update作用素の構造]
+\label{def:update_operator}
+
+\textbf{(1) 包括的写像（型宣言の詳細は
+備考~\ref{rem:update_type_two_layers} 参照）：}
+\[
+  \mathrm{Update} :
+  \mathcal{M}\times X\times E_{\mathrm{ext}}
+  \longrightarrow
+  \mathcal{M}.
+\]
+本小節の包括的型では、$\mathrm{Update}$ の入力を
+$(M_t,x_t,e_t)$ に限定する。
+同時刻の $r_t,v_t,u_t$ は固定した標準写像のもとで $(M_t,x_t,e_t)$ から
+定まるので、その参照のために包括的型の独立引数を追加する必要はない。
+ただし、各成分更新がその情報を参照できるかは下記の詳細型に制約される。
+遷移後に新しく取得される観測は、次時刻の入力として扱い、先取りしない。
+
+\medskip
+\noindent\textbf{(2) 構成要素別更新
+（仮定~\ref{ass:M_compact} の直積分解のもとで）：}
+\[
+\begin{aligned}
+  \mathrm{Update}_1
+  &: \mathcal{M}_1\times X\times E_{\mathrm{ext}}
+  \to\mathcal{M}_1,\\
+  \mathrm{Update}_2
+  &: \mathcal{M}_2\times X\times E_{\mathrm{ext}}
+  \times\mathcal{M}_1
+  \to\mathcal{M}_2,\\
+  \mathrm{Update}_3
+  &: \mathcal{M}_3\times X\times E_{\mathrm{ext}}
+  \times\mathcal{M}_1\times\mathcal{M}_2
+  \to\mathcal{M}_3,
+\end{aligned}
+\]
+\[
+\begin{aligned}
+  M_{1,t+1}
+  &=
+  \mathrm{Update}_1(M_{1,t},x_t,e_t),\\
+  M_{2,t+1}
+  &=
+  \mathrm{Update}_2(
+    M_{2,t},x_t,e_t,M_{1,t+1}
+  ),\\
+  M_{3,t+1}
+  &=
+  \mathrm{Update}_3(
+    M_{3,t},x_t,e_t,
+    M_{1,t+1},M_{2,t+1}
+  ).
+\end{aligned}
+\]
+
+$\mathrm{Update}_2$ が $M_{1,t+1}$ に、
+$\mathrm{Update}_3$ が $M_{1,t+1}$ および
+$M_{2,t+1}$ に依存することは、
+TIPA における情報依存関係
+\[
+  M_1\to M_2\to M_3
+\]
+を反映する
+（\S\ref{sec:tipa}）。
+この順序は同一ステップ内の情報依存関係を表すものであり、
+TIPA 三機構が実時間上で逐次的にのみ作動することを
+意味しない。
+
+ここで
+\[
+  M_t
+  =
+  (M_{1,t},M_{2,t},M_{3,t})
+  \in\mathcal{M}
+\]
+に対し、7タプルに含まれる包括的更新作用素を
+\[
+  \mathrm{Update}(M_t,x_t,e_t)
+  :=
+  \bigl(
+    M_{1,t+1},
+    M_{2,t+1},
+    M_{3,t+1}
+  \bigr)
+\]
+と定める。
+
+したがって、$\mathrm{Update}_2$ および
+$\mathrm{Update}_3$ に現れる追加引数は、
+同一ステップ内の先行する構成要素更新によって生成される
+中間値であり、包括的写像への独立した外部入力ではない。
+
+\medskip
+\noindent\textbf{(3) 一ステップ更新量の参照：}
+
+$\mathrm{Update}$ によって生じた一ステップの内部モデル変化は、
+定義~\ref{def:tipa_component_change} の
+$\delta_{M,c,t}$、$\boldsymbol{\delta}_{M,t}$ および
+$\delta_t$ によって記述する。
+本小節はこれらを再定義しない。
+$\boldsymbol{\delta}_{M,t}$ を一次的な変化記述として用い、
+$\delta_t$ は三機構のうち最大の一ステップ変化を表す
+二次的な集約指標として用いる。
+したがって $\delta_t$ は、内部モデル全体の成分別変化パターンを
+余すところなく表す量ではない。
+\end{definition}
+
+\begin{remark}[$\mathrm{Update}$ の環境引数について]
+\label{rem:update_env_argument}
+$\mathrm{Update}$ の環境引数は実現外部環境状態
+$e_t\in E_{\mathrm{ext}}$ であり、
+内部環境推定 $\hat{e}_t$
+（定義~\ref{def:internal_env_estimate}）ではない。
+
+これは、$\mathrm{Update}$ をシステム記述の水準で定める
+Phase~1 の抽象化である。
+機構水準において、各機構が実際に参照する入力が
+実現外部環境状態であるか内部環境推定であるかは
+\S\ref{sec:tipa} で扱う。
+本小節の包括的型だけでは観測経由性は課されない。
+\S\ref{subsec:s5_observation} ではこれを追加仮定として明示する。
+
+また、内部表現の空間
+$\mathcal{R}_{\mathrm{int}}$
+（定義~\ref{def:three_primitives}）は
+$\mathrm{Update}$ の独立引数に含まれない。
+その理由は備考~\ref{rem:M_encodes_representation} に述べたとおりであり、
+内部表現から内部モデル更新への具体的な情報経路は
+\S\ref{sec:tipa} で扱う。
+\end{remark}
+
+\begin{definition}[Update整合系列]
+\label{def:update_consistent_sequence}
+
+系列
+\[
+  (M_t,x_t,e_t)_{t\geq0},
+  \qquad
+  M_t\in\mathcal{M},\quad
+  x_t\in X,\quad
+  e_t\in E_{\mathrm{ext}}
+\]
+が、各時刻 $t$ において
+\[
+  M_{t+1}
+  =
+  \mathrm{Update}(M_t,x_t,e_t)
+\]
+を満たすとき、これを\emph{Update整合系列}と呼ぶ。
+
+本小節で内部モデルの変化量および更新に関する指標を述べる際には、
+特に断らない限り Update整合系列を対象とする。
+Update整合性の定義は、各時刻において
+$\mathrm{WF}_{i,t}=1$ が成立することを要件として含まない
+（定義~\ref{def:wf_realization}）。
+\end{definition}
+
+\subsubsection{軌道上の学習停止}
+
+\begin{definition}[系列上の学習停止]
+\label{def:update_stop_on_trajectory}
+定義~\ref{def:update_consistent_sequence} の Update整合系列に沿い、
+\[
+\delta^{\mathrm L}_{c,t}:=d_c^{\mathrm L}(M^{\mathrm L}_{c,t+1},M^{\mathrm L}_{c,t}),\qquad
+\delta^{\mathrm L}_t:=\max_{c=1,2,3}\delta^{\mathrm L}_{c,t}
+\]
+を学習成分の一段変化量（分類C）とする。
+すべての $t\in\mathbb N_0$ で $\delta^{\mathrm L}_t=0$ のとき、この系列上で
+\emph{学習停止}が成立するという。これは、すべての $c,t$ で
+$M^{\mathrm L}_{c,t+1}=M^{\mathrm L}_{c,t}$ と同値である。
+作動成分の変化は排除せず、$\delta_t=0$ と同一視しない。
+$0\le\delta^{\mathrm L}_t\le\delta_t\le1$ であり、全状態の不変は学習停止を含意するが、
+逆は一般には成り立たない。
+写像全体で学習射影が恒等、すなわち
+$\operatorname{pr}_L\mathrm{Update}(M,x,e)=\operatorname{pr}_L M$
+ならば任意の整合系列で学習停止となる。
+本論文は、一系列上の学習停止から写像全体のこの性質を一般的な帰結として置かない。
+ここで $\operatorname{pr}_L:\mathcal M\to\mathcal M^{\mathrm L}$ は座標射影である。
+\end{definition}
+
+\subsubsection{時間平均内部モデル変化量}
+
+\begin{definition}[時間平均内部モデル変化量（分類C）]
+\label{def:update_quality}
+
+以下の
+$\lambda_{T,t}$、
+$\lambda_{M,c,T,t}$ および
+$\boldsymbol{\lambda}_{M,T,t}$ は、対象ACS $\Sigma$ について固定された
+一つのUpdate整合系列
+（定義~\ref{def:update_consistent_sequence}）に沿って定める。
+7タプル $\Sigma$ は、初期状態 $x_0$、初期内部モデル状態 $M_0$、
+環境実現（定義~\ref{def:env_realization}）および行動列を
+一意に定めない（備考~\ref{rem:exogenous_environment}）。
+したがってこれらの指標は $\Sigma$ のみからは定まらない。
+本論文では評価系列への依存性を記法上省略する。
+括弧内の $\Sigma$ は対象ACSを識別するものであり、
+7タプルのみからこれらの値が一意に定まることを
+意味しない。
+
+\medskip
+\noindent\textbf{最大成分時間平均更新速度と成分別時間平均更新速度：}
+
+開始時刻 $t$、時間窓長 $T$ に対する
+最大成分時間平均更新速度を
+\[
+  \lambda_{T,t}
+  =
+  \frac{1}{T}
+  \sum_{s=t}^{t+T-1}\delta_s
+\]
+とする。
+
+ここで $\delta_s$ は、時刻 $s$ における
+TIPA 三機構の成分別変化量
+$\boldsymbol{\delta}_{M,s}$ の最大値である
+（定義~\ref{def:tipa_component_change}）。
+したがって $\lambda_{T,t}$ は、
+三機構すべての変化量を加算した総変化量ではなく、
+各時刻における最大成分変化の時間平均を表す。
+
+同じ時間窓について、成分別時間平均更新速度を
+\[
+  \lambda_{M,c,T,t}
+  :=
+  \frac{1}{T}
+  \sum_{s=t}^{t+T-1}
+  \delta_{M,c,s},
+  \qquad
+  c=1,2,3
+\]
+と定義し、
+\[
+  \boldsymbol{\lambda}_{M,T,t}
+  :=
+  \bigl(
+    \lambda_{M,1,T,t},
+    \lambda_{M,2,T,t},
+    \lambda_{M,3,T,t}
+  \bigr)
+\]
+を TIPA 三機構の成分別時間平均更新速度とする。
+
+$\boldsymbol{\lambda}_{M,T,t}$ は成分別変化を集約せずに
+記述する一次的指標であり、
+$\lambda_{T,t}$ は最大成分変化を集約した
+スカラー指標として区別して用いる。
+これらは本論文が分析のために導入する記述量であり、
+当該ACSがこれらを内部に保持することを要求しない。
+
+開始時刻が $0$ の場合には、
+\[
+  \lambda_T
+  :=
+  \lambda_{T,0},
+\]
+\[
+  \lambda_{M,c,T}
+  :=
+  \lambda_{M,c,T,0},
+  \qquad
+  \boldsymbol{\lambda}_{M,T}
+  :=
+  \boldsymbol{\lambda}_{M,T,0}
+\]
+と略記する。
+
+\medskip
+これらは、時間窓において実際に生じた内部モデル変化の記述量であり、
+当該ACSが原理的に達成しうる最大の更新速度その他の容量を表さない
+（\S\ref{subsec:cognitive_capacity_policy}）。
+具体的な実装系または観測データに対する
+実証的測定・推定方法は Phase~2 以降の課題とする。
+\end{definition}
+
+\begin{remark}[環境変化応答機能；構成的必要機能候補]
+\label{rem:env_change_response}
+
+本小節までに、原始的な機能の標準写像形式
+$P_{\mathrm{sens}},P_{\mathrm{disc}},P_{\mathrm{val}},P_{\mathrm{act}}$
+（定義~\ref{def:three_primitives}）、内部モデル構造 $M$
+（定義~\ref{def:internal_model}）および更新作用素
+$\mathrm{Update}$（定義~\ref{def:update_operator}）が
+\S\ref{sec:acs_def} 内で出そろった。
+本備考では、これらを横断して成立しうる機能を
+\emph{環境変化応答機能}として記録する。
+
+すなわち、外部環境状態の変化に対して、ACSが利用可能な感知、
+内部表現形成、評価、予測、内部モデル更新および行動形成の
+一部または複数を用い、現在または将来の応答を変化させうる
+横断的機能をいう。
+本備考は新たな写像、変数または応答時間量を定義しない。
+
+この機能は、必要環境要因 $\eta\in E$
+（\S\ref{subsec:environment_space}）とは理論階層が異なる。
+$\eta$ が記述するのは、ACSが存続するために、
+内部状態と外部環境状態の組において
+何が満たされていなければならないかであり、
+その外部環境状態への依存は構成要件 CR-1 の (CR-1c) によって拘束される。
+所与の必要環境を自己側で利用しうるか否か
+（必要環境利用機能、備考~\ref{rem:env_utilization_function}）は、
+$\eta$ の内部状態への依存として表されうる。
+これに対し本備考が記述するのは、外部環境が変化したときに
+ACS側が利用可能な機能をどのように用いて応答しうるかである。
+したがって本機能は、備考~\ref{rem:eta_coarse_classes} の
+標準的粗分類候補 $\mathsf{Cls}_\eta$ に加えるべき第五のラベル
+ではなく、これと同一の一覧に並べない。
+
+以下の限定を付す。
+
+\begin{enumerate}[label=(\alph*)]
+  \item 本備考は、処理の固定系列を要求しない。
+  感知から行動に至る各段階を毎時刻すべて経ることを
+  要求せず、変化の検出から局所急性異常への保護応答に至る急性の応答と、
+  識別・評価を経て必要に応じた内部モデル更新を行い後続の応答を
+  変更する適応的な応答の双方を包含しうる。
+  それぞれに対応しうる標準機能形式は
+  \S\ref{sec:tipa} で扱う。
+
+  \item 本備考は
+  \[
+    e\neq e'
+    \;\Longrightarrow\;
+    \mathrm{Update}(M,x,e)\neq\mathrm{Update}(M,x,e')
+  \]
+  を要求しない。
+  外部環境状態が変化しても内部モデル更新を要しない場合があり、
+  また現在の行動の変更のみによって応答が実現される場合もある。
+  この扱いは、$f$ の行動引数に関する非退化性を一般には
+  要求しない本論文の方針
+  （仮定~\ref{ass:f_decomposition}、
+  \S\ref{subsec:state_space_basic_variables}）、および
+  恒等的な更新を排除しない本小節の扱い
+  （定義~\ref{def:update_stop_on_trajectory}）と整合する。
+
+  \item 本論文は、本備考から、整形式実現の維持
+  （$\mathrm{WF}_{i,t}=1$、定義~\ref{def:wf_realization}）、
+  可行性 $\Pi(x_t)\geq0$、非閉塞 $A_t\neq\emptyset$
+  （定義~\ref{def:blockage_sec2}）、または非崩壊
+  （定義~\ref{def:collapse}）を一般的な帰結として置かない。
+  すなわち、応答しうる機能の存在から存続の成功を一般的な帰結として置かない。
+
+  \item 外部からの変化が応答に先立ってACSの構造を
+  回復不能に損なう場合、当該ACSが存続しないことをもって
+  応答しうる機能の欠如とは判定しない。
+
+  \item 本論文は、環境変化の後に応答すべき一律の期限を
+  Phase~1 では課さない。
+  応答の余地が存在する時間尺度は、変化の種別および実装に
+  依存する。
+
+  \item 予測されていなかった変化を含みうるが、
+  本論文は、環境変化応答機能に一般に適用する予測外の判定条件および許容誤差を
+  Phase~1 で形式化していないため、この意味での「予測外の変化」を形式的に定義しない
+  （備考~\ref{rem:estimate_gap}）。
+  \S\ref{sec:tipa} の予測整合性誤差と二種類の予測外は、M1 の出力と保持記録に相対して定める量である
+  （定義~\ref{def:m1_temporal_features}、定義~\ref{def:prediction_record_check}）。
+\end{enumerate}
+
+本備考は構成的必要機能の候補としての記録であり、
+現段階では次のいずれも行わない。
+第一に、$\mathsf{Cls}_\eta$ への追加。
+第二に、構成要件 CR-2（\S\ref{subsec:three_primitive_functions}）
+への原始的な機能の新たな区分としての追加。
+第三に、新たな構成要件の導入。
+第四に、分類A表記の付与。
+
+これらの判断には、存続に関わる環境変化の形式的定義、
+応答を要しない環境差との区別、応答の余地が存在しない変化の
+除外方法、内部モデル更新を伴わない応答の扱い、
+即時の保護応答と適応的応答に共通する抽象条件、
+恒等的な更新をもつ実現を排除する条件、および
+応答しうる機能と応答の成功との分離を要する。
+これらの検討は Phase~1.$\alpha$ または Phase~2 の課題とする
+（\S\ref{subsec:phase1a}、within present framework）。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{認知的処理能力の記述方針}
+\label{subsec:cognitive_capacity_policy}
+
+本小節では、ACSの認知的処理能力について Phase~1 で採用する記述方針を述べる。
+本論文は Phase~1 において、認知的処理能力を形式的に定義せず、
+単一の量としても導入しない。
+
+\begin{remark}[認知的処理能力の記述方針]
+\label{rem:cognitive_capacity_policy}
+本論文は、認知的処理能力を単一のスカラー量として定義しない。
+その形式化にあたっては、少なくとも次の三つを区別する必要がある。
+
+\begin{description}[style=nextline]
+  \item[量的容量]
+  一時刻あたりに保持・統合・更新の対象としうる情報または表現の規模。
+  \item[時間応答性]
+  新しい情報、誤差または環境の変化を内部表現や評価へ反映するまでの速さ。
+  離散時間の本枠組みでは、所定の統合・訂正の基準に到達するまでの
+  段数（潜時）が形式化の候補となる。
+  時間応答性は、一時刻あたりの処理の規模とは別の量である。
+  \item[統合の質]
+  新しい情報と既存の内部表現を、対象の状態や評価の対象との整合を保ちながら
+  統合・更新できる程度。
+  状態推定と評価の正確性、および誤差の検出と訂正を含みうる。
+\end{description}
+
+これらに関して、本論文は次の区別を置く。
+第一に、容量、すなわちある条件のもとで達成しうる範囲と、
+実現量、すなわち実際に生じた変化とを区別する。
+定義~\ref{def:update_quality} の時間平均内部モデル変化量は後者の記述量であり、
+認知的処理能力を表さない。
+第二に、能力とその使い方の偏向とを区別する。
+原始的な機能の責務の遂行（そのための資源・評価・注意その他の配分または利用を含む）に現れる偏向性の程度は、
+\S\ref{sec:extended_dynamics} の偏向性（定義~\ref{def:bias_tendency}）として記述し、
+その程度を偏向強度 $\beta_{\iota,t}$（定義~\ref{def:beta_accumulated}）で表して、
+認知的処理能力には含めない。
+第三に、三つの区分を一つの実数へ集約する一般式も、
+区分の間の全順序も置かない。
+第四に、認知的処理能力を、\S\ref{sec:tipa} の機能軸が表す作動の程度、
+および \S\ref{sec:extended_dynamics} の健全度が表す基盤の状態と
+同一視しない。
+
+本備考は新たな記号、写像、構成要件または仮定を導入しない。
+三つの区分の形式化と測定は Phase~1.$\alpha$ または Phase~2 の課題とする
+（\S\ref{subsec:limitations_list} の L3、\S\ref{subsec:phase1a}）。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{整形式性・構成要件・仮定の整理}
+\label{subsec:assumption_list_sec2}
+
+本小節では、\S\ref{sec:acs_def} で導入した規約、構成要件および
+仮定を一覧として整理する。
+本小節はこれらを新たに定義する場所ではない。
+各対象の正式な定義は、それぞれの意味論的所有先である小節に
+置かれており、本小節は所在と地位を再掲するにとどめる。
+
+本論文は、ACS定義を支える条件を次の三種に区別する。
+第一に規約であり、これは本論文が記述のために採用する
+取り決めであって、当該ACSが満たすべき条件ではない。
+第二に構成要件であり、これは当該7タプル構造体の実現が、
+本論文におけるACSとして認められるために満たすべき
+意味論的条件である。
+第三に仮定であり、これは後続命題の成立範囲を限定するために
+導入される条件である。
+規約と構成要件は仮定一覧に含めない。
+
+\subsubsection*{規約および構成要件}
+
+独立した項目として本小節で再掲する規約は二件である。
+
+\begin{description}[style=nextline]
+  \item[記述水準の規約（\S\ref{subsec:acs_7tuple}）]
+  抽象構造型、その実現である個体 $\Sigma_i$、
+  および時刻別の値を書き分け、個体の実現に依存する量を
+  時刻に依存しない写像とその時刻評価値の二段で書く規約。
+  \item[型分離規約 TSC（\S\ref{subsec:wellformedness}）]
+  内部状態型 $X$ と外部環境状態型 $E_{\mathrm{ext}}$ を
+  集合表現上でも分離するために採用する規約。
+  タグ付きの互いに素な表現はその実装手段であり、
+  TSC が要求するのは型分離そのものである。
+\end{description}
+
+構成要件は二件である。
+
+\begin{description}[style=nextline]
+  \item[構成要件 CR-1（必要環境整合性、
+  \S\ref{subsec:environment_space}）]
+  必要環境空間 $E$ の各元が当該ACSの存続に真に必要であること
+  (CR-1a)、必要要因の全体が同時に充足されうること
+  (CR-1b)、および各要因について、開始時点の内部状態を固定したとき
+  外部環境状態の違いによって充足・非充足が分かれる持続的な非充足が
+  実現しうること (CR-1c)。
+  \item[構成要件 CR-2（原始的な機能と基盤機能の具備、
+  \S\ref{subsec:three_primitive_functions}）]
+  感知・識別・評価・行動の四区分のそれぞれについて基礎的な機能を具備すること (CR-2a)、
+  それらが機能的に退化していないこと (CR-2b)、
+  およびそれらの活動を支える基盤機能を具備すること (CR-2c)。
+\end{description}
+
+CR-1 および CR-2 は、いずれも7タプルから機械的に検査できる
+条件ではなく、その実現に対する意味論的条件である。
+両者は対象が異なり、本論文は一方から他方を一般的な帰結として置かない。
+これらの充足を有限観測から判定する手続きは Phase~1 では
+与えない。
+
+\subsubsection*{仮定一覧}
+
+本節で導入した仮定は九件である。
+導入地位の記号は、A が公理的、S が構造的、O が観察的を表す。
+各仮定の内容、導入地位および強さは、それぞれの所在小節に
+記載したとおりである。
+「主な依拠箇所」は、当該仮定を参照する主な定義・命題・備考を示し、
+参照の全件ではない。
+
+\medskip
+{\small
+\begin{center}
+\begin{tabular}{p{1.4cm} p{4.0cm} p{6.0cm} p{0.8cm} p{0.8cm}}
+\hline
+\textbf{仮定} & \textbf{所在} & \textbf{主な依拠箇所} & \textbf{地位} & \textbf{強さ} \\
+\hline
+\ref{ass:no_branching} & \S\ref{subsec:self_formal_definition}（構造的自己と時間的自己同一性） & 定義~\ref{def:time_identity} & A & 強 \\[2pt]
+\ref{ass:compact_spaces} & \S\ref{subsec:state_space_basic_variables}（状態遷移） & 定義~\ref{def:acs}、命題~\ref{prop:At_compact}、定義~\ref{def:x_E}、定義~\ref{def:update_section5} & S & 強 \\[2pt]
+\ref{ass:f_continuity} & 同上 & 定義~\ref{def:acs}、命題~\ref{prop:At_compact} & S & 中 \\[2pt]
+\ref{ass:Eext_time_fixed} & 同上 & 備考~\ref{rem:fixed_environment_and_state_dependent_viability} & S & 中 \\[2pt]
+\ref{ass:f_decomposition} & 同上 & 定義~\ref{def:acs}、備考~\ref{rem:oplus_neutrality}、備考~\ref{rem:blockage_auto} & S & 強 \\[2pt]
+\ref{ass:env_input_nondegeneracy} & 同上 & 命題~\ref{prop:nondegeneracy_implication} & S & 弱 \\[2pt]
+\ref{ass:env_viable_nondegeneracy} & \S\ref{subsec:viability_function_and_blockage}（可行性） & 命題~\ref{prop:nondegeneracy_implication}、命題~\ref{prop:feasibility_sensitivity_scope} & S & 弱 \\[2pt]
+\ref{ass:viable_realizability} & 同上 & 備考~\ref{rem:viable_realizability_consequences} & S & 中 \\[2pt]
+\ref{ass:M_compact} & \S\ref{subsec:internal_model_M}（内部モデル） & 定義~\ref{def:model_parameter_space}、定義~\ref{def:update_operator} & S & 強 \\
+\hline
+\end{tabular}
+\end{center}
+}
+
+\medskip
+このうち強さを強とするものは、
+仮定~\ref{ass:no_branching}、
+仮定~\ref{ass:compact_spaces}、
+仮定~\ref{ass:f_decomposition} および
+仮定~\ref{ass:M_compact} の四件である。
+これらは、緩和すると本節の主要定義または後続節の主要命題の
+成立範囲が変わりうる仮定である。
+その弱化または代替定式化の検討は
+\S\ref{sec:limitations_and_outlook} で扱う。
+
+仮定~\ref{ass:M_compact} の強さ「強」は、
+各 $\mathcal{M}_c$ の非空コンパクト性にかかる。
+同仮定に含まれる距離の尺度正規化は
+計量上の規約として扱い、
+この強さの評価対象には含めない。
+
+\subsubsection*{本節が主張しない事項と Phase 委譲}
+
+本節は閉塞、機能的終端および崩壊を定義するが、単独では次のいずれも主張しない。
+閉塞、機能的終端または崩壊への到達、整形式実現の終局的喪失、
+終局的な構造的自己喪失、
+社会的相互作用、確率的安定性、実装可能性および測定可能性で
+ある。
+
+以下は Phase~1 の枠内では形式化しない。
+各項目は、後続 Phase への委譲事項、または将来の拡張・再検討の
+候補として保留する。
+本論文は、これらのすべてが後続 Phase において形式化されることを
+主張しない。
+
+\begin{enumerate}[label=(\arabic*)]
+  \item 確率的拡張、連続時間化、および非コンパクト内部状態空間への
+  一般化。
+
+  \item 必要環境要因の経験的同定手続き、および同定誤差の扱い
+  （備考~\ref{rem:necessity_identification}）。
+  必要性の存立と同定可能性は区別される。
+
+  \item 分岐を許す場合の時間的自己同一性の再定式化
+  （仮定~\ref{ass:no_branching} の緩和、
+  \S\ref{sec:limitations_and_outlook}）。
+
+  \item 整形式実現指標 $\mathrm{WF}_{i,t}$
+  （定義~\ref{def:wf_realization}）の値を有限観測から
+  判定する操作的手続き。
+  $\mathrm{WF}$ と機能的終端指標 $\mathrm{FT}_{i,t}$・崩壊指標 $\mathrm{Col}_{i,t}$ の関係は
+  備考~\ref{rem:collapse_wf_relation} で述べた。
+
+  \item 機能的終端の条件 (FT-1)・(FT-2) および崩壊の条件 (SC-1)・(SC-2) の
+  判定規則の一般形式、ならびに (SC-1) が参照する、構造的個体としての同一性を
+  成立させる組織関係の一般形式
+  （定義~\ref{def:functional_termination}、定義~\ref{def:collapse}）。
+  本論文はこれらを対象系ごとに固定されるものとして扱う。
+
+  \item 自己--環境境界の動的再編成、および
+  時間依存する外部環境状態空間への拡張。
+
+  \item 作用差（定義~\ref{def:action_difference}）の大きさ、
+  多段階にわたる作用、行動や行動応答成分の寄与の比較、
+  および外部と内部に共通する資源量の収支。
+  背景成分の列の生成則と、他のACS個体との結合動学は Phase~2 の課題とする
+  （備考~\ref{rem:exogenous_environment}、\S\ref{subsec:limitations_list} の L2）。
+
+  \item 実現外部環境状態 $e_t$ と内部環境推定 $\hat{e}_t$ の
+  乖離の定量化（備考~\ref{rem:estimate_gap}）。
+
+  \item 必要に応じた、内部表現の空間
+  $\mathcal{R}_{\mathrm{int}}$ から内部モデル状態空間
+  $\mathcal{M}$ への明示的な符号化写像の導入
+  （備考~\ref{rem:M_encodes_representation}）。
+  本論文は、そのような写像を後続 Phase で導入することを
+  約束しない。
+
+  \item 環境変化への横断的応答能力
+  （備考~\ref{rem:env_change_response}）を新たな構成要件として
+  形式化すること。
+  環境変化の存続関連性、応答の余地が存在する時間尺度、
+  予測されていなかった変化の判定、修繕・代替・回復の経路、
+  および当該能力をACS成立条件へ昇格させるための必要十分条件は、
+  Phase~1.$\alpha$ または Phase~2 の検討対象とする（\S\ref{subsec:phase1a}）。
+
+  \item 必要環境要因の分類粒度の確定
+  （備考~\ref{rem:eta_coarse_classes}）。
+  標準的粗分類候補 $\mathsf{Cls}_\eta$ は分割ではなく、
+  網羅性および排他性を証明していない。
+\end{enumerate}
+
+\subsubsection*{三原理への接続}
+
+本節では、ACSを7タプル
+$\Sigma=(X,U,E,f,\Pi,M,\mathrm{Update})$ として定義し、
+外部環境状態空間 $E_{\mathrm{ext}}$ に相対的な記述の枠組み、
+構造的自己・整形式実現と崩壊、必要環境空間、状態遷移、
+持続評価と可行性、原始的な機能、内部モデル構造、
+内部モデル更新、および認知的処理能力の記述方針を与えた。
+
+\S\ref{sec:three_principles} では、これらの定義のもとで、
+自己維持（SM）・環境利用（EU）・可行応答（FR）の三原理を形式的に定義し、
+各原理の概念的定義と時刻別充足述語を区別したうえで、
+時刻別充足述語相互の条件付き含意および非含意を扱う。

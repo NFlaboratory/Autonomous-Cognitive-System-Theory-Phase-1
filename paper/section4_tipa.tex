@@ -1,0 +1,2964 @@
+%======================================================================
+\section{TIPA・PSL・ISL}
+\label{sec:tipa}
+
+\S\ref{sec:three_principles} では、
+自己維持（SM）、環境利用（EU）、可行応答（FR）の三原理を、
+存続中のACSに対する制約軸として定式化した。
+本節ではそれらを再定義せず、
+単一 ACS が同一時刻に情報を取得・統合し、
+可行性維持に関係する差異を評価し、
+応答を形成して実効行動へ接続するための標準機能形式を与える。
+
+本節で扱う主要な標準機能形式は、
+三機構情報処理アーキテクチャ・TIPA（Triadic Information-Processing Architecture）、
+物理的基盤層・PSL（Physical Substrate Layer）、
+実装部位層・ISL（Implementation Substrate Layer）である。
+TIPA は情報統合、適応的評価、応答行動形成を担い、
+PSL は TIPA と実装側の入力・出力・基盤維持・局所保護応答を接続し、
+ISL は感知・作用・情報保持等を担いうる実装上の担体を整理する。
+
+本節の責務は、
+これらの同一時刻における構造、情報依存、作動形式および接続関係を定めることである。
+記憶更新、学習、内部モデル更新、
+統合的高速処理および Automaticity の形成・強化・弱化・解除、
+PSL・ISL の健全度変化その他の
+$t\to t+1$ の時刻間動学は
+\S\ref{sec:extended_dynamics} に委ねる。
+
+\begin{remark}[原理水準と機構記述の関係]
+\label{rem:principle_level_locus}
+SM、EU、FR は \S\ref{sec:three_principles} で定める制約軸であり、
+TIPA、PSL、ISL のいずれか一つと同一視しない。
+原理そのものについては成立・不成立を述べず、
+真偽をもつのは各原理の時刻別充足述語である（備考~\ref{rem:s3_description_levels}）。
+本論文は、本節の機構出力または作動状態だけから、
+三原理の時刻別充足述語の真偽を一般的な帰結として置かない。
+\end{remark}
+
+以下、\S\ref{subsec:s4_scope}で本節の記述範囲と共通規約を、
+\S\ref{subsec:tipa_architecture} で TIPA の三機構と三機能を、
+\S\ref{subsec:psl} で PSL の下位責務と実効行動解決を、
+\S\ref{subsec:purpose_action_result} で目的・行動・結果の記述を、
+\S\ref{subsec:impl} で ISL を、
+\S\ref{subsec:fast_processing} で統合的高速処理と Automaticity を、
+\S\ref{subsec:functional_axis} で機能軸を扱う。
+同一時刻の機能的接続の全体は、小括の図~\ref{fig:s4_same_time} に示す。
+
+%----------------------------------------------------------------------
+\subsection{本節の記述範囲と共通規約}
+\label{subsec:s4_scope}
+
+本小節では、
+本節全体を貫く責務境界と共通数学装置のみを確認する。
+本節で新たに用いる主要記号の一覧は付録~\ref{app:symbols_s4} に示す。
+各機構または作動形態に固有の仮定・区別は、
+それぞれを担う後続小節で与える。
+
+\subsubsection{同一時刻構造と時刻間動学の責務境界}
+\label{subsubsec:s4_same_time_boundary}
+
+本節は TIPA、PSL、ISL の
+同一時刻における構造、情報依存、作動および接続を扱う。
+これらの形成、学習、更新、劣化、回復その他の時刻間変化は、
+\S\ref{sec:extended_dynamics} に委ねる。
+
+したがって本節では、
+ある時刻にどの情報がどの機構から利用可能となり、
+各機構が何を生成し、
+最終的に状態遷移へ入力される行動がどのように構成されるかを定める。
+
+\subsubsection{構成的必要機能と標準機能形式の区別}
+\label{subsubsec:s4_abc_application}
+
+本節で用いる分類A、分類B、分類Cは、
+定義~\ref{def:abc_classification} の一般規則に従う。
+本節では分類そのものを再定義せず、
+構成的に必要な機能と、
+TIPA・PSL・ISL その他の分類Bの標準機能形式とを同一視しないこと、
+および分類Cの量を ACS の追加構成要素とみなさないことのみを確認する。
+
+具体的な器官、回路、ハードウェア、ソフトウェアモジュールその他の実装は、
+分類Bの標準機能形式と一対一に対応することを要求しない。
+
+本節はまた、\S\ref{subsec:description_levels_global} の記述水準の規約を
+そのまま適用する。
+すなわち、ある形式量を導入することは ACS がその真値を知ることを意味せず、
+ある構造的機能が必要であると述べることは
+ACS が本論文の特定の数式を内部に実装することを意味しない。
+本節が構造的機能の存在について要求するのは、
+当該機能に関係する差異の少なくとも一部に対して
+評価結果または内部応答が変化しうることに限られる。
+
+本節は単一のACS個体 $\Sigma_i$ を扱うため、
+\S\ref{sec:acs_def} の規約に従い、
+状態・環境・可行行動集合等の個体添字を省略して
+$x_t$、$e_t$、$A_t$ と書く。
+個体の同一性に関わる崩壊指標には添字を付して $\mathrm{Col}_{i,t}$ と書く。
+
+\subsubsection{決定論的選択射影}
+\label{subsubsec:selection_projection}
+
+\begin{definition}[決定論的選択射影（分類B）]
+\label{def:sel_proj}
+集合 $Y$ 上の非空候補集合族を
+\[
+  \mathfrak C_Y
+  \subseteq
+  \mathcal P(Y)\setminus\{\emptyset\}
+\]
+とする。
+決定論的選択射影を
+\[
+  \mathrm{Proj}_{\mathrm{sel},Y}:
+  \mathfrak C_Y
+  \to Y
+\]
+とし、任意の $C\in\mathfrak C_Y$ について
+\[
+  \mathrm{Proj}_{\mathrm{sel},Y}(C)\in C
+\]
+を満たす固定された選択規則とする。
+
+この写像は、複数の同等候補が存在する場合にも
+Phase~1 の決定論性を維持するための共通形式装置である。
+具体的なタイブレーク規則は実装依存とする。
+\end{definition}
+
+\subsubsection{状態担体と情報来歴}
+\begin{definition}[同時刻作動の担体規約（分類B）]
+\label{def:s4_carrier_contract}
+本節の時刻依存の機構出力は、固定した規則のもとで $(M_t,I_t)$ から生成する。
+$I_t=P_{\mathrm{sens}}(x_t,e_t)$ とし、$I_{\mathrm{sense},t}=I_t$ と書く。
+物理的信号・PSL基盤・感度・効果器の状態は $x_t$ に、
+保持内容は $M_t^{\mathrm L},M_t^{\mathrm W}$ に担わせる。
+本節で用いる各信号空間・情報空間は非空集合とする。
+位相を用いる結果は、既定義の $X,\mathcal M$ の位相に限り、
+信号空間のコンパクト性や読み出しの連続性は要求しない。
+
+各前時刻入力は、以下の固定された読み出しによって与える。
+\[
+\begin{aligned}
+\rho_{\mathrm{past}}:\mathcal M^{\mathrm W}\longrightarrow
+ \mathcal P_{\mathrm{prio}}\times U\times X^{\le W}
+ \times\mathsf S_{M1}\times\mathcal I^{\le W_{\mathrm{short}}}
+ \times\mathcal P_{\mathrm{fin}}(\mathsf{Pur})\times\mathcal G_O.
+\end{aligned}
+\]
+右辺の型は後掲の M1・M2・M3 の定義による
+（$\mathsf{Pur}$ は定義~\ref{def:purpose_formation}、$\mathcal G_O$ は定義~\ref{def:env_set_prediction}）。
+各成分を、保持された前回Priority、実効行動の記録、状態推定履歴、
+M1出力の記録、感知情報履歴、前時刻の目的の集合の記録、
+および前時刻の実効行動についての外部側予測集合の記録として用いる。
+最後の二つの記録が形成されるのは、
+Update の詳細型（\S\ref{sec:acs_def} 備考~\ref{rem:update_type_two_layers}）が
+同一ステップの中間値を追加引数として受け取る範囲に限られる。
+目的の集合の記録は M3 の作動成分 $\mathcal M_3^{\mathrm W}$ に担わせる。
+以降、機構への入力に現れる前時刻記号はこの記録値を表し、
+実際の過去出力との同一性は仮定しない。
+初期記録も $M_0^{\mathrm W}$ から読み出し、独立初期状態を追加しない。
+記録の欠落・誤りを許すが、機構はその扱いを含め固定した全域写像として与える。
+空履歴または固定した初期規約値を用いる場合、それを実際の過去値とはしない。
+欠落の識別が必要な実現では、その識別情報も既存の作動成分に保持する。
+不足する履歴を真の過去値で補完しない。
+
+$\rho_{\mathrm{past}}$ の存在を任意の符号化可能性の定理とはしない。
+採用する Update の成分型の下で実現される記録のみを用いる。
+特に Update$_1$ は他機構の状態を直接入力としないので、
+他機構由来の記録を機構1に正確に保存できるとは一般にはいえない。
+読み出しの担体を $\mathcal M^{\mathrm W}$ 全体とすることは、この更新制約を解除しない。
+\end{definition}
+
+%----------------------------------------------------------------------
+\subsection{TIPA：三機構情報処理アーキテクチャ}
+\label{subsec:tipa_architecture}
+
+TIPA を
+\[
+  \mathrm{TIPA}:=(M_1,M_2,M_3)
+\]
+として、情報統合、適応的評価、応答行動形成を
+三つの機構へ機能分解する分類Bの標準機能形式とする。
+この分解は、三つの独立した物理モジュールの存在を要求するものではない。
+
+Priority の標準型を
+\[
+  \mathcal P_{\mathrm{prio}}
+  :=
+  \{
+    \mathrm{Priority\ 1},
+    \mathrm{Priority\ 2},
+    \mathrm{Priority\ 3},
+    \mathrm{None}
+  \}
+\]
+とし、標準動作モード集合を
+\[
+  \mathsf{Mode}
+  :=
+  \{\mathrm{3A},\mathrm{3B},\mathrm{3C}\}
+\]
+とする。
+また、M3 の応答様式出力の型を
+\[
+  \mathsf{Style}
+  :=
+  \{\mathrm{3B\mbox{-}own},\mathrm{3B\mbox{-}rel},\mathrm{3B\mbox{-}comb},\mathrm{none}\}
+\]
+とする。
+これらの意味は M2 および M3 の該当箇所で与える。
+
+TIPA 内の概念的な生成依存は
+\[
+  M_1\longrightarrow M_2\longrightarrow M_3
+\]
+とする。
+これは、必要な上流出力が下流機構から利用可能となる情報依存を表す。
+
+\begin{assumption}[TIPA三機構の機能的並行性]
+\label{ass:functional_concurrency}
+$M_1$、$M_2$、$M_3$ は、
+上記の生成依存を保ちながら、
+同一時刻に機能的に並行して作動しうるものとする。
+
+したがって、
+$M_1\to M_2\to M_3$ は情報生成依存を表し、
+三機構を物理時間上またはハードウェア上の
+厳密な逐次モジュールへ固定するものではない。
+
+導入地位：S（構造的）。強さ：中。
+依拠箇所：内部モデル構造の定義（\S\ref{sec:acs_def} 定義~\ref{def:internal_model}）における三機構の作動の読み方。
+本節の命題の前提としては用いない。
+\end{assumption}
+
+\begin{remark}[機構間の送受信と同一時刻の記述]
+\label{rem:tipa_bidirectional}
+離散時間の標準形では、同一時刻の中には上記の生成依存の向き $M_1\to M_2\to M_3$ だけを置く。
+同一時刻の中で出力が互いに入力となる関係は、
+各時刻の値を定めるために、不動点の存在と、
+その一意性または値を一つに定める決定論的な規則とを別に要する記述となるので、本節では置かない。
+
+逆向きの影響は、時刻をまたいで次の時刻の入力として表す。
+本節の標準形がもつ経路は次のとおりである。
+\begin{enumerate}[label=(\roman*)]
+  \item 保持記録を通じる経路（定義~\ref{def:s4_carrier_contract}）。
+  M1 は、前時刻の M1 出力の記録 $\mathsf S_{M1,t-1}$ と状態推定履歴、
+  前回 Priority $P_{t-1}$、最終実効行動の記録 $u_{t-1}$ を入力とし、
+  目的の集合の記録を目的対象性の成分の形成に用いうる。
+  M2 は自身の過去の評価の記録を読み出しうる
+  （定義~\ref{def:m2_latent_instability} の $\rho_{\mathrm{eval,past}}$）。
+  M3 は前時刻の目的の集合 $\mathrm{Pur}_{t-1}$ を入力とする。
+  前時刻の動作モード $\mathrm{mode}_{t-1}$ は、
+  標準形では独立の保持記録または明示的入力として設けない。
+  ただし、前時刻のモードに由来する情報が
+  $M_t$ などの既存の入力に実際に保持されている場合、
+  その情報が現在のモード判断に関与することは排除しない。
+  \item 状態と外部環境状態を通じる経路。
+  実効行動 $u_t$ は $f$ と行動応答成分の遷移を通じて次の時刻の状態と外部環境状態を変え、
+  その変化は感知を経て M1 に入る。
+\end{enumerate}
+いずれの経路も、記録または状態が実際にその内容を担う範囲に限られる。
+M3 の出力から M2 への経路は置かない（定義~\ref{def:m2_map}、備考~\ref{rem:m2_no_return_scope}）。
+また、PSL-4 の局所保護応答は三機構を経由しない経路であり（\S\ref{subsubsec:psl4}）、
+$M_1\to M_2\to M_3$ は当該ACSの信号のすべてが通る経路ではない。
+
+実装において、三機構は、それぞれ接続先から情報を受け取り、
+処理した情報を出力しつづけるものとして読む。
+$M_1$、$M_2$、$M_3$ の番号は記述上の順番であり、
+作動中には機構の間で双方向の送受信が起こりうる。
+本論文が各機構について記述するのは、
+受け取った情報をその機構の枠組みの中で処理し、
+型宣言に合う出力を与えるところまでである。
+出力の性質のクラス分けの詳細は、本節で意味の解釈を与えたものを除いて定めない。
+一つの機構の内部の反復は、その機構の時刻別の写像の中に縮約して表す
+（備考~\ref{rem:internal_steps_time}）。
+これに対し、実装が同一時刻の中で機構の間を往復する場合、
+その往復は標準形の写像に縮約しない。
+その場合は時刻の刻みを細かく取り、戻りを次の時刻の入力として表す。
+時刻の刻みの取り方は記述上の選択であり、
+本論文は、そのような刻みがどの実現にも存在することを主張しない。
+刻みの取り方を変えると一段遷移仕様が変わり、
+可行行動集合と閉塞の判定もそれに相対して定まる
+（\S\ref{sec:acs_def} 備考~\ref{rem:blockage_scope_sec2} (c)）。
+連続時間の記述との対応は Phase~2 の課題とする（\S\ref{subsec:limitations_list} の L1）。
+\end{remark}
+
+\begin{remark}[複数の情報の並行的な処理の範囲]
+\label{rem:multi_item_concurrency}
+同一時刻の識別状態は複数の内部対象トークンを、
+要請信号と要求×対象の評価は複数の要求と組を、
+目的の集合は複数の目的を、それぞれ含みうる。
+生成依存 $M_1\to M_2\to M_3$ は、
+ある情報の処理の完了を他の情報の処理の条件とする規則を含まない。
+したがって本論文は、標準形の上では、
+一つの情報が未処理であることそれ自体から、他の情報の処理の停止を一般的な帰結として置かない。
+実装では、複数の情報が異なる処理の段階に同時にありうる。
+
+一方、実装の処理能力や仕様によって、
+個々の情報の処理が遅れること、または処理されないまま残ることは起こりうる。
+標準形の上では、これは各機構の写像が当該の情報を出力に反映しないこととして表れる
+（たとえば、トークンを割り当てないこと、要求×対象の評価の定義域に含めないこと）。
+本論文は、すべての情報がいつか処理されること、処理の遅れに上限があること、
+および処理の公平性を一般的な帰結として置かない。
+トークンの未割当、要求×対象の未評価、目的の状態判断の保留は
+それぞれ異なる水準の量であり、本論文はこれらを一つの未処理の状態としてまとめない。
+\end{remark}
+
+\begin{definition}[機構出力の個体への帰属（分類B）]
+\label{def:s4_output_attribution}
+本節の M1、M2、M3 の時刻別の出力は、
+$\mathrm{WF}_{i,t}=1$（\S\ref{sec:acs_def} 定義~\ref{def:wf_realization}）の時刻 $t$ について
+$\Sigma_i$ の出力として定める。
+$\mathrm{WF}_{i,t}=0$ の時刻には、これらを $\Sigma_i$ の出力として定めない。
+このとき出力は、特定の値（$0$、$\mathsf{und}$、空集合その他）をとるのではなく、未定義である。
+崩壊の後の時刻はこの場合に含まれる（同節定義~\ref{def:collapse} の帰属の規定）。
+各機構の写像は型の上で全域であり、この規定は写像の定義域ではなく、
+時刻別の値を個体に帰属させるかどうかに関わる。
+機能軸（定義~\ref{def:functional_axis}）その他の分類Cの記述量は本規定の対象ではない。
+\end{definition}
+
+\begin{remark}[離散時刻と内部処理工程]
+\label{rem:internal_steps_time}
+本節の $M_1\to M_2\to M_3$ と各時刻の標準写像は、
+実装内部の個々の計算、神経処理、反復比較、再評価または確認操作を一対一に表すものではない。
+一つの時刻の出力の形成には多数の内部工程が含まれうる。
+また、一つの目的の形成から遂行と達成の判断までは、複数の時刻にまたがりうる。
+本論文は、内部工程の数、処理時間および反復回数を規定せず、その最低値も置かない。
+一つの機構の内部の反復・再比較・再統合は、その機構の時刻別の写像に縮約して表す。
+同一時刻の中での機構の間の往復は縮約しない（備考~\ref{rem:tipa_bidirectional}）。
+長期にわたる目的を持つかどうか、および期間にわたる持続を達成の条件とする目的を持つかどうかは、
+実装依存である。
+\end{remark}
+
+
+\subsubsection{M1：情報統合機構}
+\label{subsec:m1}
+
+M1 は、PSL-1 を介して利用可能となる感知情報、
+内部モデル、有限履歴、前時刻の評価・行動情報その他を統合し、
+M2 以降から利用可能な現在状態・外部環境状態についての内部表現を構成する。
+
+有限履歴長を表す実装依存の正整数を
+\[
+  W\in\mathbb N,
+  \qquad
+  W_{\mathrm{short}}\in\mathbb N,
+  \qquad
+  1\le W_{\mathrm{short}}\le W
+\]
+とする。
+$X^{\le W}$ は長さ高々 $W$ の $X$ 値有限履歴の集合、
+$\mathcal I^{\le W_{\mathrm{short}}}$ は長さ高々 $W_{\mathrm{short}}$ の
+$\mathcal I$ 値有限履歴の集合を表す。
+
+また、M1-b で成分構造を具体化する識別状態空間として、
+あらかじめ非空集合 $\Xi$ を置く。
+動態重みの値域として標準単体
+\[
+  \Delta^{n-1}
+  :=
+  \left\{
+    w\in[0,1]^n
+    \;\middle|\;
+    \sum_{k=1}^{n}w_k=1
+  \right\}
+\]
+を用いる。
+
+\begin{definition}[M1内部状態（分類B）]
+\label{def:m1_state}
+M1 が時刻 $t$ に生成する標準出力を束ねた内部状態を
+\[
+  \mathsf S_{M1,t}
+  :=
+  \bigl(
+    \hat x_t,
+    \hat e_t,
+    \xi_t,
+    w_t,
+    D_{M1,t}
+  \bigr)
+\]
+とし、その型を
+\[
+  \mathsf S_{M1}
+  :=
+  X
+  \times E_{\mathrm{ext}}
+  \times\Xi
+  \times\Delta^{n-1}
+  \times\mathcal D_{M1}
+\]
+とする。
+
+$\mathsf S_{M1,t}$ は M1 の既定義出力を束ねる標準内部表現であり、
+独立した追加状態変数または別機構を導入するものではない。
+前時刻の $\mathsf S_{M1,t-1}$ を次時刻の M1 が参照することを許すが、
+学習・可塑的変化その他の追加的な時刻間更新則は
+\S\ref{sec:extended_dynamics} に委ねる。
+\end{definition}
+
+\begin{definition}[情報統合機構 $M_1$（分類B）]
+\label{def:m1_map}
+感知情報空間を $\mathcal I$、
+内部モデル状態空間を $\mathcal M$、
+M1内部状態空間を $\mathsf S_{M1}$、
+M2用時間特徴量空間を $\mathcal D_{M1}$ とする。
+
+M1 を
+\[
+  \mathrm{M1}:
+  \mathcal I
+  \times\mathcal M
+  \times\mathcal P_{\mathrm{prio}}
+  \times U
+  \times X^{\le W}
+  \times\mathsf S_{M1}
+  \to
+  X
+  \times E_{\mathrm{ext}}
+  \times\Xi
+  \times\Delta^{n-1}
+  \times\mathcal D_{M1}
+\]
+なる決定論的標準機能形式とする。
+
+\[
+\begin{aligned}
+(&\hat x_t,\hat e_t,\xi_t,w_t,D_{M1,t})
+=
+\mathrm{M1}\bigl(
+I_{\mathrm{sense},t},
+M_t,
+P_{t-1},
+u_{t-1},
+\{\hat x_s\}_{s\in[\max(0,t-W),t-1]},
+\mathsf S_{M1,t-1}
+\bigr).
+\end{aligned}
+\]
+
+ここで
+\[
+  \hat x_t\in X,
+  \qquad
+  \hat e_t\in E_{\mathrm{ext}},
+  \qquad
+  \xi_t\in\Xi,
+  \qquad
+  w_t\in\Delta^{n-1},
+  \qquad
+  D_{M1,t}\in\mathcal D_{M1}.
+\]
+前時刻入力 $u_{t-1}$ は最終実効行動について保持された記録であり、
+M3 行動指令の記録とは区別する。実際の前時刻の行動との一致は別条件である。
+
+$t=0$ の前時刻記号には、定義~\ref{def:s4_carrier_contract} に従い
+$M_0^{\mathrm W}$ の読み出し値を用いる。これは負時刻の実現を仮定しない。
+\end{definition}
+
+\paragraph*{4.2.1-a\quad M1-a：情報統合}
+
+M1-a は、現在利用可能な情報と時間的文脈を統合し、
+現在状態および外部環境状態についての機構層推定を形成する。
+
+\noindent\textbf{外部環境状態の型。}
+\S\ref{sec:acs_def} の型規約に従い、
+実現外部環境状態および M1 の環境推定は
+$e_t,\hat e_t\in E_{\mathrm{ext}}$
+とする。
+必要環境要因の集合 $E$ を外部環境状態の型として用いない。
+
+\begin{definition}[M1-aの予備状態推定（分類B）]
+\label{def:std_init}
+予備状態推定写像を
+\[
+  \Phi_{\mathrm{pre}}:
+  \mathcal I\times\mathcal M\times\mathsf S_{M1}
+  \to X
+\]
+とし、
+\[
+  \tilde x_t
+  :=
+  \Phi_{\mathrm{pre}}
+  \bigl(
+    I_{\mathrm{sense},t},
+    M_t,
+    \mathsf S_{M1,t-1}
+  \bigr)
+  \in X
+\]
+とする。
+\end{definition}
+
+外部環境状態推定については、
+\[
+  \Phi_{\mathrm{env}}:
+  \mathcal I\times\mathcal M\times X^{\le W}
+  \to E_{\mathrm{ext}}
+\]
+を用いて
+\[
+  \hat e_t
+  =
+  \Phi_{\mathrm{env}}
+  \bigl(
+    I_{\mathrm{sense},t},
+    M_t,
+    \{\hat x_s\}
+  \bigr)
+\]
+としてよい。
+
+\begin{definition}[M1-aの動態重みと最終統合（分類B）]
+\label{def:m1_integration}
+動態重みを $w_t\in\Delta^{n-1}$ とし、
+最終統合写像を
+\[
+  \Phi_{\mathrm{integrate}}:
+  X\times\mathcal M\times X\times\Delta^{n-1}
+  \to X
+\]
+として、
+\[
+  \hat x_t
+  =
+  \Phi_{\mathrm{integrate}}
+  \bigl(
+    \tilde x_t,
+    M_t,
+    \bar x_{\mathrm{base},t},
+    w_t
+  \bigr)
+  \in X
+\]
+とする。
+\end{definition}
+\begin{definition}[M1補助出力の情報源（分類B）]
+\label{def:s4_m1_sources}
+予備推定等から最終統合へ用いる補助量は、固定写像
+$\Phi_{\mathrm{weight}}:\mathcal M\times\mathcal I\to\Delta^{n-1}$、
+$\Phi_{\mathrm{baseline}}:\mathcal M\times\mathcal I\to X$ により
+$w_t=\Phi_{\mathrm{weight}}(M_t,I_t)$、
+$\bar x_{\mathrm{base},t}=\Phi_{\mathrm{baseline}}(M_t,I_t)$ とする。
+$\Phi_{\mathrm{baseline}}$ は、$M_t$ の作動成分から $\rho_{\mathrm{past}}$ により読み出す状態推定履歴（第3成分）に、
+定義~\ref{def:m1_temporal_base} の履歴集約写像 $\Phi_{\mathrm{hist}}$ を適用する合成写像とする。
+一段予測を用いる場合、
+$\Phi_{\mathrm{predict}}:\mathcal M\to X^{X\times U\times E_{\mathrm{ext}}}$
+を固定し、$\hat f_t=\Phi_{\mathrm{predict}}(M_t)$ とする。
+右辺の指数記法は、$X\times U\times E_{\mathrm{ext}}$ から $X$ への関数全体の集合を表し、連続性は要求しない。
+予測に用いる前時刻推定も保持記録から得る。
+\end{definition}
+
+
+\begin{remark}[状態・環境推定と実現値]
+\label{rem:m1_estimate_nontruth}
+$\hat x_t$ および $\hat e_t$ は内部推定であり、
+$x_t$ および $e_t$ と一致することを一般には要求しない。
+また、Phase~1 の本節では普遍的な推定誤差上界または収束性を要求しない。
+\end{remark}
+\begin{definition}[状態推定誤差（分類C）]
+\label{def:s4_state_estimation_error}
+$\mathrm{WF}_{i,t}=1$ の時刻について、
+$X\subseteq\mathbb R^n$ の制限距離 $d_X(x,x')=\|x-x'\|_\infty$ を用い、
+$\varepsilon_{\mathrm{est},t}:=d_X(x_t,\hat x_t)$ と定める。
+これは真の状態との照合量であり、内部の予測整合性誤差
+$\varepsilon_{\mathrm{pred},t}$ とは別である。
+内部計算可能性や外部測定可能性を要求しない。
+\end{definition}
+
+
+\paragraph*{4.2.1-b\quad M1-b：境界管理}
+
+M1-b は、自己--環境境界その他の応答形成に必要な識別状態を、
+複数の抽象的識別軸によって構成する。
+
+\begin{definition}[識別状態と内部対象トークン（分類B）]
+\label{def:id_vector}
+識別軸の添字集合を
+\[
+  \mathcal R_\xi
+  :=
+  \{
+    \mathrm{bnd},
+    \mathrm{tmp},
+    \mathrm{org},
+    \mathrm{dyn},
+    \mathrm{rep},
+    \mathrm{mval},
+    \mathrm{prox},
+    \mathrm{tgt}
+  \}
+\]
+とする。
+各 $\kappa\in\mathcal R_\xi$ に未決定カテゴリを含む有限非空集合 $\Xi_\kappa$ を置き、
+一つの行の値域を
+\[
+  \Xi^{(8)}:=\prod_{\kappa\in\mathcal R_\xi}\Xi_\kappa
+\]
+とする。
+
+ただし、\S\ref{sec:acs_def} の自己--環境境界との接続に用いる
+境界帰属軸については、上流の型インターフェースを保つため
+\[
+  \Xi_{\mathrm{bnd}}
+  =
+  \{\mathsf{self},\mathsf{env},\mathsf{und}\}
+\]
+とする。
+ここで $\mathsf{self}$、$\mathsf{env}$、$\mathsf{und}$ は、
+それぞれ自己側への帰属、環境側への帰属、未決定を表す標準カテゴリである。
+他の七軸の具体的カテゴリ分解は Phase~1 では一般に固定しない。
+
+内部対象トークンのラベル集合として、有限非空集合 $\mathsf{Lab}$ を固定する。
+以下で全体の行の添字に用いる記号 $\ast$ と、自己を表す記号 $\mathsf{self}$ は $\mathsf{Lab}$ に属さないものとし、
+$\mathsf{Lab}\cap\bigl(\{\mathsf{self}\}\times\mathsf{Lab}\bigr)=\emptyset$ とする。
+その大きさは実装依存とする。
+識別状態空間を
+\[
+  \Xi
+  :=
+  \Xi^{(8)}
+  \times
+  \bigcup_{\mathcal K\subseteq\mathsf{Lab}}
+  \bigl(\Xi^{(8)}\bigr)^{\mathcal K}
+\]
+とし、M1-b の識別状態を
+\[
+  \xi_t
+  =
+  \bigl(
+    \xi_t(\ast),\
+    (\xi_t(k))_{k\in\mathcal K_t}
+  \bigr)
+  \in\Xi
+\]
+と書く。
+第1成分 $\xi_t(\ast)\in\Xi^{(8)}$ を\emph{全体の行}、
+第2成分の添字集合 $\mathcal K_t\subseteq\mathsf{Lab}$ を時刻 $t$ の\emph{内部対象トークン集合}、
+各 $\xi_t(k)\in\Xi^{(8)}$ をトークン $k$ の\emph{行}と呼ぶ。
+$\mathcal K_t=\emptyset$ を許す。
+全体の行の第 $\kappa$ 成分を $\xi_{\kappa,t}$、トークン $k$ の行の第 $\kappa$ 成分を $\xi_{\kappa,t}(k)$ と書く。
+とくに \S\ref{sec:acs_def} が参照する $\xi_{\mathrm{bnd},t}$ は、全体の行の境界帰属成分である。
+
+各軸はそれぞれ、
+境界帰属、時間的位置、情報由来、動的性、表象基盤、
+記憶照合上の有益性・有害性、相互作用近接性、目的対象性を表す。
+具体的カテゴリ、特徴抽出規則および内部符号化は実装依存とする。
+\end{definition}
+
+\begin{remark}[内部対象トークンの形成と実装依存の範囲]
+\label{rem:token_generation}
+$\mathcal K_t$ は M1 の出力 $\xi_t$ の一部であり、
+M1 の入力（感知情報 $I_{\mathrm{sense},t}$、内部モデル $M_t$ および保持記録）から同一時刻に形成されうる。
+この形成は M2・M3 の同一時刻の出力を用いないので、同一時刻の循環を生じない。
+本論文は次を要求しない。
+\begin{enumerate}[label=(\alph*)]
+  \item 外部に存在する対象のすべてにトークンが割り当てられること。
+  \item 新たに現れた対象に、それが感知された時刻にトークンが割り当てられること。
+  \item トークンの行の各成分が対象の性質と一致すること。
+\end{enumerate}
+一時刻に形成されうるトークンの数、割当ての遅れと精度、
+複数の対象を一つずつ識別するか同時に識別するかは実装依存である。
+$\mathcal K_t=\emptyset$ の場合にも全体の行 $\xi_t(\ast)$ は定まり、
+M2 と M3 はそれを用いて評価と応答形成を行いうる。
+ラベル $k\in\mathsf{Lab}$ は内部の識別の単位であり、
+\S\ref{sec:acs_def} の枠 $a\in\mathcal A_O$ や外部の個物と同一視しない。
+同じラベルを時刻をまたいで再び用い、異なる対象を表してもよい。
+トークンが時刻をまたいで持続することは、
+前時刻の $\mathsf S_{M1,t-1}$ を入力とする M1 が同じラベルを与えることとして表し、
+その持続の規則は \S\ref{sec:extended_dynamics} に委ねる。
+\end{remark}
+
+\noindent\textbf{境界帰属。}
+対象または情報を自己側、環境側、未決定のいずれとして扱うかを表す。
+
+\noindent\textbf{時間的位置。}
+対象または情報が現在、過去、未決定のいずれに関係するかを表す。
+
+\noindent\textbf{情報由来。}
+情報が内部由来、外部由来、未決定のいずれであるかを表す。
+
+\noindent\textbf{動的性。}
+対象を相互作用上の動的対象、非動的対象、未決定のいずれとして識別する。
+
+\noindent\textbf{表象基盤。}
+表象が観測由来、内部生成由来、未決定のいずれであるかを表す。
+
+\noindent\textbf{記憶照合上の有益性・有害性。}
+現在情報と過去経験との記憶照合上の関係を表し、
+現在の可行性評価そのものとはしない。
+
+\begin{remark}[記憶照合上の有益性・有害性とM2評価の分離]
+\label{rem:mval_identification}
+本論文は、過去に有益または有害であった対象との類似性だけから、
+現在の Priority、可行性脅威または行動要請を一般的な帰結として置かない。
+現在の可行性関連評価は M2 の責務である。
+\end{remark}
+
+\noindent\textbf{相互作用近接性。}
+対象との相互作用が現在の ACS にとって成立しうる程度を表し、
+単なる物理距離とは同一視しない。
+
+\noindent\textbf{目的対象性。}
+対象または情報が、時刻 $t$ の開始時点で保持されている記録のうえで、
+当該ACSの目的の向き先になっているか、なっていないか、または未決定であるかを表す。
+同じ時刻に M3 が形成する目的 $\mathrm{Pur}_t$（定義~\ref{def:purpose_formation}）は参照しない。
+時刻 $t$ に新たに目的の向き先となったトークンは、記録を通じて時刻 $t+1$ 以後の本軸に現れうる。
+記録の正確さは一般には要求しない（定義~\ref{def:s4_carrier_contract}）。
+M2 はこの軸を評価に用いない（定義~\ref{def:m2_map}）。
+
+\begin{remark}[識別状態の役割と非真値性]
+\label{rem:id_vector_role}
+$\xi_t$ は M1 の標準内部表現であり、
+ACS の存在論的な自己--環境境界、外部対象の客観的属性、
+または三原理の時刻別充足述語の判定そのものではない。
+\end{remark}
+
+\paragraph*{4.2.1-c\quad M1-c：時間的連続性統合}
+
+M1-c は、有限履歴と内部モデルによる予測を利用し、
+現在処理に必要な時間的文脈および時間特徴量を構成する。
+
+\begin{definition}[M1-cの時間的基底表現（分類B）]
+\label{def:m1_temporal_base}
+履歴集約写像を
+\[
+  \Phi_{\mathrm{hist}}:
+  X^{\le W}\to X
+\]
+とし、
+\[
+  \bar x_{\mathrm{base},t}
+  :=
+  \Phi_{\mathrm{hist}}
+  \bigl(\{\hat x_s\}\bigr)
+  \in X
+\]
+とする。
+\end{definition}
+
+\noindent\textbf{一段階予測写像の型。}
+\S\ref{sec:acs_def} の外部環境状態型に従い、
+内部モデルが一段階予測を用いる場合には
+\[
+  \hat f_t:
+  X\times U\times E_{\mathrm{ext}}
+  \to X
+\]
+とする。
+前時刻の最終実効行動 $u_{t-1}$ と環境推定 $\hat e_{t-1}$ を用いる場合、
+\[
+  \tilde x_t^{-}
+  :=
+  \hat f_t
+  \bigl(
+    \hat x_{t-1},
+    u_{t-1},
+    \hat e_{t-1}
+  \bigr)
+\]
+とする。
+
+\begin{definition}[M1-cの予測整合性と先行時間特徴量（分類C）]
+\label{def:m1_temporal_features}
+状態空間上の距離 $d_X$ を用いる場合、
+予測整合性誤差を
+\[
+  \varepsilon_{\mathrm{pred},t}
+  :=
+  d_X(\tilde x_t,\tilde x_t^{-})
+  \in\mathbb R_{\ge0}
+\]
+として記述してよい。
+
+これらは分類Cの機構層記述量であり、
+予測の正しさや、三原理の時刻別充足述語の真偽を表さない。
+\end{definition}
+
+\begin{definition}[外部側の集合値予測（分類B）]
+\label{def:env_set_prediction}
+\S\ref{sec:acs_def} の分解 $E_{\mathrm{ext}}=E^{\mathrm{bg}}\times O$
+（定義~\ref{def:Eext_decomposition}）に従い、
+外部環境状態とその推定を $e=(b,o)$、$\hat e_t=(\hat b_t,\hat o_t)$ と書く。
+外部側の予測値の集合を
+\[
+  \mathcal G_O:=\bigl(\mathcal P(O)\setminus\{\emptyset\}\bigr)\cup\{\bot\}
+\]
+とする。$\bot$ は予測を与えないことを表し、空集合ではない。
+内部モデルが行動応答成分の予測を用いる場合、固定写像
+$\Phi_{\mathrm{pred},O}:\mathcal M\to\mathcal G_O^{\,X\times U\times E_{\mathrm{ext}}}$
+により $\hat g_t:=\Phi_{\mathrm{pred},O}(M_t)$ とし、行動 $u\in U$ についての予測集合を
+\[
+  \hat G_t(u):=\hat g_t(\hat x_t,u,\hat e_t)\in\mathcal G_O
+\]
+とする。
+$\hat G_t(u)$ は、次の時刻の行動応答成分として起こりうると内部で見込まれる値の集合であり、
+確率や頻度を表さない。
+$\hat g_t$ は状態側の一段予測 $\hat f_t$ とは別の写像である。
+\end{definition}
+
+\begin{definition}[予測集合の記録と二種類の予測外（分類C）]
+\label{def:prediction_record_check}
+時刻 $t$ の実効行動 $u_t$ が定まった後、
+行動した時点の予測集合 $\hat G_t(u_t)$ が保持記録に残され、
+時刻 $t+1$ にはその記録値が $\hat G^{\mathrm{rec}}_{t}\in\mathcal G_O$ として
+定義~\ref{def:s4_carrier_contract} の読み出しから得られるとする。
+記録値は $\hat G_t(u_t)$ との一致を仮定しない。
+次の二つを定める。
+\begin{enumerate}[label=(\roman*)]
+  \item \emph{内部の予測外}：$\mathrm{WF}_{i,t+1}=1$ かつ $\hat G^{\mathrm{rec}}_{t}\neq\bot$ のとき、
+  $\hat o_{t+1}\notin\hat G^{\mathrm{rec}}_{t}$ であること。
+  これは時刻 $t+1$ の M1-c が利用可能な量だけで定まり、
+  定義~\ref{def:m1_temporal_features} の $\varepsilon_{\mathrm{pred},t}$ と同じ水準の記述量である。
+  \item \emph{理論上の予測外}：$\mathrm{WF}_{i,t}=1$ かつ $\hat G_t(u_t)\neq\bot$ のとき、
+  $o_{t+1}\notin\hat G_t(u_t)$ であること。
+  これは実現値との照合量であり、当該ACSの入力ではない
+  （定義~\ref{def:s4_state_estimation_error} の $\varepsilon_{\mathrm{est},t}$ と同じ扱い）。
+\end{enumerate}
+予測が $\bot$ の場合はそれぞれ定めず、偽に置換しない。
+両者は一致しなくてよい。
+たとえば、対象の誤認により $\hat o_{t+1}$ が $o_{t+1}$ と異なる場合には、一方だけが成り立ちうる。
+\end{definition}
+
+\begin{remark}[二つの予測の照合基準の違い]
+\label{rem:prediction_reference_difference}
+状態側の $\tilde x_t^{-}$ は、時刻 $t$ の予測写像 $\hat f_t$ により前時刻の記録を計算し直した値である。
+これに対し外部側では、行動した時点の予測集合の記録と照合する。
+内部モデルが時刻 $t$ から $t+1$ の間に更新された場合、
+計算し直した予測と行動した時点の予測は一致しなくてよい。
+本論文は、前者を後者で置き換えることも、その逆も要求しない。
+予測外にもとづく内部モデルの更新の規則は与えない（\S\ref{sec:extended_dynamics}）。
+\end{remark}
+
+\begin{definition}[M1-cの最終時間特徴量（分類B）]
+\label{def:m1_temporal_output}
+M1-c が M2 に提供する時間特徴量を
+\[
+  D_{M1,t}\in\mathcal D_{M1}
+\]
+とする。
+$\mathcal D_{M1}$ の内部成分には、
+状態変化、入力変化、予測差、変化傾向その他を実装に応じて含めてよい。
+\end{definition}
+
+\noindent\textbf{M1内部の生成依存。}
+概念的には
+\[
+  \text{現在入力・履歴}
+  \longrightarrow
+  \text{予備推定・時間的文脈}
+  \longrightarrow
+  \text{最終統合}
+  \longrightarrow
+  \text{識別・時間特徴}
+\]
+として整理する。
+これは物理的逐次実行を要求しない。
+
+\begin{assumption}[M1-cの時間統合構造]
+\label{ass:m1c_temporal}
+M1-c は、有限履歴を現在処理へ接続し、
+M2 から利用可能な時間特徴量を形成できるものとする。
+
+導入地位：S（構造的）。強さ：中。
+本仮定は、M1-c の標準形式（定義~\ref{def:m1_temporal_base}、定義~\ref{def:m1_temporal_output}）を適用する ACS の範囲を限定する構造的条件であり、本節の命題の前提としては用いない。
+\end{assumption}
+
+\begin{remark}[M1の責務境界]
+\label{rem:m1_responsibility}
+M1 は状態・環境推定、識別および時間統合を担うが、
+Priority 生成、要請信号の生成、目的の形成、動作モードの判断、行動候補比較、
+または三原理の時刻別充足述語の判定を担当しない。
+\end{remark}
+
+
+\subsubsection{M2：適応的評価機構}
+\label{subsec:m2}
+
+M2 は、M1 が形成した現在像および時間特徴を受け取り、
+可行性脅威、構造的脆弱性、および潜在的不安定性に関係する差異を
+機構層で代理評価し、M3 の応答形成から利用可能にする。
+
+本論文は M2 に、理論上の
+$\Pi$、$K$、$A_t$、$E_{\mathrm{req}}(x_t)$、$\mathrm{Crit}^{(1)}(x_t)$、
+$\mathcal{D}_{\mathrm{FR}}$、$\mu_{\mathrm{eff},t}$、頑健存続可能段数 $\mathrm{Hor}_f$、$Q$ その他の
+真値へのアクセス、内部での保持、または正確な計算を要求しない。
+M2 の評価は、M1 等から利用可能な情報に依存する
+（\S\ref{sec:three_principles} 備考~\ref{rem:theory_quantity_vs_internal}）。
+
+\begin{definition}[M2内部評価情報空間（分類B）]
+\label{def:m2_eval_space}
+M2 が M3 へ提供する内部評価情報の型を非空集合
+\[
+  \mathfrak E
+\]
+とし、
+\[
+  \mathrm{ev}_t\in\mathfrak E
+\]
+とする。
+$\mathfrak E$ の内部表現形式は Phase~1 では一意に固定しない。
+\end{definition}
+
+\begin{definition}[要求の一覧と要請信号の型（分類B）]
+\label{def:request_signal_types}
+要求ラベルの非空集合 $\mathsf{Req}$ と、要請の質の非空集合 $\mathsf{Qual}$ を置く。
+固定した読み出し $\rho_{\mathrm{req}}:\mathcal M\to\mathcal P_{\mathrm{fin}}(\mathsf{Req})$ により、
+時刻 $t$ の\emph{要求の一覧}を
+\[
+  \mathrm{Req}_t:=\rho_{\mathrm{req}}(M_t)
+\]
+とする。
+要請信号の空間を
+\[
+  \mathsf{Sig}:=\mathcal P_{\mathrm{fin}}(\mathsf{Req}\times\mathsf{Qual})
+\]
+とし、M2 が出力する\emph{要請信号}を $\mathrm{sig}_t\in\mathsf{Sig}$、
+標準形では $\mathrm{sig}_t\subseteq\mathrm{Req}_t\times\mathsf{Qual}$ とする。
+$(q,c)\in \mathrm{sig}_t$ は、要求 $q$ が質 $c$ の要請として時刻 $t$ に立ち上がっていることを表す。
+$\mathsf{Qual}$ の元の列挙と抽象的な分類は Phase~1 では与えず、Phase~1.$\alpha$ の課題とする。
+記号 $\mathsf{Qual}$ は \S\ref{sec:rel_min} の関係品質 $Q_{i\leftarrow j,t}$ とは無関係である。
+要請信号 $\mathrm{sig}_t$ は、\S\ref{sec:three_principles} の三原理評価ベクトル $s_t$（定義~\ref{def:S3}）とは別の量である。
+\end{definition}
+
+\begin{definition}[要求×対象の評価の型（分類B）]
+\label{def:rq_eval_types}
+評価値の非空集合 $\mathfrak E^{\mathrm{rq}}$ を置き、
+\[
+  \mathfrak E^{\mathrm{rq}}_{\mathrm{map}}
+  :=
+  \bigcup_{D}
+  \bigl(\mathfrak E^{\mathrm{rq}}\bigr)^{D}
+\]
+とする。ここで $D$ は $\mathsf{Req}\times(\mathsf{Lab}\cup\{\ast\})$ の有限部分集合を動く。
+M2 が出力する\emph{要求×対象の評価}を $\mathrm{ev}^{\mathrm{rq}}_t\in\mathfrak E^{\mathrm{rq}}_{\mathrm{map}}$ とし、
+その定義域を $D^{\mathrm{rq}}_t$ と書く。
+標準形では $D^{\mathrm{rq}}_t\subseteq\mathrm{Req}_t\times(\mathcal K_t\cup\{\ast\})$ とする。
+$(q,k)\in D^{\mathrm{rq}}_t$ はトークン $k$ が要求 $q$ に照らして評価されたことを、
+$(q,\ast)$ は対象を介さずに評価されたことを表す。
+定義域に含まれない組は\emph{未評価}であり、低い評価値として扱わない。
+\end{definition}
+
+\begin{definition}[適応的評価機構 $M_2$（分類B）]
+\label{def:m2_map}
+M2 を
+\[
+\begin{aligned}
+\mathrm{M2}:&
+X\times E_{\mathrm{ext}}\times\Xi
+\times\Delta^{n-1}\times\mathcal D_{M1}
+\times\mathcal M\times X^{\le W}
+\times\mathcal I^{\le W_{\mathrm{short}}}
+\\
+&\to
+\mathcal P_{\mathrm{prio}}
+\times\mathfrak E
+\times\mathsf{Sig}
+\times\mathfrak E^{\mathrm{rq}}_{\mathrm{map}}
+\end{aligned}
+\]
+なる決定論的標準写像とする。
+
+\[
+\begin{aligned}
+(&P_t,\mathrm{ev}_t,\mathrm{sig}_t,\mathrm{ev}^{\mathrm{rq}}_t)
+=
+\mathrm{M2}\bigl(
+\hat x_t,\hat e_t,\xi_t,w_t,D_{M1,t},M_t,
+\{\hat x_s\},\{I_{\mathrm{sense},s}\}
+\bigr).
+\end{aligned}
+\]
+M2 は、M3 の出力と M3 の目的基準の評価（定義~\ref{def:eval_vs_judgment}）を、
+同一時刻のものも保持記録を通じたものも入力としない。
+標準形では、M2 の値は識別状態の目的対象性の成分
+$\xi_{\mathrm{tgt},t}$ と $\xi_{\mathrm{tgt},t}(k)$ に依存せず、
+$M_t$ の成分のうち M3 の出力と目的基準の評価の保持記録を担う部分にも依存しない。
+\end{definition}
+
+\begin{remark}[M2 に戻らないことの範囲]
+\label{rem:m2_no_return_scope}
+定義~\ref{def:m2_map} の条件が禁じるのは、
+M3 の出力、目的基準の評価、判断とそれらの保持記録を M2 の入力とすること、
+および識別状態の目的対象性の成分を用いることである。
+この条件は、M3 から生じた情報が後の時刻の M2 に影響しないことを意味しない。
+本論文は次の二つの間接的な影響を排除しない。
+\begin{enumerate}[label=(\alph*)]
+  \item 実効行動が状態と外部環境状態を変え、
+  その結果が感知と M1 の統合を経て後の時刻の M2 の入力に現れること。
+  内的認知状態を意図的に変化させる行動 $u_t\in U_{\mathrm{int}}$
+  （\S\ref{sec:acs_def} 備考~\ref{rem:action_space_structure}）の作用もこれに含まれる。
+  \item M1 が保持内容 $M_t$（目的の集合の記録を含む）を用いて注意の配分その他の統合を行い、
+  その出力が M2 の入力となること。
+  M1 の写像は $M_t$ を入力とし（定義~\ref{def:m1_map}）、
+  $\mathrm{Update}_2$ は $\mathcal M_1$ を引数とする
+  （\S\ref{sec:acs_def} 定義~\ref{def:update_operator}）。
+\end{enumerate}
+M2 の評価は、こうして与えられた材料について存続基準によって行われ、目的を基準としない。
+M3 の目的基準の評価・判断と M2 の評価との区別は評価の基準の区別であり、
+情報の因果的な隔離ではない。
+最終実効行動の記録 $u_{t-1}$ は M3 行動指令の記録とは区別され（定義~\ref{def:m1_map}）、
+M3 の出力の記録には当たらない。
+(a)・(b) の影響が実際に生じるかどうかは $f$、$\mathrm{Update}$、感知および M1 の実現に依存し、
+本論文はそれを一般的な帰結として置かない。
+\end{remark}
+
+\paragraph*{4.2.2-a\quad M2-a：可行性脅威検出}
+
+M2-a は、現在または近接した将来における急性の可行性脅威を、
+利用可能な機構層情報から評価する分類Bの標準機能である。
+
+\begin{definition}[M2-a可行性脅威検出機能（分類B）]
+\label{def:m2a_threat}
+M2-a が用いる機構層の可行性代理評価を、
+実装依存の決定論的内部評価写像
+\[
+  \widehat{\Pi}_{M2}:
+  X\times\mathcal M
+  \to
+  \mathbb R
+\]
+により
+\[
+  \Pi_{\mathrm{eval},t}
+  :=
+  \widehat{\Pi}_{M2}
+  \bigl(
+    \hat x_t,
+    M_t
+  \bigr)
+\]
+とする。
+$\Pi_{\mathrm{eval},t}$ は真の $\Pi(x_t)$ と一致することを要求せず、
+さらに ACS が理論上の $\Pi$ を内部で既知として
+$\Pi(\hat x_t)$ を直接計算することも要求しない。
+これは、\S\ref{subsec:description_levels_global} の規約に従う
+機構層の代理評価である。
+
+急性脅威判定を
+\[
+  \Psi_{\mathrm{acute}}:
+  X\times E_{\mathrm{ext}}\times\Xi\times\mathcal D_{M1}\times\mathcal M
+  \to\{0,1\}
+\]
+により
+\[
+  C_{1,t}
+  :=
+  \Psi_{\mathrm{acute}}
+  \bigl(
+    \hat x_t,\hat e_t,\xi_t,D_{M1,t},M_t
+  \bigr)
+\]
+とする。
+$C_{1,t}=1$ は M2 が急性脅威を検出したことを表し、
+SM の時刻別充足述語の真偽とは同一視しない。
+\end{definition}
+\begin{definition}[内部可行判定と理論上の可行判定（分類C）]
+\label{def:s4_internal_viability_check}
+内部の判定規則を採用する場合、固定写像
+$\Psi_K:\mathcal M\times\mathcal R_{\mathrm{int}}\to\{0,1,\bot\}$
+で内部判定を記述する。$\bot$ は未判定である。
+$\Psi_K(M_t,r_t)\in\{0,1\}$ の場合だけ、
+$\mathbf1[\Pi(x_t)\ge0]$ との一致・不一致を比較する。
+未判定を不一致や偽に数えず、この比較を M2 の入力として要求しない。
+$\Pi_{\mathrm{eval},t}$ の符号がこの判定と一致することも仮定しない。
+\end{definition}
+
+
+\paragraph*{4.2.2-b\quad M2-b：構造的脆弱性評価}
+
+M2-b は、現在の脅威または要請に対する応答構造の不足を、
+対応不可能性、手段不足性、資源不足性、支援不足性、
+関係品質劣化の観点から代理評価する分類Bの標準機能である。
+ここでいう関係は、\S\ref{sec:rel_min} が扱う ACS 関係の最小構造を指し、
+本節はその分類および関係記述子を再定義しない。
+類型の名称の「関係品質劣化」は、外部関係に伴う可行性関連差異についての内部の評価の類型を指し、
+\S\ref{sec:rel_min} の関係品質 $Q_{i\leftarrow j,t}$（記述者の量）の代理値ではない
+（備考~\ref{rem:Q_internal_formal}）。
+
+\begin{definition}[機構層有効行動多様度の一般形（分類C）]
+\label{def:mech_mu_eff}
+機構層で利用可能と推定された行動集合 $\hat A\subseteq U$ と、
+その上の決定論的同値関係 $\hat\sim$ に対し、
+\[
+  \hat\mu_{\mathrm{eff}}
+  \bigl(
+    \hat x;\hat A,\hat\sim
+  \bigr)
+  :=
+  |\hat A/\hat\sim|
+\]
+とする。
+これは \S\ref{sec:three_principles} の応答多様度 $\mu_{\mathrm{eff},t}$（定義~\ref{def:mu_eff}）の真値とは別の分類Cの代理量である。
+$\mu_{\mathrm{eff},t}$ 自体も診断量であり、いずれの原理の時刻別充足述語の定義にも用いない。
+\end{definition}
+
+\begin{definition}[M2-b構造的脆弱性評価機能（分類B）]
+\label{def:m2b_vuln}
+M2-b が扱う標準脆弱性を
+\begin{enumerate}
+  \item 対応不可能性、
+  \item 手段不足性、
+  \item 資源不足性、
+  \item 支援不足性、
+  \item 関係品質劣化
+\end{enumerate}
+の五類型とする。
+
+脆弱性判定写像を
+\[
+  \Psi_{\mathrm{vuln}}:
+  X\times E_{\mathrm{ext}}\times\Xi\times\mathcal M
+  \to\{0,1\}^{5}
+\]
+とし、検出状態を
+\[
+  \mathbf C_{2,t}
+  :=
+  \Psi_{\mathrm{vuln}}
+  \bigl(
+    \hat x_t,\hat e_t,\xi_t,M_t
+  \bigr)
+  \in\{0,1\}^{5}
+\]
+とする。
+各成分の具体的判定規則は実装依存とする。
+\end{definition}
+
+M2 が粗い行動可能性推定を用いる場合には、
+\[
+  \mathrm{Available}_{M2}:
+  X\times E_{\mathrm{ext}}\times\mathcal M
+  \to\mathcal P_{\mathrm{fin}}(U)
+\]
+により
+\[
+  \hat A_{M2,t}
+  :=
+  \mathrm{Available}_{M2}
+  \bigl(
+    \hat x_t,\hat e_t,M_t
+  \bigr)
+\]
+を構成してよい。
+$\hat A_{M2,t}$ を真の可行行動集合 $A_t$ と同一視しない。
+
+M2 が予測応答同値関係 $\hat\sim_{M2,t}$ を利用する場合、
+\[
+  \hat\mu_{\mathrm{eff},M2,t}
+  :=
+  \hat\mu_{\mathrm{eff}}
+  \bigl(
+    \hat x_t;
+    \hat A_{M2,t},
+    \hat\sim_{M2,t}
+  \bigr)
+\]
+とする。
+非空集合 $U$ 上の同値関係全体を $\operatorname{Eq}(U)$ とする。
+固定写像 $\Phi_{\mathrm{eq}}:\mathcal M\to\operatorname{Eq}(U)$ を与え、
+$\hat\sim_{M2,t}$ は $\Phi_{\mathrm{eq}}(M_t)$ の $\hat A_{M2,t}$ への制限とする。
+空の行動推定集合の場合、その商の基数は $0$ である。
+具体的な同値判定規則は実装依存である。
+
+\paragraph*{4.2.2-c\quad M2-c：潜在的不安定性の機構層評価}
+
+M2-c は、短期的な可行性余裕の改善と
+機構層で推定された応答多様性の縮小が併存するような
+潜在的不安定性を評価する第三の分類B標準機能である。
+その評価結果として用いる指標は分類Cとして区別する。
+
+\begin{definition}[M2-c潜在的不安定性評価機能（分類B）]
+\label{def:m2c_latent_function}
+M2-c は、現在および利用可能な過去の
+$\Pi_{\mathrm{eval}}$、$\hat\mu_{\mathrm{eff},M2}$ その他から、
+短期改善と応答多様性縮小の併存を検出しうる標準評価機能とする。
+比較窓、履歴参照方法および具体的判定規則は実装依存とする。
+\end{definition}
+
+\begin{definition}[潜在的不安定性の機構層指標（分類C）]
+\label{def:m2_latent_instability}
+比較間隔 $\Delta t_{\mathrm{long}}\in\mathbb N$ を固定する。
+保持記録を読み出す写像を
+\[
+\rho_{\mathrm{eval,past}}:\mathcal M^{\mathrm W}\to
+ (\mathbb R\times\mathbb N_0)\cup\{\bot\}
+\]
+とする。$\bot$ は当該比較に利用できる記録の欠落を表し、数値ではない。
+$t\ge\Delta t_{\mathrm{long}}$ で読み出しが対 $(a,b)$ を返す場合に限り、
+\[
+\Delta\Pi_{\mathrm{long},t}=\Pi_{\mathrm{eval},t}-a,\qquad
+\Delta\hat\mu_{\mathrm{eff,long},t}=\hat\mu_{\mathrm{eff},M2,t}-b,
+\]
+\[
+ C_{3,t}=\mathbf1[\Delta\Pi_{\mathrm{long},t}>0\ \wedge\
+ \Delta\hat\mu_{\mathrm{eff,long},t}<0]
+\]
+と定める。$a,b$ は比較時点の値についての保持記録であり、過去の真値とは限らない。
+短い履歴・欠落の場合は $C_{3,t}$ を定義せず、偽または $0$ に置換しない。
+M2 の全域写像は欠落時の応答も定めるが、それを $C_{3,t}$ の値とはしない。
+本指標は T-STAB や三原理の時刻別充足述語と同一ではない。
+\end{definition}
+
+\noindent\textbf{Priority警告体系と要請信号。}
+
+\begin{definition}[Priority警告体系（分類B）]
+\label{def:m2_priority}
+$\mathcal P_{\mathrm{prio}}$ の各カテゴリを次のように解釈する。
+\begin{description}
+  \item[Priority 1] 急性危険または可行性悪化に関する警告。
+  \item[Priority 2] 手段・資源・支援・関係等の構造的脆弱性に関する警告。
+  \item[Priority 3] 将来的な脆弱化または応答可能性縮退の予兆に関する警告。
+  \item[None] 上記の標準警告を生成しない状態。
+\end{description}
+具体的な優先規則は上記の意味を保つ範囲で実装依存とする。
+\end{definition}
+
+\begin{definition}[M2による要請信号の生成（分類B）]
+\label{def:m2_request_signal}
+M2 は、可行性と要求に関わる評価にもとづいて要請信号 $\mathrm{sig}_t$ を生成する。
+$\mathrm{sig}_t$ は応答の動作モードを指定しない。
+どの要求をどの質の要請として立ち上げるかの規則は実装依存とする。
+内部の必要性の評価（たとえば欠乏の内部信号や電力残量の警告）は、
+$\mathrm{sig}_t$ の要素として表れうる（備考~\ref{rem:m2_need_evaluation}）。
+\end{definition}
+
+\begin{remark}[要求×対象の評価の読み]
+\label{rem:rq_evaluation_reading}
+同じトークンに複数の要求が向く場合、評価は要求ごとに与えられる。
+たとえば同じ大型動物のトークンが、食料の要求に照らしては獲物として、
+安全の要求に照らしては脅威として評価されうる。
+評価は保持内容 $M_t$ に依存し、理論上の帰結と食い違ってよい。
+その動物の危険を記憶していない個体は、同じ対象を獲物としてだけ評価しうる。
+M2 は M3 の目的や判断を評価に用いない。
+要求の切り替わりは、行動の結果として生じた状況（たとえば相手を制圧できず危険が増したこと）を
+M1 と M2 が感知・評価し、次の時刻の要請信号と評価が変わることとして、時刻をまたいで表す。
+どの評価をどれだけ重く扱うかに専用の記号は置かない。
+\end{remark}
+
+M2 内部の概念的生成依存は
+\[
+  \text{M2-a / M2-b / M2-c}
+  \longrightarrow
+  (P_t,\mathrm{ev}_t)
+  \longrightarrow
+  (\mathrm{sig}_t,\mathrm{ev}^{\mathrm{rq}}_t)
+\]
+として整理する。
+これらは情報依存の整理であり、実行の順序を定めない（備考~\ref{rem:tipa_bidirectional}）。
+
+\begin{remark}[M2評価の情報品質と非定量性]
+\label{rem:error_bounds}
+M2 の内部評価と理論上の量（三原理の時刻別充足述語の真偽を含む）との間に、
+普遍的な誤差上界、完全一致または収束性を要求しない。
+したがって本論文は、
+Priority の発火から三原理のいずれかの時刻別充足述語が偽であること、または閉塞を、
+Priority が発火しないことからそれらの不在を、
+いずれも一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[内部の必要性評価と臨界必要要因]
+\label{rem:m2_need_evaluation}
+M2-a の急性脅威検出と、M2-b の資源不足性・支援不足性の評価は、
+\S\ref{sec:three_principles} の臨界必要要因（定義~\ref{def:eu_fire}）に関わる差異を
+内部で評価する標準的な箇所となりうる。
+たとえば、生物における欠乏の内部信号や、
+人工システムにおける電力残量の警告は、このような内部評価にあたる。
+ただし本論文は、内部で必要と評価された要因と
+理論上の一段階臨界必要要因集合 $\mathrm{Crit}^{(1)}(x_t)$ との一致を要求しない。
+理論上は臨界必要要因である要因が内部で必要と評価されないこと（見逃し）も、
+臨界必要要因でない要因が内部で必要と評価されること（誤評価）も、
+本節の標準機能形式は排除しない。
+このような内部評価は、現在の状態が $K$ の内にある局面（維持）にも
+外にある局面（回復）にも生じうる。
+EU の時刻別充足述語の真理条件は理論上の $\mathrm{Crit}^{(1)}(x_t)$ だけで定まり、
+M2 の評価結果を用いない（備考~\ref{rem:crit_description_level}）。
+本節は内部の必要性評価に専用の記号を置かず、
+その結果は $C_{1,t}$、$\mathbf C_{2,t}$、$P_t$、$\mathrm{ev}_t$ および要請信号 $\mathrm{sig}_t$ に含まれうるものとして扱う。
+\end{remark}
+
+\begin{remark}[TIPAと三原理の多対多対応]
+\label{rem:m2_three_principles}
+M2-a、M2-b、M2-c および Priority 1、2、3 を、
+SM、EU、FR のいずれか一つへ固定的に一対一対応させない。
+同様に、M1 を SM と、M3 の応答形成を FR と一対一に同一視しない。
+原理と機構の対応は多対多である（\S\ref{sec:three_principles} 定義~\ref{def:principles_tipa_connection}）。
+\end{remark}
+
+
+\subsubsection{M3：応答行動機構}
+\label{subsec:m3}
+
+M3 は、M1 と M2 から利用可能となる情報を判断の材料として、目的基準の評価を行い、
+動作モード、目的および目的の状態を判断し、行動候補を構成・比較して、
+PSL へ渡す TIPA 側の行動指令を形成する。
+
+\begin{definition}[二つの評価と判断の区別（分類B）]
+\label{def:eval_vs_judgment}
+本節では次の三つを区別する。
+\begin{enumerate}[label=(\roman*)]
+  \item \emph{存続基準の評価}（M2）：三原理に関わる自己の可行性と根本要求を基準として、
+  状態、要求または対象に値を与えること。当該ACSの構造の発露として生じる評価であり、
+  M2 の出力 $P_t$、$\mathrm{ev}_t$、$\mathrm{sig}_t$、$\mathrm{ev}^{\mathrm{rq}}_t$ がこれにあたる。
+  \item \emph{目的基準の評価}（M3）：目的、好みその他の思考の中で用いる基準に照らして、
+  候補、状況または目的の進み具合に値を与えること。
+  M3 の内部で処理され、候補適合比較 $\mathrm{fit}_t$（定義~\ref{def:m3_fit}）はその一つである。
+  \item \emph{判断}（M3）：二つの評価と統合情報を材料に、
+  動作モード、目的、目的の状態および行動候補を比べて決めること。
+  M3 の出力 $\mathrm{mode}_t$、$\mathrm{Pur}_t$、$\mathrm{stat}_t$、$u_{\mathrm{M3},t}$ がこれにあたる。
+\end{enumerate}
+本節で修飾なしに「評価」と書く場合は (i) を指し、(ii) は「目的基準の評価」と書く。
+M3 は存続基準の評価を生成しない。
+目的基準の評価と判断は、M2 の入力に戻らない（定義~\ref{def:m2_map}）。
+思考・熟慮を介さずに現れる選択の傾向は、目的基準の評価ではなく偏向性
+（\S\ref{sec:extended_dynamics} 定義~\ref{def:bias_tendency}）として記述し、
+存続基準の評価とも区別する。
+\end{definition}
+
+\begin{definition}[応答行動機構 $M_3$（分類B）]
+\label{def:m3_map}
+M3 を
+\[
+\begin{aligned}
+\mathrm{M3}:&
+X\times E_{\mathrm{ext}}\times\Xi
+\times\mathcal P_{\mathrm{prio}}\times\mathfrak E
+\times\mathcal P_{\mathrm{fin}}(\mathsf{Req})\times\mathsf{Sig}\times\mathfrak E^{\mathrm{rq}}_{\mathrm{map}}
+\times\mathcal P_{\mathrm{fin}}(\mathsf{Pur})\times\mathcal M
+\\
+&\to
+U\times\mathsf{Mode}\times\mathsf{Style}\times\mathcal P_{\mathrm{fin}}(\mathsf{Pur})\times\mathsf{St}
+\end{aligned}
+\]
+なる決定論的標準写像とする。
+
+\[
+  \bigl(
+    u_{\mathrm{M3},t},
+    \mathrm{mode}_t,
+    \mathrm{style}_t,
+    \mathrm{Pur}_t,
+    \mathrm{stat}_t
+  \bigr)
+  =
+  \mathrm{M3}
+  \bigl(
+    \hat x_t,\hat e_t,\xi_t,
+    P_t,\mathrm{ev}_t,
+    \mathrm{Req}_t,\mathrm{sig}_t,\mathrm{ev}^{\mathrm{rq}}_t,\mathrm{Pur}_{t-1},M_t
+  \bigr).
+\]
+$\mathrm{Pur}_{t-1}$ は前時刻の目的の集合の保持記録である（定義~\ref{def:s4_carrier_contract}）。
+$\mathsf{St}$ と $\mathrm{stat}_t$ は定義~\ref{def:purpose_status} で定める。
+M3 の定義域は、要求の一覧・要請信号・要求×対象の評価について、
+それぞれの型の任意の元を含む。
+したがって、要求の一部を取り除いた入力に対しても M3 の値は定まる
+（定義~\ref{def:req_involvement}）。
+\end{definition}
+
+\paragraph*{4.2.3-a\quad M3-a：応答形成用情報の構成}
+
+M3-a は、上流機構で既に生成された情報を、
+候補形成と比較から利用可能な統合入力情報として構成する。
+M3-a は Priority、識別状態、要請信号および評価を再生成しない。
+
+\begin{definition}[M3-a統合入力情報（分類B）]
+\label{def:m3a_info}
+M3 の統合入力空間を
+\[
+  \mathcal I_{M3}
+  :=
+  \mathcal P_{\mathrm{prio}}
+  \times\mathfrak E
+  \times\mathcal P_{\mathrm{fin}}(\mathsf{Req})
+  \times\mathsf{Sig}
+  \times\mathfrak E^{\mathrm{rq}}_{\mathrm{map}}
+  \times\mathcal P_{\mathrm{fin}}(\mathsf{Pur})
+  \times X
+  \times E_{\mathrm{ext}}
+  \times\Xi
+  \times\mathcal M
+\]
+とする。
+時刻 $t$ の統合入力を
+\[
+  I_{M3,t}
+  :=
+  \bigl(
+    P_t,
+    \mathrm{ev}_t,
+    \mathrm{Req}_t,
+    \mathrm{sig}_t,
+    \mathrm{ev}^{\mathrm{rq}}_t,
+    \mathrm{Pur}_{t-1},
+    \hat x_t,
+    \hat e_t,
+    \xi_t,
+    M_t
+  \bigr)
+  \in\mathcal I_{M3}
+\]
+とする。
+\end{definition}
+
+\paragraph*{4.2.3-b\quad M3-b：候補形成・比較}
+
+M3-b は、目的を形成し、利用可能な行動候補を構成して、
+目的と要請に対する内部的な適合差を比較する。
+
+\begin{definition}[目的の型と目的の形成（分類B）]
+\label{def:purpose_formation}
+目的の向き先の集合を
+\[
+  \mathsf{Dir}:=\{\mathsf{self}\}\cup\mathsf{Lab}\cup\bigl(\{\mathsf{self}\}\times\mathsf{Lab}\bigr)
+\]
+とする。$\mathsf{self}$ は自己の状態を、$k\in\mathsf{Lab}$ は内部対象トークンを、
+$(\mathsf{self},k)$ は自己とトークン $k$ の関係を、それぞれ向き先とすることを表す。
+目的の内容の非空集合 $\mathsf{Cnt}$ を置き、目的の集合を
+\[
+  \mathsf{Pur}:=\mathsf{Req}\times\mathsf{Dir}\times\mathsf{Cnt}
+\]
+とする。目的 $p=(q,d,z)$ の $q$ を $p$ の\emph{根本要求}と呼ぶ。
+M3 が時刻 $t$ に判断として形成する目的の有限集合を
+$\mathrm{Pur}_t\in\mathcal P_{\mathrm{fin}}(\mathsf{Pur})$ とし（定義~\ref{def:m3_map}）、
+$\mathrm{Pur}_t=\emptyset$ を許す。
+目的の形成の材料は M3 の入力に限られ、
+M1 の統合情報と保持記録、M2 の評価と要請信号を含む。
+要請信号は目的の主な源泉の一つであるが、
+保持記録に残る継続中の目的や、トークンとその識別も源泉となりうる。
+本論文は源泉の網羅を主張しない。
+$\mathsf{Cnt}$ の元の列挙、形成の規則、および形成と動作モードの判断の内部での順序は実装依存とする。
+\end{definition}
+
+\begin{remark}[目的の階層と入れ子]
+\label{rem:purpose_hierarchy}
+目的は、根本要求、向き先と内容からなる近位目的、行動、結果の順に読む。
+向き先が $\mathsf{self}$ の目的は対象トークンを要さない。
+同じ根本要求をもつ複数の目的が同時に、または時刻をまたいで並ぶことを、目的の入れ子として読む。
+たとえば渇きにもとづく「水を探す」と、見つけた水場のトークンに向かう「汲む」は、同じ根本要求を共有する。
+手段と目的の関係そのものの定義は Phase~1.$\alpha$ の課題とする（\S\ref{subsec:phase1a}）。
+目的化は内部のトークンの側の変化であり、
+外部の成分が目的化によって行動応答成分になるとは読まない
+（\S\ref{sec:acs_def} 備考~\ref{rem:Eext_decomposition_reading}）。
+\end{remark}
+
+\begin{remark}[目的の向き先と内部対象トークン]
+\label{rem:purpose_direction_token}
+目的の向き先 $k\in\mathsf{Lab}$ は内部対象トークンのラベルへの参照であり、
+外部の個体の時間的な同一性を表すものではない。
+同じラベルは時刻をまたいで異なる対象を表しうるので（備考~\ref{rem:token_generation}）、
+時刻をまたぐ目的の向き先が同じ外部対象を指しつづけることは別の条件である。
+トークンの持続の規則は \S\ref{sec:extended_dynamics} に委ねる。
+向き先は $\mathsf{Lab}$ 上に定まるので、
+$k\notin\mathcal K_t$ の時刻（たとえば対象が感知されなくなった時刻）にも、
+M3 は $k$ に向いた目的を保持し、その状態を判断しうる。
+一方、標準形の要求×対象の評価の定義域は $\mathrm{Req}_t\times(\mathcal K_t\cup\{\ast\})$ に含まれるので
+（定義~\ref{def:rq_eval_types}）、その時刻に M2 は組 $(q,k)$ を評価せず、
+全体の行についての評価 $(q,\ast)$ を与えうるにとどまる。
+\end{remark}
+
+\begin{definition}[目的の状態判断（分類B）]
+\label{def:purpose_status}
+判断値の集合を $\{\mathsf{cont},\mathsf{ach},\mathsf{term},\mathsf{und}\}$ とし、
+\[
+  \mathsf{St}:=\bigcup_{P}\{\mathsf{cont},\mathsf{ach},\mathsf{term},\mathsf{und}\}^{P}
+\]
+とする。ここで $P$ は $\mathsf{Pur}$ の有限部分集合を動く。
+M3 が時刻 $t$ に出力する\emph{目的の状態判断}を $\mathrm{stat}_t\in\mathsf{St}$ とし、
+標準形ではその定義域を前時刻の目的の集合の記録 $\mathrm{Pur}_{t-1}$ とする。
+$\mathrm{stat}_t(p)=\mathsf{cont}$、$\mathsf{ach}$、$\mathsf{term}$、$\mathsf{und}$ はそれぞれ、
+目的 $p$ を継続すること、達成したと判断すること、達成せずに終えること、
+判断を保留することを表す。
+$\mathsf{term}$ は放棄と別の目的への切り替えを含み、その理由の区別は Phase~1.$\alpha$ の課題とする。
+標準形では、$\mathrm{stat}_t(p)=\mathsf{cont}$ ならば $p\in\mathrm{Pur}_t$、
+$\mathrm{stat}_t(p)\in\{\mathsf{ach},\mathsf{term}\}$ ならば $p\notin\mathrm{Pur}_t$ とする。
+$\mathrm{stat}_t(p)=\mathsf{und}$ の場合、$p$ が $\mathrm{Pur}_t$ に残るか否かは定めない。
+\end{definition}
+
+\begin{remark}[目的の状態判断の読み]
+\label{rem:purpose_status_reading}
+目的の達成は M3 が判断として定める。
+M2 の評価の変化（たとえば危険評価の低下や警告の解除）は判断の材料であり、
+それ自体を達成の判断とは読まない。
+M3 は、M2 の評価、保持内容、M1 の統合情報および予測を材料に、
+目的に照らした目的基準の評価を経て判断する。
+確認が足りないと判断すれば $\mathsf{cont}$ または $\mathsf{und}$ とし、
+情報取得の行動を候補に含めうる。
+判断に用いる情報量、比較の詳細度および追加の確認の有無は、
+動作モードと実装に依存しうる。本論文はその手順を固定しない。
+単純な ACS では、明示的な達成の判断を経ずに、
+要請が消えることによって目的が形成されなくなることがありうる。
+この場合は $\mathsf{und}$ のもとで目的が $\mathrm{Pur}_t$ に残らないこととして記述され、
+本論文はすべての ACS に明示的な達成の判断を要求しない。
+内部の判断は理論上の達成（定義~\ref{def:purpose_course}）と一致しなくてよい。
+\end{remark}
+
+\begin{definition}[M3候補集合（分類B）]
+\label{def:m3_candidate_set}
+時刻 $t$ に M3 が応答形成のために扱う候補集合を
+\[
+  \mathrm{Cand}_t\subseteq U,
+  \qquad
+  \mathrm{Cand}_t\neq\emptyset
+\]
+とする。
+
+他の通常候補が存在しない場合にも、
+\S\ref{sec:acs_def} の選択的待機 $u_\emptyset\in U$ を用いて
+\[
+  \mathrm{Cand}_t=\{u_\emptyset\}
+\]
+となりうる。
+
+$\mathrm{Cand}_t$ を真の可行行動集合 $A_t$ と同一視せず、
+一般にいずれの向きの包含関係も仮定しない。
+最終実効行動が $u_t\notin A_t$ となった場合の帰結は
+\S\ref{sec:three_principles} の命題~\ref{prop:selection_responsibility}（$x_{t+1}\notin K$）による。
+本論文は $u_t\in A_t$ を構成要件にも仮定にも置かない（備考~\ref{rem:selection_responsibility}）。
+\end{definition}
+
+\begin{definition}[候補適合比較（分類B）]
+\label{def:m3_fit}
+候補間の内部的な適合差を記述する写像を
+\[
+  \mathrm{fit}_t:
+  \mathrm{Cand}_t\to\mathbb R
+\]
+とする。
+$\mathrm{fit}_t$ は M2 評価情報、内部モデル、状態・環境推定、
+Priority、保持情報その他に依存してよい。
+ただし、真の $\Pi$、$A_t$、$\mathrm{Crit}^{(1)}(x_t)$、$\mu_{\mathrm{eff},t}$、$Q$ その他と同一視しない。
+$\mathrm{fit}_t$ は目的基準の評価（定義~\ref{def:eval_vs_judgment}）の一つであり、存続基準の評価ではない。
+\end{definition}
+\begin{definition}[候補と適合比較の情報来歴（分類B）]
+\label{def:s4_candidate_sources}
+$\Phi_{\mathrm{cand}}:\mathcal I_{M3}\to\mathcal P(U)\setminus\{\emptyset\}$、
+$\Phi_{\mathrm{fit}}:\mathcal I_{M3}\times U\to\mathbb R$ を固定し、
+$\mathrm{Cand}_t=\Phi_{\mathrm{cand}}(I_{M3,t})$、
+$\mathrm{fit}_t(u)=\Phi_{\mathrm{fit}}(I_{M3,t},u)$
+（$u\in\mathrm{Cand}_t$）とする。
+候補のコンパクト性や最大値の達成は仮定せず、
+行動確定は既定義の決定論的選択規則による。
+\end{definition}
+
+\begin{remark}[候補ごとの予測の利用]
+\label{rem:candidate_prediction}
+M3 は、内部モデルが与える予測写像 $\hat g_t$（定義~\ref{def:env_set_prediction}）を
+候補 $u\in\mathrm{Cand}_t$ に当てはめた $\hat G_t(u)$ を、比較の材料に用いてよい。
+これは予測の当てはめであり、存続基準の評価の生成ではない。
+当てはめの結果に目的基準の評価を与えることはありうる。
+最終の実効行動についての予測集合は、$u_t$ が定まった後に記録される
+（定義~\ref{def:prediction_record_check}）。
+同一時刻の比較に $u_t$ についての予測を用いる記述は置かない。
+\end{remark}
+
+
+\begin{remark}[要請適合性と識別の区別]
+\label{rem:fit_vs_identity}
+M1-b は対象または情報を内部的に識別し、
+M3-b は現在の目的と要請に対する行動候補の適合差を比較する。
+したがって本論文は、M1 の識別結果だけから特定の行動候補の適合を一般的な帰結として置かない。
+\end{remark}
+
+情報が不足している場合、
+情報取得自体が $U$ の行動として定義される実装では、
+情報取得行動を $\mathrm{Cand}_t$ に含めてよい。
+
+\paragraph*{4.2.3-c\quad M3-c：動作モードの判断と行動指令の確定}
+
+M3-c は、動作モードの判断と M3-b の候補比較結果に基づき、
+PSL へ渡す一つの TIPA 行動指令を確定する。
+
+\begin{definition}[動作モードの判断（分類B）]
+\label{def:mode_judgment}
+$\mathrm{mode}_t\in\mathsf{Mode}$ は M3 の出力であり（定義~\ref{def:m3_map}）、
+M3 が要請信号 $\mathrm{sig}_t$、Priority $P_t$、評価その他を材料に判断する。
+M2 は動作モードを指定しない。
+判断の手続き、および各モード内部の具体的な候補比較手続きは実装依存とする。
+\end{definition}
+
+\begin{definition}[要請と応答の不一致（分類C）]
+\label{def:request_response_mismatch}
+要請の質と動作モードの対応として、実装が与える関係
+$\mathsf{Corr}\subseteq\mathsf{Qual}\times\mathsf{Mode}$ を固定する。
+時刻 $t$ の要請 $(q,c)\in \mathrm{sig}_t$ について $(c,\mathrm{mode}_t)\notin\mathsf{Corr}$ であるとき、
+その要請は時刻 $t$ の応答と\emph{不一致}であるという。
+不一致の要請の集合を
+\[
+  \mathrm{Mis}_t:=\{(q,c)\in \mathrm{sig}_t\mid (c,\mathrm{mode}_t)\notin\mathsf{Corr}\}
+\]
+とする。
+$\mathsf{Corr}$ の中身は Phase~1 では与えない。
+本論文は、不一致が M2 または M3 の不具合に由来すること、
+不一致から不利な結果が生じること、およびそれらの逆を、
+いずれも一般的な帰結として置かない。
+\end{definition}
+
+\begin{definition}[M3動作モード（分類B）]
+\label{def:M3_modes}
+$\mathsf{Mode}$ の各モードを次のように解釈する。
+\begin{description}
+  \item[3A：緊急応答モード]
+  高い切迫性を示す評価または要請に応じて、詳細な比較よりも応答形成の速さを相対的に優先する標準モード。
+  \item[3B：熟慮的応答モード]
+  複数候補および複数評価差を比較的詳細に比較する標準モード。
+  \item[3C：通常応答モード]
+  緊急性も特別な詳細比較要求も支配的でない場合の標準モード。
+\end{description}
+各モードは三原理の時刻別充足述語の真偽を表すラベルではない。
+\end{definition}
+
+\begin{remark}[M3-3AとPSL-4の区別]
+\label{rem:m3_3a_vs_psl4}
+3A は TIPA 内で M1・M2・M3 の利用可能情報に基づいて
+緊急応答形成を行う動作モードであり、
+詳細な TIPA 処理の完了を一般要件としない
+局所保護応答である PSL-4 とは異なる。
+したがって本論文は、3A の成立から PSL-4 の作動を、
+PSL-4 の作動から 3A の成立を、いずれも一般的な帰結として置かない。
+\end{remark}
+
+\begin{definition}[3B応答様式（分類B）]
+\label{def:m3_3b_styles}
+3B 内で利用可能な標準応答様式を
+\[
+  \mathsf{Style}_{3B}
+  :=
+  \{\mathrm{3B\mbox{-}own},\mathrm{3B\mbox{-}rel},\mathrm{3B\mbox{-}comb}\}
+\]
+とする。
+4.2 冒頭で定めた
+\[
+  \mathsf{Style}
+  =
+  \mathsf{Style}_{3B}\cup\{\mathrm{none}\}
+\]
+に対し、$\mathrm{mode}_t\neq\mathrm{3B}$ の場合には
+\[
+  \mathrm{style}_t=\mathrm{none}
+\]
+とする。
+$\mathrm{mode}_t=\mathrm{3B}$ の場合に限り、M3 は必要に応じて
+$\mathsf{Style}_{3B}$ の要素を応答様式として利用してよい。
+要素 $\mathrm{none}$ は応答様式を区別しないことを表し、
+応答形成そのものの不在を意味しない。
+
+3B-own は自己側の可行性・内部維持に関係する評価差を相対的に重視する様式、
+3B-rel は外部関係・接続条件・外部関係に伴う可行性関連差異に関係する評価差を相対的に重視する様式、
+3B-comb は複数の評価差を実装依存の規則で統合する様式とする。
+これらは規範的善悪または倫理的優劣の順位を意味しない。
+\end{definition}
+
+\begin{definition}[TIPA行動指令の決定（分類B）]
+\label{def:action_decision}
+M3-c は、$\mathrm{Cand}_t$、$\mathrm{fit}_t$、
+$\mathrm{mode}_t$ および必要な応答様式を用いて、
+決定論的な選択規則により
+\[
+  u_{\mathrm{M3},t}\in\mathrm{Cand}_t\subseteq U
+\]
+を一意に確定する。
+モードごとの比較アルゴリズム、探索量、停止条件およびタイブレーク規則は、
+決定論性と上記の型整合性を保つ範囲で実装依存とする。
+
+$u_{\mathrm{M3},t}$ は M3 が生成する TIPA 側の行動指令であり、
+状態遷移へ入力される最終実効行動 $u_t$ ではない。
+両者の関係は \S\ref{subsec:psl} の実効行動解決で定める。
+\end{definition}
+
+M3-a、M3-b、M3-c は M3 の役割の整理であり、
+その内部の順序と相互のやりとりは固定しない（備考~\ref{rem:tipa_bidirectional}）。
+動作モード、目的および行動指令は、いずれも定義~\ref{def:m3_map} の M3 の出力として定まる。
+
+\begin{remark}[M3の成功非保証]
+\label{rem:m3_output_quality}
+本論文は、M3 が $u_{\mathrm{M3},t}$ を確定したことから、
+$u_{\mathrm{M3},t}\in A_t$、三原理の時刻別充足述語の真、閉塞回避、崩壊回避、
+または期待結果の達成を一般的な帰結として置かない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{PSL：物理的基盤層}
+\label{subsec:psl}
+
+PSL は、TIPA と ISL の間で、
+入力・出力、記憶I/O、基盤維持、局所保護応答、感度制御および実効行動形成を
+機能的に接続する分類Bの標準機能形式である。
+PSL は第四の認知機構ではなく、M1・M2・M3 の認知的処理を独自に再実行しない。
+
+\begin{definition}[利用可能性（分類C）]
+\label{def:psl_availability}
+情報、信号、資源または作用能力がある機構から利用可能であるとは、
+その機構の許容された入力または作用対象としてアクセス可能な状態にあることをいう。
+本論文は、利用可能であることから、実際の利用、正確な解釈または後続処理の成功を一般的な帰結として置かない。
+\end{definition}
+
+\begin{definition}[PSLの形式的定義（分類B）]
+\label{def:psl}
+PSL を、入力取得、記憶I/O、行動実現、基盤維持、局所保護応答、
+感度制御および実効行動解決を担う標準機能構成として定める。
+具体的な内部配置、物理媒体、通信方式および実装トポロジーは固定しない。
+\end{definition}
+
+\subsubsection{PSL-1：入力・記憶出力インターフェース}
+\label{subsubsec:psl1}
+
+PSL-1 は、実装側に存在する外部・内部信号および記憶出力を、
+TIPA から利用可能な情報へ接続する。
+
+\begin{definition}[PSL-1の形式的定義（分類B）]
+\label{def:psl1}
+実装側入力信号空間を $\mathcal S_{\mathrm{in}}$ とし、
+\[
+  \Phi_{\mathrm{sense}}:
+  \mathcal S_{\mathrm{in}}\to\mathcal I
+\]
+を入力インターフェースとする。
+\[
+  I_{\mathrm{raw},t}
+  :=
+  \Phi_{\mathrm{sense}}\bigl(s_{\mathrm{in},t}\bigr)
+  \in\mathcal I
+\]
+とし、入力感度制御を用いる場合には
+\[
+  I_{\mathrm{sense},t}
+  :=
+  \Gamma_{\mathrm{in},t}\bigl(I_{\mathrm{raw},t}\bigr)
+  \in\mathcal I
+\]
+とする。
+
+さらに、記憶実装側の出力信号空間を
+$\mathcal S_{\mathrm{mem},\mathrm{out}}$、
+TIPA 側から利用可能な記憶出力情報空間を
+$\mathcal I_{\mathrm{mem},\mathrm{out}}$ とし、
+\[
+  \Phi_{\mathrm{mem\_out}}:
+  \mathcal S_{\mathrm{mem},\mathrm{out}}
+  \to
+  \mathcal I_{\mathrm{mem},\mathrm{out}}
+\]
+を記憶出力インターフェースとする。
+\end{definition}
+
+\begin{remark}[PSL-1とM1の役割分離]
+\label{rem:psl1_m1}
+PSL-1 は情報を利用可能にする接続を担い、
+状態・環境推定、識別または可行性関連評価を行わない。
+\end{remark}
+
+\subsubsection{PSL-2：出力・記憶入力インターフェース}
+\label{subsubsec:psl2}
+
+PSL-2 は、PSL により確定された実効行動を作用側実装へ接続し、
+必要に応じて保持対象情報を記憶実装側へ入力可能にする。
+
+\begin{definition}[PSL-2の形式的定義（分類B）]
+\label{def:psl2}
+非空な駆動信号空間 $\mathcal S_{\mathrm{drive}}$ を置く。実効行動 $u_t\in U$ を実装側駆動信号へ接続する写像を
+\[
+  \Phi_{\mathrm{action}}:U\to \mathcal S_{\mathrm{drive}}
+\]
+とし、
+\[
+  x_{\mathrm{drive},\mathrm{raw},t}
+  :=
+  \Phi_{\mathrm{action}}(u_t)
+\]
+とする。
+出力感度制御を用いる場合、
+\[
+  x_{\mathrm{drive},t}
+  :=
+  \Gamma_{\mathrm{out},t}
+  \bigl(x_{\mathrm{drive},\mathrm{raw},t}\bigr)
+\]
+とする。
+
+また、TIPA 側から記憶実装側へ渡される情報空間を
+$\mathcal I_{\mathrm{mem},\mathrm{in}}$、
+記憶実装側の入力信号空間を
+$\mathcal S_{\mathrm{mem},\mathrm{in}}$ とし、
+\[
+  \Phi_{\mathrm{mem\_in}}:
+  \mathcal I_{\mathrm{mem},\mathrm{in}}
+  \to
+  \mathcal S_{\mathrm{mem},\mathrm{in}}
+\]
+を記憶入力インターフェースとする。
+\end{definition}
+
+\begin{remark}[記憶入力とUpdateの境界]
+\label{rem:mem_input_update_boundary}
+PSL-2 は情報を記憶実装側へ接続しうるが、
+保持内容そのものの $t\to t+1$ 更新則は定めない。
+その動学は \S\ref{sec:extended_dynamics} の責務である。
+\end{remark}
+
+\subsubsection{PSL-3：基盤維持と基盤状態信号}
+\label{subsubsec:psl3}
+
+PSL-3 は、TIPA、PSL、ISL が作動可能であるための
+基盤条件および資源条件を維持し、その状態を必要な機構から利用可能にする。
+
+\begin{definition}[PSL-3の形式的定義（分類B）]
+\label{def:psl3}
+PSL基盤状態を
+\[
+  s_{\mathrm{PSL},t}\in\mathcal S_{\mathrm{PSL}}
+\]
+とする。
+利用可能資源空間を $\mathcal R_{\mathrm{PSL}}$ とし、
+基盤維持写像を
+\[
+  \Phi_{\mathrm{maint}}:
+  \mathcal S_{\mathrm{PSL}}\times\mathcal R_{\mathrm{PSL}}
+  \to\mathcal S_{\mathrm{PSL}}
+\]
+とする。
+また、TIPA 側から利用可能となりうる基盤情報を
+\[
+  \Phi_{\mathrm{base}}:
+  \mathcal S_{\mathrm{PSL}}\to\mathcal I_{\mathrm{base}}
+\]
+により抽出してよい。
+\end{definition}
+
+\begin{remark}[PSL-3とSMの時刻別充足述語の区別]
+\label{rem:psl3_sm_base}
+PSL-3 は自己維持に関わる基盤条件に関係するが、
+本論文は、PSL-3 の存在または作動から SM の時刻別充足述語の真を一般的な帰結として置かない。
+\end{remark}
+
+\subsubsection{PSL-4：局所急性異常への保護応答}
+\label{subsubsec:psl4}
+
+PSL-4 は、局所的に取得可能な急性異常情報に対し、
+M1・M2・M3 の詳細な処理完了を一般要件とせず、
+保護応答へ接続しうる分類Bの標準機能形式である。
+ここでいう急性は、普遍的な時間閾値、締切時刻または
+最大許容遅延を意味しない。
+
+\begin{definition}[PSL-4：局所急性異常への保護応答（分類B）]
+\label{def:psl4}
+局所信号空間を
+\[
+  \mathcal S_{\mathrm{local}}
+\]
+とし、局所保護応答を要する条件集合を
+\[
+  \mathcal C_{\mathrm{prot}}
+  \subseteq
+  \mathcal S_{\mathrm{local}}
+\]
+とする。
+局所保護応答生成写像を
+\[
+  \Phi_{\mathrm{prot}}:
+  \mathcal S_{\mathrm{local}}
+  \to
+  U\cup\{\bot\}
+\]
+とし、
+\[
+  r_{\mathrm{local},t}
+  :=
+  \Phi_{\mathrm{prot}}
+  \bigl(s_{\mathrm{local},t}\bigr)
+  \in U\cup\{\bot\}
+\]
+とする。
+$\bot$ は局所保護応答を生成しないことを表す。
+
+標準作動条件として
+\[
+  s_{\mathrm{local},t}\notin\mathcal C_{\mathrm{prot}}
+  \Longrightarrow
+  \Phi_{\mathrm{prot}}\bigl(s_{\mathrm{local},t}\bigr)=\bot
+\]
+とする。
+$\mathcal C_{\mathrm{prot}}$ の具体的内容、局所信号構成、応答種類および時間尺度は実装依存とする。
+\end{definition}
+
+\begin{remark}[PSL-4の急性・局所・非熟慮性]
+\label{rem:psl4_no_deliberation}
+「急性」は普遍的な時間閾値を意味せず、
+詳細な TIPA 処理の完了を一般要件とせず保護応答へ接続しうるという機能的区分を表す。
+また「局所」は特定器官の物理的位置ではなく、
+局所異常情報と保護応答との機能的接続を表す。
+\end{remark}
+
+\begin{remark}[PSL-4の構造と作動成功の区別]
+\label{rem:psl4_required}
+PSL-4 の標準構造を備えることと、各時刻に適切な保護応答が生成されることは同一ではない。
+本論文は、$r_{\mathrm{local},t}\neq\bot$ から、SM の時刻別充足述語の真、閉塞回避または崩壊回避を一般的な帰結として置かない。
+仮定~\ref{ass:psl_minimal} の (4) は、局所保護応答を生成する局所信号の存在だけを要求し、
+各時刻に保護応答が生成されることを要求しない。
+\end{remark}
+
+\subsubsection{M3行動指令と局所保護応答の解決}
+\label{subsubsec:effective_action_resolution}
+
+M3 が形成する $u_{\mathrm{M3},t}$ は TIPA 側の行動指令であり、
+状態遷移へ入力される最終実効行動 $u_t$ とは一般に異なりうる。
+PSL は局所保護応答その他との関係を決定論的に解決して $u_t$ を確定する。
+
+\begin{definition}[実効行動解決写像（分類B）]
+\label{def:effective_action_resolve}
+解決補助情報空間を $\mathcal R$ とする。
+実効行動解決写像を
+\[
+  \Phi_{\mathrm{resolve}}:
+  U\times(U\cup\{\bot\})\times\mathcal R
+  \to U
+\]
+とする。
+最終実効行動を
+\[
+  u_t
+  =
+  \Phi_{\mathrm{resolve}}
+  \bigl(
+    u_{\mathrm{M3},t},
+    r_{\mathrm{local},t},
+    R_t
+  \bigr)
+  \in U
+\]
+とする。
+
+局所保護応答が存在しない場合には
+\[
+  \Phi_{\mathrm{resolve}}
+  \bigl(u_{\mathrm{M3},t},\bot,R_t\bigr)
+  =u_{\mathrm{M3},t}
+\]
+を標準退化条件とする。
+
+局所保護応答が担う行動の成分を読み出す固定写像
+\[
+  \mathrm{pr}_{\mathrm{loc}}:U\to U_{\mathrm{loc}}
+\]
+を置く（$U_{\mathrm{loc}}$ は非空集合）。
+$\mathrm{pr}_{\mathrm{loc}}(u)$ を $u$ の\emph{局所応答成分}と呼ぶ。
+標準形では次の二つを置く。
+\begin{enumerate}[label=(\alph*)]
+  \item 局所保護応答の非退化：$\Phi_{\mathrm{prot}}(s)\neq\bot$ となるすべての $s\in\mathcal S_{\mathrm{local}}$ について
+  $\mathrm{pr}_{\mathrm{loc}}\bigl(\Phi_{\mathrm{prot}}(s)\bigr)\neq\mathrm{pr}_{\mathrm{loc}}(u_{\emptyset})$。
+  \item 発動の保存：すべての $u\in U$、$r\in U$、$R\in\mathcal R$ について
+  \[
+    \mathrm{pr}_{\mathrm{loc}}\bigl(\Phi_{\mathrm{resolve}}(u,r,R)\bigr)
+    =
+    \mathrm{pr}_{\mathrm{loc}}(r).
+  \]
+\end{enumerate}
+(b) は、$\Phi_{\mathrm{resolve}}(u,r,R)=r$ とする解決によって満たされるので、
+空でない条件である。
+(a) により、局所保護応答の局所応答成分は選択的待機のそれと異なり、
+(b) はそれを M3 行動指令によって待機その他の値に置き換えないことを要求する。
+$U_{\mathrm{loc}}$ と $\mathrm{pr}_{\mathrm{loc}}$ の具体的な内容は実装依存とする。
+局所応答成分は、局所保護応答の発動を実効行動の上で識別する抽象的な成分であり、
+身体の特定の自由度、運動の波形またはその強さを表すものではない。
+(b) が要求するのは、M3 行動指令によって発動が実効行動から消去されないことである。
+発動した応答の強さや形が他の行動との干渉によって変わることは、
+局所応答成分以外の差として表しうるので、(b) はこれを排除しない。
+\end{definition}
+
+局所保護応答が生じた時刻の実効行動について、
+局所応答成分は局所保護応答の値をとり（発動の保存）、
+それ以外の成分を M3 行動指令に従わせるか、
+上書き、修飾、合成その他のどの方式で解決するかは実装依存とする。
+本論文は、局所保護応答が実効行動の全体を置き換えることを仮定しない。
+
+\begin{remark}[局所保護応答と TIPA の並行性]
+\label{rem:psl4_concurrency}
+局所保護応答 $r_{\mathrm{local},t}=\Phi_{\mathrm{prot}}(s_{\mathrm{local},t})$ は、
+局所信号 $s_{\mathrm{local},t}=\rho_{\mathrm{local}}(I_t)$ だけから生成され
+（定義~\ref{def:s4_psl_sources}）、TIPA の出力を用いない。
+したがって局所保護応答は、TIPA の処理とは別に、同じ時刻に並行して生じうる。
+実効行動解決写像が同じ時刻の $u_{\mathrm{M3},t}$ と $r_{\mathrm{local},t}$ をともに引数とすることは、
+二つの値を同じ時刻の実効行動へ形式的にまとめることを表し、
+M3 の処理の完了を局所保護応答の発生の条件とするものではない。
+本論文は、同一時刻の中での物理的な先行関係を定めない。
+
+局所保護応答の発動は、M3 の行動指令によって取り消されない
+（定義~\ref{def:effective_action_resolve} の発動の保存）。
+行動の実行中に局所保護応答が生じた場合、局所応答成分は局所保護応答に従い、
+それ以外の成分は M3 行動指令に従いうる。
+したがって局所保護応答は、行動の実行中にも並行して生じうる。
+
+局所保護応答が生じた後の影響は、最終実効行動の記録 $u_{t-1}$ と、
+状態および感知の変化を通じて、次の時刻以後の M1 で統合される
+（備考~\ref{rem:tipa_bidirectional}）。
+M3 は同じ時刻の局所保護応答を入力としないので、
+これに応じる M3 の行動は次の時刻以後に選ばれる。
+M3 が局所保護応答を止める応答は、発動を取り消すことではなく、発動の後の応答である。
+それは、行動の作用が状態を通じて後の時刻の局所信号に及び、
+局所信号が条件集合 $\mathcal C_{\mathrm{prot}}$ に入らなくなることにより、
+後の時刻に局所保護応答が生成されなくなることとして表す。
+後の時刻に再び局所保護応答が生成されれば、その発動も同様に保存される。
+局所信号が $\mathcal C_{\mathrm{prot}}$ に入らない時刻には局所保護応答は発動しておらず、
+発動の保存の対象ではない。
+前の時刻の行動によって局所信号が $\mathcal C_{\mathrm{prot}}$ に入らないようにすること
+（たとえば刺激を前もって避けること）は、発動を止めることではなく、
+発動の条件を成立させないことである。
+本論文は、発動の条件を成立させないこと、発動の後に続きを止めること、
+および再び発動しないようにすることを区別する。
+たとえば、咳やまばたきのような局所的な保護応答を PSL-4 の形式で表す場合、
+M3 が選びうるのは発動そのものを止めることではなく、発動の後に続きを止める応答である。
+\end{remark}
+
+\subsubsection{PSL感度制御}
+\label{subsubsec:psl_sensitivity}
+
+PSL 感度制御は、入力側または出力側の接続特性を、
+既に利用可能な制御情報に応じて調整する。
+
+\begin{definition}[PSL感度制御写像（分類B）]
+\label{def:psl_sensitivity}
+入力側および出力側の許容感度写像族を
+\[
+  \mathfrak G_{\mathrm{in}},
+  \qquad
+  \mathfrak G_{\mathrm{out}}
+\]
+とする。
+時刻 $t$ の感度写像を
+\[
+  \Gamma_{\mathrm{in},t}\in\mathfrak G_{\mathrm{in}},
+  \qquad
+  \Gamma_{\mathrm{out},t}\in\mathfrak G_{\mathrm{out}}
+\]
+とする。
+各写像は少なくとも
+\[
+  \Gamma_{\mathrm{in},t}:\mathcal I\to\mathcal I,
+  \qquad
+  \Gamma_{\mathrm{out},t}:\mathcal S_{\mathrm{drive}}\to \mathcal S_{\mathrm{drive}}
+\]
+として型整合的に作用するものとする。
+具体的なパラメータ化、選択規則、連続性および時刻間更新則は固定しない。
+ただし、入力感度写像 $\Gamma_{\mathrm{in},t}$ は、
+$I_{\mathrm{sense},t}$ を用いる当該時刻の TIPA 処理に先立って確定されるものとする。
+$\Gamma_{\mathrm{in},t}$ の選択に TIPA 由来の内部情報を用いる場合には、
+時刻 $t$ の当該 TIPA 処理より前に既に利用可能な情報
+（標準的には前時刻までの TIPA 出力）にのみ依存させ、
+同一ステップ内の M1・M2・M3 の出力から
+$\Gamma_{\mathrm{in},t}$ を再決定する同時刻循環を許さない。
+\end{definition}
+\begin{definition}[PSLの信号・基盤担体と標準写像への接続（分類B）]
+\label{def:s4_psl_sources}
+次の読み出しを固定する。
+\[
+\begin{aligned}
+\rho_{\mathrm{in}}&:X\times E_{\mathrm{ext}}\to\mathcal S_{\mathrm{in}},&
+\rho_{\mathrm{PSL}}&:X\to\mathcal S_{\mathrm{PSL}},\\
+\rho_{\Gamma,\mathrm{in}}&:X\to\mathfrak G_{\mathrm{in}},&
+\rho_{\Gamma,\mathrm{out}}&:X\to\mathfrak G_{\mathrm{out}},\\
+\rho_{\mathrm{mem,out}}&:X\to\mathcal S_{\mathrm{mem},\mathrm{out}},&
+\rho_{\mathrm{local}}&:\mathcal I\to\mathcal S_{\mathrm{local}}.
+\end{aligned}
+\]
+$s_{\mathrm{in},t}=\rho_{\mathrm{in}}(x_t,e_t)$、
+$s_{\mathrm{PSL},t}=\rho_{\mathrm{PSL}}(x_t)$、
+$\Gamma_{\mathrm{in},t}=\rho_{\Gamma,\mathrm{in}}(x_t)$、
+$\Gamma_{\mathrm{out},t}=\rho_{\Gamma,\mathrm{out}}(x_t)$ とする。
+PSL-1 と標準感知の接続は
+\[
+P_{\mathrm{sens}}(x,e)=
+\rho_{\Gamma,\mathrm{in}}(x)
+ \bigl(\Phi_{\mathrm{sense}}(\rho_{\mathrm{in}}(x,e))\bigr)
+\]
+を満たすように指定する。この等式は任意の既存写像から導かれる定理ではなく、
+本節の標準形式を採用する際の接続条件である。
+記憶実装出力 $\Phi_{\mathrm{mem\_out}}(\rho_{\mathrm{mem,out}}(x_t))$ と
+基盤情報 $\Phi_{\mathrm{base}}(\rho_{\mathrm{PSL}}(x_t))$ を感知情報の成分として
+用いる実現では、それぞれへの固定読み出し
+$\mathcal I\to\mathcal I_{\mathrm{mem},\mathrm{out}}$、
+$\mathcal I\to\mathcal I_{\mathrm{base}}$ がこの値を返すよう接続する。
+これは物理担体の信号についての条件であり、任意の $M_t$ を $x_t$ から
+復元する要請ではない。機能的な保持内容は $M_t$ から別途利用可能である。
+局所信号は $s_{\mathrm{local},t}=\rho_{\mathrm{local}}(I_t)$ とする。
+解決補助情報には固定写像 $\Phi_R:\mathcal M\times\mathcal I\to\mathcal R$
+を用い、$R_t=\Phi_R(M_t,I_t)$ とする。
+したがって同じ $M,I$ のもとで未観測の状態差だけを使って実効行動を変えない。
+
+基盤維持への資源入力を読む写像
+$\rho_{\mathrm{res}}:X\times U\times E_{\mathrm{ext}}\to\mathcal R_{\mathrm{PSL}}$
+を固定する。PSL-3を独立した状態遷移とせず、採用する実現では
+\[
+\rho_{\mathrm{PSL}}(f(x,u,e))=
+\Phi_{\mathrm{maint}}(\rho_{\mathrm{PSL}}(x),\rho_{\mathrm{res}}(x,u,e))
+\]
+として $f$ と整合させる。
+PSL-2 の駆動信号と効果器の状態に依存する実際の作用も $f$ に含め、
+駆動信号に独立した時刻間状態を置かない。
+感度の後続値は $\rho_{\Gamma,\cdot}(f(x_t,u_t,e_t))$ であり、
+指向的内部行動を通じた変更を含みうるが、それだけに限定しない。
+
+記憶入力を利用する場合、固定写像
+$\Phi_{\mathrm{write}}:\mathcal M\times\mathcal I\to\mathcal I_{\mathrm{mem},\mathrm{in}}$
+により書き込み情報を与え、$\Phi_{\mathrm{mem\_in}}$ で実装信号へ接続する。
+保持内容の次状態は Update が定め、別の記憶更新則を並置しない。
+書き込み信号と Update の実装上の対応は、採用する各成分更新の型の範囲で指定する。
+\end{definition}
+
+
+\begin{remark}[感度制御の非認知性]
+\label{rem:sensitivity_noncognitive}
+PSL 感度制御は、認知評価、Priority生成、動作モード判定、PSL-4、
+Automaticity または統合的高速処理そのものではない。
+\end{remark}
+
+\subsubsection{PSLの最小構造条件}
+\label{subsubsec:psl_minimal_conditions}
+
+\begin{assumption}[PSLの最小構造条件と非認知性]
+\label{ass:psl_minimal}
+本節で扱う ACS の PSL は、少なくとも次を満たすものとする。
+\begin{enumerate}
+  \item PSL-1 により必要な入力および記憶出力を TIPA から利用可能にしうる。
+  \item PSL-2 により最終実効行動および必要な記憶入力を実装側へ接続しうる。
+  \item PSL-3 により必要な基盤・資源維持機能を担いうる。
+  \item PSL-4 により局所急性異常への保護応答を担持しうる。
+  すなわち、ある $s\in\mathcal C_{\mathrm{prot}}$ について $\Phi_{\mathrm{prot}}(s)\neq\bot$ である。
+  \item M1・M2・M3 の認知的責務を PSL が独自に代替しない。
+\end{enumerate}
+具体的な物理部位、回路、通信方式またはソフトウェア構成は固定しない。
+
+導入地位：S（構造的）。強さ：中。
+本仮定は、\S\ref{subsec:psl} の PSL の標準形式を適用する ACS の範囲を限定する構造的条件であり、本節の命題の前提としては用いない。
+\end{assumption}
+
+%----------------------------------------------------------------------
+\subsection{目的・行動・結果の記述}
+\label{subsec:purpose_action_result}
+
+本小節では、\S\ref{subsec:tipa_architecture} と \S\ref{subsec:psl} の標準形式のもとで、
+目的の帰属、要求の関与、行動の区分、および一つの行動の結果の記述を与える。
+いずれも新たな機構や状態変数を導入しない。
+
+\begin{proposition}[目的の自己帰属性]
+\label{prop:purpose_self_attribution}
+本節の標準形式のもとで、各時刻 $t$ の
+$\mathrm{Req}_t$、$\mathrm{sig}_t$、$\mathrm{ev}^{\mathrm{rq}}_t$、$\mathrm{Pur}_t$、$\mathrm{stat}_t$ は、
+$(M_t,I_t)$ を引数とする固定した写像の値として定まる。
+したがって、当該ACSの外部にある主体の要求や評価の基準がこれらに入るのは、
+感知情報 $I_t$ を通じる場合と、保持内容 $M_t$ に保持されている場合に限られる。
+\end{proposition}
+
+\begin{proof}
+定義~\ref{def:s4_carrier_contract} により、
+本節の時刻依存の機構出力は固定した規則のもとで $(M_t,I_t)$ から生成され、
+前時刻記号は $M_t$ の成分 $M_t^{\mathrm W}$ の固定した読み出しの値である。
+$\mathrm{Req}_t=\rho_{\mathrm{req}}(M_t)$ である（定義~\ref{def:request_signal_types}）。
+M1 の値は $I_{\mathrm{sense},t}=I_t$、$M_t$ および前時刻記号の値であり（定義~\ref{def:m1_map}）、
+M2 の値は M1 の出力、$M_t$ および前時刻記号の値である（定義~\ref{def:m2_map}）。
+よって $\mathrm{sig}_t$ と $\mathrm{ev}^{\mathrm{rq}}_t$ は $(M_t,I_t)$ の固定した写像の値である。
+M3 の入力はこれらと $M_t$ および前時刻記号からなるから（定義~\ref{def:m3_map}）、
+$\mathrm{Pur}_t$ と $\mathrm{stat}_t$ も同様である。
+後半は、写像の引数が $(M_t,I_t)$ に限られることから従う。
+\end{proof}
+
+命題~\ref{prop:purpose_self_attribution} は、固定した写像の値についての主張である。
+これらの時刻別の値を $\Sigma_i$ の出力として帰属させるかどうかは、
+定義~\ref{def:s4_output_attribution} に従う。
+
+\begin{remark}[自己帰属性の射程と異常域]
+\label{rem:self_attribution_scope}
+命題~\ref{prop:purpose_self_attribution} は、
+目的の基準が当該ACSの内部の担体から読み出されるという構造上の性質であり、
+目的が当該ACSの利益に向かうことや $\Pi$ の維持に向かうことを意味しない。
+他者の保護や自己の犠牲に向かう目的も、当該ACSが保持する要求から形成される限りでこの性質をもつ。
+外部の主体が行動を直接に定めることは、型の上では生じない。
+最終の実効行動 $u_t$ は $\Phi_{\mathrm{resolve}}$ の値としてだけ定まるからである
+（定義~\ref{def:effective_action_resolve}）。
+一方、外部からの作用によって $M_t$ が書き換えられる場合は、
+型の上では学習による変化と区別できない。
+機能不全、被操作および外生的な支配による評価機構の迂回・置換は本備考の記述にとどめ、
+その由来の追跡は Phase~1.$\alpha$ 以後の課題とする（\S\ref{subsec:phase1a}）。
+\end{remark}
+
+\begin{definition}[要求の関与（分類C）]
+\label{def:req_involvement}
+時刻 $t$ について、M3 の入力のうち
+$\hat x_t$、$\hat e_t$、$\xi_t$、$P_t$、$\mathrm{ev}_t$、$\mathrm{Pur}_{t-1}$、$M_t$ と、
+実効行動解決の $r_{\mathrm{local},t}$、$R_t$ を固定する。
+要求の一覧・要請信号・要求×対象の評価の組
+$(R,\gamma,v)\in\mathcal P_{\mathrm{fin}}(\mathsf{Req})\times\mathsf{Sig}\times\mathfrak E^{\mathrm{rq}}_{\mathrm{map}}$ に対し、
+これらを入力とする M3 の行動指令を $\Phi_{\mathrm{resolve}}$ で解決した値を
+$\mathcal U_t(R,\gamma,v)\in U$ と書く。
+要求 $q\in\mathrm{Req}_t$ について
+\[
+  R^{\setminus q}_t:=\mathrm{Req}_t\setminus\{q\},\quad
+  \mathrm{sig}^{\setminus q}_t:=\{(q',c)\in \mathrm{sig}_t\mid q'\neq q\},\quad
+  v^{\setminus q}_t:=\mathrm{ev}^{\mathrm{rq}}_t\big|_{D^{\mathrm{rq}}_t\setminus(\{q\}\times(\mathsf{Lab}\cup\{\ast\}))}
+\]
+とおく。
+\[
+  \mathcal U_t\bigl(\mathrm{Req}_t,\mathrm{sig}_t,\mathrm{ev}^{\mathrm{rq}}_t\bigr)
+  \neq
+  \mathcal U_t\bigl(R^{\setminus q}_t,\mathrm{sig}^{\setminus q}_t,v^{\setminus q}_t\bigr)
+\]
+が成り立つとき、要求 $q$ は時刻 $t$ の実効行動に\emph{関与した}という。
+成り立たないとき、$q$ は時刻 $t$ に存在したが関与しなかったという。
+定義~\ref{def:m3_map} により右辺も定まる。
+\end{definition}
+
+\begin{remark}[関与の判定の射程]
+\label{rem:involvement_scope}
+定義~\ref{def:req_involvement} は、要求の一覧、要請信号および要求×対象の評価という
+明示的な経路で関与を判定する。
+保持内容 $M_t$ は固定するので、$M_t$ を通じた影響は判定に含まれない。
+したがって、関与したという判定はこの写像の上で結果を左右したことを表すが、
+関与しなかったという判定は明示的な経路で結果を左右しなかったことにとどまり、
+$M_t$ を通じた影響がないことを意味しない。
+たとえば、要求に由来する応答が保持内容の習慣として蓄えられ、
+要請信号から当該要求を除いても同じ行動が生じる場合、
+その行動は明示的な経路では当該要求の関与をもたない。
+関与の判定は最終の実効行動 $u_t$ について行い、
+$u_{\mathrm{M3},t}$ についての同様の判定は補助の記述として扱う。
+\end{remark}
+
+\begin{definition}[行動の区分（分類C）]
+\label{def:action_classes}
+時刻 $t$ の実効行動 $u_t$ を次のように区分する。
+\begin{enumerate}[label=(\roman*)]
+  \item ある $q\in\mathrm{Req}_t$ が $u_t$ に関与したとき、$u_t$ を\emph{目的行動}と呼ぶ。
+  \item どの $q\in\mathrm{Req}_t$ も関与しないとき、
+  $u_t$ を\emph{目的を介さない自己生成の行動}と呼ぶ。
+\end{enumerate}
+局所保護応答（\S\ref{subsec:psl}）が M3 の行動指令を上書きした場合や、
+Automaticity（\S\ref{subsec:fast_processing}）による応答は、(ii) に区分されうる。
+外部による強制は当該ACSの行動ではなく、
+外部環境状態 $e_t$ を通じて $f$ に入る状態変化として表す
+（\S\ref{sec:acs_def} 備考~\ref{rem:action_space_structure}）。
+同じ時刻に、目的行動と外部による強制は共存しうる。
+\end{definition}
+
+\begin{definition}[目的に関わる作用差と一段の条件充足（分類C）]
+\label{def:purpose_action_difference}
+記述者が目的 $p\in\mathsf{Pur}$ に割り当てる達成条件を $G_p\subseteq X\times O$ とする。
+$G_p$ は当該ACSの内部量ではない。
+$e=(b,o)$ について、状態と行動応答成分の合同遷移を
+\[
+  \bar f(x,u,e):=\bigl(f(x,u,e),\ g_O(o,x,u,b)\bigr)\in X\times O
+\]
+とする（\S\ref{sec:acs_def} 定義~\ref{def:env_realization}）。
+\[
+  \mathbf 1\bigl[\bar f(x,u,e)\in G_p\bigr]
+  \neq
+  \mathbf 1\bigl[\bar f(x,u_{\emptyset},e)\in G_p\bigr]
+\]
+が成り立つとき、行動 $u$ は $(x,e)$ において目的 $p$ に関わる\emph{作用差}をもつという。
+また、$(x_{t+1},o_{t+1})\in G_p$ であることを、時刻 $t$ の行動の後の\emph{一段の条件充足}と呼ぶ。
+これは目的の達成一般ではない（定義~\ref{def:purpose_course}）。
+\end{definition}
+
+\begin{proposition}[外部側の区分と枠の作用差]
+\label{prop:purpose_ad_slot}
+ある $G_O\subseteq O$ について $G_p=X\times G_O$ とする。
+行動 $u$ が $(x,e)$ において目的 $p$ に関わる作用差をもつならば、
+ある枠 $a\in\mathcal A_O$ について、$u$ は $(o,x,b)$ において枠 $a$ に作用差をもつ
+（\S\ref{sec:acs_def} 定義~\ref{def:action_difference}）。
+\end{proposition}
+
+\begin{proof}
+$G_p=X\times G_O$ であるから
+$\mathbf 1[\bar f(x,u,e)\in G_p]=\mathbf 1[g_O(o,x,u,b)\in G_O]$ であり、
+$u_{\emptyset}$ についても同様である。
+仮定よりこの二つの値は異なるから、$g_O(o,x,u,b)\neq g_O(o,x,u_{\emptyset},b)$ である。
+$O=\prod_{a\in\mathcal A_O}O_a$ であるから、ある $a\in\mathcal A_O$ について第 $a$ 成分が異なる。
+$\mathcal A_O=\emptyset$ の場合は $O$ が一点集合であり、仮定が成り立たない。
+\end{proof}
+
+本論文は命題~\ref{prop:purpose_ad_slot} の逆を一般的な帰結として置かない。
+
+\begin{remark}[外部による強制と作用差]
+\label{rem:forcing_action_difference}
+外部による強制がある時刻の当該ACS自身の寄与は、強制を含む $e_t$ を固定した作用差で記述する。
+どの行動をとっても次の状態と行動応答成分が同じになる場合は、
+すべての行動について目的に関わる作用差がないこととして表し、新たな概念を置かない。
+実際に生じた強制は軌道の上で $e_t$ として記述し、
+許容外的作用 $\Upsilon_{\mathrm{adm},i}$ は回復可能性の判定にだけ用いる
+（\S\ref{sec:acs_def} 定義~\ref{def:collapse}）。
+作用差は一段階の量であり、何段にもわたる寄与の比較、
+および行動をとらなかった場合の軌道の全体は本論文では定めない。
+\end{remark}
+
+\begin{definition}[一つの行動の結果の記述（分類C）]
+\label{def:result_tuple}
+$\mathrm{WF}_{i,t}=1$ である時刻 $t$ と $p\in\mathrm{Pur}_t$ について、
+目的 $p$ に対する時刻 $t$ の実効行動 $u_t$ の一段の結果を、次の三つ組で記述する。
+\begin{enumerate}[label=(\roman*)]
+  \item 目的に関わる作用差：$u_t$ が $(x_t,e_t)$ において $p$ に関わる作用差をもつか否か。
+  \item 一段の条件充足：$(x_{t+1},o_{t+1})\in G_p$ か否か。
+  $G_p=X\times G_O$ の場合は $o_{t+1}$ だけで定まる。
+  \item 予測集合への帰属：内部の予測外と理論上の予測外のそれぞれの成否
+  （定義~\ref{def:prediction_record_check}）。
+  予測が $\bot$ の場合、および内部の予測外について $\mathrm{WF}_{i,t+1}=0$ の場合は未定義とする。
+\end{enumerate}
+未定義の成分は偽として扱わない。
+内部の達成の判断は一段の結果には含めず、目的の経過の記述（定義~\ref{def:purpose_course}）で扱う。
+\end{definition}
+
+\begin{definition}[目的の経過の記述（分類C）]
+\label{def:purpose_course}
+時刻 $\tau$ に目的 $p$ が新たに目的の集合に入ったとする
+（$p\in\mathrm{Pur}_{\tau}$ であり、$\tau\geq1$ のときは $p\notin\mathrm{Pur}_{\tau-1}$）。
+ここでの $\mathrm{Pur}_{\tau-1}$ は時刻 $\tau-1$ の M3 の出力であり、保持記録の値ではない。
+$\tau$ を起点とする $p$ の経過について、次の時刻を定める。
+該当する時刻が存在しない場合は定めない。
+\begin{enumerate}[label=(\roman*)]
+  \item \emph{理論上の達成時刻}：$s^{\mathrm{th}}:=\min\{s>\tau\mid (x_s,o_s)\in G_p\}$。
+  \item \emph{内部の達成判断時刻}：$s^{\mathrm{in}}:=\min\{s>\tau\mid \mathrm{stat}_s(p)=\mathsf{ach}\}$。
+  ここで $s$ は $\mathrm{WF}_{i,s}=1$ であり $\mathrm{stat}_s(p)$ が定まる時刻を動く。
+  \item \emph{終了時刻}：$s^{\mathrm{end}}:=\min\{s>\tau\mid \mathrm{WF}_{i,s}=1,\ p\notin\mathrm{Pur}_s\}$ と、
+  その時刻の判断による\emph{終了の種別}。
+  種別は、$\mathrm{stat}_{s^{\mathrm{end}}}(p)=\mathsf{ach}$ ならば達成の判断による終了、
+  $\mathsf{term}$ ならば達成せずに終えた終了、
+  $\mathsf{und}$ であるか定まらない場合は判断を経ない消失とする。
+\end{enumerate}
+$s^{\mathrm{th}}$ は記述者の水準の量、$s^{\mathrm{in}}$ は当該ACSの内部の水準の量であり、
+一致しなくてよい。
+たとえば $s^{\mathrm{th}}<s^{\mathrm{in}}$ は達成に遅れて気づく場合を、
+$s^{\mathrm{in}}$ が定まり $s^{\mathrm{th}}$ が定まらない場合は達成を誤って判断した場合を表しうる。
+一段で終わる目的は、$s^{\mathrm{th}}=\tau+1$ となる特別な場合である。
+\end{definition}
+
+\begin{remark}[存続の終わりと結果の記述]
+\label{rem:result_after_collapse}
+たとえば、最後の食料を子に与えた親が後に崩壊する場合を考える。
+子の状態を親から見た行動応答成分として記述すれば
+（\S\ref{sec:acs_def} 備考~\ref{rem:exogenous_environment}）、
+与える行動の作用差は親の行動の時刻の値で定まり、
+子の側の条件充足と理論上の達成時刻は子の成分の値で定まる。
+親の目的の状態判断は、$\mathrm{WF}_{i}=0$ の時刻には定まらず（定義~\ref{def:s4_output_attribution}）、
+「達成せずに終えた」とも「判断を保留した」とも読まない。
+崩壊ではないが $\mathrm{WF}_{i}=0$ である時刻
+（たとえば機能が停止し本節の機構が実現されていない時刻）も同様に扱う。
+本論文は、与えなかった場合に親が存続したことを主張しない。
+目的の自己帰属性（命題~\ref{prop:purpose_self_attribution}）は、
+このような自己の犠牲に向かう目的にも成り立つ。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{ISL：実装部位層}
+\label{subsec:impl}
+
+ISL は、感知、作用、情報保持その他を担いうる ACS の実装要素を、
+機能上の役割によって整理する分類Bの標準機能形式である。
+特定の器官、電子部品、ソフトウェアモジュールまたは配置を一般要件としない。
+
+\begin{definition}[実装部位層 ISL（分類B）]
+\label{def:impl_layer}
+ACS の実装要素全体を
+\[
+  \mathcal B_\Sigma
+\]
+とする。
+主要な標準部分集合として
+\[
+  B_{\mathrm{sens}},
+  \qquad
+  B_{\mathrm{eff}},
+  \qquad
+  B_{\mathrm{mem}}
+  \subseteq\mathcal B_\Sigma
+\]
+を置き、それぞれ感知、作用、情報保持を担いうる実装要素集合とする。
+相互排反性も三集合による網羅性も一般には要求しない。
+\end{definition}
+
+\subsubsection{感覚実装役割}
+\label{subsubsec:sensor}
+
+\begin{definition}[感覚実装役割（分類B）]
+\label{def:sensor}
+$B_{\mathrm{sens}}$ は、外部または内部の変化を
+PSL-1 から利用可能な信号として担持しうる実装要素集合である。
+\end{definition}
+
+\begin{remark}[感覚役割とM1の区別]
+\label{rem:sensor_distinction}
+$B_{\mathrm{sens}}$ は情報取得を担持しうる実装側の役割であり、
+M1 の情報統合・識別そのものではない。
+\end{remark}
+
+\subsubsection{効果実装役割}
+\label{subsubsec:effector}
+
+\begin{definition}[効果実装役割（分類B）]
+\label{def:effector}
+$B_{\mathrm{eff}}$ は、PSL により確定された実効行動を
+外部または内部への作用として担持しうる実装要素集合である。
+\end{definition}
+
+\begin{remark}[効果役割とM3・PSLの区別]
+\label{rem:effector_distinction}
+$B_{\mathrm{eff}}$ は作用の実装担体であり、
+行動指令を形成する M3 または実効行動を解決する PSL と同一ではない。
+\end{remark}
+
+\subsubsection{記憶実装役割}
+\label{subsubsec:mem_substrate}
+
+\begin{definition}[記憶実装役割（分類B）]
+\label{def:mem_substrate}
+$B_{\mathrm{mem}}$ は、過去情報を後続時刻で再利用可能な状態として
+保持しうる実装要素集合である。
+具体的な媒体、符号化法、分散配置および保持期間は実装依存とする。
+\end{definition}
+
+\begin{remark}[記憶実装役割と内部モデルの区別]
+\label{rem:mem_model_distinction}
+$B_{\mathrm{mem}}$ は実装担体であり、
+内部モデル $M_t$、状態履歴または五機能的記憶集合そのものではない。
+\end{remark}
+
+\subsubsection{ISLとPSLの接続}
+\label{subsubsec:impl_connection}
+
+\begin{definition}[ISLとPSLの接続規約（分類B）]
+\label{def:impl_psl_connection}
+ISL と PSL の接続は、固定された解剖学的配線またはハードウェアトポロジーではなく、
+定義~\ref{def:psl_availability} の利用可能性に基づく機能的関係として定める。
+概念的には
+\[
+  B_{\mathrm{sens}}
+  \longrightarrow
+  \mathrm{PSL\mbox{-}1}
+  \longrightarrow
+  \mathrm{TIPA}
+\]
+および
+\[
+  \mathrm{TIPA}
+  \longrightarrow
+  \mathrm{PSL}
+  \longrightarrow
+  B_{\mathrm{eff}}
+\]
+という方向を許し、記憶については
+\[
+  B_{\mathrm{mem}}
+  \longleftrightarrow
+  \mathrm{PSL}
+  \longleftrightarrow
+  \mathrm{TIPA}
+\]
+という利用関係を許す。
+\end{definition}
+
+PSL-4 については、局所信号取得から局所保護応答の実現までが、
+同一時刻の詳細な TIPA 処理完了を必要条件としない局所接続として
+ISL 上に担持されうる。
+
+以上より、M3、PSL、ISL の責務は
+\[
+  \text{M3行動指令}
+  \longrightarrow
+  \text{PSLによる実効行動解決}
+  \longrightarrow
+  \text{ISL上の作用}
+\]
+として区別される。
+
+\subsubsection{存在・作動・健全度の区別}
+\label{subsubsec:impl_state_distinction}
+
+\begin{remark}[実装要素の存在・作動・健全度]
+\label{rem:impl_exist_activity}
+実装要素が存在すること、当該時刻に作動していること、
+および健全であることは相異なる。
+したがって本論文は、ISL の特定要素が停止または不健全であることだけから
+$A_t=\emptyset$ または $\mathrm{Col}_{i,t}=1$ を一般的な帰結として置かない。
+\end{remark}
+
+\subsubsection{ISLの最小構造条件}
+\label{subsubsec:impl_minimal_conditions}
+
+\begin{assumption}[実装部位層の構造的仮定]
+\label{ass:impl_structure}
+本節で扱う ACS の ISL は、
+感知、作用、および時刻をまたぐ情報保持等の必要な実装役割を
+担持可能な構造をもつものとする。
+同一要素が複数役割を担うことを許し、
+役割ごとの独立器官・部品・モジュールの存在を要求しない。
+
+導入地位：S（構造的）。強さ：中。
+本仮定は、\S\ref{subsec:impl} の ISL の標準形式を適用する ACS の範囲を限定する構造的条件であり、本節の命題の前提としては用いない。
+\end{assumption}
+
+%----------------------------------------------------------------------
+\subsection{統合的高速処理と Automaticity}
+\label{subsec:fast_processing}
+
+本小節では、TIPA、PSL、ISL の既存構造が取りうる
+低遅延の横断的作動形態と、詳細な再評価・再比較への依存が低い作動形態を区別する。
+新たな認知機構または機構層は導入しない。
+
+\subsubsection{統合的高速処理の位置づけ}
+\label{subsubsec:fast_position}
+
+\begin{definition}[統合的高速処理（分類B）]
+\label{def:integrated_fast_processing}
+統合的高速処理とは、TIPA を中心とする既存機能構造において、
+\begin{enumerate}
+  \item 対応する詳細処理より詳細な再評価・再比較への依存が低く、
+  \item 当該実装における対応する詳細処理より行動指令形成までの実効遅延が低い
+\end{enumerate}
+という二条件を満たして応答形成が進行しうる作動形態をいう。
+Phase~1 では普遍的な時間閾値、演算量閾値または比較回数閾値を置かない。
+\end{definition}
+
+\begin{remark}[高速処理は独立構成要素ではない]
+\label{rem:fast_not_component}
+統合的高速処理は、TIPA、PSL、ISL に追加される独立機構、独立層、
+または固定された専用経路として要求しない。
+\end{remark}
+
+\subsubsection{三層横断性と責務境界}
+\label{subsubsec:fast_cross_layer}
+
+\begin{definition}[高速処理の三層横断性（分類C）]
+\label{def:fast_cross_layer}
+統合的高速処理は、TIPA、PSL、ISL の一つまたは複数の既存機能が
+低遅延化へ寄与することにより成立しうる。
+\end{definition}
+
+\begin{remark}[高速処理はTIPAの責務を代替しない]
+\label{rem:fast_no_tipa_substitution}
+低遅延化によって M1、M2、M3 の責務が PSL または ISL へ移ることを意味しない。
+\end{remark}
+
+\subsubsection{Automaticity：自動性と熟慮依存}
+\label{subsubsec:automaticity}
+
+\begin{remark}[Automaticityと熟慮依存度]
+\label{rem:automaticity_deliberation}
+Automaticity とは、当該時刻の情報処理または行動形成が、
+対応する詳細な再評価・再比較への依存を比較的低くしたまま成立する作動形態をいう。
+本節では分類Bの作動形態として扱い、
+独立した機構、独立経路、新たな M3 動作モード、
+または独立スカラー状態変数として導入しない。
+また Automaticity と熟慮的作動の間に普遍的な二値境界を置かない。
+\end{remark}
+
+\begin{remark}[高速性・Automaticity・PSL-4の非同一性]
+\label{rem:automaticity_fast_psl4}
+統合的高速処理、Automaticity、PSL-4 は相異なる機能概念である。
+低遅延性と詳細再評価への依存低下は定義~\ref{def:integrated_fast_processing} の別個の条件であり、
+本論文は一方から他方を一般的な帰結として置かない。
+また PSL-4 は局所急性異常への保護応答の標準形式であり、
+Automaticity 一般を代表しない。
+したがって、
+統合的高速処理、Automaticity および PSL-4 は、
+扱う概念の範囲を区別し、
+相互に同一視しない。
+\end{remark}
+
+\begin{remark}[実装上の付随的事象と機能概念の区別]
+\label{rem:structural_operation_implementation_event}
+本論文は、筋収縮、神経・電子信号の発火、混線、ノイズ、誤作動、ハードウェア割込み、
+アクチュエータの意図されない作動その他が、高速、局所的、非随意的または非熟慮的であることだけから、
+統合的高速処理、Automaticity または PSL-4 の成立を一般的な帰結として置かない。
+各概念として分類するためには、それぞれ固有の入力--処理--出力の機能関係が成立している必要がある。
+\end{remark}
+
+\subsubsection{高速処理を支える五機能的記憶集合}
+\label{subsubsec:fast_memory}
+
+\begin{definition}[五機能的記憶集合（分類B）]
+\label{def:fast_memory_sets}
+記憶役割の添字集合を
+\[
+  \mathcal L
+  :=
+  \{\mathrm{rout},\mathrm{sal},\mathrm{err},\mathrm{eval},\mathrm{resp}\}
+\]
+とする。
+各 $\ell\in\mathcal L$ に対して非空な母集合 $\mathfrak T_\ell$ を置き、
+時刻 $t$ に保持され、機能的役割によって分類される内容を
+\[
+  \mathcal T_{\ell,t}\subseteq\mathfrak T_\ell
+\]
+とする。
+
+$\mathcal T_{\mathrm{rout},t}$ は反復・定型関連、
+$\mathcal T_{\mathrm{sal},t}$ は顕著性関連、
+$\mathcal T_{\mathrm{err},t}$ は誤差・異常関連、
+$\mathcal T_{\mathrm{eval},t}$ は評価関連、
+$\mathcal T_{\mathrm{resp},t}$ は応答関連の保持内容を表す。
+保持内容の担体を明示するため、固定写像
+$\rho_\ell:\mathcal M^{\mathrm L}\to\mathcal P(\mathfrak T_\ell)$ を与え、
+$\mathcal T_{\ell,t}=\rho_\ell(M_t^{\mathrm L})$ とする。
+ここでの保持内容と、当該時刻に読み出し・利用に成功することを区別する。
+空集合値を許し、冪集合の位相や読み出しの連続性は要求しない。
+\end{definition}
+
+\begin{remark}[五記憶集合の非排他性・非網羅性]
+\label{rem:fast_memory_nonexclusive}
+五集合は相互排反である必要はなく、同一の保持内容が複数集合に属してよい。
+また五集合によって ACS の全保持内容を網羅することも要求しない。
+本論文は、各集合が空であることだけから対応機能の欠如、閉塞または崩壊を一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[五記憶集合とTIPA機構の非固定対応]
+\label{rem:fast_memory_no_fixed_mapping}
+五つの記憶役割を M1、M2、M3 のいずれかへ一対一に固定配置しない。
+\end{remark}
+
+\begin{remark}[五記憶集合とISL記憶実装役割]
+\label{rem:fast_memory_isl}
+$\mathcal T_{\ell,t}$ は保持内容の機能分類であり、
+$B_{\mathrm{mem}}$ の物理的・計算的部分集合と一対一対応することを要求しない。
+\end{remark}
+
+\subsubsection{高速処理の成立条件と非保証事項}
+\label{subsubsec:fast_conditions}
+
+\begin{assumption}[高速処理時の構造整合条件]
+\label{ass:fast_structural_consistency}
+統合的高速処理が成立する場合にも、
+TIPA の型整合性、必要な生成依存、TIPA・PSL・ISL の責務境界、
+および単一実効行動の形成を維持するものとする。
+
+導入地位：S（構造的）。強さ：中。
+本仮定は、\S\ref{subsec:fast_processing} の統合的高速処理の標準形式を適用する ACS の範囲を限定する構造的条件であり、本節の命題の前提としては用いない。
+\end{assumption}
+
+\begin{remark}[高速性と正確性の区別]
+\label{rem:fast_not_accuracy}
+本論文は、処理が高速であることから、推定・評価・Priority・応答選択の正確性、
+最適性、安全性または三原理の時刻別充足述語の真を一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[高速性の境界水準を一意に固定しないこと]
+\label{rem:fast_boundary_levels}
+低遅延性は当該 ACS の実装、課題および比較対象となる詳細処理に相対的である。
+したがって統合的高速処理と詳細処理の境界は実装依存の記述的区分とし、
+普遍的な時間閾値、演算量閾値または比較回数閾値を与えない。
+\end{remark}
+
+\subsubsection{時刻間動学への委譲}
+\label{subsubsec:fast_boundary}
+
+本節では、統合的高速処理および Automaticity の同一時刻上の位置づけを定める。
+五機能的記憶集合の更新、統合的高速処理の形成・強化・弱化、
+Automaticity の増減・解除その他の時刻間変化は、
+\S\ref{sec:extended_dynamics} に委ねる。
+Automaticity の形成を一方向的または不可逆な過程とは仮定しない。
+
+%----------------------------------------------------------------------
+\subsection{機能軸：横断的記述・診断量}
+\label{subsec:functional_axis}
+
+\subsubsection{機能軸（分類C）}
+\label{subsubsec:functional_axis}
+
+\begin{definition}[機能軸（分類C）]
+\label{def:functional_axis}
+TIPA、PSL および ISL の主要作動水準を横断的に記述する量を
+\[
+  F_t
+  :=
+  \bigl(
+    F_{\mathrm{M1},t},
+    F_{\mathrm{M2},t},
+    F_{\mathrm{M3},t},
+    F_{\mathrm{PSL},t},
+    F_{\mathrm{ISL}_{\mathrm{sens}},t},
+    F_{\mathrm{ISL}_{\mathrm{mem}},t},
+    F_{\mathrm{ISL}_{\mathrm{eff}},t}
+  \bigr)
+  \in[0,1]^7
+\]
+と定め、機能軸と呼ぶ。
+各成分は規格化された分類Cの記述・診断尺度であり、
+普遍的な測定写像、各成分間の共通単位、異なる ACS 間の直接比較可能性を要求しない。
+対象ごとに固定した読み出し
+$\mathrm{rd}_F:X\times\mathcal M\times E_{\mathrm{ext}}\to[0,1]^7$ により
+$F_t=\mathrm{rd}_F(x_t,M_t,e_t)$ と表す場合、独立した状態・更新則は追加しない。
+現在の担体だけでは定まらない診断には、軌道上の読み出しを別途指定する。
+この規則は内部診断が理論上の値を知ることを要求しない。
+\end{definition}
+
+\begin{remark}[機能軸と健全度]
+\label{rem:psl_health_bridge_s5}
+$F_t$ は同一時刻の作動水準を記述する量であり、
+\S\ref{sec:extended_dynamics} で扱う PSL・ISL 健全度量とは別の分類C量である。
+本節は両者の間に一般的な関数関係を置かない。
+\end{remark}
+
+\begin{remark}[機能軸と閉塞・崩壊の非同一性]
+\label{rem:functional_axis_noncollapse}
+本論文は、機能軸の特定値だけから閉塞または崩壊を一般的な帰結として置かない。
+とくに、$F_t=(0,\ldots,0)$ から
+$A_t=\emptyset$ も $\mathrm{Col}_{i,t}=1$ も一般的な帰結として置かない。
+閉塞は \S\ref{sec:acs_def} の可行行動集合に関する定義により、
+崩壊は \S\ref{sec:acs_def} の定義~\ref{def:collapse} により判定する。
+本節は $\mathrm{Col}_{i,t}$ を定義せず、機能軸から崩壊判定を行わない。
+\end{remark}
+
+
+\begin{definition}[標準作動形式との合成対応（分類B）]
+\label{def:s4_primitive_composition}
+本節の標準形式では $\mathcal R_{\mathrm{int}}=\mathcal I\times\mathsf S_{M1}$、
+$\mathcal V=\mathcal P_{\mathrm{prio}}\times\mathfrak E\times\mathsf{Sig}\times\mathfrak E^{\mathrm{rq}}_{\mathrm{map}}$ と具体化してよい。
+$P_{\mathrm{disc}}(M,I)$ は $I$ と、保持記録を読み出して形成した M1 出力との対、
+$P_{\mathrm{val}}(M,r)$ はその M1 出力と保持履歴に対する M2 出力とする。
+$P_{\mathrm{act}}(M,r,v)$ は M3 指令、$r$ に保持された局所信号、
+$\Phi_R(M,I)$ を PSL で解決した実効行動とする。
+局所信号を M1 の推定値に置換することは要求しない。
+この具体化は機能区分と機構の一対一対応ではなく、
+固定した全域写像の合成を標準写像の型へ収めるための接続である。
+第2節の非退化性はこの合成について別途確認する。
+本論文は、本節の各機構が型を満たすことだけから、その非退化性を一般的な帰結として置かない。
+\end{definition}
+
+%----------------------------------------------------------------------
+\subsection{小括}
+\label{subsec:s4_summary}
+
+本節では、単一 ACS の同一時刻における機能構造を、
+TIPA、PSL、ISL の三つの機能水準から定式化した。
+
+TIPA については
+\[
+  M_1\longrightarrow M_2\longrightarrow M_3
+\]
+という情報生成依存を置き、各機構を三つの機能へ分解した。
+
+\[
+\begin{aligned}
+M_1 &: \quad
+\text{M1-a 情報統合}
++
+\text{M1-b 境界管理}
++
+\text{M1-c 時間的連続性統合},
+\\
+M_2 &: \quad
+\text{M2-a 可行性脅威検出}
++
+\text{M2-b 構造的脆弱性評価}
++
+\text{M2-c 潜在的不安定性評価},
+\\
+M_3 &: \quad
+\text{M3-a 応答形成用情報構成}
++
+\text{M3-b 候補形成・比較}
++
+\text{M3-c 行動指令確定}.
+\end{aligned}
+\]
+
+M2 は存続基準の評価として Priority、内部評価情報、要請信号および要求×対象の評価を与え、
+M3 は目的基準の評価を経た判断として、動作モード、目的、目的の状態および行動指令を与える。
+同一時刻の中には上記の情報依存の向きだけを置き、
+逆向きの送受信は保持記録を通じて次の時刻に表した。
+
+PSL については、入力取得、出力実現、基盤維持、
+局所急性異常への保護応答、感度制御、および実効行動解決を定めた。
+さらに、目的の自己帰属性、要求の関与、行動の区分、
+および一つの行動の結果の記述を与えた（\S\ref{subsec:purpose_action_result}）。
+ISL については、感知、作用、情報保持を担いうる実装要素を、
+特定の生物学的器官または人工部品へ固定せず整理した。
+
+したがって、単一 ACS の標準的な同一時刻機能関係は概念的に
+\[
+  \begin{aligned}
+  \text{ISL上の情報取得}
+  &\longrightarrow
+  \text{PSLによる利用可能化}
+  \longrightarrow
+  M_1
+  \longrightarrow
+  M_2
+  \longrightarrow
+  M_3
+  \\
+  &\longrightarrow
+  \text{PSLによる実効行動解決}
+  \longrightarrow
+  \text{ISL上の作用}
+  \longrightarrow
+  \text{状態遷移}
+  \end{aligned}
+\]
+として整理される。
+写像の型と、TIPA を経由しない PSL-4 の経路を含めた接続を図~\ref{fig:s4_same_time} に示す。
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}[
+  font=\footnotesize,
+  fn/.style={draw, rounded corners=2pt, align=center, inner sep=2.5pt, minimum height=6mm},
+  val/.style={align=center, inner sep=1.5pt},
+  note/.style={font=\scriptsize, align=center, inner sep=1pt},
+  isl/.style={draw, dotted, thick, align=center, inner sep=2pt},
+  grp/.style={draw, gray, rounded corners=3pt, inner sep=4pt},
+  glabel/.style={gray, font=\scriptsize, anchor=south west, inner sep=1pt},
+  plabel/.style={font=\small, anchor=west, inner sep=0pt},
+  inp/.style={-{Latex[length=1.6mm]}},
+  dep/.style={-{Latex[length=2.2mm]}, line width=1.2pt},
+  nxt/.style={-{Latex[length=1.6mm]}, dashed},
+  car/.style={dotted, thick},
+  over/.style={preaction={draw, white, line width=3pt}},
+]
+\node[plabel] at (-0.3,1.2) {(a)\ 入力と応答の形成（時刻 $t$）};
+
+\node[val] (xt) at (0,0.35) {$x_t$};
+\node[val] (et) at (0,-0.35) {$e_t$};
+\node[fn] (rin)  at (1.1,0) {$\rho_{\mathrm{in}}$};
+\node[fn] (sens) at (2.7,0) {$\Phi_{\mathrm{sense}}$};
+\node[fn] (gin)  at (4.5,0) {$\Gamma_{\mathrm{in},t}$};
+\node[val] (It)  at (5.9,0) {$I_t$};
+\draw[inp] (xt) -- (rin);
+\draw[inp] (et) -- (rin);
+\draw[inp] (rin) -- node[above]{$s_{\mathrm{in},t}$} (sens);
+\draw[inp] (sens) -- node[above]{$I_{\mathrm{raw},t}$} (gin);
+\draw[inp] (gin) -- (It);
+\begin{scope}[on background layer]
+\node[grp, fit=(rin)(sens)(gin)] (gPSL1) {};
+\end{scope}
+\node[glabel] at (gPSL1.north west) {PSL-1};
+\node[note] at (4.5,-0.75) {$\Gamma_{\mathrm{in},t}=\rho_{\Gamma,\mathrm{in}}(x_t)$};
+\node[isl] (Bsens) at (2.7,-1.1) {$B_{\mathrm{sens}}$};
+\draw[car] (Bsens) -- (gPSL1.south -| Bsens);
+
+\node[fn] (Mt) at (1.4,-2.9) {保持内容 $M_t$};
+\node[isl] (Bmem) at (1.4,-4.1) {$B_{\mathrm{mem}}$};
+\draw[car] (Bmem) -- (Mt);
+
+\node[fn] (M1) at (7.0,-2.0) {$M_1$};
+\node[fn] (M2) at (8.5,-2.0) {$M_2$};
+\node[fn] (M3) at (10.0,-2.0) {$M_3$};
+\draw[dep] (M1) -- (M2);
+\draw[dep] (M2) -- (M3);
+\draw[dep] (M1.north east) to[out=35,in=145] (M3.north west);
+\begin{scope}[on background layer]
+\node[grp, fit=(M1)(M2)(M3), inner ysep=8pt] (gTIPA) {};
+\end{scope}
+\node[glabel] at (gTIPA.north west) {TIPA};
+
+\node[fn] (rloc) at (7.0,-4.1) {$\rho_{\mathrm{local}}$};
+\node[fn] (prot) at (8.5,-4.1) {$\Phi_{\mathrm{prot}}$};
+\draw[inp] (rloc) -- (prot);
+\begin{scope}[on background layer]
+\node[grp, fit=(rloc)(prot)] (gPSL4) {};
+\end{scope}
+\node[glabel] at (gPSL4.north west) {PSL-4（TIPA の出力を用いない）};
+
+\node[fn] (PhiR) at (8.5,-5.3) {$\Phi_R$};
+
+\draw (It) -- (5.9,-0.4);
+\draw[over] (5.9,-0.4) -- (5.9,-5.3);
+\draw[inp] (5.9,-2.0) -- (M1.west);
+\draw[inp] (5.9,-4.1) -- (rloc.west);
+\draw[inp] (5.9,-5.3) -- (PhiR.west);
+
+\draw (Mt.east) -- (5.65,-2.9);
+\draw[over] (5.65,-2.9) to[out=50,in=130] (6.15,-2.9);
+\draw (6.15,-2.9) -- (10.0,-2.9);
+\draw[inp] (7.0,-2.9) -- (M1.south);
+\draw[inp] (8.5,-2.9) -- (M2.south);
+\draw[inp] (10.0,-2.9) -- (M3.south);
+\draw (Mt.south) ++(0.6,0) coordinate (ms) -- (ms |- 0,-5.9) coordinate (ms2);
+\draw[inp] (ms2) -| (PhiR.south);
+
+\node[val, anchor=west] (oM3) at (10.9,-2.0) {$u_{\mathrm{M3},t}$};
+\node[val, anchor=west] (oR)  at (10.9,-4.1) {$r_{\mathrm{local},t}$};
+\node[val, anchor=west] (oRt) at (10.9,-5.3) {$R_t$};
+\draw[inp] (M3) -- (oM3);
+\draw[inp] (prot) -- (oR);
+\draw[inp] (PhiR) -- (oRt);
+\node[note, anchor=north] at (11.3,-5.65) {(b) へ};
+
+\begin{scope}[yshift=-8.0cm]
+\node[plabel] at (-0.3,1.6) {(b)\ 実効行動の解決と時刻 $t+1$ への写像};
+
+\node[val] (iM3) at (0.2,0.6)  {$u_{\mathrm{M3},t}$};
+\node[val] (iR)  at (0.2,0)    {$r_{\mathrm{local},t}$};
+\node[val] (iRt) at (0.2,-0.6) {$R_t$};
+\node[note, anchor=south] at (0.2,0.85) {(a) から};
+
+\node[fn] (res) at (2.6,0) {$\Phi_{\mathrm{resolve}}$};
+\draw[inp] (iM3) -| ([xshift=-3mm]res.north);
+\draw[inp] (iR) -- (res.west);
+\draw[inp] (iRt) -| ([xshift=-3mm]res.south);
+\begin{scope}[on background layer]
+\node[grp, fit=(res)] (gRES) {};
+\end{scope}
+\node[glabel, anchor=north west] at (gRES.south east) {PSL（解決）};
+\node[val] (ut) at (4.4,0) {$u_t$};
+\draw[inp] (res) -- (ut);
+\node[note, anchor=north west, align=left] at (-0.25,-1.0)
+ {$r_{\mathrm{local},t}\in U\Rightarrow\mathrm{pr}_{\mathrm{loc}}(u_t)=\mathrm{pr}_{\mathrm{loc}}(r_{\mathrm{local},t})$\\
+  $r_{\mathrm{local},t}=\bot\Rightarrow u_t=u_{\mathrm{M3},t}$};
+
+\node[fn] (act)  at (6.2,0) {$\Phi_{\mathrm{action}}$};
+\node[fn] (gout) at (8.6,0) {$\Gamma_{\mathrm{out},t}$};
+\node[val] (xd)  at (10.6,0) {$x_{\mathrm{drive},t}$};
+\draw[inp] (ut) -- (act);
+\draw[inp] (act) -- node[above]{$x_{\mathrm{drive},\mathrm{raw},t}$} (gout);
+\draw[inp] (gout) -- (xd);
+\begin{scope}[on background layer]
+\node[grp, fit=(act)(gout)] (gPSL2) {};
+\end{scope}
+\node[glabel] at (gPSL2.north west) {PSL-2};
+\node[note] at (8.6,-0.75) {$\Gamma_{\mathrm{out},t}=\rho_{\Gamma,\mathrm{out}}(x_t)$};
+\node[isl] (Beff) at (10.6,-1.1) {$B_{\mathrm{eff}}$};
+\draw[car] (Beff) -- (xd);
+
+\node[val] (iMt) at (0.2,-2.5) {$M_t$};
+\node[fn] (Up) at (2.6,-2.5) {$\mathrm{Update}(M_t,x_t,e_t)$};
+\node[fn] (f)  at (6.2,-2.5) {$f(x_t,u_t,e_t)$};
+\node[fn] (gO) at (9.4,-2.5) {$g_O(o_t,x_t,u_t,b_t)$};
+\node[val] (M1n) at (2.6,-3.45) {$M_{t+1}$};
+\node[val] (x1)  at (6.2,-3.45) {$x_{t+1}$};
+\node[val] (o1)  at (9.4,-3.45) {$o_{t+1}$};
+\draw[inp] (iMt) -- (Up);
+\coordinate (ud) at (5.15,-1.85);
+\draw (5.15,0) -- (ud);
+\draw[inp] (ud) -| (f.north);
+\draw[inp] (ud) -| (gO.north);
+\draw[nxt] (Up) -- (M1n);
+\draw[nxt] (f) -- (x1);
+\draw[nxt] (gO) -- (o1);
+
+\begin{scope}[shift={(0,-4.2)}]
+\draw[inp] (0,0) -- (0.8,0); \node[anchor=west, font=\scriptsize] at (0.9,0) {写像の入力（時刻 $t$）};
+\draw[dep] (5.0,0) -- (5.8,0); \node[anchor=west, font=\scriptsize] at (5.9,0) {情報生成依存};
+\draw[nxt] (0,-0.5) -- (0.8,-0.5); \node[anchor=west, font=\scriptsize] at (0.9,-0.5) {出力が時刻 $t+1$ に属する};
+\draw[car] (5.0,-0.5) -- (5.8,-0.5); \node[anchor=west, font=\scriptsize] at (5.9,-0.5) {実装担体の役割との対応（写像ではない）};
+\end{scope}
+\end{scope}
+\end{tikzpicture}
+\caption{単一 ACS の時刻 $t$ における TIPA・PSL・ISL の機能的接続。
+(a) と (b) は同じ時刻 $t$ の値でつながり、(a) の右端の値が (b) の左端の値と同一である。
+太線は情報生成依存（M1 の出力が M2・M3 の入力、M2 の出力が M3 の入力）で、逐次実行の順序ではない。
+箱は機能形式・写像・信号または実装役割を図示したものであり、物理的な部位との一対一対応を表さない。
+$B_{\mathrm{sens}},B_{\mathrm{eff}},B_{\mathrm{mem}}\subseteq\mathcal B_\Sigma$ には排反性も網羅性も要求しない。
+$M_t$ から三機構への入力は保持記録の読み出し（定義~\ref{def:s4_carrier_contract}）である。
+時刻をまたぐ影響は、保持内容と、状態・外部環境状態の変化を通じて次の時刻の感知に入る経路に限られ、
+M3 の出力を M2 の入力とする経路は置かない（備考~\ref{rem:m2_no_return_scope}）。
+局所保護応答は TIPA の出力を用いずに生成され（備考~\ref{rem:psl4_concurrency}）、
+実効行動の局所応答成分は局所保護応答に従う（定義~\ref{def:effective_action_resolve}）。
+PSL-3 の基盤情報と記憶実装の出力を感知情報の成分に含める接続は、採用する実現に依存するため省略した。}
+\label{fig:s4_same_time}
+\end{figure}
+
+また、統合的高速処理、Automaticity、PSL-4 を相異なる機能概念として区別し、
+高速処理に利用されうる保持内容を五機能的記憶集合として整理した。
+さらに、TIPA、PSL、ISL の主要作動水準を機能軸 $F_t$ により横断的に記述した。
+
+次節では、本節で定めた構造を再定義せず、
+記憶、内部量、健全度、統合的高速処理、Automaticity その他が
+$t\to t+1$ でどのように変化しうるかを扱う。

@@ -1,0 +1,212 @@
+{
+ "id": "P9_e1_v2_policies_r2",
+ "spec_md5": "1c985741ee96499207d37c9d034eafdd",
+ "registry_entry": "2026-10-26T13:35:46.538388+00:00\t1c985741ee96499207d37c9d034eafdd\t/home/claude/E4/specs/P9_e1_v2_policies_r2.json\tP9_e1_v2_policies_r2",
+ "run_at": "2026-10-26T13:52:52.789752+00:00",
+ "python": "3.13.16",
+ "seconds": 1023.5,
+ "deviation": null,
+ "problems_at_run": [],
+ "n_units_per_variant_condition": 450,
+ "verdicts": [
+  {
+   "id": "H1a",
+   "statement": "（回帰検査）証明書つきの核維持応答 u∈U^Viab_cert(x_t) を選んで証明書の集合から出るのは、e_t∉E_req(x_t) の時刻に限られる（prop:kernel_maintenance の一段の形）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1800,
+      "holds": 1800
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H1b",
+   "statement": "（回帰検査）判定層の後続表 f(x,u,lam|rel) は、世界で実現した後続と一致する（局所像による列挙の正確さ）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1800,
+      "holds": 1800
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H2-alone",
+   "statement": "（alone）核維持応答を選ぶ方策の崩壊到達時刻は、一段先だけを見る方策（後続の energy・temp・integ 最大）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 450,
+      "a>b": 450,
+      "a<b": 0,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H3-alone",
+   "statement": "（alone）核維持応答を選ぶ方策の崩壊到達時刻は、TIPA 機構以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 149,
+      "a>b": 147,
+      "a<b": 301,
+      "a==b": 2
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H4-alone",
+   "statement": "（alone）TIPA 機構の崩壊到達時刻は、記憶をもたない観測反射以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 282,
+      "a>b": 239,
+      "a<b": 168,
+      "a==b": 43
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5a-alone",
+   "statement": "（alone）TIPA 機構の崩壊到達時刻は、固定行動列以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 450,
+      "a>b": 450,
+      "a<b": 0,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5b-alone",
+   "statement": "（alone）TIPA 機構の崩壊到達時刻は、常に待機する方策以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 450,
+      "a>b": 450,
+      "a<b": 0,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H2-default",
+   "statement": "（default）核維持応答を選ぶ方策の崩壊到達時刻は、一段先だけを見る方策（後続の energy・temp・integ 最大）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 450,
+      "a>b": 450,
+      "a<b": 0,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H3-default",
+   "statement": "（default）核維持応答を選ぶ方策の崩壊到達時刻は、TIPA 機構以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 183,
+      "a>b": 179,
+      "a<b": 267,
+      "a==b": 4
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H4-default",
+   "statement": "（default）TIPA 機構の崩壊到達時刻は、記憶をもたない観測反射以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 192,
+      "a>b": 143,
+      "a<b": 258,
+      "a==b": 49
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5a-default",
+   "statement": "（default）TIPA 機構の崩壊到達時刻は、固定行動列以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 450,
+      "a>b": 450,
+      "a<b": 0,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5b-default",
+   "statement": "（default）TIPA 機構の崩壊到達時刻は、常に待機する方策以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 450,
+      "a>=b": 450,
+      "a>b": 450,
+      "a<b": 0,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  }
+ ],
+ "consistency": []
+}

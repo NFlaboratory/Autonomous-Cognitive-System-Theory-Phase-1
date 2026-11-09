@@ -1,0 +1,445 @@
+%======================================================================
+\section{組織ACS：社会的組織への構造的適用}
+\label{sec:org_acs}
+
+本節では、複数の参加主体からなる社会的組織を対象とし、
+組織自身についてACSの形式的構造が成立する場合を記述する。
+組織にACSが参加することと、組織そのものがACSであることは区別される。
+後者を扱うため、組織水準の構造を指定し、
+先行節の定義を適用できる条件を明らかにする。
+
+本節は既に識別される組織の抽象的構造を扱い、
+その発生起源、組織化の過程または形成の必然性を扱わない。
+組織固有の目的、参加主体の共通意思および特定の統治形態も、
+組織ACSの一般的な成立要件とはしない。
+本節の区別は個体ACSの関係対象の記述と、
+組織自身の可行性の記述に用いられる。
+本節で新たに用いる主要記号の一覧は付録~\ref{app:symbols_s8} に示す。
+
+%----------------------------------------------------------------------
+\subsection{集団・組織・社会の区分と組織ACS}
+\label{subsec:org_terms}
+
+\begin{definition}[集団・組織・社会の記述上の区分]
+\label{def:org_terms}
+\emph{集団}とは、識別規則の下で複数の個体を
+一つの対象集合として扱う基体をいう。
+集団の定義は、集団自身の機能的統合、
+自己--環境境界またはACS構造の成立を要件として含まない。
+
+\emph{組織}とは、区別される組織的境界の下で、
+複数の参加主体と必要に応じた非主体的要素の寄与が
+組織水準の機能を実現するように結び付けられ、
+分担・調整される系をいう。
+ここでいう組織は参加主体からなる社会的組織を指し、
+生物の組織または物質の組織構造を指さない。
+機能の分解、分担および調整の方式は実装依存とする。
+組織の記述には、組織自身の整形式なACS構造を前提としない。
+
+\emph{社会}とは、個体ACSその他の主体、集団および組織が
+帰属・所属・活動する場をいい、
+これらの主体・集団・組織、その他の要素、
+およびそれらの間の関係を含みうる。
+\end{definition}
+
+\begin{definition}[ACS集団・ACS組織・組織ACS]
+\label{def:org_class_terms}
+二体以上の個体ACSからなる集団を\emph{ACS集団}と呼ぶ。
+ACS集団の定義は、
+定義~\ref{def:org_terms}の組織としての構造の成立を要件として含まない。
+
+個体ACSが参加する組織を\emph{ACS組織}と呼ぶ。
+組織のうち、その組織自身について定義~\ref{def:org_acs}の
+適用条件が成立するものを\emph{組織ACS}と呼ぶ。
+ACS組織の定義は、組織ACSであるための
+定義~\ref{def:org_acs}の適用条件の成立を要件として含まず、
+組織ACSの定義は、個体ACSの参加を要件として含まない。
+
+時刻 $t$ に組織ACSとして扱われる組織 $\mathcal O$ のうち、
+参加ACS数（式~\eqref{eq:org_participants}）が
+$n_{\mathrm{org},t}(\mathcal O)\geq1$ であるものを\emph{個体ACS参加型組織ACS}、
+$n_{\mathrm{org},t}(\mathcal O)=0$ であるものを\emph{個体ACS非参加型組織ACS}と呼ぶ。
+この区分は参加の記録による区分であり、組織ACSであるための条件を加えない。
+組織自身は、その組織の参加ACSに数えない。
+\end{definition}
+
+\begin{remark}[組織ACSの記述単位]
+\label{rem:org_acs_unit}
+本論文の組織ACSは、
+複数の参加主体からなる組織（定義~\ref{def:org_terms}）を対象とする
+組織水準の最小の記述単位とする。
+参加主体が個体ACSであることは要件としない。
+組織または組織ACSを構成要素とする組織は
+これと区別し、Phase~1では扱わない。
+\end{remark}
+
+\begin{remark}[組織と関係対象分類]
+\label{rem:org_terms_nonimplication}
+\S\ref{sec:rel_min}の
+$\mathrm{type}_i:\mathcal Y_{-i}\to
+\{\mathrm{ACS},\mathrm{agent},\mathrm{obj}\}$ は、
+個体ACSに相対する関係記述上の対象分類である。
+外部対象集合 $\mathcal Y_{-i}$ は組織および組織ACSを除外しないため、
+これらは行為主体として $\mathrm{ACS}$ または $\mathrm{agent}$ に
+分類されうる。
+ただし $\mathrm{type}_i$ の値は、
+定義~\ref{def:org_acs}の時刻別の適用条件の成立・不成立を表さない。
+組織ACSを関係対象とする記述の詳細、
+とくにACS個体としての扱いを前提とする双方向合成
+（仮定~\ref{ass:bidirect_scope}）の組織ACSへの適用は、
+本論文（Phase~1）では扱わず、
+Phase~1.$\alpha$ または Phase~2 に委ねる（\S\ref{subsec:phase1a}）。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{組織水準の記述と参加ACS}
+\label{subsec:org_structure}
+
+組織水準の状態と機能は、当該組織の境界に相対して指定される。
+個体ACSの状態を列挙したこと、個体間の関係記録が存在すること、
+または組織内に役職名があることのみから、
+本論文は組織自身の状態・認知機構・更新構造を構成しない。
+
+\begin{definition}[参加ACSの時刻別記録]
+\label{def:org_participation}
+考察対象とする個体ACSの識別子の集合を $\mathbb{I}$、
+考察対象とする組織の集合を $\mathfrak{O}$ とする。
+$\mathbb{I}$ の有限性は仮定しない。
+組織 $\mathcal O\in\mathfrak{O}$ と時刻 $t$ に対し、
+その時刻に当該組織へACSとして参加する相異なる個体の
+識別子集合を $\mathbb{I}_{\mathrm{org},t}(\mathcal O)\subseteq\mathbb{I}$ とする。
+この集合を時刻 $t$ の参加ACS集合と呼び、
+参加ACS数をその濃度
+\begin{equation}
+  n_{\mathrm{org},t}(\mathcal O)
+  :=\bigl|\mathbb{I}_{\mathrm{org},t}(\mathcal O)\bigr|
+  \label{eq:org_participants}
+\end{equation}
+で表す。
+$\mathbb{I}_{\mathrm{org},t}(\mathcal O)=\emptyset$ も許す。
+これは個体の区別と当該時刻の参加が指定される場合の記録であり、
+すべての候補個体の通常ACS状態が全時刻に存在するとは仮定しない。
+
+固定した有限の候補個体集合を用いるモデルでは、
+追加の記述として
+\begin{equation}
+  P\subseteq\mathbb{I},\quad |P|<\infty,
+  \qquad
+  \mathbb{I}_{\mathrm{org},t}(\mathcal O)\subseteq P
+  \label{eq:org_candidate_pool}
+\end{equation}
+と置いてよい。
+$P$ の要素数に下限は置かない。
+式~\eqref{eq:org_participants}の参加数の定義に、
+固定候補集合 $P$ の存在は必要としない。
+\end{definition}
+
+\begin{remark}[構成員と機能担い手]
+\label{rem:org_participants_functions}
+組織の機能は、参加ACSのほか、非ACSエージェント、
+装置、保存された情報その他の要素によって担われてもよい。
+参加ACS数と、役割の割当ておよび機能の実効的充足は異なる。
+全参加ACSの共通目的・共通意思、固定役職および
+特定の階層構造は要求しない。
+機能充足を参加ACSの人数閾値で表す方式も、一般要件とはしない。
+
+組織の境界外にある供給要因と、境界内の機能担い手とは区別する。
+前者が組織の存続に必要ならば、
+\S\ref{sec:acs_def}の必要環境要因として記述する余地がある。
+
+参加主体と非主体的要素の区別、
+および各参加主体が個体ACSに該当するか否かは、対象モデルにおいて指定する。
+本論文は、その区別を一般的に判定する手続きを与えない。
+\end{remark}
+
+\begin{remark}[関係記録と組織の機能]
+\label{rem:org_relation_scope}
+\S\ref{sec:rel_min}の関係記述子は、
+参加ACSと他の対象との関係を記述しうる。
+しかし本論文は、関係記録が非空であることだけから、
+組織自身の制御機構、因果的統合またはACS性を一般的な帰結として置かない。
+関係記録の変化も、他者の一意な因果的寄与とは解釈しない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{組織水準のACS構造と組織ACSの適用規約}
+\label{subsec:org_formal}
+
+\begin{definition}[組織水準のACS構造]
+\label{def:org_structural_form}
+組織 $\mathcal O$ 自身を記述対象とし、
+状態空間、行動空間、必要環境要因、遷移、持続評価、
+機構および更新を
+\begin{equation}
+  \Sigma_{\mathrm{org}}
+  :=\bigl(
+    X_{\mathrm{org}},U_{\mathrm{org}},E_{\mathrm{org}},
+    f_{\mathrm{org}},\Pi_{\mathrm{org}},M_{\mathrm{org}},
+    \mathrm{Update}_{\mathrm{org}}
+  \bigr)
+  \label{eq:org_7tuple}
+\end{equation}
+として与える。
+当該7タプルが\S\ref{sec:acs_def}のACS定義、
+構成要件および整形式性を満たし、
+組織自身の自己--環境境界と機能の実現を記述する場合、
+これを\emph{組織水準のACS構造}と呼ぶ。
+
+特に、$X_{\mathrm{org}}\subseteq\mathbb R^d$ は
+空でないコンパクトな組織状態空間とし、
+外部環境状態空間 $E_{\mathrm{ext},\mathrm{org}}$ と
+必要環境要因集合 $E_{\mathrm{org}}$ を区別する。
+両者および遷移の型は
+\begin{equation}
+  E_{\mathrm{org}}
+  \subseteq
+  \{0,1\}^{X_{\mathrm{org}}\times E_{\mathrm{ext},\mathrm{org}}},
+  \qquad E_{\mathrm{org}}\neq\emptyset
+  \label{eq:org_environment_type}
+\end{equation}
+および
+\begin{equation}
+  f_{\mathrm{org}}:
+  X_{\mathrm{org}}\times U_{\mathrm{org}}
+  \times E_{\mathrm{ext},\mathrm{org}}
+  \longrightarrow X_{\mathrm{org}}
+  \label{eq:org_transition_type}
+\end{equation}
+とする。
+$\Pi_{\mathrm{org}}:X_{\mathrm{org}}\to\mathbb R$、
+$U_{\mathrm{org}}\neq\emptyset$ とし、
+その他の型、構成要件 CR-1（必要環境整合性）・CR-2（原始的な機能と基盤機能の具備）および
+整形式実現に関する条件は\S\ref{sec:acs_def}に従う。
+これらの条件を記号の割当てだけで満たしたとは扱わない。
+\end{definition}
+
+\begin{remark}[組織状態と遷移の一価性]
+\label{rem:org_state_closure}
+組織状態 $x_{\mathrm{org}}\in X_{\mathrm{org}}$ は、
+個体ACSの状態の和、平均または直積として
+一般的に定まるものではない。
+集約写像を用いるモデルでは、
+同じ組織状態・組織行動・外部環境状態に対応する
+記述が異なる組織次状態を与えないことを確認する必要がある。
+そうでなければ式~\eqref{eq:org_transition_type}の
+一価の遷移は定まらない。
+組織状態を直接与えるモデルに集約写像を要求しない。
+\end{remark}
+
+\begin{definition}[組織ACSの記述的適用規約]
+\label{def:org_acs}
+組織 $\mathcal O$（定義~\ref{def:org_terms}）を
+時刻 $t$ に\emph{組織ACS}として扱うのは、
+当該組織自身を対象として、
+定義~\ref{def:org_structural_form}の
+整形式なACS構造が時刻 $t$ に実現し、
+境界・機能・更新の対象が当該組織として識別される場合に限る。
+参加ACS数 $n_{\mathrm{org},t}(\mathcal O)$ はこの適用条件に含まれない。
+組織水準の構造の指定は、
+一つの参加主体（個体ACSを含む）の活動を
+組織と呼び換えるだけでは満たされない。
+他方、個体ACSからの非還元性を判定する
+モデル非依存の形式述語は、本規約には導入しない。
+本規約は、組織ACSの一般的存在または
+個別の実在組織への該当性を主張するものではない。
+\end{definition}
+
+\begin{remark}[成立と観察による判定]
+\label{rem:org_acs_observability}
+境界、継続性、環境との相互作用および
+内部機能の変更が観察されることは、
+組織水準のACS構造を検討する根拠となりうる。
+本論文は、これらの観察事実のみから、
+定義~\ref{def:org_acs}の全条件を一般的な帰結として置かない。
+内部情報が観察できない場合、
+ACS性を確認できないこととACS性が存在しないことを区別する。
+\end{remark}
+
+\begin{remark}[個体水準と組織水準の判定の区別]
+\label{rem:org_individual_nonimplication}
+参加個体の可行性・三原理の時刻別充足述語の真偽と、
+組織自身のACS性・可行性・三原理の時刻別充足述語の真偽は、
+異なる状態空間と評価対象に関する判定である。
+個体量の単純な集計を組織量とする一般則は本節で与えない。
+個体水準と組織水準の間の一般的な含意関係も、
+追加の接続条件なしには主張しない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{組織水準の可行性と三原理}
+\label{subsec:org_viability}
+
+\begin{definition}[組織水準の可行集合と可行行動集合]
+\label{def:org_viable_action}
+定義~\ref{def:org_structural_form}の整形式な
+組織水準のACS構造が与えられる場合、
+\begin{equation}
+  K_{\mathrm{org}}
+  :=\{x\in X_{\mathrm{org}}\mid
+  \Pi_{\mathrm{org}}(x)\geq0\}
+  \label{eq:org_viable_set}
+\end{equation}
+とする。
+時刻 $t$ に組織水準の通常ACS状態
+$x_{\mathrm{org},t}\in X_{\mathrm{org}}$ が実現し、
+$e_{\mathrm{org},t}\in E_{\mathrm{ext},\mathrm{org}}$ が
+与えられる場合の可行行動集合を
+\begin{equation}
+  A_{\mathrm{org},t}
+  :=\bigl\{u\in U_{\mathrm{org}}\mid
+  f_{\mathrm{org}}\bigl(x_{\mathrm{org},t},u,
+  e_{\mathrm{org},t}\bigr)\in K_{\mathrm{org}}\bigr\}
+  \label{eq:org_viable_action}
+\end{equation}
+とする。
+この集合は一時刻先の可行状態への遷移可能性を表し、
+無期限の存続を保証しない。
+\end{definition}
+
+\begin{proposition}[組織水準の閉塞の特徴づけ]
+\label{prop:org_blockage_characterization}
+定義~\ref{def:org_viable_action}の量が
+時刻 $t$ に整形式に定義されているとする。
+このとき、
+\begin{equation}
+  A_{\mathrm{org},t}=\emptyset
+  \quad\Longleftrightarrow\quad
+  \forall u\in U_{\mathrm{org}},\;
+  \Pi_{\mathrm{org}}\!\left(
+  f_{\mathrm{org}}\bigl(x_{\mathrm{org},t},u,
+  e_{\mathrm{org},t}\bigr)\right)<0
+  \label{eq:org_blockage_characterization}
+\end{equation}
+が成り立つ。
+\end{proposition}
+
+\begin{proof}
+式~\eqref{eq:org_viable_set}および
+式~\eqref{eq:org_viable_action}より、
+$u\in A_{\mathrm{org},t}$ は
+$\Pi_{\mathrm{org}}(f_{\mathrm{org}}(
+ x_{\mathrm{org},t},u,e_{\mathrm{org},t}))\geq0$
+と同値である。
+可行行動が存在しないことは、
+いずれの $u\in U_{\mathrm{org}}$ に対しても
+この非負条件が成立しないことと同値である。
+$\Pi_{\mathrm{org}}$ は実数値なので、
+その否定は式~\eqref{eq:org_blockage_characterization}の
+厳密な負値条件である。
+\end{proof}
+
+\begin{remark}[可行性と組織ACS資格]
+\label{rem:org_viability_vs_qualification}
+$K_{\mathrm{org}}$ への帰属と、
+定義~\ref{def:org_acs}の時刻別の組織ACS資格は
+異なる述語である。
+可行集合は $\Pi_{\mathrm{org}}$ から定義され、
+組織ACS資格は時刻別の整形式な実現によって定まる。
+両者の含意を主張する場合には、
+組織状態・遷移と整形式な実現との接続条件が必要となる。
+$A_{\mathrm{org},t}\neq\emptyset$ のみから
+遷移後の組織ACS資格を保証しない。
+\end{remark}
+
+\begin{remark}[先行節の定義の組織水準への適用]
+\label{rem:org_principles_conditional}
+組織水準のACS構造 $\Sigma_{\mathrm{org}}$ は、
+定義~\ref{def:org_structural_form} により
+\S\ref{sec:acs_def}のACS定義、構成要件および整形式性を満たすので、
+抽象構造型の一つの実現である（\S\ref{subsec:acs_7tuple} の記述水準の規約）。
+したがって、
+\S\ref{sec:acs_def}の閉塞・機能的終端・崩壊、
+\S\ref{sec:three_principles}の三原理SM・EU・FRの時刻別充足述語とT-STAB、
+および\S\ref{sec:collapse_cond}の状態帯・外的回復可能性・軌道記録と経路集合は、
+個体添字を組織 $\mathcal O$ に置き換えて $\Sigma_{\mathrm{org}}$ にそのまま適用される。
+たとえば、SMの現在状態における条件は
+\begin{equation}
+  \Pi_{\mathrm{org}}\bigl(x_{\mathrm{org},t}\bigr)\geq0
+  \label{eq:org_SM}
+\end{equation}
+と書ける。
+条件 (SC-1)・(SC-2)・(FT-1)・(FT-2) と外的回復の判定規則は、
+個体の場合と同じく対象系ごとに固定する。
+組織については、組織としての同一性を成立させる組織関係と、
+同一組織の判定基準がその判定規則に含まれる。
+
+\S\ref{sec:acs_def}でいう「ACS個体」は抽象構造型の実現を指し、
+本節で参加者を指す「個体ACS」とは区別される。
+組織ACSは、前者の意味ではACS個体の一つである。
+
+一方、参加する個体ACSの量
+（一段階臨界必要要因の充足、局所FRの真偽、閉塞、崩壊等）を
+組織水準の量へ転写または集約する規則は与えない。
+組織にこれらの定義を適用できることと、
+各時刻・各経路で原理を実際に充足することは異なる。
+組織水準の時刻別充足述語が偽であることから導かれるのは、
+\S\ref{sec:three_principles}の命題が示す帰結
+（たとえばEUの偽からの閉塞、命題~\ref{prop:eu_blockage}）に限られ、
+それだけから組織ACS資格の喪失または崩壊は結論しない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{資格・時間的同一性と失敗状態の適用範囲}
+\label{subsec:org_identity}
+
+\begin{remark}[時刻別資格と組織の継続]
+\label{rem:org_qualification_loss}
+参加ACS数の変化
+（たとえば $n_{\mathrm{org},t}(\mathcal O)$ の減少や $0$ への到達）のみから、
+定義~\ref{def:org_acs}の組織ACS資格の喪失、
+組織の構造的自己の喪失、または崩壊を結論しない。
+他方、参加主体の離脱によって組織自身のACS構造が実際に失われる場合は排除しない。
+その判定は、組織水準の整形式な実現について行う。
+組織ACS資格の喪失と組織の崩壊は、別の判定である（備考~\ref{rem:org_failure_scope}）。
+
+組織ACS資格がいったん成立しなくなった後に再び成立しても、
+それだけで同一組織ACSが復帰したとはいえない。
+同一組織としての復帰を扱う場合には、
+対象モデルで許容する境界・機能・更新の継続条件に照らし、
+旧組織からの継承を別途確認する。
+一律の復帰期限は定めない。
+名称の一致や内部参加者・外部観測者の認識のみを
+構造的同一性の十分条件とはしない。
+\end{remark}
+
+\begin{remark}[閉塞・崩壊の適用域]
+\label{rem:org_failure_scope}
+組織自身について通常のACS状態および
+式~\eqref{eq:org_viable_action}が定義される時刻には、
+命題~\ref{prop:org_blockage_characterization}によって
+組織水準の可行行動集合の空性を判定できる。
+これは\S\ref{sec:acs_def}の閉塞（定義~\ref{def:blockage_sec2}）を
+$\Sigma_{\mathrm{org}}$ に適用したものである。
+閉塞、可行集合からの逸脱、整形式実現の不成立、
+組織ACS資格の喪失を同一視しない。
+
+組織水準の崩壊は、
+\S\ref{sec:acs_def}の定義~\ref{def:collapse}の条件 (SC-1)・(SC-2) を、
+備考~\ref{rem:org_principles_conditional}の判定規則と、
+組織について定めた許容外的作用の集合（\S\ref{sec:collapse_cond}）のもとで判定する。
+組織ACS資格と参加ACS数は崩壊の定義に含まれないので、
+参加ACS一体の離脱・崩壊や参加ACS数の減少のみから、
+組織の崩壊は結論しない。
+また、組織の分割のように、
+同一組織の継続として対応づけられる後続の実現が複数になる場合は、
+\S\ref{sec:acs_def}の仮定~\ref{ass:no_branching}の対象外である。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{適用限界}
+\label{subsec:org_scope}
+
+本節は、既存の社会的組織について
+ACSの構造的定義を適用できる条件を記述する。
+組織ACSの非空な具体モデルの構成、
+実在する任意の組織についての全条件の実証、
+または組織化からACS構造が生じる必然性は主張しない。
+特定の実装によらない非還元性の形式判定規則、
+組織の同一性を判定する普遍的な手続、
+および構成員の生成・離脱を含む一般的社会動態も扱わない。
+
+組織ACSとしての成立は、
+目的達成、参加個体すべての可行性、
+三原理の実際の充足または倫理的責任の成立を意味しない。
+ACSその他の主体のあいだの持続可能な協調の成立条件は、
+ECITとの正式接続としてPhase~3で検討する（\S\ref{subsec:phase_outlook}、問題~\ref{prob:ecit_full}）。

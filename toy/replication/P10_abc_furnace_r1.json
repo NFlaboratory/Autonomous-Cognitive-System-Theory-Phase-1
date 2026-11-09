@@ -1,0 +1,11 @@
+{
+ "id": "P10_abc_furnace_r1",
+ "seconds": 1.0,
+ "units": 1800,
+ "identical": 1800,
+ "different": 0,
+ "not_in_record": 0,
+ "examples": [],
+ "verdicts_differing": [],
+ "verdicts_total": 1
+}

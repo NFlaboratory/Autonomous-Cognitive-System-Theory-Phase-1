@@ -1,0 +1,11 @@
+{
+ "id": "P8_e8_furnace_ablation_r1",
+ "seconds": 13.8,
+ "units": 7200,
+ "identical": 7200,
+ "different": 0,
+ "not_in_record": 0,
+ "examples": [],
+ "verdicts_differing": [],
+ "verdicts_total": 7
+}

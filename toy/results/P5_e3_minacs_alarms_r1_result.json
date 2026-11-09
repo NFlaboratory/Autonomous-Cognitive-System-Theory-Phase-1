@@ -1,0 +1,99 @@
+{
+ "id": "P5_e3_minacs_alarms_r1",
+ "spec_md5": "041f238415faf9efe6114051edf7fad0",
+ "registry_entry": "2026-10-26T10:34:50.385067+00:00\t041f238415faf9efe6114051edf7fad0\t/home/claude/E4/specs/P5_e3_minacs_alarms_r1.json\tP5_e3_minacs_alarms_r1",
+ "run_at": "2026-10-26T10:35:06.341588+00:00",
+ "python": "3.13.16",
+ "seconds": 15.9,
+ "deviation": null,
+ "problems_at_run": [],
+ "n_units_per_variant_condition": 900,
+ "verdicts": [
+  {
+   "id": "H1",
+   "statement": "核外（x∉Viab_f(K)）の警告は、素朴な閾値（en≤1 または tp≤1）以上に崩壊に先行する。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 2488,
+      "a>=b": 614,
+      "a>b": 0,
+      "a<b": 1874,
+      "a==b": 614
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H2",
+   "statement": "生存した軌道で、核外の警告が点いている時刻の割合は、素朴な閾値以下である（誤警報が少ない）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1112,
+      "a>=b": 1112,
+      "a>b": 1112,
+      "a<b": 0,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H3",
+   "statement": "必要要因の欠損（e_t∉E_req(x_t)）の警告は、素朴な閾値以上に崩壊に先行する。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 2488,
+      "a>=b": 1402,
+      "a>b": 1120,
+      "a<b": 1086,
+      "a==b": 282
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H4",
+   "statement": "生存した軌道で、必要要因の欠損の警告が点いている時刻の割合は、素朴な閾値以下である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 1112,
+      "a>=b": 185,
+      "a>b": 166,
+      "a<b": 927,
+      "a==b": 19
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5",
+   "statement": "核外の警告は、閉塞（A_t=∅）以上に崩壊に先行する。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 2488,
+      "a>=b": 967,
+      "a>b": 92,
+      "a<b": 1521,
+      "a==b": 875
+     }
+    }
+   },
+   "rule_dependent": false
+  }
+ ],
+ "consistency": []
+}

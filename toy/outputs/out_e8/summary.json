@@ -1,0 +1,87 @@
+{
+ "furnace": {
+  "|X|": 60,
+  "|U|": 4,
+  "|E_ext|": 16,
+  "|K|": 25,
+  "|K_req|": 25,
+  "stages |V^(nu)|": [
+   25,
+   19,
+   19
+  ],
+  "|Viab_f(K)|": 19,
+  "|Viab^resp| (pairs)": 39,
+  "|pi_X(Viab^resp)|": 20,
+  "|all-e robust kernel|": 0,
+  "Viab minus piX(resp)": 0,
+  "piX(resp) minus Viab": 1,
+  "pairs": 960,
+  "blocked pairs": 584,
+  "B1": 44,
+  "B2": 540,
+  "mu_eff distribution": {
+   "0": 584,
+   "1": 256,
+   "2": 120
+  },
+  "Crit distribution": {
+   "-": 50,
+   "fuel+flue": 2,
+   "flue": 8
+  },
+  "(SM,EU,FR) combinations (CS=0)": {
+   "(False, False, None)": 22,
+   "(False, True, False)": 18,
+   "(False, True, True)": 40,
+   "(True, False, None)": 22,
+   "(True, True, False)": 42,
+   "(True, True, True)": 336
+  },
+  "checks_NG": 0,
+  "checks_total": 31
+ },
+ "minacs": {
+  "|X|": 72,
+  "|U|": 4,
+  "|E_ext|": 16,
+  "|K|": 20,
+  "|K_req|": 20,
+  "stages |V^(nu)|": [
+   20,
+   18,
+   18
+  ],
+  "|Viab_f(K)|": 18,
+  "|Viab^resp| (pairs)": 38,
+  "|pi_X(Viab^resp)|": 20,
+  "|all-e robust kernel|": 0,
+  "Viab minus piX(resp)": 0,
+  "piX(resp) minus Viab": 2,
+  "pairs": 1152,
+  "blocked pairs": 744,
+  "B1": 136,
+  "B2": 608,
+  "mu_eff distribution": {
+   "0": 744,
+   "1": 392,
+   "2": 16
+  },
+  "Crit distribution": {
+   "-": 52,
+   "food": 8,
+   "heat+food": 4,
+   "heat": 8
+  },
+  "(SM,EU,FR) combinations (CS=0)": {
+   "(False, False, None)": 82,
+   "(False, True, False)": 24,
+   "(False, True, True)": 150,
+   "(True, False, None)": 54,
+   "(True, True, False)": 8,
+   "(True, True, True)": 258
+  },
+  "checks_NG": 0,
+  "checks_total": 26
+ }
+}

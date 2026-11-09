@@ -1,0 +1,11 @@
+{
+ "id": "P2_v2_drone_r1",
+ "seconds": 186.0,
+ "units": 900,
+ "identical": 900,
+ "different": 0,
+ "not_in_record": 0,
+ "examples": [],
+ "verdicts_differing": [],
+ "verdicts_total": 2
+}

@@ -1,0 +1,55 @@
+OK viab_stages
+OK viab_core
+OK viab_resp
+OK robust_all_e_kernel
+OK CR1
+OK pair_table
+OK Crit/U_rob/EC/Hor
+OK trajectory mild/learn=True
+OK trajectory mild/learn=False
+OK trajectory cold/learn=True
+OK trajectory cold/learn=False
+OK trajectory famine/learn=True
+OK trajectory famine/learn=False
+OK trajectory seed 1 P-mech
+OK trajectory seed 1 P-Viab-first
+OK trajectory seed 1 P-A-greedy
+OK trajectory seed 1 P-fixed
+OK trajectory seed 2 P-mech
+OK trajectory seed 2 P-Viab-first
+OK trajectory seed 2 P-A-greedy
+OK trajectory seed 2 P-fixed
+OK trajectory seed 3 P-mech
+OK trajectory seed 3 P-Viab-first
+OK trajectory seed 3 P-A-greedy
+OK trajectory seed 3 P-fixed
+OK trajectory seed 4 P-mech
+OK trajectory seed 4 P-Viab-first
+OK trajectory seed 4 P-A-greedy
+OK trajectory seed 4 P-fixed
+OK trajectory seed 5 P-mech
+OK trajectory seed 5 P-Viab-first
+OK trajectory seed 5 P-A-greedy
+OK trajectory seed 5 P-fixed
+OK trajectory seed 6 P-mech
+OK trajectory seed 6 P-Viab-first
+OK trajectory seed 6 P-A-greedy
+OK trajectory seed 6 P-fixed
+OK trajectory seed 7 P-mech
+OK trajectory seed 7 P-Viab-first
+OK trajectory seed 7 P-A-greedy
+OK trajectory seed 7 P-fixed
+OK trajectory seed 8 P-mech
+OK trajectory seed 8 P-Viab-first
+OK trajectory seed 8 P-A-greedy
+OK trajectory seed 8 P-fixed
+OK trajectory seed 9 P-mech
+OK trajectory seed 9 P-Viab-first
+OK trajectory seed 9 P-A-greedy
+OK trajectory seed 9 P-fixed
+OK trajectory seed 10 P-mech
+OK trajectory seed 10 P-Viab-first
+OK trajectory seed 10 P-A-greedy
+OK trajectory seed 10 P-fixed
+OK exact checks all OK on MinACS via the common layer
+NG = 0 / 54

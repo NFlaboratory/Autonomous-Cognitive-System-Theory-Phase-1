@@ -1,0 +1,11 @@
+{
+ "id": "P9_e1_v2_policies_r2",
+ "seconds": 946.3,
+ "units": 7200,
+ "identical": 7200,
+ "different": 0,
+ "not_in_record": 0,
+ "examples": [],
+ "verdicts_differing": [],
+ "verdicts_total": 12
+}

@@ -1,0 +1,153 @@
+{
+ "id": "P2_v2_drone_r1",
+ "model": "v2",
+ "purpose": "E4 pilot: does the presence of the non-ACS rescuer (drone) delay collapse on held-out seeds with jittered severe-cold periods and swept world parameters.",
+ "tuning_history": "The v2 mechanism was tuned on seed 1 (default scenario, fixed severe-cold periods). Seed 2 was run once with snap_jitter=10 as a smoke test before registration. Seeds 11-60 with snap_jitter were not run before registration.",
+ "sources": [
+  "/home/claude/TOY2/acs_toy/*.py",
+  "/home/claude/E4/e4/*.py",
+  "/home/claude/E4/run_prereg.py"
+ ],
+ "seeds": {
+  "tune": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "eval": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46,
+   47,
+   48,
+   49,
+   50,
+   51,
+   52,
+   53,
+   54,
+   55,
+   56,
+   57,
+   58,
+   59,
+   60
+  ]
+ },
+ "sweep": {
+  "eat_gain": [
+   4,
+   5,
+   6
+  ],
+  "regen_period": [
+   2,
+   3,
+   4
+  ],
+  "snap_jitter": [
+   10
+  ],
+  "steps": [
+   300
+  ]
+ },
+ "conditions": [
+  "drone",
+  "no_drone"
+ ],
+ "rule_variants": {
+  "R0": {}
+ },
+ "rule_independent_metrics": [],
+ "judgment_rule_note": "T_col uses only the (SC-1) rule of v2 (integ = 0); zone, Recover and (FT-2) rules are not involved, so no rule variants are registered for P2.",
+ "hypotheses": [
+  {
+   "id": "H4",
+   "kind": "paired",
+   "metric": "T_col_i",
+   "conditions": [
+    "drone",
+    "no_drone"
+   ],
+   "statement": "ドローン（非 ACS の救助者）がいるとき、個体 i の崩壊到達時刻はいないとき以上である。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H5",
+   "kind": "paired",
+   "metric": "T_col_j",
+   "conditions": [
+    "drone",
+    "no_drone"
+   ],
+   "statement": "同じく個体 j について。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  }
+ ],
+ "source_hashes": {
+  "/home/claude/TOY2/acs_toy/body.py": "20e04ec19d72f80da1fed98ebcc8af2c",
+  "/home/claude/TOY2/acs_toy/checks.py": "cf0798be3b2361a0c035684d13328928",
+  "/home/claude/TOY2/acs_toy/config.py": "ca97679dc1675838d9cb056f508881f6",
+  "/home/claude/TOY2/acs_toy/events.py": "9ee2191926e624368ceb1f7ee0e61846",
+  "/home/claude/TOY2/acs_toy/judge.py": "5c37ad799062944534cdd686c36605c5",
+  "/home/claude/TOY2/acs_toy/mind.py": "205636dc0c5b551b14e66c819adb29c1",
+  "/home/claude/TOY2/acs_toy/org.py": "faed65ebf0e54b982004c234ae8fe34a",
+  "/home/claude/TOY2/acs_toy/sim.py": "a97ffefedaae2f40725d318c17ee8bee",
+  "/home/claude/TOY2/acs_toy/viewer.py": "d4f3c72d4505b903d1fab55a1dabc53b",
+  "/home/claude/TOY2/acs_toy/world.py": "9da4503c74b33bb1ba20a7c26c11ace7",
+  "/home/claude/E4/e4/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "/home/claude/E4/e4/adapters.py": "525b34315f824b6ef5138f5ca3935c02",
+  "/home/claude/E4/e4/prereg.py": "386bb51203e64ec98f234093711f78b9",
+  "/home/claude/E4/run_prereg.py": "f2da46faeb72b8cc0133db0b9e3c002d"
+ },
+ "registered_at": "2026-10-26T07:23:26.389426+00:00"
+}

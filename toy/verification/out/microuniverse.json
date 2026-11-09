@@ -1,0 +1,610 @@
+[
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_viab_core_max",
+  "labels": [
+   "prop:viab_core_max"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 16384,
+  "premise_cases": 16384,
+  "kind": "all-models",
+  "detail": "16384 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_viab_stage_finite",
+  "labels": [
+   "prop:viab_stage_finite"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 16384,
+  "premise_cases": 16384,
+  "kind": "all-models",
+  "detail": "16384 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_kernel_standard_comparison",
+  "labels": [
+   "prop:kernel_standard_comparison"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 16384,
+  "premise_cases": 7680,
+  "kind": "all-models",
+  "detail": "16384 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_robust_nonresponse_viab",
+  "labels": [
+   "prop:robust_nonresponse_viab"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 32768,
+  "premise_cases": 10496,
+  "kind": "all-models",
+  "detail": "16384 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_blockage_dichotomy",
+  "labels": [
+   "prop:blockage_dichotomy"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 65536,
+  "premise_cases": 24576,
+  "kind": "all-models",
+  "detail": "16384 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_fr_next_sm",
+  "labels": [
+   "prop:fr_next_sm"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 65536,
+  "premise_cases": 23040,
+  "kind": "all-models",
+  "detail": "16384 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_sd_viab",
+  "labels": [
+   "lem:sd_viab"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 65536,
+  "premise_cases": 1280,
+  "kind": "all-models",
+  "detail": "16384 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_nondegeneracy_implication",
+  "labels": [
+   "prop:nondegeneracy_implication"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 16384,
+  "premise_cases": 7680,
+  "kind": "all-models",
+  "detail": "16384 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_feasibility_sensitivity_scope",
+  "labels": [
+   "prop:feasibility_sensitivity_scope"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 16384,
+  "premise_cases": 7680,
+  "kind": "all-models",
+  "detail": "16384 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_finite_exit",
+  "labels": [
+   "lem:finite_exit"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 30976,
+  "premise_cases": 5440,
+  "kind": "all-models",
+  "detail": "16384 candidate models; cases = (model, policy) pairs",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_sd_robust_nonresponse",
+  "labels": [
+   "prop:sd_robust_nonresponse"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 16384,
+  "premise_cases": 11912,
+  "kind": "all-models",
+  "detail": "16384 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_sd_necessity",
+  "labels": [
+   "prop:sd_necessity"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 7582,
+  "premise_cases": 4960,
+  "kind": "all-models",
+  "detail": "16384 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_exterior_blockage",
+  "labels": [
+   "prop:exterior_blockage"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 7582,
+  "premise_cases": 5216,
+  "kind": "all-models",
+  "detail": "16384 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_sd_necessity_fr",
+  "labels": [
+   "prop:sd_necessity_fr"
+  ],
+  "domain": "MU-A2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 22528,
+  "premise_cases": 22528,
+  "kind": "all-models",
+  "detail": "16384 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_boundary_A2",
+  "labels": [
+   "def:viab_core",
+   "def:robust_response",
+   "def:kernel_all_any",
+   "def:eu_critical_domain"
+  ],
+  "domain": "MU-A2",
+  "status": "EXAMPLE_ONLY",
+  "cases": 16384,
+  "premise_cases": null,
+  "kind": "census",
+  "detail": "boundary cases present in the family (counts)",
+  "evidence": {
+   "nu_star": {
+    "0": 13664,
+    "1": 2720
+   },
+   "Ereq_empty_states": 8192,
+   "Ereq_empty_Urob_eq_U": 8192,
+   "Crit_empty_states": 31232,
+   "K_empty": 4096,
+   "assumption_holds": 7582,
+   "Vall_not_in_Dreq": 2688,
+   "assumption_fails": 8802,
+   "K_eq_X": 4096,
+   "assumption_fails_and_ab_forever_without_blockage": 6400,
+   "Urob_empty_with_A_nonempty": 2048,
+   "forall_e_exists_u_but_no_common_u": 512
+  }
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_viab_core_max",
+  "labels": [
+   "prop:viab_core_max"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_NONVACUOUS",
+  "cases": 531441,
+  "premise_cases": 531441,
+  "kind": "all-models",
+  "detail": "531441 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_viab_stage_finite",
+  "labels": [
+   "prop:viab_stage_finite"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_NONVACUOUS",
+  "cases": 531441,
+  "premise_cases": 531441,
+  "kind": "all-models",
+  "detail": "531441 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_kernel_standard_comparison",
+  "labels": [
+   "prop:kernel_standard_comparison"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_NONVACUOUS",
+  "cases": 531441,
+  "premise_cases": 322866,
+  "kind": "all-models",
+  "detail": "531441 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_robust_nonresponse_viab",
+  "labels": [
+   "prop:robust_nonresponse_viab"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_NONVACUOUS",
+  "cases": 1594323,
+  "premise_cases": 177147,
+  "kind": "all-models",
+  "detail": "531441 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_blockage_dichotomy",
+  "labels": [
+   "prop:blockage_dichotomy"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_NONVACUOUS",
+  "cases": 3188646,
+  "premise_cases": 354294,
+  "kind": "all-models",
+  "detail": "531441 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_fr_next_sm",
+  "labels": [
+   "prop:fr_next_sm"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_NONVACUOUS",
+  "cases": 3188646,
+  "premise_cases": 196830,
+  "kind": "all-models",
+  "detail": "531441 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_sd_viab",
+  "labels": [
+   "lem:sd_viab"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_VACUOUS",
+  "cases": 3188646,
+  "premise_cases": 0,
+  "kind": "all-models",
+  "detail": "531441 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_nondegeneracy_implication",
+  "labels": [
+   "prop:nondegeneracy_implication"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_NONVACUOUS",
+  "cases": 531441,
+  "premise_cases": 515816,
+  "kind": "all-models",
+  "detail": "531441 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_feasibility_sensitivity_scope",
+  "labels": [
+   "prop:feasibility_sensitivity_scope"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_NONVACUOUS",
+  "cases": 531441,
+  "premise_cases": 515816,
+  "kind": "all-models",
+  "detail": "531441 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_finite_exit",
+  "labels": [
+   "lem:finite_exit"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_NONVACUOUS",
+  "cases": 2125764,
+  "premise_cases": 446148,
+  "kind": "all-models",
+  "detail": "531441 candidate models; cases = (model, policy) pairs",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_sd_robust_nonresponse",
+  "labels": [
+   "prop:sd_robust_nonresponse"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_NONVACUOUS",
+  "cases": 531441,
+  "premise_cases": 447201,
+  "kind": "all-models",
+  "detail": "531441 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_sd_necessity",
+  "labels": [
+   "prop:sd_necessity"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_NONVACUOUS",
+  "cases": 135091,
+  "premise_cases": 51783,
+  "kind": "all-models",
+  "detail": "531441 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_exterior_blockage",
+  "labels": [
+   "prop:exterior_blockage"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_NONVACUOUS",
+  "cases": 135091,
+  "premise_cases": 135091,
+  "kind": "all-models",
+  "detail": "531441 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_sd_necessity_fr",
+  "labels": [
+   "prop:sd_necessity_fr"
+  ],
+  "domain": "MU-A3",
+  "status": "PASS_NONVACUOUS",
+  "cases": 236196,
+  "premise_cases": 236196,
+  "kind": "all-models",
+  "detail": "531441 candidate models",
+  "evidence": null
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_boundary_A3",
+  "labels": [
+   "def:viab_core",
+   "def:robust_response",
+   "def:kernel_all_any",
+   "def:eu_critical_domain"
+  ],
+  "domain": "MU-A3",
+  "status": "EXAMPLE_ONLY",
+  "cases": 531441,
+  "premise_cases": null,
+  "kind": "census",
+  "detail": "boundary cases present in the family (counts)",
+  "evidence": {
+   "nu_star": {
+    "0": 419904,
+    "1": 72171,
+    "2": 39366
+   },
+   "Crit_empty_states": 1436859,
+   "assumption_holds": 135091,
+   "assumption_fails": 396350,
+   "assumption_fails_and_ab_forever_without_blockage": 367416,
+   "Urob_empty_with_A_nonempty": 104976
+  }
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_robust_noninclusion",
+  "labels": [
+   "prop:robust_noninclusion"
+  ],
+  "domain": "MU-B2",
+  "status": "EXAMPLE_ONLY",
+  "cases": 16484,
+  "premise_cases": null,
+  "kind": "example",
+  "detail": "witnesses for (i) and (ii) found (existence search; E_bg single point, so b is omitted)",
+  "evidence": {
+   "i": {
+    "F": [
+     [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ]
+    ],
+    "g_O": [
+     [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ]
+    ],
+    "K": [
+     0
+    ],
+    "eta": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "Viab": [
+     0
+    ],
+    "piX_resp": []
+   },
+   "ii": {
+    "F": [
+     [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       1
+      ]
+     ]
+    ],
+    "g_O": [
+     [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       0
+      ]
+     ],
+     [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       1
+      ]
+     ]
+    ],
+    "K": [
+     1
+    ],
+    "eta": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ],
+    "Viab": [],
+    "piX_resp": [
+     1
+    ]
+   }
+  }
+ },
+ {
+  "suite": "microuniverse",
+  "check_id": "MU_viab_resp_max",
+  "labels": [
+   "prop:viab_resp_max"
+  ],
+  "domain": "MU-B2",
+  "status": "PASS_NONVACUOUS",
+  "cases": 16484,
+  "premise_cases": 16484,
+  "kind": "all-models (visited)",
+  "detail": "response kernel invariant on every candidate visited by the search",
+  "evidence": null
+ }
+]

@@ -1,0 +1,13 @@
+label,status,checks,note
+ass:functional_concurrency,NOT_RUN,partial evidence: MUT_S04_MutM2ReadsPurpose@Furnace-mut; S04_Furnace@Furnace; S04_MinACS@MinACS,"partial evidence only: S04 (M2 independent of the M3 record, with its mutation test); the full same-time generation dependency graph is not checked"
+ass:m1c_temporal,NOT_RUN,,no check of the M1-c history window (NOT_RUN)
+ass:psl_minimal,NOT_RUN,partial evidence: MUT_S06_MutProtReadsMemory@Furnace-mut; MUT_S06_MutResolveCancels@Furnace-mut; S06_Furnace@Furnace,"partial evidence only: S06 (PSL-4 from I only, resolution keeps the local component, with mutation tests); PSL-1..3 and non-cognitivity are not checked"
+ass:impl_structure,NOT_RUN,,no ISL role check (NOT_RUN); the toys do not model separate substrate carriers
+ass:fast_structural_consistency,NOT_RUN,,no check of the fast path (NOT_RUN)
+ass:s5_observation_factorization,PASS_NONVACUOUS,MUT_S01_MutUpdateReadsHiddenFlue@Furnace-mut; S01_Furnace@Furnace; S01_MinACS@MinACS; U_S01_flip@Furnace[flip]; U_S01_forget@Furnace[forget]; U_S01_frozen@Furnace[frozen]; U_S01_orig@Furnace[orig],
+prop:purpose_self_attribution,PASS_NONVACUOUS,S03_Furnace@Furnace; S03_MinACS@MinACS,
+prop:purpose_ad_slot,BLOCKED_SOURCE,,BLOCKED_SOURCE: no toy has frames A_O of the response component nor the action difference over them; a new world is needed (design G7/G8)
+prop:s5_one_step,PASS_NONVACUOUS,S05_Furnace@Furnace; S05_MinACS@MinACS,
+prop:s5_continuation,PASS_NONVACUOUS,S07_Furnace@Furnace; S07_MinACS@MinACS; U_S07_flip@Furnace[flip]; U_S07_forget@Furnace[forget]; U_S07_frozen@Furnace[frozen]; U_S07_orig@Furnace[orig],
+prop:s5_causality,PASS_NONVACUOUS,S08_Furnace@Furnace; S08_MinACS@MinACS; U_S08_flip@Furnace[flip]; U_S08_forget@Furnace[forget]; U_S08_frozen@Furnace[frozen]; U_S08_orig@Furnace[orig],
+prop:s5_observation_causality,PASS_NONVACUOUS,MUT_S01_MutUpdateReadsHiddenFlue@Furnace-mut; S01_Furnace@Furnace; S01_MinACS@MinACS; S09_Furnace@Furnace; S09_MinACS@MinACS; U_S01_flip@Furnace[flip]; U_S01_forget@Furnace[forget]; U_S01_frozen@Furnace[frozen]; U_S01_orig@Furnace[orig]; U_S09_flip@Furnace[flip]; U_S09_forget@Furnace[forget]; U_S09_frozen@Furnace[frozen]; U_S09_orig@Furnace[orig],

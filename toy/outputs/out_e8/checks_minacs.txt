@@ -1,0 +1,26 @@
+[EXACT] OK  CR-1a(i) eta_heat -- (X(p=0, en=1, tp=0, s=1), 'R', E(c=0, g=0, rho=0, r=0), X(p=1, en=0, tp=1, s=1))
+[EXACT] OK  CR-1c eta_heat -- X(p=1, en=0, tp=1, s=1)
+[EXACT] OK  CR-1a(ii) eta_heat -- cycle among WF=1 nodes: False; WF=0 absorbing: True
+[EXACT] OK  CR-1a(i) eta_food -- (X(p=0, en=0, tp=0, s=1), 'wait', E(c=0, g=0, rho=0, r=1), X(p=0, en=0, tp=1, s=0))
+[EXACT] OK  CR-1c eta_food -- X(p=0, en=0, tp=1, s=0)
+[EXACT] OK  CR-1a(ii) eta_food -- cycle among WF=1 nodes: False; WF=0 absorbing: True
+[EXACT] OK  CR-1b joint satisfiability -- (X(p=0, en=0, tp=0, s=0), E(c=0, g=0, rho=0, r=1))
+[EXACT] OK  (SC-2) toy rule: WF=0 invariant under every (u,e) and every upsilon
+[EXACT] OK  ass:f_decomposition f(x,u_empty,e)=f_auto(x,e)
+[EXACT] OK  ass:env_input_nondegeneracy
+[EXACT] OK  ass:env_viable_nondegeneracy
+[EXACT] OK  ass:viable_realizability
+[EXACT] OK  prop:blockage_dichotomy -- 744 blocked pairs of 1152
+[EXACT] OK  prop:eu_blockage (i)
+[EXACT] OK  prop:eu_sm_next
+[EXACT] OK  prop:eu_fire_domain
+[EXACT] OK  prop:fr_mu_eff (i)
+[EXACT] OK  prop:viab_stage_fr
+[EXACT] OK  prop:selection_responsibility
+[EXACT] OK  prop:blockage_viability_kernel
+[EXACT] OK  prop:viab_stage_nested
+[EXACT] OK  prop:viab_stage_core
+[EXACT] OK  prop:viab_core_max
+[EXACT] OK  prop:robust_nonresponse_viab
+[EXACT] OK  prop:kernel_maintenance one-step form
+[EXACT] OK  prop:viab_resp_max

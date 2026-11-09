@@ -1,0 +1,49 @@
+t,x,o,b,M,u,pur,mode,P,Pi_eval,Pi,inK,A,blk,e_in_Ereq,Crit,B1,B2,SM,EU,FR,mu_eff,Viab,Hor,u_in_Uviab,WF,CS,Col,zones,Recover
+0,"[0, 4, 2, 1]",1,"[0, 0, 1]","[0, 1, ""none""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+1,"[0, 3, 2, 1]",1,"[0, 0, 0]","[0, 1, ""none""]",R,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+2,"[1, 2, 2, 1]",1,"[0, 0, 0]","[0, 1, ""food""]",eat,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+3,"[1, 4, 2, 1]",0,"[0, 0, 1]","[0, 1, ""food""]",wait,food,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+4,"[1, 3, 2, 1]",1,"[0, 0, 0]","[0, 0, ""food""]",eat,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+5,"[1, 5, 2, 1]",0,"[0, 0, 0]","[0, 1, ""food""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+6,"[1, 4, 2, 1]",0,"[1, 0, 1]","[0, 0, ""none""]",L,heat,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+7,"[0, 3, 1, 1]",1,"[1, 0, 0]","[1, 0, ""heat""]",wait,food,3A,1,0,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z1,111
+8,"[0, 2, 2, 1]",1,"[1, 0, 0]","[1, 0, ""food""]",R,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+9,"[1, 1, 2, 1]",1,"[0, 0, 1]","[1, 0, ""food""]",eat,food,3A,1,0,0,True,"[""eat""]",False,True,"[""food""]",False,False,True,True,True,1,True,inf,True,1,0,0,Z1,111
+10,"[1, 3, 2, 1]",1,"[0, 0, 0]","[0, 1, ""food""]",eat,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+11,"[1, 5, 2, 1]",0,"[0, 0, 0]","[0, 1, ""food""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+12,"[1, 4, 2, 1]",0,"[0, 0, 1]","[0, 0, ""none""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+13,"[1, 3, 2, 1]",1,"[0, 0, 0]","[0, 0, ""none""]",eat,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+14,"[1, 5, 2, 1]",0,"[0, 0, 0]","[0, 1, ""food""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+15,"[1, 4, 2, 1]",0,"[0, 0, 1]","[0, 0, ""none""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+16,"[1, 3, 2, 1]",1,"[0, 0, 0]","[0, 0, ""none""]",eat,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+17,"[1, 5, 2, 1]",0,"[0, 0, 0]","[0, 1, ""food""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+18,"[1, 4, 2, 1]",0,"[1, 0, 1]","[0, 0, ""none""]",L,heat,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+19,"[0, 3, 1, 1]",1,"[1, 0, 0]","[1, 0, ""heat""]",wait,food,3A,1,0,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z1,111
+20,"[0, 2, 2, 1]",1,"[1, 0, 0]","[1, 0, ""food""]",R,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+21,"[1, 1, 2, 1]",1,"[0, 0, 1]","[1, 0, ""food""]",eat,food,3A,1,0,0,True,"[""eat""]",False,True,"[""food""]",False,False,True,True,True,1,True,inf,True,1,0,0,Z1,111
+22,"[1, 3, 2, 1]",1,"[0, 0, 0]","[0, 1, ""food""]",eat,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+23,"[1, 5, 2, 1]",0,"[0, 0, 0]","[0, 1, ""food""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+24,"[1, 4, 2, 1]",0,"[0, 0, 1]","[0, 0, ""none""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+25,"[1, 3, 2, 1]",1,"[0, 0, 0]","[0, 0, ""none""]",eat,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+26,"[1, 5, 2, 1]",0,"[0, 0, 0]","[0, 1, ""food""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+27,"[1, 4, 2, 1]",0,"[0, 0, 1]","[0, 0, ""none""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+28,"[1, 3, 2, 1]",1,"[0, 0, 0]","[0, 0, ""none""]",eat,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+29,"[1, 5, 2, 1]",0,"[0, 0, 0]","[0, 1, ""food""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+30,"[1, 4, 2, 1]",0,"[1, 0, 1]","[0, 0, ""none""]",L,heat,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+31,"[0, 3, 1, 1]",1,"[1, 0, 0]","[1, 0, ""heat""]",wait,food,3A,1,0,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z1,111
+32,"[0, 2, 2, 1]",1,"[1, 0, 0]","[1, 0, ""food""]",R,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+33,"[1, 1, 2, 1]",1,"[0, 0, 1]","[1, 0, ""food""]",eat,food,3A,1,0,0,True,"[""eat""]",False,True,"[""food""]",False,False,True,True,True,1,True,inf,True,1,0,0,Z1,111
+34,"[1, 3, 2, 1]",1,"[0, 0, 0]","[0, 1, ""food""]",eat,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+35,"[1, 5, 2, 1]",0,"[0, 0, 0]","[0, 1, ""food""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+36,"[1, 4, 2, 1]",0,"[0, 0, 1]","[0, 0, ""none""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+37,"[1, 3, 2, 1]",1,"[0, 0, 0]","[0, 0, ""none""]",eat,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+38,"[1, 5, 2, 1]",0,"[0, 0, 0]","[0, 1, ""food""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+39,"[1, 4, 2, 1]",0,"[0, 0, 1]","[0, 0, ""none""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+40,"[1, 3, 2, 1]",1,"[0, 0, 0]","[0, 0, ""none""]",eat,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+41,"[1, 5, 2, 1]",0,"[0, 0, 0]","[0, 1, ""food""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+42,"[1, 4, 2, 1]",0,"[1, 0, 1]","[0, 0, ""none""]",L,heat,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+43,"[0, 3, 1, 1]",1,"[1, 0, 0]","[1, 0, ""heat""]",wait,food,3A,1,0,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z1,111
+44,"[0, 2, 2, 1]",1,"[1, 0, 0]","[1, 0, ""food""]",R,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+45,"[1, 1, 2, 1]",1,"[0, 0, 1]","[1, 0, ""food""]",eat,food,3A,1,0,0,True,"[""eat""]",False,True,"[""food""]",False,False,True,True,True,1,True,inf,True,1,0,0,Z1,111
+46,"[1, 3, 2, 1]",1,"[0, 0, 0]","[0, 1, ""food""]",eat,food,3B,2,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,True,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef
+47,"[1, 5, 2, 1]",0,"[0, 0, 0]","[0, 1, ""food""]",wait,none,3C,,1,0,True,"[""wait"", ""L"", ""R"", ""eat""]",False,False,[],False,False,True,True,True,1,True,inf,True,1,0,0,Z0,undef

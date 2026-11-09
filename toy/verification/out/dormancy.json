@@ -1,0 +1,119 @@
+[
+ {
+  "suite": "dormancy",
+  "check_id": "D1_realized_reestablishment_CS",
+  "labels": [
+   "prop:realized_reestablishment"
+  ],
+  "domain": "Dormancy",
+  "status": "PASS_NONVACUOUS",
+  "cases": 26460,
+  "premise_cases": 1701,
+  "kind": "exhaustive",
+  "detail": "(SC-1) at t and re-established later on the realised path => CS_t = 0",
+  "evidence": null
+ },
+ {
+  "suite": "dormancy",
+  "check_id": "D1_realized_reestablishment_FTS",
+  "labels": [
+   "prop:realized_reestablishment"
+  ],
+  "domain": "Dormancy",
+  "status": "PASS_NONVACUOUS",
+  "cases": 26460,
+  "premise_cases": 2757,
+  "kind": "exhaustive",
+  "detail": "(FT-1) at t in T_FT and revival later on the realised path => FTS_t = 0",
+  "evidence": null
+ },
+ {
+  "suite": "dormancy",
+  "check_id": "D2_termination_order",
+  "labels": [
+   "prop:termination_order"
+  ],
+  "domain": "Dormancy",
+  "status": "PASS_NONVACUOUS",
+  "cases": 274,
+  "premise_cases": 274,
+  "kind": "exhaustive",
+  "detail": "(i) FTS=1 at t_C, (ii) FT=1, (iii) no new FT judgement after t_C, (iv) WF=0 when Col=1",
+  "evidence": null
+ },
+ {
+  "suite": "dormancy",
+  "check_id": "D3_principle_time_domain_down",
+  "labels": [
+   "lem:principle_time_domain_down",
+   "def:principle_time_domain"
+  ],
+  "domain": "Dormancy",
+  "status": "PASS_NONVACUOUS",
+  "cases": 26460,
+  "premise_cases": 18645,
+  "kind": "exhaustive",
+  "detail": "T_P is downward closed and Col=0 on T_P",
+  "evidence": null
+ },
+ {
+  "suite": "dormancy",
+  "check_id": "D4_histories",
+  "labels": [
+   "def:collapse",
+   "def:functional_termination"
+  ],
+  "domain": "Dormancy",
+  "status": "PASS_NONVACUOUS",
+  "cases": 26460,
+  "premise_cases": 26460,
+  "kind": "exhaustive",
+  "detail": "Col and FT never revert",
+  "evidence": null
+ },
+ {
+  "suite": "dormancy",
+  "check_id": "D5_census",
+  "labels": [
+   "def:collapse",
+   "def:functional_termination",
+   "def:wf_realization"
+  ],
+  "domain": "Dormancy",
+  "status": "EXAMPLE_ONLY",
+  "cases": 26460,
+  "premise_cases": null,
+  "kind": "census",
+  "detail": "temporary (SC-1)/(FT-1), Upsilon-dependence and threshold cases (counts)",
+  "evidence": {
+   "CS_differs_without_Upsilon": 286,
+   "times": 26460,
+   "defined_principle_times": 18645,
+   "FT1_but_FTS0": 4825,
+   "SC1_but_CS0": 2020,
+   "SC1_CS0_recoverable_only_with_mist": 319,
+   "undefined_principle_times": 7815,
+   "boundary_d_eq_DLIM": 360,
+   "runs_with_Col": 274,
+   "runs_FT_before_or_without_Col": 45,
+   "prem_reest_FTS": 2757,
+   "runs_temporary_stop_then_revival": 399,
+   "prem_reest_CS": 1701
+  }
+ },
+ {
+  "suite": "dormancy",
+  "check_id": "D6_domain_sets",
+  "labels": [
+   "def:viab_core",
+   "def:eu_critical_domain"
+  ],
+  "domain": "Dormancy",
+  "status": "EXAMPLE_ONLY",
+  "cases": 72,
+  "premise_cases": null,
+  "kind": "census",
+  "detail": "|K|=18, |Viab|=18",
+  "evidence": null
+ }
+]

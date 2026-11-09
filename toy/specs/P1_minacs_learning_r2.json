@@ -1,0 +1,185 @@
+{
+ "id": "P1_minacs_learning_r2",
+ "model": "minacs",
+ "purpose": "E4 pilot: does the E6 learning / no-learning contrast (observed on three hand-picked backgrounds after tuning) hold on held-out, seed-generated backgrounds; is the Recover narrowing before collapse dependent on the Recover judgment rule.",
+ "revision_note": "r2 re-registers r1 unchanged except the adapter fix: in r1 the background sequence depended on the Recover-horizon variant (gift times drawn modulo a variant-dependent length), detected by the registered rule-independence check (T_col differed across variants in 471 units). r1 results are kept as recorded. The r1 results were seen before this registration.",
+ "tuning_history": "MinACS model and mechanism thresholds were tuned on the three named backgrounds (mild, cold, famine) of minacs/trajectory.py.  Seeds 1-10 of the seed generator are reserved for smoke tests (seed 1 was run once for a smoke test before registration); seeds 11-60 were not run before registration.",
+ "sources": [
+  "/home/claude/MINACS/minacs/*.py",
+  "/home/claude/E4/e4/*.py",
+  "/home/claude/E4/run_prereg.py"
+ ],
+ "seeds": {
+  "tune": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "eval": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46,
+   47,
+   48,
+   49,
+   50,
+   51,
+   52,
+   53,
+   54,
+   55,
+   56,
+   57,
+   58,
+   59,
+   60
+  ]
+ },
+ "sweep": {
+  "cold_len": [
+   2,
+   3,
+   4
+  ],
+  "regrow_period": [
+   2,
+   3,
+   5
+  ],
+  "gift_events": [
+   0,
+   3
+  ]
+ },
+ "conditions": [
+  "learn",
+  "no-learn"
+ ],
+ "rule_variants": {
+  "R0": {
+   "recover_horizon": 10,
+   "recover_rule": "first"
+  },
+  "R1": {
+   "recover_horizon": 5,
+   "recover_rule": "first"
+  },
+  "R2": {
+   "recover_horizon": 20,
+   "recover_rule": "first"
+  },
+  "R3": {
+   "recover_horizon": 10,
+   "recover_rule": "hold2"
+  }
+ },
+ "rule_independent_metrics": [
+  "T_col",
+  "blocked",
+  "B1",
+  "B2"
+ ],
+ "hypotheses": [
+  {
+   "id": "H1",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "learn",
+    "no-learn"
+   ],
+   "variants": [
+    "R0"
+   ],
+   "statement": "Update が働く個体（learn）の崩壊到達時刻は、信念を更新しない個体（no-learn）以上である（崩壊なしは +∞ とみなす）。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H2",
+   "kind": "share",
+   "predicate": "recover_narrowed_before_collapse",
+   "conditions": [
+    "learn",
+    "no-learn"
+   ],
+   "statement": "崩壊した軌道では、崩壊直前の生存時刻に Recover=1 となる許容外的作用が 3 種すべてではない（外的回復可能性が狭まっている）。",
+   "rule": {
+    "support_min": 0.9,
+    "reject_max": 0.5
+   }
+  },
+  {
+   "id": "H3",
+   "kind": "share",
+   "predicate": "blockage_before_collapse",
+   "conditions": [
+    "learn",
+    "no-learn"
+   ],
+   "variants": [
+    "R0"
+   ],
+   "statement": "（モデル記述の仮説）MinACS では崩壊した軌道のすべてで、崩壊前に少なくとも一度閉塞が生じる。本文の『崩壊は閉塞の事前経由を要しない』とは別の、このモデルについての記述。",
+   "rule": {
+    "support_min": 0.9,
+    "reject_max": 0.5
+   }
+  }
+ ],
+ "source_hashes": {
+  "/home/claude/MINACS/minacs/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "/home/claude/MINACS/minacs/analysis.py": "cda1714bc47208bcd7317c13adc7addd",
+  "/home/claude/MINACS/minacs/mind.py": "d4c750474240b76cbe5e5497947c9627",
+  "/home/claude/MINACS/minacs/model.py": "f675d770f05d2fda28ae266768cb5836",
+  "/home/claude/MINACS/minacs/trajectory.py": "119f94104b0558c373518a518fd7b81e",
+  "/home/claude/E4/e4/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "/home/claude/E4/e4/adapters.py": "9c8175429c2ffd3407c37920cf1f0376",
+  "/home/claude/E4/e4/prereg.py": "386bb51203e64ec98f234093711f78b9",
+  "/home/claude/E4/run_prereg.py": "f2da46faeb72b8cc0133db0b9e3c002d"
+ },
+ "registered_at": "2026-10-26T07:24:22.200530+00:00"
+}

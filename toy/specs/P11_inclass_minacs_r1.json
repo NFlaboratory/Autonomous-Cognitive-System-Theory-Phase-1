@@ -1,0 +1,250 @@
+{
+ "id": "P11_inclass_minacs_r1",
+ "model": "e11_exact",
+ "purpose": "Comparisons inside the ACS class: graded variants of the TIPA mechanism that keep CR-2b.  est-k: the self-state reading used by the mechanism (MinACS energy / furnace temperature) is quantised to multiples of k (floor; a positive value is never read as 0).  upd-k: the internal model is updated only every k steps; upd-none: never.  The A/B1/C records of P10 are kept for each run.",
+ "tuning_history": "Nothing tuned.  Variants written before any run; one smoke test: tuning seed 1 (cold_len 3, regrow 5, gifts 3): T_col base 11, est-2 11, est-3 11, upd-2 15, upd-4 15, upd-none 15.",
+ "cr2_note": "check_cr2_variants.py: est-2 and est-3 satisfy CR-2b in both domains; upd-k changes only Update, which CR-2b does not involve.",
+ "sources": [
+  "acsjudge/*.py",
+  "domains/*.py",
+  "domains/furnace/*.py",
+  "minacs/*.py",
+  "e4/*.py",
+  "run_prereg.py"
+ ],
+ "seeds": {
+  "tune": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "eval": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46,
+   47,
+   48,
+   49,
+   50,
+   51,
+   52,
+   53,
+   54,
+   55,
+   56,
+   57,
+   58,
+   59,
+   60
+  ]
+ },
+ "sweep": {
+  "domain": [
+   "minacs"
+  ],
+  "cold_len": [
+   2,
+   3,
+   4
+  ],
+  "regrow_period": [
+   2,
+   3,
+   5
+  ],
+  "gift_events": [
+   0,
+   3
+  ]
+ },
+ "conditions": [
+  "base",
+  "est-2",
+  "est-3",
+  "upd-2",
+  "upd-4",
+  "upd-none"
+ ],
+ "rule_variants": {
+  "R0": {}
+ },
+ "rule_independent_metrics": [],
+ "hypotheses": [
+  {
+   "id": "H1",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "base",
+    "est-2"
+   ],
+   "statement": "base の崩壊到達時刻は est-2 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "how_it_could_fail": "推定の粗さや更新の遅れが、行動の時機を偶然に有利にずらす場合がある（E7 の天候を見ない劣化では 172 単位で劣化の方が長く存続した）。登録前の試運転：tuning seed 1 (cold_len 3, regrow 5, gifts 3): T_col base 11, est-2 11, est-3 11, upd-2 15, upd-4 15, upd-none 15。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H2",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "est-2",
+    "est-3"
+   ],
+   "statement": "est-2 の崩壊到達時刻は est-3 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "how_it_could_fail": "推定の粗さや更新の遅れが、行動の時機を偶然に有利にずらす場合がある（E7 の天候を見ない劣化では 172 単位で劣化の方が長く存続した）。登録前の試運転：tuning seed 1 (cold_len 3, regrow 5, gifts 3): T_col base 11, est-2 11, est-3 11, upd-2 15, upd-4 15, upd-none 15。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H3",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "base",
+    "est-3"
+   ],
+   "statement": "base の崩壊到達時刻は est-3 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "how_it_could_fail": "推定の粗さや更新の遅れが、行動の時機を偶然に有利にずらす場合がある（E7 の天候を見ない劣化では 172 単位で劣化の方が長く存続した）。登録前の試運転：tuning seed 1 (cold_len 3, regrow 5, gifts 3): T_col base 11, est-2 11, est-3 11, upd-2 15, upd-4 15, upd-none 15。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H4",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "base",
+    "upd-2"
+   ],
+   "statement": "base の崩壊到達時刻は upd-2 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "how_it_could_fail": "推定の粗さや更新の遅れが、行動の時機を偶然に有利にずらす場合がある（E7 の天候を見ない劣化では 172 単位で劣化の方が長く存続した）。登録前の試運転：tuning seed 1 (cold_len 3, regrow 5, gifts 3): T_col base 11, est-2 11, est-3 11, upd-2 15, upd-4 15, upd-none 15。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H5",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "upd-2",
+    "upd-4"
+   ],
+   "statement": "upd-2 の崩壊到達時刻は upd-4 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "how_it_could_fail": "推定の粗さや更新の遅れが、行動の時機を偶然に有利にずらす場合がある（E7 の天候を見ない劣化では 172 単位で劣化の方が長く存続した）。登録前の試運転：tuning seed 1 (cold_len 3, regrow 5, gifts 3): T_col base 11, est-2 11, est-3 11, upd-2 15, upd-4 15, upd-none 15。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H6",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "upd-4",
+    "upd-none"
+   ],
+   "statement": "upd-4 の崩壊到達時刻は upd-none 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "how_it_could_fail": "推定の粗さや更新の遅れが、行動の時機を偶然に有利にずらす場合がある（E7 の天候を見ない劣化では 172 単位で劣化の方が長く存続した）。登録前の試運転：tuning seed 1 (cold_len 3, regrow 5, gifts 3): T_col base 11, est-2 11, est-3 11, upd-2 15, upd-4 15, upd-none 15。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  },
+  {
+   "id": "H7",
+   "kind": "paired",
+   "metric": "T_col",
+   "conditions": [
+    "base",
+    "upd-none"
+   ],
+   "statement": "base の崩壊到達時刻は upd-none 以上である（推定の分解能または更新の頻度が高い方が長く存続する）。",
+   "how_it_could_fail": "推定の粗さや更新の遅れが、行動の時機を偶然に有利にずらす場合がある（E7 の天候を見ない劣化では 172 単位で劣化の方が長く存続した）。登録前の試運転：tuning seed 1 (cold_len 3, regrow 5, gifts 3): T_col base 11, est-2 11, est-3 11, upd-2 15, upd-4 15, upd-none 15。",
+   "rule": {
+    "geq_min": 0.9,
+    "gt_min": 0.25,
+    "lt_max_for_reject": 0.25
+   }
+  }
+ ],
+ "source_hashes": {
+  "acsjudge/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "acsjudge/checks.py": "97fefc471c01b703ac201466c311bd1b",
+  "acsjudge/judge.py": "47aada73f5ef0d6eb7ac1c4691e54176",
+  "acsjudge/trajectory.py": "c1c41dadb55a7cc032551b46b3f5e0c5",
+  "domains/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "domains/minacs_domain.py": "afb95928761ec3f98a02b98c45e10476",
+  "domains/furnace/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "domains/furnace/mind.py": "ea7c80151daf769be35577fa58890bc8",
+  "domains/furnace/model.py": "9bcca218621fa0d99edf5a46cdbe56c9",
+  "domains/furnace/policies.py": "b4392e30f05f63f933536b7e2c7ee595",
+  "minacs/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "minacs/analysis.py": "cda1714bc47208bcd7317c13adc7addd",
+  "minacs/mind.py": "d4c750474240b76cbe5e5497947c9627",
+  "minacs/model.py": "f675d770f05d2fda28ae266768cb5836",
+  "minacs/trajectory.py": "119f94104b0558c373518a518fd7b81e",
+  "e4/__init__.py": "d41d8cd98f00b204e9800998ecf8427e",
+  "e4/adapters.py": "676c0c963b6f31fe33aba0325fcd48a0",
+  "e4/policies_minacs.py": "b3a1c028b6a89af766a93aacec79afe2",
+  "e4/policies_v2.py": "07904f883ac67b70351a57e8984e7495",
+  "e4/prereg.py": "f6cc36bfa4f0d572258cba30a15fe5ac",
+  "run_prereg.py": "d031e90589c5d0d55bd352c316e903d4"
+ },
+ "registered_at": "2026-10-27T09:18:12.366020+00:00"
+}

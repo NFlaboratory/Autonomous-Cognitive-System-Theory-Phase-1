@@ -1,0 +1,49 @@
+{
+ "scenario": "alone",
+ "overrides": [],
+ "steps": 300,
+ "seconds": 5.7,
+ "i": {
+  "T_blk": 63,
+  "T_col": null,
+  "in_P_blk": true,
+  "in_P_col": false,
+  "T_FT": null,
+  "chi_EI_0_from_until_record_end": 299,
+  "zone_counts": {
+   "Z0": 262,
+   "Z1": 38,
+   "Z4": 4
+  },
+  "blocked_steps": 4,
+  "B1_steps": 2,
+  "B2_steps": 2,
+  "blockage_ends": {
+   "autonomous": 4
+  },
+  "SM_fail_steps_on_T_P": 5,
+  "EU_fail_steps_on_T_P": 2,
+  "TSTAB_true_steps": 251,
+  "gifts_received_alive": {},
+  "purposes_seen": [
+   "('energy', 'r0', 'eat')",
+   "('energy', 'r1', 'eat')",
+   "('heat', 'S', 'seal')",
+   "('safety', 'self', 'avoid')"
+  ],
+  "mode_counts": {
+   "3C": 226,
+   "3B": 39,
+   "3A": 35
+  },
+  "psl4_overrides": 0,
+  "fast_steps": 191,
+  "action_classes": {
+   "non-purpose": 276,
+   "purpose:energy": 20,
+   "purpose:heat": 4
+  },
+  "final_beta_val": 1.0
+ },
+ "checks_NG": 0
+}

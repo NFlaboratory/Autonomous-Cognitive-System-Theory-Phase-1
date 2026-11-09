@@ -1,0 +1,11 @@
+{
+ "id": "P7_e8_furnace_policies_r1",
+ "seconds": 12.9,
+ "units": 7200,
+ "identical": 7200,
+ "different": 0,
+ "not_in_record": 0,
+ "examples": [],
+ "verdicts_differing": [],
+ "verdicts_total": 6
+}

@@ -1,0 +1,592 @@
+%======================================================================
+\section{主要記号一覧}
+\label{app:symbols}
+
+本付録は、各節で新たに用いる主要記号を節ごとにまとめた参照用の一覧である。
+各記号の定義、型、値域、適用域、未定義の扱いおよび地位は、
+本文の初出の定義・備考による。
+本付録の記述と本文とが異なって読める場合は、本文に従う。
+「定義・初出」の列は、その記号を定める本文の箇所を示す。
+「名称・型」の列の「分類A・B・C」は \S\ref{sec:intro} の三分類に基づく
+理論上・記述上の位置づけであり、集合・写像・実数値などの数学的な型とは異なる。
+7タプルを構成する基礎集合・写像そのものには分類表記を付さない。
+
+%----------------------------------------------------------------------
+\subsection{自律認知システムの形式的定義（\S\ref{sec:acs_def}）}
+\label{app:symbols_s2}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{p{3.0cm} p{3.0cm} p{6.6cm} p{2.0cm}}
+\hline
+\textbf{記号} & \textbf{名称・型} & \textbf{役割・注記} & \textbf{定義・初出} \\
+\hline
+\endhead
+\hline
+\endfoot
+\multicolumn{4}{l}{\textbf{基礎構造と自己--環境分離}} \\[2pt]
+$\Sigma,\ \Sigma_i$ & ACSの7タプル・構造体 &
+単一ACSの形式構造 $\Sigma=(X,U,E,f,\Pi,M,\mathrm{Update})$ を表す。 &
+定義~\ref{def:acs} \\[3pt]
+$X,\ x_t$ & 内部状態空間・状態 $x_t\in X\subseteq\mathbb R^n$ &
+単一ACSの内部状態を表す。 &
+定義~\ref{def:acs} \\[3pt]
+$U,\ u_t$ & 行動空間・実効行動 $u_t\in U$ &
+状態遷移へ入力される実効行動。 &
+定義~\ref{def:acs} \\[3pt]
+$E_{\mathrm{ext}},\ e_t$ & 外部環境状態空間・実現状態 $e_t\in E_{\mathrm{ext}}$ &
+7タプルに対して外生的な背景型と実現外部環境状態。 &
+\S\ref{subsec:wellformedness}、定義~\ref{def:Eext_decomposition} \\[3pt]
+$E^{\mathrm{bg}},\ b_t$ & 外生背景成分の空間・実現値 &
+$E_{\mathrm{ext}}=E^{\mathrm{bg}}\times O$ の第一成分。当該ACSの行動に応答しない外部側の条件。必要環境要因の集合 $E$ とは無関係。 &
+定義~\ref{def:Eext_decomposition} \\[3pt]
+$O,\ o_t,\ \mathcal A_O,\ \bot_a$ & 行動応答成分の空間・実現値・枠の添字集合・不在状態 &
+$O=\prod_{a\in\mathcal A_O}O_a$。$\mathcal A_O$ は有限・固定。枠は個物ではなく位置であり、個物の同一性は追跡しない。 &
+定義~\ref{def:Eext_decomposition} \\[3pt]
+$g_O$ & 行動応答成分の遷移写像 &
+$g_O:O\times X\times U\times E^{\mathrm{bg}}\to O$、$o_{t+1}=g_O(o_t,x_t,u_t,b_t)$。7タプルの成分ではない。 &
+定義~\ref{def:env_realization} \\[3pt]
+$E,\ \eta$ & 必要環境要因集合・充足判定写像 &
+$\eta:X\times E_{\mathrm{ext}}\to\{0,1\}$、$\emptyset\neq E\subseteq\{0,1\}^{X\times E_{\mathrm{ext}}}$。 &
+定義~\ref{def:acs}、定義~\ref{def:environment_space} \\[3pt]
+$f$ & 状態遷移写像 &
+$f:X\times U\times E_{\mathrm{ext}}\to X$、$x_{t+1}=f(x_t,u_t,e_t)$。 &
+定義~\ref{def:acs}、定義~\ref{def:state_transition} \\[3pt]
+$S_{\mathrm{struct}}(\Sigma)$ & 構造的自己 &
+個体として追跡する7タプル構造体の同一性。 &
+定義~\ref{def:s_struct} \\[3pt]
+$B_{SE}$ & 自己--環境境界 &
+内部状態型 $X$ と外部環境状態型 $E_{\mathrm{ext}}$ の構造的分離。 &
+定義~\ref{def:b_se} \\[3pt]
+TSC,\ CR-1,\ CR-2 & 規約・構成要件 &
+型分離規約と成立条件。 &
+\S\ref{subsec:wellformedness}、\S\ref{subsec:environment_space}、\S\ref{subsec:three_primitive_functions} \\[3pt]
+\multicolumn{4}{l}{\textbf{可行性・整形式実現・機能的終端と崩壊}} \\[2pt]
+$\Pi,\ K$ & 持続評価関数・可行集合 &
+$\Pi:X\to\mathbb R$、$K=\{x\in X\mid\Pi(x)\ge0\}$。 &
+定義~\ref{def:acs}、定義~\ref{def:Pi}、定義~\ref{def:K} \\[3pt]
+$\theta$ & 閾値ベクトル &
+$\Pi$ の $\min$ 型表現における可行判定の基準（備考~\ref{rem:min_type_pi}）。 &
+定義~\ref{def:Pi}、備考~\ref{rem:min_type_pi} \\[3pt]
+$A(x,e),\ A_t$ & 可行行動対応・可行行動集合 &
+$A(x,e)=\{u\in U\mid f(x,u,e)\in K\}$、$A_t=A(x_t,e_t)$。個体を明示する場合は $A_{i,t}=A_i(x_{i,t},e_{i,t})$。 &
+定義~\ref{def:at} \\[3pt]
+$\mathrm{WF}_{i,t}$ & 整形式実現指標・分類C &
+時刻 $t$ に構造的自己が形式条件を満たして実現するかを記述。 &
+定義~\ref{def:wf_realization} \\[3pt]
+$S_{\mathrm{dyn},t}$ & 動的自己状態 &
+時刻 $t$ の内部状態と可行行動集合の対 $(x_t,A_t)$。 &
+定義~\ref{def:s_dyn} \\[3pt]
+$D_\eta$ & 要因別充足状態域・分類C &
+要因 $\eta$ を充足する外部環境状態が少なくとも一つ存在する内部状態の集合。 &
+定義~\ref{def:eta_satisfiable_domain} \\[3pt]
+$E_{\mathrm{req}}(x)$ & 必要環境充足集合・分類C &
+全必要環境要因を同時に充足する外部環境状態の集合。 &
+定義~\ref{def:E_req} \\[3pt]
+$\mathcal E_{\mathrm{viab}}^{(1)}(x)$ & 一段階可行環境対応・分類C &
+少なくとも一つの可行行動を許す外部環境状態の集合。 &
+定義~\ref{def:one_step_viable_environment} \\[3pt]
+$\mathbb{T}_{\mathrm{FT},i}$ & 機能的終端判定時刻域 &
+崩壊状態が一度も成立していない時刻と、崩壊状態が初めて成立する時刻からなる時刻域。 &
+定義~\ref{def:functional_termination} \\[3pt]
+$\mathrm{FTS}_{i,t}$ & 機能的終端状態指標 &
+$t\in\mathbb{T}_{\mathrm{FT},i}$ について、時刻 $t$ に (FT-1)・(FT-2) がともに成立するか否かを表す。 &
+定義~\ref{def:functional_termination} \\[3pt]
+$\mathrm{FT}_{i,t}$ & 機能的終端指標 &
+時刻 $t$ までに機能的終端状態が成立したことを保持する履歴指標。時刻 $t$ に機能的終端状態にあることは表さない。 &
+定義~\ref{def:functional_termination} \\[3pt]
+$\mathrm{CS}_{i,t}$ & 崩壊状態指標 &
+時刻 $t$ に (SC-1)・(SC-2) がともに成立するか否かを表す。 &
+定義~\ref{def:collapse} \\[3pt]
+$\mathrm{Col}_{i,t}$ & 崩壊指標 &
+時刻 $t$ までに崩壊状態が成立したことを保持する履歴指標。$\mathrm{WF}_{i,t}=0$ とは区別する。 &
+定義~\ref{def:collapse} \\[3pt]
+$\Upsilon_{\mathrm{adm},i}$ & 許容外的作用集合 &
+非回復性の条件 (FT-2)・(SC-2) が参照する外的作用の集合。\S\ref{sec:acs_def} では記号と型のみを宣言し、内容は \S\ref{sec:collapse_cond} で定める。 &
+\S\ref{subsubsec:collapse_sec2}、定義~\ref{def:admissible_external_action} \\[3pt]
+\multicolumn{4}{l}{\textbf{内部モデル・更新と標準機能表現}} \\[2pt]
+$M,\ \mathcal M,\ M_t$ & 内部モデル構造・状態空間・状態 &
+機構構造 $M$、状態空間 $\mathcal M$、時刻別状態 $M_t\in\mathcal M$ を区別する。 &
+定義~\ref{def:acs}、定義~\ref{def:internal_model}、定義~\ref{def:model_parameter_space} \\[3pt]
+$\mathrm{Update}$ & 内部モデル更新作用素 &
+$\mathrm{Update}:\mathcal M\times X\times E_{\mathrm{ext}}\to\mathcal M$。 &
+定義~\ref{def:acs}、定義~\ref{def:update_operator} \\[3pt]
+$\hat e_t$ & 内部環境推定・分類B &
+実現外部環境状態 $e_t$ と区別される内部表現。 &
+定義~\ref{def:internal_env_estimate} \\[3pt]
+$\xi_{\mathrm{bnd},t}$ & 境界帰属識別・分類B &
+\S\ref{sec:tipa} で定義される境界帰属識別。構造的自己と独立（命題~\ref{prop:xi_se_independence}）。 &
+\S\ref{sec:tipa} \\[3pt]
+$\mathcal M_c^{\mathrm L}, \mathcal M_c^{\mathrm W}, M_t^{\mathrm L}, M_t^{\mathrm W}$ & 学習成分・作動成分 &
+各機構の内部モデル状態の直積因子と座標射影。独立したタプル成分ではない。 &
+定義~\ref{def:model_learning_working} \\[3pt]
+$\delta^{\mathrm L}_{c,t},\ \delta^{\mathrm L}_t$ & 学習成分変化量・分類C &
+学習停止の判定量。作動成分を含む $\delta_t$ と区別する。 &
+定義~\ref{def:update_stop_on_trajectory} \\[3pt]
+$\delta_{M,c,t},\ \delta_t$ & TIPA成分別変化量・最大集約変化量・分類C &
+内部モデル状態の成分別変化と最大集約距離。 &
+定義~\ref{def:tipa_component_change} \\[3pt]
+$\lambda_{T,t},\ \boldsymbol{\lambda}_{M,T,t}$ & 時間平均内部モデル変化量・分類C &
+時間窓において実際に生じた内部モデル変化の時間平均。認知的処理能力を表す量ではない。 &
+定義~\ref{def:update_quality} \\[3pt]
+$P_{\mathrm{sens}},P_{\mathrm{disc}},P_{\mathrm{val}},P_{\mathrm{act}}$ & 原始的な機能の標準写像形式・分類B &
+感知・識別・評価・行動に対応する標準写像形式。原始的な機能そのものではない。 &
+定義~\ref{def:three_primitives} \\[3pt]
+$\mathcal{V}$ & 評価値の集合 &
+評価の標準写像形式 $P_{\mathrm{val}}$ の値域。順序その他の構造を仮定しない。応答の候補ごとの評価その他の評価情報を表しうる。持続評価関数 $\Pi$ とは異なる。 &
+定義~\ref{def:three_primitives} \\[3pt]
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection{三原理：SM・EU・FR（\S\ref{sec:three_principles}）}
+\label{app:symbols_s3}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{p{3.0cm} p{3.0cm} p{6.6cm} p{2.0cm}}
+\hline
+\textbf{記号} & \textbf{名称・型} & \textbf{役割・注記} & \textbf{定義・初出} \\
+\hline
+\endhead
+\hline
+\endfoot
+\multicolumn{4}{l}{\textbf{三原理と時刻別充足述語}} \\[2pt]
+SM,\ EU,\ FR & 三原理の制約軸名 &
+自己維持・環境利用・可行応答。制約軸であり、規範・目的関数ではない。原理そのものについて成立・不成立を述べない。 &
+定義~\ref{def:three_principles_concept} \\[3pt]
+$\mathbb{T}_{\mathrm{P},i}$ & 原理判定時刻域・$\subseteq\mathbb{N}_0$ &
+$\{t\mid\mathrm{FT}_{i,t}=0\}$。時刻別充足述語はこの時刻域でだけ定義する。 &
+定義~\ref{def:principle_time_domain} \\[3pt]
+$\mathrm{SM}_t,\ \mathrm{EU}_t,\ \mathrm{FR}_t$ & 時刻別充足述語・真偽値 &
+$\mathrm{SM}_t$・$\mathrm{EU}_t$ は $t\in\mathbb{T}_{\mathrm{P},i}$ で、$\mathrm{FR}_t$ はさらに $(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ の時刻でだけ定義する。定義されない時刻は偽に含めない。 &
+定義~\ref{def:SM}、定義~\ref{def:EU}、定義~\ref{def:FR} \\[3pt]
+$\mathrm{Crit}^{(1)}_\eta,\ \mathrm{Crit}^{(1)}(x)$ & 一段階臨界域・$\subseteq X$・分類C、一段階臨界必要要因集合・$\mathrm{Crit}^{(1)}:X\to2^E$・分類C &
+$\eta\in\mathrm{Crit}^{(1)}(x)\iff x\in\mathrm{Crit}^{(1)}_\eta$。時刻添字による略記は置かない。理論上の量であり、ACS 内部の必要性評価とは別（備考~\ref{rem:crit_description_level}）。 &
+定義~\ref{def:eu_critical_domain}、定義~\ref{def:eu_fire} \\[3pt]
+$\mathcal{D}_{\mathrm{FR}}$ & FR の定義域・$\subseteq X\times E_{\mathrm{ext}}$ &
+$t\in\mathbb{T}_{\mathrm{P},i}$ では $(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ と「$\mathrm{EU}_t$ が真」は同値（命題~\ref{prop:fr_domain_eu}）。 &
+定義~\ref{def:fr_domain} \\[3pt]
+$\varphi_u,\ \sim,\ \mu_{\mathrm{eff}}$ & 可行性保持指示・行動同値・応答多様度・分類C &
+$E_{\mathrm{req}}(x)$ 上の可行性保持パターンで $A(x,e)$ を分類。有限性は仮定しない。いずれの時刻別充足述語の定義にも用いない。 &
+定義~\ref{def:mu_eff} \\[3pt]
+$\widetilde\Pi,\ \partial\Pi(x)$ & $\mathbb R^n$ 拡張と Clarke 一般化勾配・$\subseteq\mathbb R^n$ &
+$\widetilde\Pi(x)=\min_k(x_k-\theta_k)$、$\partial\Pi(x)$ は非空コンパクト凸（命題~\ref{prop:pi_subdiff}）。 &
+命題~\ref{prop:pi_subdiff} \\[3pt]
+$V^-(x)$\newline $d^-(x)$ & 閾値割れ集合・不足量・分類C &
+$\Pi$ の最小値が捨てる成分別診断。 &
+定義~\ref{def:violation_profile} \\[3pt]
+\multicolumn{4}{l}{\textbf{可行性核と構造的環境結合}} \\[2pt]
+$D_{\mathrm{req}},\ K_{\mathrm{req}}$ & 必要環境充足状態域・その可行部分 &
+$D_{\mathrm{req}}=\{x\mid E_{\mathrm{req}}(x)\neq\emptyset\}$、$K_{\mathrm{req}}=K\cap D_{\mathrm{req}}$。全域非空は仮定しない。 &
+定義~\ref{def:req_domain} \\[3pt]
+$\mathrm{Viab}_f(K)$ & $E_{\mathrm{req}}$ ロバスト可行性核・$\subseteq K_{\mathrm{req}}$ &
+一つの共通行動で $E_{\mathrm{req}}(x)$ 全体に集合内可行性を保つ最大不変集合。標準 Viability Kernel と同一とは主張しない。 &
+定義~\ref{def:viab_core} \\[3pt]
+$\mathrm{Viab}_f^{(\nu)}(K)$\newline $\mathrm{Hor}_f(x)$ & 有限段頑健可行集合・頑健存続可能段数・分類C &
+$\mathrm{Hor}_f$ は予測量でも $\mathrm{SM}_t$ の真理条件でもない。 &
+定義~\ref{def:viab_stage}、定義~\ref{def:viab_horizon} \\[3pt]
+$\mathrm{Viab}_f^{\mathrm{all}}(K)$\newline $\mathrm{Viab}_f^{\mathrm{any}}(K)$ & 全環境頑健核・楽観核・分類C &
+量化の範囲を $E_{\mathrm{ext}}$ 全体に取る比較用の核。$\mathrm{Viab}_f(K)\subseteq\mathrm{Viab}_f^{\mathrm{any}}(K)$。前者が $\mathrm{Viab}_f(K)$ に含まれるのは $D_{\mathrm{req}}$ に含まれるときに限る（命題~\ref{prop:kernel_standard_comparison}）。 &
+定義~\ref{def:kernel_all_any} \\[3pt]
+$B_{\mathrm{req}}(x,o)$\newline $\mathrm{Viab}^{\mathrm{resp}}_f(K)$ & 背景充足集合・応答込み頑健可行性核・分類C &
+行動応答成分 $o$ を固定したときに必要環境要因がすべて充足される外生背景成分の集合と、$g_O$ による応答を考慮した最大不変集合。$\mathrm{Viab}_f(K)$ との包含は一般には成り立たない（命題~\ref{prop:robust_noninclusion}）。 &
+定義~\ref{def:viab_resp} \\[3pt]
+$N(x,u)$\newline $\mathcal N^{(1)}$ & 応答不能環境集合・応答不能領域・分類C &
+$N(x,u)\subseteq E_{\mathrm{req}}(x)$ は行動 $u$ で次状態を $K$ に置けない必要充足環境の集合、$\mathcal N^{(1)}\subseteq X\times E_{\mathrm{ext}}$ はどの行動でも可行性を保てない組の集合。外部環境状態だけの性質ではない。 &
+定義~\ref{def:nonresponse_env_set}、定義~\ref{def:nonresponse_region} \\[3pt]
+$U^{\mathrm{rob}}(x)$\newline $U^{\mathrm{Viab}}(x)$ & 頑健応答集合・核維持応答集合・分類C &
+$N(x,u)=\emptyset$ となる行動の集合と、$E_{\mathrm{req}}(x)$ 全体で次状態を $\mathrm{Viab}_f(K)$ に置く行動の集合。 &
+定義~\ref{def:robust_response}、定義~\ref{def:kernel_response} \\[3pt]
+$\mathrm{EC}(x)$ & 構造的環境結合条件・分類C &
+外部環境状態の差異が環境応答成分の次状態に反映されうること。三原理の時刻別充足述語ではない。 &
+定義~\ref{def:env_coupling} \\[3pt]
+$I_E,\ \pi_E,\ x_E$ & 環境応答座標・射影・成分 &
+$I_E\subseteq\{1,\dots,n\}$、$x_E=\pi_E(x_t)\in\mathbb R^{n_E}$。$x_E$ は内部状態成分で $e_t$・$E$ ではない。 &
+仮定~\ref{ass:env_response}、定義~\ref{def:x_E} \\[3pt]
+$\partial_{x_E}\Pi(x)$\newline $V^-_E(x)$ & 環境応答方向の勾配射影集合・環境応答成分の閾値割れ &
+構造的環境結合条件そのものではない。 &
+命題~\ref{prop:pi_E_sensitivity}、定義~\ref{def:ro_related_violation} \\[3pt]
+$\chi_{\mathrm{EI},t}$ & 外部相互作用指標・$\{0,1\}$・分類C &
+境界横断的外部作用の実現有無。構造的環境結合条件・EU・崩壊とは別概念。 &
+定義~\ref{def:phi} \\[3pt]
+\multicolumn{4}{l}{\textbf{時間統合評価}} \\[2pt]
+$s_{\mathrm{SM},t}$\newline $s_{\mathrm{EU},t}$\newline $s_{\mathrm{FR},t}$ & 三原理評価尺度・分類C &
+$s_{\mathrm{SM},t}\in[0,1]$ は正の可行性余裕度、$s_{\mathrm{EU},t},s_{\mathrm{FR},t}\in\{0,1\}$ は時刻別充足述語の真偽で、それぞれ $\mathrm{EU}_t$・$\mathrm{FR}_t$ が定義される時刻でだけ定める。同一物理量ではない。 &
+定義~\ref{def:s_sm}、定義~\ref{def:s_eu} \\[3pt]
+$s_t,\ S_3$ & 三原理評価ベクトル・$S_3=[0,1]^3$ &
+$t\in\mathbb{T}_{\mathrm{P},i}$ かつ $(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ の時刻に定義。 &
+定義~\ref{def:S3} \\[3pt]
+T-STAB & 三原理時間統合評価条件・有限窓派生条件 &
+$t\in\mathbb{T}_{\mathrm{P},i}$ で判定する (T1)--(T4)。力学系の安定性・第四原理・目的関数ではない。 &
+定義~\ref{def:tstab} \\[3pt]
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection{TIPA・PSL・ISL（\S\ref{sec:tipa}）}
+\label{app:symbols_s4}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{p{3.0cm} p{3.0cm} p{6.6cm} p{2.0cm}}
+\hline
+\textbf{記号} & \textbf{名称・型} & \textbf{役割・注記} & \textbf{定義・初出} \\
+\hline
+\endhead
+\hline
+\endfoot
+TIPA & 三機構情報処理アーキテクチャ・分類B &
+$M_1,M_2,M_3$ により情報統合、適応的評価、応答形成を整理する。 &
+\S\ref{subsec:tipa_architecture} \\[3pt]
+$M_1$ & 情報統合機構・分類B &
+状態・環境推定、識別、時間特徴を形成する。 &
+定義~\ref{def:acs}、定義~\ref{def:m1_map} \\[3pt]
+$\mathsf S_{M1}$ & M1内部状態空間・分類B &
+M1 の当該時刻出力を束ね、次時刻の M1 から参照可能にする内部状態の型。 &
+定義~\ref{def:m1_state} \\[3pt]
+$M_2$ & 適応的評価機構・分類B &
+可行性関連差を代理評価し、Priority 等を形成する。 &
+定義~\ref{def:acs}、定義~\ref{def:m2_map} \\[3pt]
+$M_3$ & 応答行動機構・分類B &
+候補を形成・比較し、TIPA 行動指令を形成する。 &
+定義~\ref{def:acs}、定義~\ref{def:m3_map} \\[3pt]
+$\xi_t$ & 識別状態・分類B &
+M1-b が形成する八軸の標準内部表現。全体の行と内部対象トークンごとの行からなる。 &
+定義~\ref{def:id_vector} \\[3pt]
+$\mathcal K_t,\ \mathsf{Lab}$ & 内部対象トークン集合・ラベル集合・分類B &
+時刻 $t$ の識別状態がもつトークンの有限集合（空を許す）とラベルの有限集合。外部の枠とは同一視しない。 &
+定義~\ref{def:id_vector} \\[3pt]
+$P_t$ & Priority・分類B &
+M2 が形成する標準警告カテゴリ。 &
+定義~\ref{def:m2_priority} \\[3pt]
+$\mathrm{ev}_t$ & 内部評価情報・分類B &
+M2 が M3 へ提供する内部評価情報。 &
+定義~\ref{def:m2_eval_space} \\[3pt]
+$\mathrm{Req}_t$ & 要求の一覧・分類B &
+保持内容から読み出す当該ACSの要求の有限集合。 &
+定義~\ref{def:request_signal_types} \\[3pt]
+$\mathrm{sig}_t$ & 要請信号・分類B &
+M2 が出力する、立ち上がった要求と要請の質の組の有限集合。質の分類は与えない。\S\ref{sec:three_principles} の三原理評価ベクトル $s_t$ とは別。 &
+定義~\ref{def:request_signal_types} \\[3pt]
+$\mathrm{ev}^{\mathrm{rq}}_t$ & 要求×対象の評価・分類B &
+M2 が要求と内部対象トークン（または全体）の組の一部に与える評価。 &
+定義~\ref{def:rq_eval_types} \\[3pt]
+$\mathrm{stat}_t$ & 目的の状態判断・分類B &
+M3 が前時刻の目的に与える判断（継続・達成・未達終了・保留）。 &
+定義~\ref{def:purpose_status} \\[3pt]
+$\mathrm{Pur}_t$ & 目的の集合・分類B &
+M3 が判断として形成する目的の有限集合。 &
+定義~\ref{def:purpose_formation} \\[3pt]
+$\mathrm{Cand}_t$ & M3候補集合・分類B &
+M3 が応答形成の比較対象として扱う行動候補集合。 &
+定義~\ref{def:m3_candidate_set} \\[3pt]
+$\mathrm{fit}_t$ & 候補適合比較・分類B &
+M3 が候補間の内部的適合差を比較する値。目的基準の評価の一つ。 &
+定義~\ref{def:m3_fit} \\[3pt]
+$\hat g_t,\ \hat G_t(u)$ & 外部側の集合値予測・分類B &
+内部モデルが与える行動応答成分の予測写像と、行動 $u$ についての予測集合。 &
+定義~\ref{def:env_set_prediction} \\[3pt]
+$u_{\mathrm{M3},t}$ & M3行動指令 &
+M3 が PSL へ渡す TIPA 側の行動指令。 &
+定義~\ref{def:action_decision} \\[3pt]
+PSL & 物理的基盤層・分類B &
+TIPA と ISL の入出力、基盤維持、局所保護等を接続する。 &
+定義~\ref{def:psl} \\[3pt]
+$r_{\mathrm{local},t}$ & 局所保護応答 &
+PSL-4 により生成されうる局所応答。 &
+定義~\ref{def:psl4} \\[3pt]
+$\Phi_{\mathrm{resolve}}$ & 実効行動解決写像・分類B &
+M3指令と局所保護応答等を実効行動へ接続する。 &
+定義~\ref{def:effective_action_resolve} \\[3pt]
+$\mathcal B_\Sigma$ & 実装要素全体 &
+ACS の実装要素の集合。 &
+定義~\ref{def:impl_layer} \\[3pt]
+$B_{\mathrm{sens}}$\newline $B_{\mathrm{eff}}$\newline $B_{\mathrm{mem}}$ & ISL標準部分集合・分類B &
+感知、作用、情報保持を担いうる実装要素集合。 &
+定義~\ref{def:impl_layer} \\[3pt]
+$\mathcal T_{\ell,t}$ & 機能的記憶集合・分類B &
+保持内容を五つの機能的役割から整理する。 &
+定義~\ref{def:fast_memory_sets} \\[3pt]
+$\rho_{\mathrm{past}},\ \rho_{\mathrm{eval,past}}$ & 保持記録の読み出し・分類B &
+作動成分を担体とする。記録値を実際の過去値とは同一視しない。 &
+定義~\ref{def:s4_carrier_contract} \\[3pt]
+$\rho_{\mathrm{PSL}},\ \rho_{\Gamma,\cdot},\ \Phi_R$ & 基盤・感度・解決情報の来歴・分類B &
+基盤と感度は $x$、解決情報は $(M,I)$ から読む。 &
+定義~\ref{def:s4_psl_sources} \\[3pt]
+$F_t$ & 機能軸・分類C &
+TIPA、PSL、ISL の主要作動水準を横断的に記述する。 &
+定義~\ref{def:functional_axis} \\[3pt]
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection{標準作動形式と時刻間の接続（\S\ref{sec:extended_dynamics}）}
+\label{app:symbols_s5}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{p{3.0cm} p{3.0cm} p{6.6cm} p{2.0cm}}
+\hline
+\textbf{記号} & \textbf{名称・型} & \textbf{役割・注記} & \textbf{定義・初出} \\
+\hline
+\endhead
+\hline
+\endfoot
+\multicolumn{4}{l}{\textbf{一段の作動形式と作動記録}} \\[2pt]
+R1〜R4 & 本節の責務 &
+型整合的な一段の作動記録、次時刻への接続、数学的記録の存在と一意性、後続節への受け渡し。R3 は可行性維持、非閉塞、非崩壊、実装上の活動の継続を意味しない。 &
+定義~\ref{def:s5_responsibilities} \\[3pt]
+$\Phi_{\mathrm{step}}$ & 一段遷移写像 &
+$X\times\mathcal M\times O\times E^{\mathrm{bg}}\to X\times\mathcal M\times O$。$f$、$\mathrm{Update}$、$g_O$ により次の三つ組を返す。$X\times\mathcal M\times O$ は第八のタプル成分ではない。連続性は仮定も結論もしない。 &
+定義~\ref{def:s5_step_map} \\[3pt]
+$(x_t,\ldots,u_t)_{t\ge0}$ & 標準作動記録・列 &
+列 $(x_t,M_t,o_t,b_t,e_t,I_t,r_t,v_t,u_t)_{t\ge0}$。環境実現と初期値を与え、標準作動の一段（定義~\ref{def:s5_standard_step}）に従う列。外生的に与えるのは背景成分の列だけである。 &
+定義~\ref{def:s5_operation_record} \\[3pt]
+$\mathcal Z_{\mathrm{op}}$ & 状態・環境部分列の集合 &
+$\mathcal Z_{\mathrm{op}}\subseteq(X\times\mathcal M\times E_{\mathrm{ext}})^{\mathbb N_0}$。固定した標準写像と $g_O$ に相対する集合。閉集合性・コンパクト性は要求しない。 &
+定義~\ref{def:s5_operation_record} \\[3pt]
+\multicolumn{4}{l}{\textbf{保持記録と観測経由性}} \\[2pt]
+$\operatorname{pr}_k,\ y_{k,t}$ & 保持記録の第 $k$ 成分への射影・対応する時刻 $t$ の値（$k=1,\ldots,7$） &
+$\operatorname{pr}_k(\rho_{\mathrm{past}}(M^{\mathrm W}_{t+1}))=y_{k,t}$ のとき、第 $k$ 成分の記録は時刻 $t$ で一致するという。本論文は一致を一般的な帰結として置かず、仮定としても置かない。 &
+定義~\ref{def:s5_record_agreement} \\[3pt]
+$\Phi_{\mathrm{upd}}$ & 観測経由の更新写像・$\mathcal M\times\mathcal I\to\mathcal M$ &
+$\mathrm{Update}(M,x,e)=\Phi_{\mathrm{upd}}(M,P_{\mathrm{sens}}(x,e))$ を満たす全域写像。その存在を仮定とし、連続性は仮定しない。 &
+仮定~\ref{ass:s5_observation_factorization} \\[3pt]
+\multicolumn{4}{l}{\textbf{時刻間変化}} \\[2pt]
+$\mathrm{rd},\ \mathsf D_{\mathrm{rd}},\ \mathrm{rd}_t$ & 固定読み出し・その値域（非空集合）・時刻 $t$ の値 &
+$\mathrm{rd}_t=\mathrm{rd}(x_t,M_t,e_t)$。次時刻値は $f$、$\mathrm{Update}$ と環境実現から定め、独立更新写像を置かない。 &
+定義~\ref{def:intertime_update} \\[3pt]
+\multicolumn{4}{l}{\textbf{分類C記述量}} \\[2pt]
+$\mathcal J_{\beta},\ \iota$ & 偏向性の添字集合（非空集合）・その元 &
+時刻によらず固定し、有限性は仮定しない。$\iota$ は記述上の識別子であり、偏向性の方向および内容を表さない。 &
+定義~\ref{def:bias_tendency} \\[3pt]
+$\mathsf{Prim}$ & 原始的な機能の四区分の添字集合 &
+$\{\mathrm{sens},\mathrm{disc},\mathrm{val},\mathrm{act}\}$。標準写像形式の添字と対応させて用いる。 &
+定義~\ref{def:bias_attribution} \\[3pt]
+$\mathrm{loc}_{\beta}$ & 帰属写像・$\mathcal J_{\beta}\to\mathcal P(\mathsf{Prim})\setminus\{\emptyset\}$ &
+各偏向性に、その偏りが現れる区分の空でない集合を対応させる。帰属区分は時刻によらず定める。 &
+定義~\ref{def:bias_attribution} \\[3pt]
+$\beta_{\iota,t},\ \boldsymbol{\beta}_t$ & 偏向強度・非負の量、その族・分類C &
+参照基準からの偏りの程度。異なる偏向性の値どうしの比較可能性は仮定しない。未指定・未測定・未同定を理由として $0$ を割り当てない。族は一つの実数へ集約した量ではない。 &
+定義~\ref{def:beta_accumulated}、定義~\ref{def:beta_intertime_update} \\[3pt]
+$\beta_{\max},\ D_{\max},\ \tau$ & 読み出しの有限上界・予測段数 &
+有限な $\beta_{\max}>0$、$D_{\max}>0$ と $\tau\in\mathbb N$、$\tau\ge1$ を固定する。 &
+定義~\ref{def:s5_readout_types} \\[3pt]
+$\mathcal H$ & 健全度の種類の集合 &
+$\{\mathrm{psl},\mathrm{mem},\mathrm{sens},\mathrm{eff}\}$。 &
+定義~\ref{def:s5_readout_types} \\[3pt]
+$\mathrm{rd}_{\beta,\iota}, \mathrm{rd}_{h,q},\allowbreak \mathrm{rd}_d, \mathrm{rd}_{\pi,\tau}$ & 分類C読み出しの記述規則・全域写像 &
+値域はそれぞれ $[0,\beta_{\max}]$、$[0,1]$、$[0,D_{\max}]$、$[0,1]$。具体的規則を一意に導く主張ではなく、対象ごとに指定する記述規則の型である。読み出しの連続性は課さない。 &
+定義~\ref{def:s5_readout_types} \\[3pt]
+$\pi_{\tau,t}$ & 予測精度係数・$[0,1]$・分類C &
+時刻 $t$ の予測の有効性を事後的に記述する係数。未来の実現値を参照し、ACSの時刻 $t$ の内部入力にはしない。 &
+定義~\ref{def:s5_prediction_coefficient} \\[3pt]
+$\widehat\tau_t$ & 実効的時間地平・$[0,\tau]$・分類C &
+$\widehat\tau_t:=\tau\pi_{\tau,t}$。非整数時刻での状態を導入しない。 &
+定義~\ref{def:tau_hat_section5} \\[3pt]
+$d_{\mathrm{eff},t}$ & 実効的発展自由度・$[0,D_{\max}]$・分類C &
+$\mathrm{rd}_d(x_t,M_t)$。$|A_t|$、M2の行動多様度、関係品質とは異なる。数値から可行行動の存在・増減を一般的な帰結として置かない。 &
+定義~\ref{def:deff_section5} \\[3pt]
+$h_{q,t}$ & PSL・ISL健全度量・$[0,1]$・分類C &
+$\mathrm{rd}_{h,q}(x_t)$。$q=\mathrm{psl},\mathrm{mem},\mathrm{sens},\mathrm{eff}$ は基盤、記憶実装、感知、作用の健全度を指定する。共通単位、相互独立性、直接比較可能性を要求しない。 &
+定義~\ref{def:s5_health_quantities} \\[3pt]
+$\mathrm{Desc}_t$ & 時刻依存量の整理用タプル・分類C &
+読み出した量をまとめる八つ組。ACSの7タプルを変更せず、独立状態でも同時刻の内部利用可能情報の束でもない。 &
+定義~\ref{def:extended_variable_tuple} \\[3pt]
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection{ACS関係性の最小構造（\S\ref{sec:rel_min}）}
+\label{app:symbols_s6}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{p{3.0cm} p{3.0cm} p{6.6cm} p{2.0cm}}
+\hline
+\textbf{記号} & \textbf{名称・型} & \textbf{役割・注記} & \textbf{定義・初出} \\
+\hline
+\endhead
+\hline
+\endfoot
+$\mathcal Y_{-i}$ & 外部対象集合・集合 &
+固定した $\Sigma_i$ の関係記述対象を定める。 &
+定義~\ref{def:external_object_set} \\[3pt]
+$\mathrm{type}_i$ & 外部対象の三分類・写像 &
+外部対象へ $\mathrm{ACS},\mathrm{agent},\mathrm{obj}$ の記述ラベルを割り当てる。 &
+定義~\ref{def:object_type} \\[3pt]
+$L$ & 観測窓長・正の整数 &
+同じ記録を比較する間に固定する窓長。 &
+定義~\ref{def:finite_window_diff} \\[3pt]
+$W_{L,t}$ & 有限観測窓・時刻集合 &
+時刻 $t-L$ から $t$ までの記録の対象時刻を定める。 &
+定義~\ref{def:finite_window_diff} \\[3pt]
+$\mathrm{sz}_i$ & 局所的サイズ指標・写像・分類C &
+採用する場合、$\mathcal D_{\mathrm{sz},i}$ 上の非負実数値写像として用いる。単調性は仮定しない。 &
+定義~\ref{def:rel_size_functional} \\[3pt]
+$\Delta_L$ & 後向き差分演算子・分類C &
+両端の値が定義される場合に $z_t-z_{t-L}$ を表す。 &
+定義~\ref{def:finite_window_diff} \\[3pt]
+$\mathcal C_{\rightarrow}$ & 単方向ラベル集合・有限集合・分類C &
+単方向記述子のカテゴリー成分の値域（15ラベル）。 &
+定義~\ref{def:rel_unidirect}、定義~\ref{def:category_set} \\[3pt]
+$\mathrm{cat}_{i\leftarrow j,t}$ & 単方向カテゴリー成分・ラベル &
+採用した関係記録の単方向カテゴリーを表す。 &
+定義~\ref{def:rel_unidirect} \\[3pt]
+$\mathrm{cost}_{i\leftarrow j,t}$ & 関係コスト・非負実数 &
+当該関係に付随する資源負荷を記録する。 &
+定義~\ref{def:rel_unidirect} \\[3pt]
+$p_{\mathrm{pert},i\leftarrow j,t}$ & 摂動記録・$P_{\mathrm{pert}}$ の元 &
+当該関係の摂動的影響を記録する。確率量ではない。 &
+定義~\ref{def:rel_unidirect} \\[3pt]
+$\mathrm{Rel}_{i\leftarrow j,t}$ & 単方向関係記述子・六つ組・分類C &
+前三成分と $\Sigma_i$ 側の有限窓差分三成分を束ねる六成分の記述形式。特定の外部対象による因果効果を同定しない。 &
+定義~\ref{def:rel_unidirect} \\[3pt]
+$\mathrm{Rel}_{ij,t}$ & 双方向合成関係・順序対・分類C &
+二個体側の単方向関係記述子を順序対として束ねる。 &
+定義~\ref{def:bidirect_relation} \\[3pt]
+$\mathrm{dir}_{ij,t}$ & 方向性指標・ラベル・分類C &
+双方向合成を読むための補助的な主要方向ラベル。 &
+定義~\ref{def:relation_direction} \\[3pt]
+$\mathcal C_{\leftrightarrow}$ & 双方向成立ラベル集合・有限集合・分類C &
+協力・共生・対立の三ラベルの値域。 &
+定義~\ref{def:bidirectional_category} \\[3pt]
+$\mathrm{cat}_{\leftrightarrow,ij,t}$ & 双方向成立カテゴリー・ラベル・分類C &
+採用する場合に双方向成立様式を記述する補助ラベル。 &
+定義~\ref{def:bidirectional_category} \\[3pt]
+$\mathrm{Rule}_{Q,i\leftarrow j}$ & 関係品質の評価規則・分類C &
+記述者が関係ごとに指定し、参照する記録またはモデル、比較の基準、時間幅、三成分と重みの基準を定める。規範的な善悪の基準ではない。 &
+定義~\ref{def:Q_rule} \\[3pt]
+$\mathcal D_{Q,i,t}$ & 関係品質の評価可能域・$\mathcal Y_{-i}$ の部分集合 &
+時刻 $t$ に評価規則が値を与える外部対象の集合。空でありうる。 &
+定義~\ref{def:Q_domain} \\[3pt]
+$Q_{i\leftarrow j,t}$ & 関係品質・$[-1,1]$・分類C &
+$Y_j\in\mathcal D_{Q,i,t}$ のときだけ定義される。成分は $Q^{\mathrm{inf}}_{i\leftarrow j,t}$・$Q^{\mathrm{res}}_{i\leftarrow j,t}$・$Q^{\mathrm{via}}_{i\leftarrow j,t}$。評価不能を $0$ と置かない。$Y_j$ の性質でも内部の評価でもない。 &
+定義~\ref{def:Q} \\[3pt]
+$\bar Q_{i\leftarrow j,W_Q,t}$ & 関係品質の有限窓平均・定義時 $[-1,1]$ &
+窓内で $Q$ が定義される時刻 $\mathbb T^{Q}_{i\leftarrow j,t}$ の上の平均。空なら未定義。 &
+定義~\ref{def:Q_window_average} \\[3pt]
+$\mathcal C$ & 代表カテゴリー集合・有限集合・分類C &
+単方向15種と双方向成立3種からなる18ラベルをまとめる。六系分類は定義~\ref{def:six_system_classification} に示す。 &
+定義~\ref{def:category_set}、定義~\ref{def:six_system_classification} \\[3pt]
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection{崩壊・閉塞・崩壊経路集合（\S\ref{sec:collapse_cond}）}
+\label{app:symbols_s7}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{p{3.0cm} p{3.0cm} p{6.6cm} p{2.0cm}}
+\hline
+\textbf{記号} & \textbf{名称・型} & \textbf{役割・注記} & \textbf{定義・初出} \\
+\hline
+\endhead
+\hline
+\endfoot
+$\mathrm{Col}_{i,t}$ & 崩壊指標\newline $\{0,1\}$ 値指標 &
+時刻 $t$ までに崩壊状態が成立したことを保持する履歴指標。時刻 $t$ の崩壊状態そのものは $\mathrm{CS}_{i,t}$ で表す。閉塞 $A_{i,t}=\emptyset$、整形式実現の不成立 $\mathrm{WF}_{i,t}=0$、全機能停止帯 $\mathsf{Z}_3$ のいずれとも同一視しない。 &
+定義~\ref{def:collapse} \\[3pt]
+$\mathsf{Z}_0,\ldots,\mathsf{Z}_5$ & 記述的状態帯\newline 分類ラベル系列 &
+閉塞・崩壊周辺の状態を記述的に整理する補助分類。状態空間 $X$ の分割ではなく、添字は全順序または必然的な遷移順序を意味しない。 &
+\S\ref{subsec:precollapse_states} \\[3pt]
+$\Upsilon_{\mathrm{adm},i}$ & 許容外的作用集合\newline 外的作用の集合 &
+外的回復可能性の評価対象として考慮する許容作用域。可能な全外的作用を網羅せず、M1-b の識別状態の空間 $\Xi$ とは記号・型・役割を峻別する。 &
+定義~\ref{def:admissible_external_action} \\[3pt]
+$\upsilon$ & 許容外的作用\newline $\Upsilon_{\mathrm{adm},i}$ の元 &
+$\Sigma_i$ の外部から与えられる作用。ACS自身の選択行動 $u\in U$ とは異なる役割の変数として区別し、遷移写像 $f$ の引数へ暗黙に代入しない。 &
+定義~\ref{def:admissible_external_action} \\[3pt]
+$\mathrm{Recover}_{i,t}$ & 外的回復述語\newline 決定論的二値補助写像\newline 定義域：$\Upsilon_{\mathrm{adm},i}$\newline 値域：$\{0,1\}$ &
+同一個体 $\Sigma_i$ として(SC-1) の組織・結合関係を保存または再成立させ、通常ACSとして後続作動へ復帰しうるかを記述する。作用の実施、外的介入動学、実際の回復到達そのものを表さない。 &
+定義~\ref{def:external_recoverability} \\[3pt]
+$I_{\mathrm{ACS}}(\sigma)$ & ACS記録有効時刻域\newline $\mathbb{N}_0$ の部分集合 &
+軌道記録 $\sigma$ において通常ACS状態量を記録する時刻域。$\{t\mid \mathrm{WF}_{i,t}=1\}$ とは同一でなく、崩壊前の一時的な整形式実現の不成立時刻を含みうる。 &
+定義~\ref{def:acs_valid_time_domain} \\[3pt]
+$\mathfrak{P}$ & 軌道記録空間\newline 軌道記録の台集合 &
+ACS記録有効時刻域上の状態記録と全離散時刻上の崩壊指標列を保持する記録集合。持続評価関数 $\Pi$ とは無関係であり、Phase~1 では一般の位相・距離・確率測度を要求しない。 &
+定義~\ref{def:trajectory_space} \\[3pt]
+$\sigma$ & 軌道記録\newline $\mathfrak{P}$ の元 &
+対象系の決定論的動学と整合する実現記録または決定論的シミュレーション記録。ACS個体 $\Sigma_i$ そのものではなく、その時間発展と崩壊終端の記録を表す。 &
+定義~\ref{def:trajectory_space} \\[3pt]
+$\mathfrak{P}_{\mathrm{blk}}$ & 閉塞経路集合\newline $\mathfrak{P}$ の部分集合 &
+ACS記録有効時刻域内の有限時刻で $A_{i,t}=\emptyset$ が成立する軌道記録の集合。閉塞の持続や崩壊到達を要求せず、確率事象・確率分布族を表さない。 &
+定義~\ref{def:blk_path_set} \\[3pt]
+$T_{\mathrm{blk}}(\sigma)$ & 閉塞到達時刻\newline 写像\newline 定義域：$\mathfrak{P}_{\mathrm{blk}}$\newline 値域：$\mathbb{N}_0$ &
+$\sigma\in\mathfrak{P}_{\mathrm{blk}}$ に対して、閉塞が最初に成立する有限時刻を与える。閉塞非到達軌道には値を割り当てず、$T_{\mathrm{col}}(\sigma)$ と一致するとは限らない。 &
+定義~\ref{def:blk_reaching_time} \\[3pt]
+$\mathfrak{P}_{\mathrm{col}}$ & 崩壊到達経路集合\newline $\mathfrak{P}$ の部分集合 &
+有限時刻で $\mathrm{Col}_{i,t}=1$ が成立する軌道記録の集合。$\mathfrak{P}_{\mathrm{blk}}$ とは独立に定義し、一般的な包含関係または一致を仮定しない。 &
+定義~\ref{def:col_path_set} \\[3pt]
+$T_{\mathrm{col}}(\sigma)$ & 崩壊到達時刻\newline 写像\newline 定義域：$\mathfrak{P}_{\mathrm{col}}$\newline 値域：$\mathbb{N}_0$ &
+$\sigma\in\mathfrak{P}_{\mathrm{col}}$ に対して、崩壊指標が最初に $1$ となる有限時刻を与える。吸収性条件 (C-2) により、以後の全離散時刻で崩壊指標は $1$ に保持される。 &
+定義~\ref{def:col_reaching_time} \\[3pt]
+\end{longtable}
+\endgroup
+
+%----------------------------------------------------------------------
+\subsection{組織ACS：社会的組織への構造的適用（\S\ref{sec:org_acs}）}
+\label{app:symbols_s8}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{p{3.0cm} p{3.0cm} p{6.6cm} p{2.0cm}}
+\hline
+\textbf{記号} & \textbf{名称・型} & \textbf{役割・注記} & \textbf{定義・初出} \\
+\hline
+\endhead
+\hline
+\endfoot
+$\mathbb{I}$ & 個体識別子の集合 &
+考察対象とする個体ACSの識別子の全体。有限性は仮定しない。 &
+定義~\ref{def:org_participation} \\[3pt]
+$\mathfrak{O}$ & 組織の集合 &
+考察対象とする組織の全体。 &
+定義~\ref{def:org_participation} \\[3pt]
+$\mathcal O$ & 組織・$\mathfrak{O}$ の元 &
+ACS性に先立って識別される社会的組織。 &
+定義~\ref{def:org_participation} \\[3pt]
+$\mathbb{I}_{\mathrm{org},t}(\mathcal O)$ & 参加個体識別子・$\mathbb{I}$ の部分集合 &
+当該時刻の相異なる参加ACSを記録する。 &
+定義~\ref{def:org_participation} \\[3pt]
+$n_{\mathrm{org},t}(\mathcal O)$ & 参加ACS数・濃度 &
+参加する個体ACSの数。組織ACSの区分（個体ACS参加型・非参加型）に用いる。 &
+定義~\ref{def:org_participation} \\[3pt]
+$\Sigma_{\mathrm{org}}$ & 組織水準の7タプル &
+組織自身についてACS構造が成立する場合の記述。 &
+定義~\ref{def:org_structural_form} \\[3pt]
+$X_{\mathrm{org}}$ & 状態空間・コンパクト集合 &
+組織自身の状態の定義域。 &
+定義~\ref{def:org_structural_form} \\[3pt]
+$E_{\mathrm{org}}$ & 必要環境要因・関数集合 &
+組織の必要環境要因を与える第三成分。 &
+定義~\ref{def:org_structural_form} \\[3pt]
+$E_{\mathrm{ext},\mathrm{org}}$ & 外部環境状態空間・集合 &
+組織遷移の外部環境引数。 &
+定義~\ref{def:org_structural_form} \\[3pt]
+$\Pi_{\mathrm{org}}$ & 持続評価・実数値関数 &
+組織自身の可行集合を定める。 &
+定義~\ref{def:org_structural_form} \\[3pt]
+$K_{\mathrm{org}}$ & 可行集合・状態部分集合 &
+組織持続評価の非負領域。 &
+定義~\ref{def:org_viable_action} \\[3pt]
+$A_{\mathrm{org},t}$ & 可行行動集合・集合 &
+一時刻先の組織状態の可行性に関する行動。 &
+定義~\ref{def:org_viable_action} \\[3pt]
+\end{longtable}
+\endgroup

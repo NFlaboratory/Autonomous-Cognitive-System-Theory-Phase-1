@@ -1,0 +1,28 @@
+{
+ "id": "P10_abc_furnace_r1",
+ "spec_md5": "2ab8b9bc5400855c26b347ad0cd9adb2",
+ "registry_entry": "2026-10-27T08:31:58.864712+00:00\t2ab8b9bc5400855c26b347ad0cd9adb2\t/home/claude/release/acs-toy/specs/P10_abc_furnace_r1.json\tP10_abc_furnace_r1",
+ "run_at": "2026-10-27T08:32:04.434355+00:00",
+ "python": "3.13.16",
+ "seconds": 0.7,
+ "deviation": null,
+ "problems_at_run": [],
+ "n_units_per_variant_condition": 900,
+ "verdicts": [
+  {
+   "id": "H1",
+   "statement": "（回帰検査）両前件が成り立つ時刻（OK）に核から出る例はない（prop:kernel_maintenance の一段の形）。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "holds": 900
+     }
+    }
+   },
+   "rule_dependent": false
+  }
+ ],
+ "consistency": []
+}

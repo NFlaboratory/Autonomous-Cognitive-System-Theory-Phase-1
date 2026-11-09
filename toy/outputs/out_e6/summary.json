@@ -1,0 +1,183 @@
+{
+ "seconds": 0.27,
+ "|X|": 72,
+ "|U|": 4,
+ "|E_ext|": 16,
+ "|M|": 12,
+ "|K|": 20,
+ "|D_req|": 72,
+ "|K_req|": 20,
+ "stages |V^(nu)|": [
+  20,
+  18,
+  18
+ ],
+ "|Viab_f(K)|": 18,
+ "|Viab^resp| (pairs)": 38,
+ "|pi_X(Viab^resp)|": 20,
+ "|all-e robust kernel|": 0,
+ "Viab minus piX(resp)": [],
+ "piX(resp) minus Viab": [
+  "0111",
+  "0121"
+ ],
+ "pairs": 1152,
+ "blocked pairs": 744,
+ "B1": 136,
+ "B2": 608,
+ "mu_eff distribution": {
+  "0": 744,
+  "1": 392,
+  "2": 16
+ },
+ "Crit distribution": {
+  "-": 52,
+  "food": 8,
+  "heat+food": 4,
+  "heat": 8
+ },
+ "(SM,EU,FR) combinations on T_P (s=1)": {
+  "(False, False, None)": 82,
+  "(False, True, False)": 24,
+  "(False, True, True)": 150,
+  "(True, False, None)": 54,
+  "(True, True, False)": 8,
+  "(True, True, True)": 258
+ },
+ "variants": [
+  {
+   "variant": "base",
+   "|K|": 20,
+   "|K_req|": 20,
+   "|Viab_f(K)|": 18,
+   "|all-e robust kernel|": 0,
+   "blocked pairs": 744,
+   "B1": 136,
+   "B2": 608,
+   "max mu_eff": 2,
+   "EC states": 36,
+   "CR-1": "OK"
+  },
+  {
+   "variant": "E=empty (no required factor)",
+   "|K|": 20,
+   "|K_req|": 20,
+   "|Viab_f(K)|": 0,
+   "|all-e robust kernel|": 0,
+   "blocked pairs": 744,
+   "B1": 0,
+   "B2": 744,
+   "max mu_eff": 2,
+   "EC states": 36,
+   "CR-1": "E empty: not an ACS (E nonempty required)"
+  },
+  {
+   "variant": "U={u_empty}",
+   "|K|": 20,
+   "|K_req|": 20,
+   "|Viab_f(K)|": 0,
+   "|all-e robust kernel|": 0,
+   "blocked pairs": 752,
+   "B1": 136,
+   "B2": 616,
+   "max mu_eff": 1,
+   "EC states": 36,
+   "CR-1": "OK"
+  },
+  {
+   "variant": "f ignores e (e fixed to c0g0rho0r1)",
+   "|K|": 20,
+   "|K_req|": 20,
+   "|Viab_f(K)|": 18,
+   "|all-e robust kernel|": 18,
+   "blocked pairs": 720,
+   "B1": 0,
+   "B2": 720,
+   "max mu_eff": 1,
+   "EC states": 0,
+   "CR-1": "fails"
+  },
+  {
+   "variant": "Pi without the temperature threshold",
+   "|K|": 30,
+   "|K_req|": 30,
+   "|Viab_f(K)|": 27,
+   "|all-e robust kernel|": 0,
+   "blocked pairs": 702,
+   "B1": 92,
+   "B2": 610,
+   "max mu_eff": 2,
+   "EC states": 36,
+   "CR-1": "OK"
+  }
+ ],
+ "checks_NG": 0,
+ "trajectories": {
+  "mild/learn": {
+   "T_col": null,
+   "T_blk": null,
+   "blocked steps": 0,
+   "B1": 0,
+   "B2": 0,
+   "e not in E_req (alive)": 22,
+   "in Viab (alive)": 48,
+   "u in U^Viab when in Viab": 48,
+   "u not in U^Viab when in Viab": 0
+  },
+  "mild/no-learn": {
+   "T_col": 11,
+   "T_blk": 9,
+   "blocked steps": 2,
+   "B1": 0,
+   "B2": 2,
+   "e not in E_req (alive)": 4,
+   "in Viab (alive)": 9,
+   "u in U^Viab when in Viab": 8,
+   "u not in U^Viab when in Viab": 1
+  },
+  "cold/learn": {
+   "T_col": null,
+   "T_blk": 10,
+   "blocked steps": 4,
+   "B1": 4,
+   "B2": 0,
+   "e not in E_req (alive)": 23,
+   "in Viab (alive)": 44,
+   "u in U^Viab when in Viab": 44,
+   "u not in U^Viab when in Viab": 0
+  },
+  "cold/no-learn": {
+   "T_col": 11,
+   "T_blk": 9,
+   "blocked steps": 2,
+   "B1": 0,
+   "B2": 2,
+   "e not in E_req (alive)": 5,
+   "in Viab (alive)": 9,
+   "u in U^Viab when in Viab": 8,
+   "u not in U^Viab when in Viab": 1
+  },
+  "famine/learn": {
+   "T_col": 17,
+   "T_blk": 15,
+   "blocked steps": 2,
+   "B1": 2,
+   "B2": 0,
+   "e not in E_req (alive)": 9,
+   "in Viab (alive)": 16,
+   "u in U^Viab when in Viab": 15,
+   "u not in U^Viab when in Viab": 1
+  },
+  "famine/no-learn": {
+   "T_col": 11,
+   "T_blk": 9,
+   "blocked steps": 2,
+   "B1": 0,
+   "B2": 2,
+   "e not in E_req (alive)": 4,
+   "in Viab (alive)": 9,
+   "u in U^Viab when in Viab": 8,
+   "u not in U^Viab when in Viab": 1
+  }
+ }
+}

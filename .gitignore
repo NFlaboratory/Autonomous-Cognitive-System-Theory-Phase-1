@@ -1,0 +1,17 @@
+# 生の実験記録は別に保存する（Zenodo または GitHub Release）。SHA-256 は toy/results/UNITS_SHA256.md
+toy/results/*_units.jsonl
+# 組版の中間生成物
+paper/*.aux
+paper/*.bbl
+paper/*.bcf
+paper/*.blg
+paper/*.dvi
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.log
+paper/*.out
+paper/*.run.xml
+paper/*.synctex.gz
+paper/*.toc
+__pycache__/
+toy/verification/out_run/

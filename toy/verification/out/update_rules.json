@@ -1,0 +1,334 @@
+[
+ {
+  "suite": "update_rules",
+  "check_id": "U_S01_orig",
+  "labels": [
+   "ass:s5_observation_factorization",
+   "prop:s5_observation_causality",
+   "def:update_section5"
+  ],
+  "domain": "Furnace[orig]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 2313600,
+  "premise_cases": 325350,
+  "kind": "exhaustive",
+  "detail": "Update(M,x,e) depends on (M, P_sens(x,e)) only",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S07_orig",
+  "labels": [
+   "prop:s5_continuation",
+   "def:s5_operation_record"
+  ],
+  "domain": "Furnace[orig]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 20,
+  "premise_cases": 20,
+  "kind": "exhaustive",
+  "detail": "re-running with the same x0, M0, o0 and background gives the same record (40 steps)",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S08_orig",
+  "labels": [
+   "prop:s5_causality"
+  ],
+  "domain": "Furnace[orig]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 40,
+  "premise_cases": 40,
+  "kind": "exhaustive",
+  "detail": "changing the background from t on leaves (x,M,o) up to t unchanged (t = 5, 20)",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S09_orig",
+  "labels": [
+   "prop:s5_observation_causality"
+  ],
+  "domain": "Furnace[orig]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 391,
+  "premise_cases": 390,
+  "kind": "exhaustive",
+  "detail": "M_t is determined by M_0 and I_0..I_{t-1} (premise: non-empty I-prefixes shared by runs that differ in x or o)",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_census_orig",
+  "labels": [
+   "def:learning_intertime_change",
+   "def:update_stop_on_trajectory",
+   "def:model_learning_working",
+   "def:intertime_update"
+  ],
+  "domain": "Furnace[orig]",
+  "status": "EXAMPLE_ONLY",
+  "cases": 504,
+  "premise_cases": null,
+  "kind": "census",
+  "detail": "exact eventually-periodic runs (initial states x 1/4, background patterns of period 1-2)",
+  "evidence": {
+   "runs": 504,
+   "M_converges": 278,
+   "learning_stops": 504,
+   "steps_only_MW_changed": 2029,
+   "M_keeps_changing": 226,
+   "steps_ML_changed": 60
+  }
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S01_frozen",
+  "labels": [
+   "ass:s5_observation_factorization",
+   "prop:s5_observation_causality",
+   "def:update_section5"
+  ],
+  "domain": "Furnace[frozen]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 2313600,
+  "premise_cases": 325350,
+  "kind": "exhaustive",
+  "detail": "Update(M,x,e) depends on (M, P_sens(x,e)) only",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S07_frozen",
+  "labels": [
+   "prop:s5_continuation",
+   "def:s5_operation_record"
+  ],
+  "domain": "Furnace[frozen]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 20,
+  "premise_cases": 20,
+  "kind": "exhaustive",
+  "detail": "re-running with the same x0, M0, o0 and background gives the same record (40 steps)",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S08_frozen",
+  "labels": [
+   "prop:s5_causality"
+  ],
+  "domain": "Furnace[frozen]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 40,
+  "premise_cases": 40,
+  "kind": "exhaustive",
+  "detail": "changing the background from t on leaves (x,M,o) up to t unchanged (t = 5, 20)",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S09_frozen",
+  "labels": [
+   "prop:s5_observation_causality"
+  ],
+  "domain": "Furnace[frozen]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 391,
+  "premise_cases": 390,
+  "kind": "exhaustive",
+  "detail": "M_t is determined by M_0 and I_0..I_{t-1} (premise: non-empty I-prefixes shared by runs that differ in x or o)",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_census_frozen",
+  "labels": [
+   "def:learning_intertime_change",
+   "def:update_stop_on_trajectory",
+   "def:model_learning_working",
+   "def:intertime_update"
+  ],
+  "domain": "Furnace[frozen]",
+  "status": "EXAMPLE_ONLY",
+  "cases": 504,
+  "premise_cases": null,
+  "kind": "census",
+  "detail": "exact eventually-periodic runs (initial states x 1/4, background patterns of period 1-2)",
+  "evidence": {
+   "runs": 504,
+   "M_converges": 278,
+   "learning_stops": 504,
+   "steps_only_MW_changed": 2089,
+   "M_keeps_changing": 226
+  }
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S01_flip",
+  "labels": [
+   "ass:s5_observation_factorization",
+   "prop:s5_observation_causality",
+   "def:update_section5"
+  ],
+  "domain": "Furnace[flip]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 2313600,
+  "premise_cases": 325350,
+  "kind": "exhaustive",
+  "detail": "Update(M,x,e) depends on (M, P_sens(x,e)) only",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S07_flip",
+  "labels": [
+   "prop:s5_continuation",
+   "def:s5_operation_record"
+  ],
+  "domain": "Furnace[flip]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 20,
+  "premise_cases": 20,
+  "kind": "exhaustive",
+  "detail": "re-running with the same x0, M0, o0 and background gives the same record (40 steps)",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S08_flip",
+  "labels": [
+   "prop:s5_causality"
+  ],
+  "domain": "Furnace[flip]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 40,
+  "premise_cases": 40,
+  "kind": "exhaustive",
+  "detail": "changing the background from t on leaves (x,M,o) up to t unchanged (t = 5, 20)",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S09_flip",
+  "labels": [
+   "prop:s5_observation_causality"
+  ],
+  "domain": "Furnace[flip]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 391,
+  "premise_cases": 390,
+  "kind": "exhaustive",
+  "detail": "M_t is determined by M_0 and I_0..I_{t-1} (premise: non-empty I-prefixes shared by runs that differ in x or o)",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_census_flip",
+  "labels": [
+   "def:learning_intertime_change",
+   "def:update_stop_on_trajectory",
+   "def:model_learning_working",
+   "def:intertime_update"
+  ],
+  "domain": "Furnace[flip]",
+  "status": "EXAMPLE_ONLY",
+  "cases": 504,
+  "premise_cases": null,
+  "kind": "census",
+  "detail": "exact eventually-periodic runs (initial states x 1/4, background patterns of period 1-2)",
+  "evidence": {
+   "runs": 504,
+   "M_converges": 185,
+   "learning_stops": 185,
+   "steps_ML_changed": 2754,
+   "steps_only_MW_changed": 313,
+   "M_keeps_changing": 319,
+   "learning_never_stops": 319
+  }
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S01_forget",
+  "labels": [
+   "ass:s5_observation_factorization",
+   "prop:s5_observation_causality",
+   "def:update_section5"
+  ],
+  "domain": "Furnace[forget]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 2313600,
+  "premise_cases": 325350,
+  "kind": "exhaustive",
+  "detail": "Update(M,x,e) depends on (M, P_sens(x,e)) only",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S07_forget",
+  "labels": [
+   "prop:s5_continuation",
+   "def:s5_operation_record"
+  ],
+  "domain": "Furnace[forget]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 20,
+  "premise_cases": 20,
+  "kind": "exhaustive",
+  "detail": "re-running with the same x0, M0, o0 and background gives the same record (40 steps)",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S08_forget",
+  "labels": [
+   "prop:s5_causality"
+  ],
+  "domain": "Furnace[forget]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 40,
+  "premise_cases": 40,
+  "kind": "exhaustive",
+  "detail": "changing the background from t on leaves (x,M,o) up to t unchanged (t = 5, 20)",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_S09_forget",
+  "labels": [
+   "prop:s5_observation_causality"
+  ],
+  "domain": "Furnace[forget]",
+  "status": "PASS_NONVACUOUS",
+  "cases": 391,
+  "premise_cases": 390,
+  "kind": "exhaustive",
+  "detail": "M_t is determined by M_0 and I_0..I_{t-1} (premise: non-empty I-prefixes shared by runs that differ in x or o)",
+  "evidence": null
+ },
+ {
+  "suite": "update_rules",
+  "check_id": "U_census_forget",
+  "labels": [
+   "def:learning_intertime_change",
+   "def:update_stop_on_trajectory",
+   "def:model_learning_working",
+   "def:intertime_update"
+  ],
+  "domain": "Furnace[forget]",
+  "status": "EXAMPLE_ONLY",
+  "cases": 504,
+  "premise_cases": null,
+  "kind": "census",
+  "detail": "exact eventually-periodic runs (initial states x 1/4, background patterns of period 1-2)",
+  "evidence": {
+   "runs": 504,
+   "M_converges": 278,
+   "learning_stops": 504,
+   "steps_only_MW_changed": 2029,
+   "M_keeps_changing": 226,
+   "steps_ML_changed": 60
+  }
+ }
+]

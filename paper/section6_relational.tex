@@ -1,0 +1,2171 @@
+%======================================================================
+\section{ACS関係性の最小構造}
+\label{sec:rel_min}
+
+本節では、
+単一ACS $\Sigma_i$ と外部対象 $Y_j$ の間に成立しうる関係の最小構造を、
+対象分類、
+単方向関係記述、
+双方向合成、
+関係品質、
+代表カテゴリーの順に定める。
+関係を倫理的善悪へ分類するのではなく、
+関係継続中に個体側で記録・評価しうる可行性関連量の変化を記述するための枠組みを与える。
+
+ここでいう記録は分類Cの理論上の記述を含み、
+ACS自身が各値を同じ尺度で観測・算出できることを要求しない。
+前節 \S\ref{sec:extended_dynamics} の $d_{\mathrm{eff},i,t}$ と $\widehat\tau_{i,t}$ は再定義せず、
+関係記録に付随する有限窓差分へ接続する。
+本節の局所的サイズ指標 $\mathrm{sz}_i$ と差分記法 $\Delta_L$ も、
+$\mathrm{Desc}_t$ の八成分を変更しない。
+これらの差分は外部対象の単独因果効果を表さず、
+\S\ref{sec:acs_def} が定める閉塞・崩壊の条件の代替にもならない。
+
+以下、
+\S\ref{subsec:rel_objects} で外部対象、
+\S\ref{subsec:rel_unidirect} で単方向記述と有限窓差分、
+\S\ref{subsec:rel_bidirect} で双方向合成、
+\S\ref{subsec:ro_quality} で関係品質、
+\S\ref{subsec:rel_categories} で18カテゴリー・六系分類を扱い、
+\S\ref{subsec:rel_phase1a} で限界と後続節への接続を整理する。
+本節で新たに用いる主要記号の一覧は付録~\ref{app:symbols_s6} に示す。
+
+ここで単方向・双方向は関係を記述する水準の違いであり、
+対象の価値や
+関係がもたらす結果の優劣を区別するものではない。
+同一ラベルの関係でも、
+関係継続中のコスト、
+環境条件および当該ACSの状態によって、
+可行性関連量の異なる変化が記録されうる。
+本節のカテゴリー名は、
+その変化の符号や原因をあらかじめ決める規則ではない。
+
+\begin{remark}[本節の射程]
+\label{rem:rel_scope}
+本節が対象とするのは、
+外部対象の三分類、
+単方向関係記述子、
+ACS同士の双方向合成、
+関係品質、
+代表カテゴリー18種と六系分類である。
+単方向記述子の有限窓差分は、
+必要な時刻域と記録の条件が成立するときに限り定義される。
+関係が存在すれば、
+任意の対象・時刻で必ず六成分が得られるという全域性は要求しない。
+外部対象の分類可能性、
+関係カテゴリーの判定可能性、
+有限窓差分の整形式性はそれぞれ別の問題である。
+本節では、
+実際に記述子を採用する場合にだけ必要な成分と時刻域を確認する。
+
+カテゴリーの成立条件・閾値・強度・持続性・解除可能性・代替可能性・認識との対応は定めない。
+決定論的な補助的詳細化はPhase~1.$\alpha$へ、
+確率的成立・遷移・終了、
+連続時間化および社会的ネットワーク動学はPhase~2へ委ねる
+（\S\ref{subsec:limitations_list} の L8、\S\ref{subsec:phase1a}）。
+\S\ref{sec:tipa} の識別・候補形成と、\S\ref{sec:acs_def}・\S\ref{sec:collapse_cond} の閉塞・崩壊の判定を本節で再定義しない。
+
+外部対象の分類と各時刻の関係記録は区別するため、
+分類可能な対象に対して
+カテゴリーや差分が決まらないことは、
+本節の整形式性を直ちに損なわない。
+関係の時間発展や関係性ネットワークの生成則も本節の記述子には含めない。
+\end{remark}
+
+\begin{remark}[閉塞・崩壊の節との関係]
+\label{rem:rel_to_sec7_intro}
+\S\ref{sec:collapse_cond} は、$A_{i,t}=\emptyset$ の閉塞と
+$\mathrm{Col}_{i,t}=1$ の崩壊を別個の条件で扱う。
+本節の関係記録に付随する差分は、
+閉塞経路集合 $\mathfrak{P}_{\mathrm{blk}}$ や
+崩壊到達経路集合 $\mathfrak{P}_{\mathrm{col}}$ を分析する際の記述素材になりうるが、
+差分の符号、
+関係カテゴリー、
+記述子の存在だけでそれらの経路集合への帰属を決定しない。
+崩壊後の通常ACS状態量を差分計算のために要求することもない。
+
+関係記録を閉塞・崩壊の経路記述に併記する場合にも、
+経路への帰属を判定するのは後続節が定める状態・軌道の条件である。
+記録がないことと、
+関係が存在しないことも同値ではない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{外部対象集合と分類写像}
+\label{subsec:rel_objects}
+
+本小節では、
+固定した $\Sigma_i$ から見た外部対象集合と三分類を導入する。
+
+\begin{definition}[外部対象集合]
+\label{def:external_object_set}
+固定したACS個体 $\Sigma_i$ に対し、
+自身を除き、
+関係の対象として採用する外部対象の集合を
+\[
+  \mathcal Y_{-i}
+\]
+と書き、
+個別の対象を $Y_j\in\mathcal Y_{-i}$ と表す。
+$(-i)$ は自身を除く標識であり冪指数ではない。
+この集合は記述する対象の領域であり、
+各 $Y_j$ の内部状態空間、
+意思決定機構、
+自己維持機構、
+または時刻を通じた確実な観測可能性を仮定するものではない。
+$\mathcal Y_{-i}$ の非空性も、
+全対象と関係が成立することも要求しない。
+
+対象集合への帰属と、
+特定の時刻にその対象との六成分記述子が定義されることを区別する。
+「観測」「参照」「作用」「依存」「支援」等は関係対象になりうる様式を
+言葉で示したものであり、
+列挙した様式の成立条件を本定義で与えるものではない。
+
+外部対象の添字 $j$ は、
+関係記録中に同一対象を追跡するための標識であり、
+対象にACSとしての構造を追加するものではない。
+\end{definition}
+
+\begin{remark}[外部対象集合の役割]
+\label{rem:external_object_role}
+$\mathcal Y_{-i}$ は $\Sigma_i$ 自身の状態空間 $X_i$ と異なる対象領域である。
+外部対象 $Y_j$ と、
+\S\ref{sec:acs_def} の外部環境状態 $e_t\in E_{\mathrm{ext}}$ も別の種類の対象であり、
+$Y_j$ を $e_t$ と同一視したり、
+$Y_j\in E_{\mathrm{ext}}$ と解釈したりしない。
+
+非ACS対象には $X_j$、
+$A_{j,t}$ または通常ACS状態量を自動的には割り当てない。
+また、
+必要環境要因の集合 $E$ と外部対象集合 $\mathcal Y_{-i}$ は別の記述対象であり、
+ある $Y_j$ が必要環境の特定要因に一対一に対応するとは仮定しない。
+
+$Y_j$ を \S\ref{sec:acs_def} の行動応答成分の枠 $a\in\mathcal A_O$ または背景成分、
+あるいは \S\ref{sec:tipa} の内部対象トークン $k$ に対応させるかどうかは記述者が与えるものであり、
+本論文はその対応を定義しない。
+本節の記述子は $\Sigma_i$ 側の値だけを用いるので、この対応がなくても定義される。
+
+本節は外部対象の内部動学を展開せず、
+採用した関係記録に付随する $\Sigma_i$ 側の量を記述する。
+対象が同じであっても、
+異なるACSからは別の関係記録の対象となりうる。
+その場合も、
+記録の視点を変更しただけで対象側の状態方程式を得たとはみなさない。
+\end{remark}
+
+\begin{remark}[外部対象の識別と行動候補との区別]
+\label{rem:external_object_cand}
+外部対象の自己--環境境界への帰属に関わる内部識別は、
+\S\ref{sec:tipa} のM1-bの識別状態（定義~\ref{def:id_vector}）に接続する。
+境界帰属軸の値域は $\{\mathsf{self},\mathsf{env},\mathsf{und}\}$ であるが、
+この値域指定は個々の $Y_j$ の同一性が常に内部で確定するという主張ではない。
+本節の $\mathrm{type}_i$ は関係性の記述上の分類写像であり、
+M1-b の識別状態そのものでも、
+ACSが同じ分類を内部に保持するという仮定でもない。
+
+また、
+M3の $\mathrm{Cand}_t\subseteq U$ は行動候補集合
+（定義~\ref{def:m3_candidate_set}）であり、
+外部対象集合ではない。
+適合評価 $\mathrm{fit}_t$（定義~\ref{def:m3_fit}）と対象同定も異なる操作である
+（備考~\ref{rem:fit_vs_identity}）。
+外部対象の知覚・識別がどの行動候補に接続されるかを、
+本節では固定しない。
+特に本論文は、
+$Y_j\in\mathcal Y_{-i}$ から $Y_j\in\mathrm{Cand}_t$ を一般的な帰結として置かない。
+
+対象を同定できたこと、
+対象が当該時刻の要請に適合すること、
+対象に向けた行動が候補として生成されることは、
+いずれも異なる条件である。
+本論文は、本節の分類ラベル $\mathrm{type}_i(Y_j)$ だけから、
+これらの機構上の判定を一般的な帰結として置かない。
+
+対象同定を本節で前提とする記録上の対応付けと、
+M1-b が実際に同定できたかという機構上の判定は区別する。
+\end{remark}
+
+\begin{definition}[外部対象の三分類]
+\label{def:object_type}
+固定した $\Sigma_i$ に相対する全域的・単値の記述上の分類写像を
+\[
+ \mathrm{type}_i:\mathcal Y_{-i}\longrightarrow
+ \{\mathrm{ACS},\mathrm{agent},\mathrm{obj}\}
+\]
+と定め、
+その逆像として
+\[
+\begin{aligned}
+\mathcal Y_{\mathrm{ACS},-i}&:=\mathrm{type}_i^{-1}(\{\mathrm{ACS}\}),\\
+\mathcal Y_{\mathrm{agent},-i}&:=\mathrm{type}_i^{-1}(\{\mathrm{agent}\}),\\
+\mathcal Y_{\mathrm{obj},-i}&:=\mathrm{type}_i^{-1}(\{\mathrm{obj}\})
+\end{aligned}
+\]
+を定める。
+三つの値は、
+それぞれACSとして扱う外部対象、
+ACSとしては扱わない行為主体、
+非エージェント的対象という関係記述上の分類ラベルである。
+本写像は対象の規範的地位や実際の内部認識の正確さを定めない。
+
+これは三つの記述上のラベルへの割当てであり、
+いずれかの逆像が空であることも許す。
+各対象が現実には複数の性質を併せもつ可能性と、
+記述に際して単一のラベルを割り当てることは矛盾しない。
+\end{definition}
+
+\begin{assumption}[外部対象分類の固定]
+\label{ass:obj_stable}
+本節で同一対象を追跡する期間中、
+分類写像 $\mathrm{type}_i$ は時刻 $t$ によって変更されないものとする。
+これは外部対象の現実の属性変化を禁じる仮定ではなく、
+本節で用いる対象分類の時間的固定だけを求める。
+
+導入地位：S（構造的・記述域の制限）。
+強さ：弱（対象分類の変化を追跡しない範囲に限定）。
+依拠箇所：\S\ref{subsec:rel_objects} および \S\ref{subsec:rel_bidirect}。
+\end{assumption}
+
+\begin{remark}[分類固定仮定の意味]
+\label{rem:obj_classification}
+仮定~\ref{ass:obj_stable} は、
+採用した記述期間中の分類を固定するという制限であり、
+対象の物理的性質、
+行為主体性またはACS構造が現実に不変であるという主張ではない。
+分類が途中で変わる対象を扱うには、
+本節で固定した写像とは別の時間依存分類が必要になる。
+その詳細な記述は本節では扱わない。
+
+例えば、
+同じ外部対象について記述途中で「非エージェント的対象」から
+「エージェント」として扱う分類へ変更するには、
+時刻依存の分類規則を別途定める必要がある。
+本節はその規則を置かず、
+分類を固定している期間内の関係記述に限る。
+\end{remark}
+
+\begin{remark}[三分類の排他性（定義からの帰結）]
+\label{rem:object_partition}
+定義~\ref{def:object_type} の $\mathrm{type}_i$ が全域的な単値写像なので、
+異なる値の逆像は交わらず、
+三つの逆像の和集合は $\mathcal Y_{-i}$ に一致する。
+すなわち
+\[
+\mathcal Y_{\mathrm{ACS},-i}\mathbin{\dot\cup}
+\mathcal Y_{\mathrm{agent},-i}\mathbin{\dot\cup}
+\mathcal Y_{\mathrm{obj},-i}=\mathcal Y_{-i}.
+\]
+ここで $\dot\cup$ は互いに素な和集合を表す。
+これは新たな独立仮定ではなく、
+分類写像の定義から従う帰結である。
+
+とくに各逆像が非空であることは従わず、
+外部対象が存在しない場合にも分割の等式は成り立つ。
+\end{remark}
+
+\begin{remark}[三分類の位置づけ]
+\label{rem:object_partition_role}
+三分類の排他性は写像の値の排他性であり、
+現実の対象が複数の性質を同時にもつことを否定しない。
+分類は $\Sigma_i$ に相対し、
+別のACS $\Sigma_k$ は異なる記述上の分類写像を採用しうる。
+M1-b の未決定カテゴリ $\mathsf{und}$ は内部識別の値であり、
+本節の三分類に第四の外部対象型を追加するものではない。
+
+ある $Y_j$ に対して $\mathrm{type}_i(Y_j)=\mathrm{ACS}$ と記述することは、
+ACS自身がその対象を $\mathsf{env}$ と認識済みであることも、
+他のACSが同じ型を付すことも意味しない。
+\end{remark}
+
+\begin{remark}[外部対象の型と閉塞・崩壊]
+\label{rem:objects_to_sec7}
+本論文は、外部対象の型のみから $A_{i,t}=\emptyset$ または
+$\mathrm{Col}_{i,t}=1$ を一般的な帰結として置かない。
+$\mathcal Y_{-i}$ と $\mathrm{type}_i$ は関係記述の対象領域を定めるだけであり、
+閉塞経路・崩壊到達経路の判定には \S\ref{sec:collapse_cond} の条件を別途用いる。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{単方向関係記述子と有限観測窓}
+\label{subsec:rel_unidirect}
+
+本小節では、
+局所サイズ指標と有限観測窓を先に定め、
+その適用条件を満たす場合に六成分の単方向関係記述子を構成する。
+
+\begin{definition}[可行行動集合の局所的サイズ指標（分類C）]
+\label{def:rel_size_functional}
+固定した $\Sigma_i$ の行動空間を $U_i$ とし、
+評価対象とする非空の集合族
+\[
+ \emptyset\neq\mathcal D_{\mathrm{sz},i}\subseteq\mathcal P(U_i)
+\]
+および非負実数値の記述写像
+\[
+ \mathrm{sz}_i:\mathcal D_{\mathrm{sz},i}\longrightarrow\mathbb R_{\geq0}
+\]
+を置く場合、
+$\mathrm{sz}_i$ を本節における\emph{局所的サイズ指標}と呼ぶ。
+$\mathcal P(U_i)$ は $U_i$ の冪集合である。
+
+「サイズ」は評価する集合に付した記述名であって、
+型指定のみからは
+集合包含に関する単調性、
+非退化性、
+有限集合の濃度との一致、
+$\mathrm{sz}_i(\emptyset)=0$ などの性質を与えない。
+したがって、
+指標値の大小・差分を可行な行動の増減へ一般に読み替えず、
+$\mathrm{sz}_i(A)=0\Rightarrow A=\emptyset$ も性質として置かない。
+
+この指標を採用するか否か、
+および評価域・具体形は本節の一般形式では固定しない。
+評価域に $\emptyset$ が含まれない場合には $\mathrm{sz}_i(\emptyset)$ 自体を要求しない。
+
+また、
+同一個体の時刻間差分を扱うときは、
+一つの評価域と一つの写像を
+当該観測窓の両端に共通して用いることを条件とする。
+写像を時刻間で取り替えた値の差を、
+同じ指標の時間変化として読み替えない。
+
+\end{definition}
+
+本指標は、
+\S\ref{sec:extended_dynamics} の $d_{\mathrm{eff},t}$、
+\S\ref{sec:three_principles} で扱う可行性制約、または応答多様度と同一視しない。
+本節で指標を実際に用いる場合に限り、
+評価する可行行動集合が
+$\mathcal D_{\mathrm{sz},i}$ に属することを確認する。
+
+本論文は具体化を与えないので、
+非自明なサイズ性を必要とする追加の比較や推論を一般的な帰結として置かない。
+そのため、
+$\Delta_L\mathrm{sz}_i(A_{i,t})$ の符号は、
+同一指標を用いた数値差の符号として読む。
+集合の包含関係、
+濃度の大小、
+応答多様度の変化について主張するには、
+別途対応する条件が必要である。
+
+例えば有限集合に対する濃度や、
+一般の集合に対する固定精度の被覆数は、
+将来採用しうる具体化の候補であるが、
+本論文ではいずれも
+$\mathrm{sz}_i$ の定義そのものとしては採用しない。
+
+したがって $\mathrm{sz}_i$ と応答多様度 $\mu_{\mathrm{eff},t}$ を
+同じ量とみなすことも、
+その大小関係を仮定することもしない。
+
+\begin{definition}[有限観測窓における差分記法（分類C）]
+\label{def:finite_window_diff}
+正の整数 $L\in\mathbb N_{\geq1}$ と非負整数時刻 $t\in\mathbb N_0$ をとる。
+以下、
+一つの関係記録または双方向合成を評価する間は、
+窓長 $L$ を共通に固定する。
+異なる窓長を採用した差分は一般に異なりうるため、
+同じ $t,i,j$ でも
+$L$ が異なる記録を同一の $\mathrm{Rel}_{i\leftarrow j,t}$ として混用しない。
+記号の上付き・下付きに $L$ を重ねて表記しないのは、
+固定窓長を文脈で指定するためである。
+
+$t\geq L$ のとき、
+有限観測窓を
+\[
+ W_{L,t}:=\{t-L,t-L+1,\ldots,t\}
+\]
+と定める。
+
+個体 $\Sigma_i$ に対する同一の実数値量の時系列 $z_{i,s}$ が
+両端 $s=t-L,t$ で定義されている場合、
+その後向き差分を
+\[
+ \Delta_L z_{i,t}:=z_{i,t}-z_{i,t-L}
+\]
+と定義する。
+$t<L$、
+または両端のどちらかの値がない場合、
+この差分は定義しない。
+
+差分そのものの定義には、
+窓内の中間時刻すべてで当該実数値が得られることまでは要求しない。
+
+一方、
+関係記録の成立を述べるときは、
+以下で定める窓全体の別条件を課す。
+
+本節で用いる量は、
+$\mathrm{sz}_i(A_{i,s})$、
+$ d_{\mathrm{eff},i,s}$、
+$\widehat\tau_{i,s}$ の三種類である。
+
+第一の量については
+\[
+ A_{i,t},\ A_{i,t-L}\in\mathcal D_{\mathrm{sz},i}
+\]
+を要求し、
+かつ両端で同じ $\mathrm{sz}_i$ を用いる。
+
+後二者は \S\ref{sec:extended_dynamics} の量を、
+\S\ref{sec:acs_def} の記述水準の規約に従って個体 $\Sigma_i$ について
+$d_{\mathrm{eff},i,s}$、$\widehat\tau_{i,s}$ と書いたものであり、
+両端の値が定義される場合にのみ差を取る。
+$\widehat\tau_{i,s}$ は時刻 $s$ から $s+\tau$ までの記録を用いるので
+（定義~\ref{def:s5_prediction_coefficient}）、
+その差分は、当該の値が定義される時刻についてだけとる。
+各差分の実数値性はこの適用域の下での帰結であり、
+実測可能性や内部計算可能性の一般的な主張ではない。
+
+差分を外部対象 $Y_j$ との\emph{関係記録に付随する変化}として
+単方向記述子に組み込む場合には、
+さらに窓内の全時刻で
+関係が継続し、
+添字 $j$ が同一対象を指すことを要求する。
+
+軌道記録 $\sigma$ に対して \S\ref{sec:collapse_cond} の
+ACS記録有効時刻域を用いる場合には、
+定義~\ref{def:acs_valid_time_domain} に従って
+\[
+ W_{L,t}\subseteq I_{\mathrm{ACS}}(\sigma)
+\]
+を要求する。
+ここで $\sigma$ は記録対象である同一個体 $\Sigma_i$ の軌道記録を表す。
+この条件はACSとしての通常記録の有効時刻域を指定するものであり、
+全時刻で三つの差分対象量が実際に取得できることを意味しない。
+条件を満たさない窓で未定義の値をゼロに置換しない。
+
+$t=L$ の場合には左端が時刻 $0$ となり、
+負時刻の履歴を参照しない。
+
+また、
+両端の差が計算可能でも、
+窓内の関係継続や対象同定が確認できなければ、
+当該対象との関係記録にその差を組み込む条件は満たされない。
+\end{definition}
+
+\begin{remark}[有限観測窓差分の制限とサイズ汎関数の委譲]
+\label{rem:finite_window_diff_limit}
+$\Delta_L$ は有限個の離散時刻の後向き差分であり、
+連続時間微分でも、
+対象 $Y_j$ が存在しなかった場合との差でもない。
+$L$ は観測窓の時刻差を表し、
+$W_{L,t}$ に含まれる観測時刻数は $L+1$ である。
+$t<L$ では負の添字へ履歴を延長しない。
+
+また、
+$I_{\mathrm{ACS}}(\sigma)$ の外では通常ACS状態量を要求しない
+（\S\ref{sec:collapse_cond}）。
+崩壊が初めて成立する時刻をまたぐ窓に対して、
+失われた量を補間して差分を作らない。
+一方、
+閉塞 $A_{i,s}=\emptyset$ は崩壊と同義ではないため、
+閉塞時刻が窓に含まれることだけを理由に全ての差分を排除しない。
+
+ただし、
+閉塞が差分の端点 $s=t-L$ または $s=t$ で生じ、
+$A_{i,s}=\emptyset\notin\mathcal D_{\mathrm{sz},i}$ であれば、
+$\mathrm{sz}_i(A_{i,s})$ は定義域外であり、
+$\Delta_L\mathrm{sz}_i(A_{i,t})$ を定義できない。
+この場合、
+$d_{\mathrm{eff},i,t}$ と $\widehat\tau_{i,t}$ の差分が
+それぞれ整形式であっても、
+定義~\ref{def:rel_unidirect} の六成分記述子は構成しない。
+
+一方、
+空集合が評価域に含まれる場合でも、
+その指標値がゼロとなることは要求しない。
+差分が定義できるか否かは、
+各量の値と評価域、
+および採用する軌道記録の時刻域で判定する。
+
+指標 $\mathrm{sz}_i$ が導入されても、
+本論文は、その値の減少から直ちに集合の包含関係や
+$A_{i,t}=\emptyset$ を一般的な帰結として置かない。
+
+指標の具体化、
+有限近似、
+固定精度の被覆数等はPhase~1.$\alpha$（\S\ref{subsec:phase1a}）、
+測度論的な精密化はPhase~2で扱う。
+
+ここでの「委譲」は、
+任意のコンパクトな行動空間上に
+非退化なサイズ指標が自動的に得られるとの存在主張ではない。
+特定の集合族と指標を選ぶ場合に必要な性質は、
+その具体化の側で別途検討する。
+\end{remark}
+
+\begin{definition}[単方向関係記述子（分類C）]
+\label{def:rel_unidirect}
+固定した $\Sigma_i$、
+$Y_j\in\mathcal Y_{-i}$、
+正の窓長 $L$ と時刻 $t$ をとる。
+以下の六成分を記録する期間には定義~\ref{def:finite_window_diff} の窓長 $L$ を固定し、
+別の窓長による記述と区別して用いる。
+
+定義~\ref{def:finite_window_diff} の三差分が関係記録用の条件を満たして定義され、
+さらにカテゴリー $\mathrm{cat}_{i\leftarrow j,t}\in\mathcal C_{\rightarrow}$、
+コスト $\mathrm{cost}_{i\leftarrow j,t}\in\mathbb R_{\geq0}$、
+摂動 $p_{\mathrm{pert},i\leftarrow j,t}\in P_{\mathrm{pert}}$ が記録されるとき、
+$Y_j$ から $\Sigma_i$ に向かう単方向関係記述子を
+\[
+\begin{aligned}
+ \mathrm{Rel}_{i\leftarrow j,t}:=\bigl(&
+ \mathrm{cat}_{i\leftarrow j,t},\ \mathrm{cost}_{i\leftarrow j,t},\
+ p_{\mathrm{pert},i\leftarrow j,t},\\
+ &\Delta_L\mathrm{sz}_i(A_{i,t}),\
+ \Delta_Ld_{\mathrm{eff},i,t},\
+ \Delta_L\widehat\tau_{i,t}\bigr)
+\end{aligned}
+\]
+と定める。
+$\mathcal C_{\rightarrow}$ は定義~\ref{def:category_set} の15ラベル、
+$P_{\mathrm{pert}}$ は定義~\ref{def:rel_unidirect_type} の非空な摂動値域である。
+
+前三成分は関係カテゴリー・非負コスト・摂動についての記録、
+後三成分は関係継続中に記録・評価された $\Sigma_i$ 側の値の差分である。
+前三成分の記録が成立しても、
+後三成分が未定義なら六成分の記述子は置かない。
+逆に三差分が定義できても、
+関係カテゴリー等の記録を採用しなければ
+特定の $Y_j$ に紐づく六成分記述子を構成したことにはならない。
+
+下付きの $i\leftarrow j$ は記述方向であり、
+後三成分の式自体には $j$ が現れない。
+したがって、
+記述子は $Y_j$ の一意の因果的寄与を同定するものではない。
+同一の $\Sigma_i$ と観測窓に複数の外部対象との関係が記録される場合、
+後三成分に同じ数値差が複数の記述子で現れうる。
+その一致を対象間の同等の作用や寄与量の配分と解釈しない。
+本定義は、
+上記条件が満たされない対象・時刻にも六成分を割り当てるものではない。
+関係のコストはその関係に付随する資源負荷の非負記録であり、
+$\mathrm{cost}_{i\leftarrow j,t}=0$ は関係が成立しないことを意味しない。
+摂動の記録は $P_{\mathrm{pert}}$ の型に従うが、
+記号 $p$ は確率を表さず、
+摂動値の正負や大きさによるカテゴリー判定も本節では行わない。
+
+後三成分の差が同じであっても、
+前三成分のカテゴリー・コスト・摂動は異なりうる。
+\end{definition}
+
+\begin{remark}[対象添字の時間的持続と差分の非因果性]
+\label{rem:object_index_persistence}
+添字 $j$ は $W_{L,t}$ の全時刻にわたって同一の外部対象を指し、
+当該対象との関係が継続していることを、
+関係記録を採用する条件とする。
+対象同定は \S\ref{sec:tipa} のM1-bの識別（定義~\ref{def:id_vector}）に関係するが、
+識別状態の値から個体同一性を確定する判定規則は本節では定めない。
+特に、
+境界帰属軸が $\mathsf{env}$ を示すことと、
+異なる時刻の記録が
+同じ個体 $Y_j$ に属すると判定されることは別の条件である。
+本節の添字 $j$ の持続は、
+当該窓の記録を採用する際に置く対応付け上の要請であって、
+M1-b の内部同定手続きの存在や正確さを追加で仮定するものではない。
+M3の要請適合評価は対象同定とは別の機能である（備考~\ref{rem:fit_vs_identity}）。
+
+三差分は $\Sigma_i$ 側の値に依拠し、
+右辺に $j$ を含まない。
+同時に存在する他の対象、
+行動、
+環境条件等の寄与を差し引く規則も置かない。
+よって差分は「関係継続中に記録された変化」であり、
+反実仮想的な因果効果、
+関係カテゴリーの成立証明または対象別の寄与配分ではない。
+例えば二つの対象との関係が同一の窓で継続していた場合、
+それぞれの記述子には同じ $\Sigma_i$ 側の三差分が併記されうる。
+両記録の差分値を足し合わせて個体側の変化を二重に計上したり、
+各対象がその差分の全量を生じさせたと解釈したりしない。
+\end{remark}
+
+\begin{remark}[記号上の注意]
+\label{rem:rel_unidirect_notation}
+$\mathrm{Rel}_{i\leftarrow j,t}$ の向きは記述視点を示すものであり、
+一方的な決定・支配を表す記号ではない。
+$p_{\mathrm{pert},i\leftarrow j,t}$ の $p$ は perturbation（摂動）の略記であり、
+probability（確率）ではない。
+この区別により、
+本論文の $p_{\mathrm{pert},i\leftarrow j,t}$ には
+分布、
+期待値または確率的な推移規則を割り当てない。
+また、
+矢印は情報の記述方向であり、
+対象が意図をもつことまで要求しない。
+\end{remark}
+
+\begin{definition}[単方向関係記述子の型]
+\label{def:rel_unidirect_type}
+単方向記述子が定義される時刻での六成分の型を
+\[
+\begin{gathered}
+ \mathrm{cat}_{i\leftarrow j,t}\in\mathcal C_{\rightarrow},\qquad
+ \mathrm{cost}_{i\leftarrow j,t}\in\mathbb R_{\ge0},\\
+ p_{\mathrm{pert},i\leftarrow j,t}\in P_{\mathrm{pert}},\\
+ \Delta_L\mathrm{sz}_i(A_{i,t})\in\mathbb R,\qquad
+ \Delta_L d_{\mathrm{eff},i,t}\in\mathbb R,\\
+ \Delta_L\widehat\tau_{i,t}\in\mathbb R
+\end{gathered}
+\]
+とする。
+$\mathcal C_{\rightarrow}$ は定義~\ref{def:category_set} に従う。
+$P_{\mathrm{pert}}$ は摂動的影響を表す非空の値域であり、
+値の符号・順序・具体的尺度は本節では固定しない。
+$P_{\mathrm{pert}}$ が順序を備えるとも、
+摂動量をコストや三差分と
+算術的に合算できるとも仮定しない。
+三差分が実数であることは、
+差分の定義域と \S\ref{sec:extended_dynamics} の
+各量の値域が成立する場合の整形式性を表す。
+$P_{\mathrm{pert}}$ の具体化は有限ラベル集合、
+順序集合、
+実数値区間等として
+検討しうるが、
+本論文はどれか一つを採用しない。
+
+したがって摂動の大小を用いた比較は、
+追加の型を定めない限り一般には行えない。
+\end{definition}
+
+\begin{remark}[型指定の役割]
+\label{rem:rel_unidirect_type_role}
+型の指定は各成分の種類を与えるだけで、
+計測法、
+推定誤差、
+カテゴリー成立閾値、
+摂動の加法性または強度尺度を与えない。
+本論文は、$\mathrm{sz}_i$ の差分が正であることから行動集合の包含関係での拡大を、
+負であることから閉塞を、いずれも一般的な帰結として置かない。
+
+分類Cの記述子全体をACS内部が同じ形式で計算・保持することも要求しない。
+\end{remark}
+
+\begin{remark}[関係性記述子と可行性関連量]
+\label{rem:rel_descriptor_viability}
+$\mathrm{sz}_i(A_{i,t})$ は本節で採用する局所的指標であり、
+$ d_{\mathrm{eff},i,t}$ と $\widehat\tau_{i,t}$ は
+\S\ref{sec:extended_dynamics} の個体別量を参照する。
+本論文は、三差分が正・零・負のいずれでも、
+その符号から直ちに
+$A_{i,t}=\emptyset$、
+$\mathrm{Col}_{i,t}=1$、
+回復可能性、
+三原理の時刻別充足述語の真偽または特定対象の因果的寄与を一般的な帰結として置かない。
+
+これらは異なる定義・条件によって扱われる量である。
+\end{remark}
+
+\begin{assumption}[単方向関係記述の対象範囲]
+\label{ass:unidirect_scope}
+単方向記述子を実際に採用する対象 $Y_j$、
+窓長 $L$、
+時刻 $t$ について、
+カテゴリー・コスト・摂動が定義~\ref{def:rel_unidirect_type} の型で記録され、
+三差分が定義~\ref{def:finite_window_diff} の条件を満たすことを要求する。
+本仮定は、
+任意の外部対象・任意の時刻に関係が成立すること、
+六成分を記録できること、
+および記録を採用する組の存在や非空性を要求しない。
+
+この要請は採用済みの記録の整形式性を条件付きで指定するものであり、
+外部対象とACS状態との関係が一般に計測可能であるとの存在仮定ではない。
+
+導入地位：S（構造的・採用する記録の整形式性）。
+強さ：弱（記述子を採用する場合の成分取得条件に限る）。
+依拠箇所：\S\ref{subsec:rel_unidirect} および \S\ref{subsec:rel_bidirect}。
+\end{assumption}
+
+\begin{remark}[非ACS対象への適用]
+\label{rem:unidirect_nonacs}
+非ACSエージェントと非エージェント的対象も、
+$\Sigma_i$ 側の六成分が
+記録条件を満たす場合には単方向記述の対象となりうる。
+その際、
+$Y_j$ 側の $X_j$、
+$A_{j,t}$、
+$d_{\mathrm{eff},j,t}$ 等を仮定しない。
+記録が採用されない対象や時刻について、
+未知の値をゼロで埋めた記述子を作らない。
+非エージェント的対象との関係であっても、
+対象が個体側の選択を制約する場合や
+資源負荷を伴う場合に、
+個体側の差分を併記することは形式上可能である。
+ただし、
+これを対象自身による意思決定や自己維持の存在の証拠とはしない。
+\end{remark}
+
+\begin{remark}[閉塞・崩壊の節への接続]
+\label{rem:to_section7}
+関係記録は \S\ref{sec:collapse_cond} の経路記述への入力となりうるが、
+$\mathrm{Rel}_{i\leftarrow j,t}$ の存在や差分の符号だけで
+$\sigma\in\mathfrak{P}_{\mathrm{blk}}$ または
+$\sigma\in\mathfrak{P}_{\mathrm{col}}$ を決定しない。
+関係記録が経路の分析に併記される場合、
+記述対象の軌道における
+閉塞・崩壊の成立条件は \S\ref{sec:acs_def} の定義（定義~\ref{def:blockage_sec2}、定義~\ref{def:collapse}）に従う。
+関係性のカテゴリー名は、
+その条件の代わりになる論理式ではない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{双方向合成関係}
+\label{subsec:rel_bidirect}
+
+本小節では、
+双方をACSとして扱える対象間で、
+両方向の記述がともに整形式な時刻に二つの記述子を組にする。
+
+ただし、
+双方向合成は二つの単方向記録の順序対であり、
+両個体の内部状態を結合した新しいACSや
+共通の状態空間を構成する操作ではない。
+
+\begin{assumption}[双方向合成関係の標準対象]
+\label{ass:bidirect_scope}
+本節の双方向合成の標準対象は、
+$Y_j\in\mathcal Y_{\mathrm{ACS},-i}$ を
+ACS個体 $\Sigma_j$ として扱い、
+かつ $\Sigma_i\in\mathcal Y_{\mathrm{ACS},-j}$ として
+逆向きの記述対象も認められる組に限る。
+
+両方向の六成分記述子が、
+共通の正の窓長 $L$ と同じ時刻 $t$ でそれぞれ定義できる場合にのみ合成する。
+この条件は、
+両個体が同じ局所サイズ指標 $\mathrm{sz}_i=\mathrm{sz}_j$ や
+同じカテゴリー・コスト・摂動値を採用することを要求しない。
+一方向の記述子があることだけから、
+逆方向の記述子の存在を要求しない。
+双方の対象同定と関係継続は、
+各個体側の記録としてそれぞれ扱う。
+両者が同じ対象を指していることが記述上確認されても、
+両者の内部モデルが相互に同じ内容を保持するとまでは仮定しない。
+
+導入地位：S（構造的・対象域の制限）。
+強さ：弱（標準形式の適用対象をACS同士に限定する）。
+依拠箇所：\S\ref{subsec:rel_bidirect} および \S\ref{subsec:rel_categories}。
+\end{assumption}
+
+\begin{definition}[双方向合成関係（分類C）]
+\label{def:bidirect_relation}
+$Y_j\in\mathcal Y_{\mathrm{ACS},-i}$ をACS個体 $\Sigma_j$ として扱い、
+逆方向でも $\Sigma_i\in\mathcal Y_{\mathrm{ACS},-j}$ とする。
+各個体の局所サイズ指標の評価域と通常ACS状態量の定義域をそれぞれ確認したうえで、
+共通の正の窓長 $L$ と時刻 $t$ において
+$\mathrm{Rel}_{i\leftarrow j,t}$ と $\mathrm{Rel}_{j\leftarrow i,t}$ の
+両方が整形式である場合、
+双方向合成関係を
+\[
+ \mathrm{Rel}_{ij,t}:=
+ \bigl(\mathrm{Rel}_{i\leftarrow j,t},\mathrm{Rel}_{j\leftarrow i,t}\bigr)
+\]
+と定める。
+両方向とも $W_{L,t}$ の同一の時刻範囲を用いるが、
+同一対象の追跡、
+関係継続、
+および各個体の通常ACS状態量の定義域は
+それぞれ別に満たされなければならない。
+\S\ref{sec:collapse_cond} の軌道記録を双方について採用する場合、
+$\Sigma_i$ の記録を $\sigma_i$、
+$\Sigma_j$ の記録を $\sigma_j$ と呼べば、
+\[
+ W_{L,t}\subseteq I_{\mathrm{ACS}}(\sigma_i),\qquad
+ W_{L,t}\subseteq I_{\mathrm{ACS}}(\sigma_j)
+\]
+を各々に要求する。
+これは一つの軌道が両個体の通常状態を兼ねるという主張ではない。
+
+窓全体が両者の有効時刻域に含まれていても、
+三差分と前三成分の取得条件は別途必要である。
+本定義は外部対象の内部動学を新たに構成せず、
+二つのACS側の記述を組にするだけである。
+順序対の第一成分と第二成分はそれぞれ異なる個体側の観測変化を含むため、
+双方向合成の定義は、両者の可行性関連量の増加、
+相互利益、
+または
+組織水準の統合構造の成立を要件として含まない。
+
+$ij$ は対象の組を区別する標識であり、
+成分の積や数値演算を表すものではない。
+\end{definition}
+
+\begin{remark}[双方向合成関係の非対称性]
+\label{rem:bidirect_asymmetry}
+$\mathrm{Rel}_{ij,t}$ は二つの単方向記述子の順序対であり、
+$\mathrm{Rel}_{i\leftarrow j,t}=\mathrm{Rel}_{j\leftarrow i,t}$ を仮定しない。
+カテゴリーが同じでもコスト・摂動・三差分は別個体側の値として異なりうる。
+両方向が記録されることは、
+双方に同じ作用や相互利益が存在することを意味しない。
+
+各方向の三差分は各個体に帰属する時系列から計算されるため、
+二つの数値差を無条件に加算したり、
+双方に共通の可行性指標へ読み替えたりしない。
+一方で記述子が定義できても、
+逆方向に必要な記録が欠ければ標準的な双方向合成は置かない。
+例えば同じ関係カテゴリーを両方向で記録した場合でも、
+一方の資源負荷が他方より大きいことや、
+実効的時間地平の差分が
+逆符号になることは形式上排除されない。
+双方向性を対称性の仮定へ読み替えない。
+\end{remark}
+
+\begin{definition}[方向性指標（分類C）]
+\label{def:relation_direction}
+双方向合成関係が定義されるとき、
+解釈上の主要な記述方向を示す補助指標を
+\[
+ \mathrm{dir}_{ij,t}\in
+ \{i\leftarrow j,\ i\rightarrow j,\ i\leftrightarrow j,\ \mathrm{undetermined}\}
+\]
+と書く。
+順に、
+$j$ から $i$ の記述が主要、
+逆方向が主要、
+両方向が主要、
+主要方向を本節の規則では判定しない、
+を表す。
+「主要」の判定基準・閾値・重み付けを定めないため、
+本指標が二つの単方向記述子から一意に計算されるとは主張しない。
+判定基準を採用しない場合には $\mathrm{undetermined}$ と記録してよい。
+これは二方向とも値が零であるという数値判定でも、
+当該二者に関係がないという分類でもない。
+方向性指標の値は六成分記述子そのものには含めない。
+二方向のうち何を「主要」とするかは、
+記録対象や採用する比較基準にも依存しうる。
+
+本節で値域を示したことは、
+主要方向の一意な算出規則を与えたことではない。
+\end{definition}
+
+\begin{remark}[方向性指標の補助的地位]
+\label{rem:dir_auxiliary}
+方向性指標は記述補助であり、
+二つの単方向記述子を置き換えず、
+閉塞・崩壊や可行性の改善方向を規定しない。
+\end{remark}
+
+\begin{remark}[方向性判定の未定義部分]
+\label{rem:dir_undefined}
+コスト・摂動・三差分のどれをどの程度重視するかという
+主要方向の定量的判定規則はPhase~1.$\alpha$に委ねる（\S\ref{subsec:phase1a}）。
+$\mathrm{undetermined}$ は関係の不存在、
+両方向の対称性、
+数値ゼロのいずれも意味しない。
+また、
+$\mathrm{dir}_{ij,t}$ は対象間の因果の向きを特定する量ではない。
+\end{remark}
+
+\begin{definition}[同種相互関係と異種相互関係]
+\label{def:homo_hetero_relation}
+$\mathrm{Rel}_{ij,t}$ の両単方向記述子に含まれる
+$\mathrm{cat}_{i\leftarrow j,t}, \mathrm{cat}_{j\leftarrow i,t}\in\mathcal C_{\rightarrow}$ について、
+\[
+ \mathrm{cat}_{i\leftarrow j,t}=\mathrm{cat}_{j\leftarrow i,t}
+\]
+のときを同種相互関係、
+\[
+ \mathrm{cat}_{i\leftarrow j,t}\neq \mathrm{cat}_{j\leftarrow i,t}
+\]
+のときを異種相互関係と呼ぶ。
+
+この区別は、
+各方向のカテゴリーが既に記録されている場合の
+ラベル一致・不一致のみを調べるものであり、
+双方向成立カテゴリーの判定と同一の操作ではない。
+\end{definition}
+
+\begin{remark}[同種・異種の分類の制限]
+\label{rem:homo_hetero_rel}
+同種性はラベルの一致だけを意味し、
+コスト・強度・持続時間・三差分の一致を意味しない。
+応答側カテゴリー（被支配・被管理等）の体系化はPhase~1.$\alpha$に委ねる。
+同種の場合であっても双方のコスト・摂動・三差分は異なりうる。
+異種の場合も双方の差分が同じ符号を示す可能性を排除しない。
+「被操作」「被搾取」「被利用」などを追加ラベルとして用いるには、
+応答側の成立条件を別途定める必要がある。
+\end{remark}
+
+\begin{remark}[同種相互形を持たないカテゴリー]
+\label{rem:no_mutual_form}
+支配や寄生が両方向で記録されても、
+それを「相互支配」や「相互寄生」の
+独立した成立カテゴリーとして直ちに定義しない。
+必要な複合カテゴリーと成立規則はPhase~1.$\alpha$の対象とする。
+例えば競合的制御、
+相互制約、
+相互侵食的依存といった記述への整理は
+考えられるが、
+本論文はそれらを第19以降の正式カテゴリーとして定義しない。
+同じ単方向ラベルが二つ現れたという形式と、
+自然言語上の
+「相互」という名称に固有の成立条件とは区別する。
+\end{remark}
+
+\begin{definition}[双方向成立カテゴリー（分類C）]
+\label{def:bidirectional_category}
+双方向合成関係 $\mathrm{Rel}_{ij,t}$ が定義され、
+その双方向的な成立様式についてラベルを付す場合の値域を
+\[
+ \mathrm{cat}_{\leftrightarrow,ij,t}\in\mathcal C_{\leftrightarrow},\qquad
+ \mathcal C_{\leftrightarrow}=
+ \{\mathrm{coop},\mathrm{sym},\mathrm{conf}\}
+\]
+と書く。
+この集合の正式な定義は定義~\ref{def:category_set} で与える。
+
+これらは協力・共生・対立の双方向成立ラベルであり、
+単方向記述子のカテゴリー成分 $\mathrm{cat}_{i\leftarrow j,t}\in\mathcal C_{\rightarrow}$ とは区別する。
+
+本節は双方向ラベルの成立条件や、
+二つの単方向ラベルからの導出規則を与えない。
+そのため、
+この補助ラベルを採用するか否かは、
+双方向合成の整形式性とは別の記述上の選択である。
+同種・異種の分類が定まっても、
+協力・共生・対立のいずれかを自動的に決定できるわけではない。
+したがって、
+$\mathrm{Rel}_{ij,t}$ が定義されたすべての組に
+$\mathrm{cat}_{\leftrightarrow,ij,t}$ を必ず割り当てるものではない。
+未判定を新たな第19の関係カテゴリーとして追加しない。
+\end{definition}
+
+\begin{remark}[協力・共生・対立の双方向性]
+\label{rem:cooperation_bidirectional}
+協力・共生・対立の三ラベルは単方向カテゴリー集合に含めず、
+二方向の関係記録を照合する水準に置く。
+双方向合成関係の存在だけでは、
+三ラベルのいずれが成立するかは定まらない。
+
+寄与・相互性・対立性の成立条件と閾値を与えることはPhase~1.$\alpha$の課題とする。
+例えば片方向に支援が記録されたという事実は、
+逆方向にも支援があることを示さない。
+
+両方向に支援が記録された場合にも、
+それだけで協力の必要十分条件を得たことにはならない。
+相互にどのような作用が成立したとき協力・共生・対立と呼ぶかは、
+双方向記述を照合する規則が具体化されて初めて判断できる。
+\end{remark}
+
+\begin{remark}[競争の方向性に関する特殊性]
+\label{rem:competition_directionality}
+競争 $\mathrm{comp}$ は単方向カテゴリーであり、
+一方の競争的作用だけを記録できる。
+両方向で $\mathrm{cat}_{i\leftarrow j,t}=\mathrm{cat}_{j\leftarrow i,t}=\mathrm{comp}$ なら
+同種相互関係として記録できるが、
+それを別の双方向成立カテゴリーとはしない。
+一方の対象が競争的な作用を記録し、
+相手側に同種の作用が記録されない場合も、
+この単方向ラベルを双方向成立ラベルへ移し替える必要はない。
+競争が双方で現れた場合の強度や成立閾値の定量的区別はPhase~1.$\alpha$へ委ねる。
+\end{remark}
+
+\begin{remark}[双方向成立カテゴリーと同種相互関係の関係]
+\label{rem:bidirect_vs_homo}
+二つの単方向ラベルの一致・不一致を述べる同種／異種の区別
+（定義~\ref{def:homo_hetero_relation}）と、
+双方向成立ラベル（定義~\ref{def:bidirectional_category}）は別の記述軸である。
+同種の支援ラベルが二つあるだけで協力の成立を導く規則は本節にない。
+一方、
+双方向成立ラベルを付す場合も、
+両方向の単方向記録が不要になるわけではない。
+本節は $\mathcal C_{\rightarrow}\times\mathcal C_{\rightarrow}$ から
+$\mathcal C_{\leftrightarrow}$ への全域写像を定義しない。
+二つの単方向ラベルが同種か異種かという判定は、
+双方向成立ラベルがどれかを決定する十分条件にはならない。
+また、
+ある双方向成立ラベルを記録したとしても、
+そのことだけから両方向の単方向カテゴリーの組が一意に復元できるわけではない。
+\end{remark}
+
+\begin{remark}[非ACS対象との双方向関係の制限]
+\label{rem:nACS_limit}
+非ACSエージェントや非エージェント的対象には、
+本節で $\Sigma_j$ 側の状態空間、
+可行行動集合または実効的自由度を定義しない。
+そのため $\mathrm{Rel}_{j\leftarrow i,t}$ をACS型の六成分形式で自動生成しない。
+
+$\Sigma_i$ 側の単方向記述は引き続き許される。
+非ACS側の内部構造を明示する双方向形式は本論文の対象外とする。
+非ACSエージェントに何らかの行為主体性があるとしても、
+本論文はその対象へACSの七タプルや三機構を割り当てない。
+物体との作用についても個体側の記録は行えるが、
+物体側の可行行動集合を仮定して逆方向の六成分を作らない。
+\end{remark}
+
+\begin{remark}[双方向合成関係と閉塞・崩壊の節]
+\label{rem:bidirect_to_sec7}
+双方向合成に含まれる二つの単方向記述のいずれかは
+\S\ref{sec:collapse_cond} の関係記録に参照されうる。
+ただし本論文は、双方向合成の存在やカテゴリの組から、
+いずれかのACSの失敗状態を一般的な帰結として置かない。
+二つの単方向記述子に併記される差分を検討する際も、
+閉塞と崩壊の成立は各個体の軌道ごとに別途判定する。
+一方の失敗状態から、
+他方の失敗状態を一般に導く規則は本節にはない。
+\end{remark}
+
+\begin{remark}[組織ACSの節への接続]
+\label{rem:bidirect_to_sec8}
+$\mathrm{Rel}_{ij,t}$ は、
+\S\ref{sec:org_acs} で扱う
+組織水準の結合構造を記述する素材になりうる。
+ただし本論文は、
+二つの関係記述子の組から組織自身の自己--環境境界、
+機能の分担・調整、
+または組織水準のACS構造が自動的に成立することを一般的な帰結として置かない。
+本節は組織ACSの成立判定やネットワークの時間発展を定義しない。
+双方向合成を多数並べることと、
+組織自身について組織水準のACS構造を
+成立させることは異なる。
+組織ACSを単なるACS集団から区別する条件は後続節が定める。
+関係の組を列挙するだけで、
+新しい組織水準の状態空間や組織水準の可行性の
+存在を示したことにはならない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{関係品質}
+\label{subsec:ro_quality}
+
+本小節では、
+\S\ref{sec:three_principles} の構造的環境結合条件（\S\ref{subsec:env_coupling}）
+および EU の時刻別充足述語（\S\ref{subsec:eu}）とは区別して、
+ACS $\Sigma_i$ と外部対象 $Y_j\in\mathcal Y_{-i}$ との評価可能な関係が
+$\Sigma_i$ の可行性維持に対してどの向きにあるかを記述する
+関係品質 $Q_{i\leftarrow j,t}$ を形式化する。
+
+\S\ref{subsec:env_coupling} で整理したとおり、
+本論文は
+\[
+  \text{構造的環境結合 } \mathrm{EC}(x_t),
+  \qquad
+  \text{実現外部相互作用 } \chi_{\mathrm{EI},t},
+  \qquad
+  \text{EU の時刻別充足述語 } \mathrm{EU}_t,
+  \qquad
+  \text{関係品質評価 } Q
+\]
+を相互に異なる対象として扱う。
+したがって、本小節で導入する $Q$ は、
+構造的環境結合条件の条件でも、
+EU の時刻別充足述語の追加条件でもない。
+$Q$ は三原理の時刻別充足述語の定義に用いない。
+
+
+本小節の $Q_{i\leftarrow j,t}$ は、記述者が指定する評価規則のもとで定める分類Cの量である。
+理論上の $Q_{i\leftarrow j,t}$ の値または後述する各成分を
+ACS が同一の数値表現で保持・計算することは要求しない。
+
+\subsubsection{関係品質の評価可能域}
+
+外部対象 $Y_j\in\mathcal{Y}_{-i}$（定義~\ref{def:external_object_set}）は、
+他の ACS または行為主体に限定されない。
+非主体的対象、資源、物質、エネルギー源、
+その他の外部対象も含みうる。
+
+\begin{definition}[関係品質の評価規則（分類C）]
+\label{def:Q_rule}
+記述者は、評価の対象とする関係 $(i,j)$ ごとに
+\emph{評価規則} $\mathrm{Rule}_{Q,i\leftarrow j}$ を指定する。
+評価規則は、参照する作動記録の区間またはモデル、比較の基準、評価の時間幅、
+および定義~\ref{def:Q} の三成分と重みの基準を定め、
+比較を行う期間を通じて固定する。
+評価規則は規範的な善悪の基準を表さない。
+これは、偏向性の参照基準（定義~\ref{def:bias_tendency}）と同じ扱いである。
+評価の時間幅が時刻 $t$ より先の記録を含む場合、
+時刻 $t$ について与える値は事後的な記述であり、
+時刻 $t$ における当該 ACS の入力ではない
+（\S\ref{sec:extended_dynamics} の予測精度係数と同じ扱い）。
+\end{definition}
+
+\begin{definition}[関係品質評価可能域]
+\label{def:Q_domain}
+時刻 $t$ において、
+評価規則 $\mathrm{Rule}_{Q,i\leftarrow j}$ が値を与える外部対象の集合を
+\[
+  \mathcal D_{Q,i,t}
+  :=
+  \Bigl\{
+    Y_j\in\mathcal{Y}_{-i}
+    \ \Bigm|\
+    \mathrm{Rule}_{Q,i\leftarrow j}\text{ が時刻 $t$ に値を与える}
+  \Bigr\}
+\]
+と定義し、関係品質の\emph{評価可能域}と呼ぶ。
+$\mathcal D_{Q,i,t}$ は理論上の定義域であり、
+ACS がその内部で当該関係の品質を評価できる対象の集合ではない。
+$Q$ が理論上定義されることと、ACS が内部で $Q$ に相当する評価を形成・保持することは区別する
+（\S\ref{subsec:description_levels_global}）。
+
+添字 $i\leftarrow j$ の向きは記述の視点を表し（備考~\ref{rem:rel_unidirect_notation}）、
+$Y_j$ が行為主体であることや、時刻 $t$ に因果作用が実現していることを意味しない。
+
+Phase~1 は
+\[
+  \mathcal D_{Q,i,t}\neq\emptyset
+\]
+を一般には要求しない。
+\end{definition}
+
+\begin{remark}[評価不能と中立評価の区別]
+\label{rem:Q_undefined}
+定義~\ref{def:Q_domain} により、
+$Y_j\notin\mathcal D_{Q,i,t}$
+である場合、
+本小節の $Q_{i\leftarrow j,t}$ は
+\emph{定義されない}。
+
+したがって本論文は、
+評価不能な関係に対して規約的に
+$Q=0$
+を割り当てない。
+
+$Q_{i\leftarrow j,t}=0$
+という記述は、
+$Y_j\in\mathcal D_{Q,i,t}$ であり、
+品質評価が実際に定義されたうえで
+その総合評価が中立境界にある場合に限って用いる。
+
+この区別により、
+\[
+  \text{評価不能}
+  \neq
+  \text{中立品質}
+\]
+を明示的に維持する。
+\end{remark}
+
+\subsubsection{関係品質評価 $Q$ の形式化}
+
+\begin{definition}[関係品質評価 $Q$]
+\label{def:Q}
+時刻 $t$ において
+\[
+  Y_j\in\mathcal D_{Q,i,t}
+\]
+とする。
+
+評価規則 $\mathrm{Rule}_{Q,i\leftarrow j}$ のもとで、
+$Y_j$ との関係が
+ACS $\Sigma_i$ の可行性維持に関係する
+情報形成、資源収支、および可行性方向に対してもつ
+総合的な関係品質を
+\[
+  Q_{i\leftarrow j,t}
+  \in[-1,1]
+\]
+とする。
+
+Phase~1 では、
+この総合評価を
+\[
+  Q_{i\leftarrow j,t}
+  :=
+  \alpha^{\mathrm{inf}}_{i\leftarrow j} Q^{\mathrm{inf}}_{i\leftarrow j,t}
+  +
+  \alpha^{\mathrm{res}}_{i\leftarrow j} Q^{\mathrm{res}}_{i\leftarrow j,t}
+  +
+  \alpha^{\mathrm{via}}_{i\leftarrow j} Q^{\mathrm{via}}_{i\leftarrow j,t}
+\]
+として表す。
+
+各成分
+\[
+  Q^{\mathrm{inf}}_{i\leftarrow j,t},
+  \qquad
+  Q^{\mathrm{res}}_{i\leftarrow j,t},
+  \qquad
+  Q^{\mathrm{via}}_{i\leftarrow j,t}
+  \in[-1,1]
+\]
+は、次の関係評価軸を表す。
+
+\begin{itemize}
+  \item
+  \textbf{情報品質成分}
+  \[
+    Q^{\mathrm{inf}}_{i\leftarrow j,t}\in[-1,1].
+  \]
+  $Y_j$ に関係する情報的作用または情報内容が、
+  ACS $\Sigma_i$ の内部モデル、評価、または応答形成における
+  可行性適合的な情報形成に対してもつ
+  正負の寄与方向を正規化して表す。
+
+  \[
+    Q^{\mathrm{inf}}_{i\leftarrow j,t}>0
+  \]
+  は可行性維持に関する情報形成を支える側、
+  \[
+    Q^{\mathrm{inf}}_{i\leftarrow j,t}<0
+  \]
+  はこれを阻害する側の評価を表す。
+
+  \item
+  \textbf{資源・物質・エネルギー収支成分}
+  \[
+    Q^{\mathrm{res}}_{i\leftarrow j,t}\in[-1,1].
+  \]
+  $Y_j$ との関係に伴う
+  ACS $\Sigma_i$ 側の資源、物質、エネルギー等の
+  可行性維持上の正味寄与方向を正規化して表す。
+
+  \[
+    Q^{\mathrm{res}}_{i\leftarrow j,t}>0
+  \]
+  は補給、獲得、負荷軽減等の正側、
+  \[
+    Q^{\mathrm{res}}_{i\leftarrow j,t}<0
+  \]
+  は損失、枯渇、負荷増大等の負側の評価を表す。
+
+  \item
+  \textbf{可行性方向評価成分}
+  \[
+    Q^{\mathrm{via}}_{i\leftarrow j,t}\in[-1,1].
+  \]
+  $Y_j$ との関係が、
+  ACS $\Sigma_i$ の可行性余裕度または
+  可行性維持に関係する状態変化方向に対してもつ
+  正負の寄与を評価した形式量である。
+
+  \[
+    Q^{\mathrm{via}}_{i\leftarrow j,t}>0
+  \]
+  は可行性を支える方向、
+  \[
+    Q^{\mathrm{via}}_{i\leftarrow j,t}<0
+  \]
+  は可行性を損なう方向の評価を表す。
+\end{itemize}
+
+重み
+\[
+  \alpha^{\mathrm{inf}}_{i\leftarrow j},
+  \qquad
+  \alpha^{\mathrm{res}}_{i\leftarrow j},
+  \qquad
+  \alpha^{\mathrm{via}}_{i\leftarrow j}
+  \ge0
+\]
+は
+\[
+  \alpha^{\mathrm{inf}}_{i\leftarrow j}
+  +
+  \alpha^{\mathrm{res}}_{i\leftarrow j}
+  +
+  \alpha^{\mathrm{via}}_{i\leftarrow j}
+  =1
+\]
+を満たすものとする。
+
+各成分の値と重みは評価規則 $\mathrm{Rule}_{Q,i\leftarrow j}$ が定める。
+重みは、評価対象 $Y_j$、その対象種別、
+および当該 ACS の構造に相対する形式パラメータであり、
+すべての ACS に共通する普遍定数とはしない。
+
+特定の評価対象について
+三成分のうち一部が
+当該関係の評価軸として意味をもたない場合には、
+その成分に対応する重みを $0$ とすることを許す。
+ただし、重みの総和は $1$ とする。
+
+各成分が $[-1,1]$ に属し、
+重みが非負で総和 $1$ であるから、
+$Q$ は三成分の凸結合となり、
+\[
+  Q_{i\leftarrow j,t}\in[-1,1]
+\]
+が成立する。
+\end{definition}
+
+\begin{remark}[関係品質と内部の評価の区別]
+\label{rem:Q_internal_formal}
+$Q_{i\leftarrow j,t}$ は記述者が評価規則のもとで定める量であり、
+当該 ACS の内部の評価ではない。
+\S\ref{sec:three_principles} の環境利用・外部結合評価機能（定義~\ref{def:principle_related_functions}）は、
+外部関係に伴う可行性関連差異の少なくとも一部を識別・評価する分類Aの機能であり、
+\S\ref{sec:tipa} の要求×対象の評価（定義~\ref{def:rq_eval_types}）は、
+内部対象トークンについての内部の評価である。
+本論文は、これらの内部の評価が $Q_{i\leftarrow j,t}$ と一致することを要求しない
+（備考~\ref{rem:theory_quantity_vs_internal}）。
+したがって、両者の食い違い（たとえば内部では好ましいと評価される関係について
+$Q_{i\leftarrow j,t}<0$ であること）は、それだけでは機能の不全を意味しない。
+\end{remark}
+
+\begin{remark}[関係品質と対象の性質の区別]
+\label{rem:Q_not_property}
+$Q_{i\leftarrow j,t}$ は $Y_j$ の性質だけからは定まらず、
+当該 ACS、時刻および評価規則に相対する。
+同じ $Y_j$ について、異なる ACS の間で、また同じ ACS の異なる時刻の間で、符号は異なりうる。
+\end{remark}
+
+\begin{remark}[$Q$ の成分形式に関する Phase~1 の地位]
+\label{rem:Q_form}
+三成分
+\[
+  Q^{\mathrm{inf}}_{i\leftarrow j,t},
+  \qquad
+  Q^{\mathrm{res}}_{i\leftarrow j,t},
+  \qquad
+  Q^{\mathrm{via}}_{i\leftarrow j,t}
+\]
+は、
+関係品質評価を
+情報、資源収支、可行性方向という
+三つの機能的観点に分解する
+Phase~1 の形式表現である。
+
+これは、
+あらゆる生物的・人工的 ACS が
+必ず三つの独立した内部変数を保持すること、
+または関係品質評価の実装が
+この三成分分解に一意であることを意味しない。
+
+各成分の操作的測定方法、
+対象種別ごとの正規化規則、
+各重みの経験的同定、
+およびより高次元の関係品質表現は、
+Phase~1 では規定しない
+（within present framework）。
+\end{remark}
+
+\subsubsection{$Q$ の符号分類}
+
+\begin{definition}[$Q$ の符号による関係品質分類]
+\label{def:Q_sign}
+時刻 $t$ において
+\[
+  Y_j\in\mathcal D_{Q,i,t}
+\]
+である評価可能な関係について、
+$Q$ の符号により次のように記述する。
+
+\begin{itemize}
+  \item
+  \[
+    Q_{i\leftarrow j,t}>0
+  \]
+  のとき、
+  \emph{正側関係品質}と呼ぶ。
+
+  \item
+  \[
+    Q_{i\leftarrow j,t}=0
+  \]
+  のとき、
+  \emph{中立関係品質}と呼ぶ。
+
+  \item
+  \[
+    Q_{i\leftarrow j,t}<0
+  \]
+  のとき、
+  \emph{負側関係品質}と呼ぶ。
+\end{itemize}
+
+この分類は、
+当該 ACS の可行性維持に関係する
+構造的評価方向を表す記述的分類であり、
+外部対象または関係の
+倫理的・規範的な善悪を判定するものではない。
+\end{definition}
+
+\begin{remark}[$Q=0$ は定義された評価の中立境界である]
+\label{rem:Q_threshold}
+定義~\ref{def:Q_sign} における
+$Q=0$
+は、
+別個の外生的な普遍閾値
+$Q_{\mathrm{threshold}}$
+を導入して設定したものではなく、
+定義~\ref{def:Q} の符号付き成分表現における
+中立境界である。
+
+したがって、
+$Q>0$、$Q=0$、$Q<0$
+は、それぞれ
+本品質評価上の正側、中立、負側を表す。
+
+ただし、
+この $Q=0$ は
+$Y_j\in\mathcal D_{Q,i,t}$
+である場合にのみ意味をもつ。
+
+評価不能
+$Y_j\notin\mathcal D_{Q,i,t}$
+を
+$Q=0$ と同一視してはならない。
+\end{remark}
+
+\subsubsection{$Q$ と構造的環境結合・実現外部相互作用の区別}
+
+\begin{proposition}[$Q$ と構造的環境結合条件の定義式上の相互非参照]
+\label{prop:Q_not_RO_condition}
+\begin{enumerate}[label=(\roman*)]
+  \item 構造的環境結合条件 $\mathrm{EC}(x_t)$（定義~\ref{def:env_coupling}）が
+  成り立つか否かは、$x_t$、$f$、$U$、$E_{\mathrm{ext}}$ および $\pi_E$ だけで定まり、
+  評価可能域 $\mathcal D_{Q,i,t}$ と $Q$ の値をその定義に含まない。
+  \item 関係品質評価 $Q_{i\leftarrow j,t}$（定義~\ref{def:Q}）は、
+  $Y_j\in\mathcal D_{Q,i,t}$ である評価可能な関係について定まり、
+  $\mathrm{EC}(x_t)$ をその定義に含まない。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i)：定義~\ref{def:env_coupling} の条件は、
+$u\in U$ と $e,e'\in E_{\mathrm{ext}}$ についての量化と
+$\pi_E(f(x_t,u,e))\neq\pi_E(f(x_t,u,e'))$ だけからなる。
+(ii)：定義~\ref{def:Q_rule}、定義~\ref{def:Q_domain} および定義~\ref{def:Q} の条件に
+定義~\ref{def:env_coupling} は現れない。
+\end{proof}
+
+本命題は、両者の定義が互いを含まないことを述べるものであり、
+両者の間に含意が成り立たないことを示したものではない。
+本論文は、評価可能な関係について
+$Q_{i\leftarrow j,t}>0$ または $Q_{i\leftarrow j,t}<0$ であることから
+$\mathrm{EC}(x_t)$ が成り立つか否かを、
+また $\mathrm{EC}(x_t)$ から特定の $Y_j$ について
+$Y_j\in\mathcal D_{Q,i,t}$ または $Q_{i\leftarrow j,t}>0$ を、
+いずれも一般的な帰結として置かない。
+同じく、$Q$ の符号から $\mathrm{EU}_t$ の真偽を一般的な帰結として置かない。
+
+\begin{remark}[$Q$ と実現外部相互作用の非同一性]
+\label{rem:Q_chi_distinction}
+\S\ref{subsec:env_coupling} の
+実現外部相互作用指標
+$\chi_{\mathrm{EI},t}$
+と $Q$ も同一ではない。
+
+$\chi_{\mathrm{EI},t}=1$
+は、
+時刻 $t$ に境界横断的な外部相互作用が
+実現していることを表すが、
+本論文はそれだけから
+特定の $Y_j$ との関係について
+$Y_j\in\mathcal D_{Q,i,t}$
+または
+$Q_{i\leftarrow j,t}>0$
+を一般的な帰結として置かない。
+
+逆に、
+関係品質評価が定義されていることは、
+過去の相互作用、内部モデル、記憶、
+その他の関係情報に基づく場合を
+Phase~1 は排除しないため、
+$Y_j\in\mathcal D_{Q,i,t}$
+のみから
+$\chi_{\mathrm{EI},t}=1$
+を一般的な帰結として置かない。
+
+したがって、
+\[
+  \mathrm{EC}(x_t),
+  \qquad
+  \chi_{\mathrm{EI},t},
+  \qquad
+  \mathrm{EU}_t,
+  \qquad
+  Q
+\]
+は相互に区別して扱う。
+\end{remark}
+
+\subsubsection{負の関係品質を伴う環境結合}
+
+\begin{definition}[負の関係品質を伴う環境結合（分類C）]
+\label{def:contaminated_ro}
+時刻 $t$ において、
+構造的環境結合条件 $\mathrm{EC}(x_t)$（定義~\ref{def:env_coupling}）が成り立ち、
+かつ、ある評価可能な外部対象
+\[
+  Y_j\in\mathcal D_{Q,i,t}
+\]
+について
+\[
+  Q_{i\leftarrow j,t}<0
+\]
+が成立するとき、
+この配置を当該関係 $Y_j$ に関する
+\emph{負の関係品質を伴う環境結合}と呼ぶ。
+すなわち、
+\[
+  \mathrm{EC}(x_t)
+  \quad\wedge\quad
+  \exists\,Y_j\in\mathcal D_{Q,i,t}
+  :
+  Q_{i\leftarrow j,t}<0
+\]
+という記述的配置であり、
+外部対象または関係の善悪を判定するものではない。
+\end{definition}
+
+\begin{remark}[負の関係品質を伴う環境結合の適用範囲]
+\label{rem:contaminated_ro_scope}
+定義~\ref{def:contaminated_ro} は、
+構造的環境結合条件が成り立っているにもかかわらず、
+少なくとも一つの評価可能な関係が
+負側の品質評価を受けるという
+構造的配置を区別するための記述概念である。
+
+これは、
+構造的環境結合自体が「悪い」こと、
+外部との関係を閉じるべきこと、
+または当該外部対象が
+倫理的に有害であることを意味しない。
+
+また本論文は、
+$Q_{i\leftarrow j,t}<0$
+単独から
+$\Pi(x_{t+1})<\Pi(x_t)$、
+$A_t=\emptyset$、
+または
+$\mathrm{Col}_{i,t}=1$
+を一般的な帰結として置かない。
+
+$Q$ は関係品質の評価方向を表すが、
+その評価と実際の状態遷移との定量的接続には、
+$f$、実現行動、実現外部環境状態、
+内部状態、および必要に応じた追加条件が関与する。
+\end{remark}
+
+\begin{remark}[負側関係品質と負の関係品質を伴う環境結合は同一ではない]
+\label{rem:contaminated_status}
+$Q_{i\leftarrow j,t}<0$
+という負側関係品質は、
+評価可能な一つの関係についての記述である。
+これに対し、
+負の関係品質を伴う環境結合は
+$\mathrm{EC}(x_t)$ が成り立つことを追加的に要求する。
+したがって、
+$Q<0$
+と
+\[
+  \text{負の関係品質を伴う環境結合}
+\]
+は同一概念ではない。
+
+また、負の関係品質を伴う環境結合は、
+三原理に追加される第四の原理、
+構造的環境結合条件の別種の形、
+EU の時刻別充足述語の別種の条件、
+または新たな失敗状態ではない。
+\end{remark}
+
+
+\subsubsection{$Q$ と可行性変化の関係}
+
+\begin{remark}[$Q$ の符号と $\Delta\Pi$ の接続を一般則として置かない]
+\label{rem:Q_connection}
+時刻差分
+\[
+  \Delta\Pi_t
+  :=
+  \Pi(x_t)-\Pi(x_{t-1})
+\]
+を考える場合でも、本論文は
+\[
+  Q_{i\leftarrow j,t}<0
+  \quad\Longrightarrow\quad
+  \Delta\Pi_t<0
+\]
+および
+\[
+  Q_{i\leftarrow j,t}>0
+  \quad\Longrightarrow\quad
+  \Delta\Pi_t>0
+\]
+を一般的な帰結として置かない。
+これらの含意が成り立たないことを示したものではない。
+
+理由は、
+$Q$ が特定の評価対象関係についての
+総合的な関係品質評価であるのに対し、
+$\Delta\Pi_t$ は
+ACS の実現状態遷移全体の結果として定まるからである。
+
+したがって、
+$Q$ の符号と
+$\Pi$ の時間変化方向との間に
+一般的な必要十分関係を置かない。
+
+特定の ACS または特定の関係型について
+両者を定量的に接続するためには、
+追加の構造仮定または動学モデルを要する。
+\end{remark}
+
+\subsubsection{時間集約との役割分担}
+
+\begin{remark}[$Q$ の時間集約は後続小節で扱う]
+\label{rem:Q_temporal_deferred}
+本小節の $Q$ は、
+時刻 $t$ における
+評価可能な個別関係の品質評価を定義する。
+
+有限窓平均は本小節の後半で、
+三原理関連評価の時間統合（T-STAB）は
+\S\ref{subsec:s3_tstab} で扱う。
+
+したがって本小節では、
+評価可能な $Q$ が存在しない場合に
+時間平均へ規約値 $0$ を代入すること、
+単一の評価対象関係を
+普遍的に「代表関係」として固定すること、
+または $Q$ を EU の時刻別充足述語や構造的環境結合条件の程度へ
+直接変換することは行わない。
+\end{remark}
+
+
+
+\subsubsection{関係品質 $Q$ の有限窓集約}
+
+\begin{definition}[関係品質の有限窓評価]
+\label{def:Q_window_average}
+任意の有限窓幅
+\[
+  W_Q\in\mathbb{N},
+  \qquad
+  W_Q\ge1
+\]
+を固定する。
+
+時刻 $t\in\mathbb{N}_0$ における
+$Q$ 用有限窓を
+\[
+  \mathcal{W}_t^{Q}
+  :=
+  \Bigl\{
+    r\in\mathbb{N}_0
+    \Bigm|
+    \max(0,t-W_Q+1)\le r\le t
+  \Bigr\}
+\]
+とする。
+
+外部対象
+$Y_j\in\mathcal{Y}_{-i}$
+について、
+この窓内で
+$Q_{i\leftarrow j,r}$ が定義される
+時刻集合を
+\[
+  \mathbb T^{Q}_{i\leftarrow j,t}
+  :=
+  \Bigl\{
+    r\in\mathcal{W}_t^{Q}
+    \Bigm|
+    Y_j\in\mathcal D_{Q,i,r}
+  \Bigr\}
+\]
+とする。
+
+\[
+  \mathbb T^{Q}_{i\leftarrow j,t}\neq\emptyset
+\]
+の場合に限り、
+当該関係の有限窓平均を
+\[
+  \bar Q_{i\leftarrow j,W_Q,t}
+  :=
+  \frac{1}{|\mathbb T^{Q}_{i\leftarrow j,t}|}
+  \sum_{r\in\mathbb T^{Q}_{i\leftarrow j,t}}
+  Q_{i\leftarrow j,r}
+  \in[-1,1]
+\]
+と定義する。
+
+一方、
+\[
+  \mathbb T^{Q}_{i\leftarrow j,t}=\emptyset
+\]
+の場合、
+$\bar Q_{i\leftarrow j,W_Q,t}$ は
+\emph{未定義}とする。
+\end{definition}
+
+\begin{remark}[$Q$ 未評価窓に規約値 $0$ を与えない]
+\label{rem:Q_window_undefined}
+定義~\ref{def:Q_window_average} は、
+本小節の
+\[
+  \text{評価不能}
+  \neq
+  \text{中立品質}
+\]
+という区別を時間集約後にも維持する。
+
+したがって、
+有限窓内に
+評価可能な $Q$ が一つも存在しない場合に
+\[
+  \bar Q_{i\leftarrow j,W_Q,t}:=0
+\]
+とは置かない。
+
+また、
+Phase~1 では
+複数の外部対象に対する
+$\bar Q_{i\leftarrow j,W_Q,t}$ を
+単一の総合 $\bar Q_{i,t}$ へ集約する
+普遍的規則を置かない。
+
+どの関係を評価対象として優先するか、
+複数関係をどの作用素で統合するか、
+および対象依存の重みを
+どのように更新するかは、
+実装および後続の動学に依存しうる
+（within present framework）。
+\end{remark}
+
+\begin{remark}[$Q$ の時間集約は EU・構造的環境結合の再定義ではない]
+\label{rem:Q_window_not_RO}
+\[
+  \bar Q_{i\leftarrow j,W_Q,t}>0,
+  \qquad
+  \bar Q_{i\leftarrow j,W_Q,t}=0,
+  \qquad
+  \bar Q_{i\leftarrow j,W_Q,t}<0
+\]
+は、評価可能な一つの関係についての時間集約された品質記述である。
+本論文は、これらの符号から、
+窓内の時刻における $\mathrm{EU}_r$ の真偽、
+または構造的環境結合条件 $\mathrm{EC}(x_r)$（定義~\ref{def:env_coupling}）が
+成り立つか否かを、一般的な帰結として置かない。
+したがって、$Q$ の有限窓評価は EU の条件でも構造的環境結合条件でもなく、
+関係品質の時間方向への集約として扱う。
+\end{remark}
+
+\subsubsection{T-STAB との関係}
+
+\begin{remark}[$Q$ を T-STAB の普遍条件へ組み込まない]
+\label{rem:Q_not_tstab_core}
+本論文は、定義~\ref{def:tstab} の T-STAB に
+\[
+  \bar Q_{i\leftarrow j,W_Q,t}\ge Q^{\min}
+\]
+のような関係品質下限を普遍的な必須条件として組み込まない。
+
+理由は、本小節で定めた $Q$ が
+特定の評価可能な外部関係に相対する量であり、
+時刻または対象によって評価可能域 $\mathcal D_{Q,i,t}$ が
+空でありうるためである。
+また、複数の評価対象関係を単一の総合品質へ集約する普遍的規則も
+Phase~1 では定めていない。
+したがって、$Q$ の時間集約は
+T-STAB と並行する関係品質の時間評価チャネルとして保持する。
+
+特定の ACS 実装において、
+ある評価対象関係または複数関係の集約量を
+T-STAB 型の内部参照条件へ組み込むことは排除しないが、
+その場合の対象選択、集約作用素、閾値、および欠測処理は
+明示的に追加定義されなければならない。
+\end{remark}
+
+\begin{remark}[負の関係品質を伴う環境結合の時間評価]
+\label{rem:contaminated_ro_temporal}
+負の関係品質を伴う環境結合は、
+時刻ごとの配置として
+\[
+  \mathrm{EC}(x_t)
+  \quad\wedge\quad
+  \exists Y_j\in\mathcal D_{Q,i,t}:
+  Q_{i\leftarrow j,t}<0
+\]
+で記述される（定義~\ref{def:contaminated_ro}）。
+
+定義~\ref{def:Q_window_average} により、
+特定の $Y_j$ について $\bar Q_{i\leftarrow j,W_Q,t}$ が定義される場合には、
+その符号を記述に用いることができる。
+ただし窓平均が負であることは、窓内の各時刻で $Q_{i\leftarrow j,r}$ が定義され負であることを含意しない。
+負側関係品質の時間的持続を述べるには、窓内の各時刻での定義と符号を別に確かめる。
+
+ただし本論文は、
+$\bar Q_{i\leftarrow j,W_Q,t}<0$
+から、窓内の時刻においていずれかの時刻別充足述語が偽であること、
+構造的環境結合条件が成り立たないこと、
+T-STAB 条件の不充足、閉塞、または崩壊を、
+一般的な帰結として置かない。
+この有限窓平均は関係品質評価の時間方向への集約であり、
+状態遷移の結果そのものではない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{代表カテゴリー集合と六系分類}
+\label{subsec:rel_categories}
+
+本小節では、
+関係カテゴリーを成立水準と内容上の系分類という二つの軸で整理する。
+
+\begin{definition}[代表カテゴリーラベル集合（分類C）]
+\label{def:category_set}
+単方向関係記述子のカテゴリー成分の値域を
+\[
+\begin{aligned}
+\mathcal C_{\rightarrow}:=\{&\mathrm{obs},\mathrm{ref},\mathrm{aff},
+\mathrm{dep},\mathrm{sup},\mathrm{par},\mathrm{dom},\mathrm{mgmt},\mathrm{manip},\\
+&\mathrm{exploit},\mathrm{use},\mathrm{comp},\mathrm{alert},\mathrm{avoid},\mathrm{excl}\}
+\end{aligned}
+\]
+とし、
+ACS同士の双方向成立カテゴリーの値域を
+\[
+\mathcal C_{\leftrightarrow}:=
+\{\mathrm{coop},\mathrm{sym},\mathrm{conf}\}
+\]
+とする。
+全体の代表ラベル集合は
+\[
+\mathcal C:=\mathcal C_{\rightarrow}\cup\mathcal C_{\leftrightarrow}
+\]
+であり、
+単方向15種と双方向成立3種の計18種である。
+ラベルは関係形式を記述する名称であり、
+各カテゴリーの成立条件・閾値・規範的価値は定めない。
+$\mathcal C_{\rightarrow}$ と $\mathcal C_{\leftrightarrow}$ はラベルとして交わらず、
+全体の18種類は「15個の単方向記述子の成分値」と「3個の双方向補助ラベル」の総数を表す。
+18種類すべてが、
+同じ単方向記述子の一つの成分値になるわけではない。
+\end{definition}
+
+各ラベルの読解上の名称と成立水準は次のとおりである。
+\[
+\begin{array}{c|l|c@{\qquad}c|l|c}
+\text{ラベル}&\text{名称}&\text{水準}&\text{ラベル}&\text{名称}&\text{水準}\\\hline
+\mathrm{obs}&\text{観測}&\text{単方向}&\mathrm{ref}&\text{参照}&\text{単方向}\\
+\mathrm{aff}&\text{親和}&\text{単方向}&\mathrm{dep}&\text{依存}&\text{単方向}\\
+\mathrm{sup}&\text{支援}&\text{単方向}&\mathrm{par}&\text{寄生}&\text{単方向}\\
+\mathrm{dom}&\text{支配}&\text{単方向}&\mathrm{mgmt}&\text{管理}&\text{単方向}\\
+\mathrm{manip}&\text{操作}&\text{単方向}&\mathrm{exploit}&\text{搾取}&\text{単方向}\\
+\mathrm{use}&\text{利用}&\text{単方向}&\mathrm{comp}&\text{競争}&\text{単方向}\\
+\mathrm{alert}&\text{警戒}&\text{単方向}&\mathrm{avoid}&\text{回避}&\text{単方向}\\
+\mathrm{excl}&\text{排除}&\text{単方向}&\mathrm{coop}&\text{協力}&\text{双方向}\\
+\mathrm{sym}&\text{共生}&\text{双方向}&\mathrm{conf}&\text{対立}&\text{双方向}
+\end{array}
+\]
+競争は片方向に記録可能であり、
+相互競争は同種相互関係として扱う（備考~\ref{rem:competition_directionality}）。
+表中の「単方向」は $\mathrm{cat}_{i\leftarrow j,t}$ の値域、
+「双方向」は $\mathrm{cat}_{\leftrightarrow,ij,t}$ の値域を指す。
+ラベルの一覧は読解用の対応であり、
+個別ラベルの成立を判定する基準表ではない。
+
+\begin{remark}[カテゴリー集合の役割]
+\label{rem:category_set_role}
+$\mathcal C$ は代表的な18ラベルであって、
+全ての関係を網羅する分類体系ではない。
+単方向ラベルの値域を与えることは、
+あらゆる対象・時刻に
+$\mathrm{cat}_{i\leftarrow j,t}$ が必ず割り当てられることを意味しない。
+各ラベルの成立条件、
+カテゴリー間の包含関係、
+遷移規則、
+強度尺度は本節では定めない。
+
+一つの関係が複数の自然言語上の性質を帯びうることと、
+本節で一時刻の記録に一つのカテゴリーラベルを付すことは区別する。
+複合カテゴリーや多重ラベルの形式的な規則は後続の詳細化に委ねる。
+\end{remark}
+
+\begin{remark}[中立カテゴリーの除外]
+\label{rem:neutral_exclusion}
+本節は「中立」または「接触」を第19の代表ラベルとして追加しない。
+記述子が定義されない場合、
+関係ラベルを判定できない場合、
+記述子が存在して三差分がすべてゼロの場合は互いに異なる。
+未分類であることから関係の不存在・無影響・中立を推論しない。
+$\mathrm{undetermined}$ は方向性指標にだけ用いる値であり、
+$\mathcal C$ の外に関係カテゴリーを増設する名称としては用いない。
+したがって「接触した」という記録だけから、
+関係に固有のコストや
+可行性関連量の変化があると結論することもしない。
+カテゴリーを付けないという処置と、
+値がゼロの六成分記述子を作る処置を混同しない。
+\end{remark}
+
+\begin{definition}[六系分類（分類C）]
+\label{def:six_system_classification}
+$\mathcal C$ の18ラベルを記述上の便宜により六つの部分集合へ分ける：
+\[
+\begin{aligned}
+\mathcal C_{\mathrm{recog}}&:=\{\mathrm{obs},\mathrm{ref}\},&
+\mathcal C_{\mathrm{aff}}&:=\{\mathrm{aff}\},\\
+\mathcal C_{\mathrm{bind}}&:=\{\mathrm{dep},\mathrm{sup},\mathrm{coop},\mathrm{sym}\},&
+\mathcal C_{\mathrm{ctrl}}&:=\{\mathrm{dom},\mathrm{mgmt},\mathrm{manip}\},\\
+\mathcal C_{\mathrm{extract}}&:=\{\mathrm{par},\mathrm{exploit},\mathrm{use}\},&
+\mathcal C_{\mathrm{comp\mbox{-}iso}}&:=\{\mathrm{comp},\mathrm{alert},\mathrm{avoid},\mathrm{excl},\mathrm{conf}\}.
+\end{aligned}
+\]
+順に認識系、
+親和系、
+結合系、
+制御系、
+収奪系、
+競合隔離系と呼ぶ。
+列挙した六集合はラベルとして互いに交わらず、
+その和集合は $\mathcal C$ に一致する。
+
+この分割はラベルの列挙から従うもので、
+カテゴリーの成立条件や価値序列を追加するものではない。
+各系に対応する名称とラベルを、
+読解用に次のとおり整理する。
+\[
+\begin{array}{c|l|l}
+\text{系の記号}&\text{系名}&\text{含まれるカテゴリー}\\\hline
+\mathcal C_{\mathrm{recog}}&\text{認識系}&\text{観測、参照}\\
+\mathcal C_{\mathrm{aff}}&\text{親和系}&\text{親和}\\
+\mathcal C_{\mathrm{bind}}&\text{結合系}&\text{依存、支援、協力、共生}\\
+\mathcal C_{\mathrm{ctrl}}&\text{制御系}&\text{支配、管理、操作}\\
+\mathcal C_{\mathrm{extract}}&\text{収奪系}&\text{寄生、搾取、利用}\\
+\mathcal C_{\mathrm{comp\mbox{-}iso}}&\text{競合隔離系}&\text{競争、警戒、回避、排除、対立}
+\end{array}
+\]
+\end{definition}
+
+\begin{remark}[六系分類の位置づけ]
+\label{rem:six_system_role}
+六系は内容上の整理であり、
+優劣や善悪の序列ではない。
+結合系にも制約方向の変化が、
+競合隔離系にも可行性保存方向の変化が記録されうる。
+また、
+同じカテゴリーに属する二つの記録で三差分が一致するとは限らない。
+六系の所属は、
+対象別効果の算出規則や可行性の変化方向の関数を与えない。
+例えば依存や支援は、
+条件によって個体側の選択を広げる記録にも、
+資源負荷や制約に伴う記録にも現れうる。
+同様に本論文は、
+警戒や回避という名称から、
+可行性関連量の低下を一般的な帰結として置かない。
+いずれの場合も、
+個別の差分の値と関係の因果的寄与は別々の問題である。
+\end{remark}
+
+\begin{remark}[六系分類と成立水準の独立性]
+\label{rem:six_system_directionality}
+六系はカテゴリーの内容上の整理であり、
+成立水準を一律には指定しない。
+結合系には単方向の依存・支援と双方向成立の協力・共生を含み、
+競合隔離系には単方向の競争・警戒・回避・排除と双方向成立の対立を含む。
+成立水準は定義~\ref{def:category_set} の
+$\mathcal C_{\rightarrow}$ と $\mathcal C_{\leftrightarrow}$ の区別に従う。
+したがって六系の一つを選んだだけでは、
+その内部の単方向・双方向成立のどちらを記録すべきかは定まらない。
+成立水準を特定する際は、
+各カテゴリーがどちらのラベル集合に属するかを確認する。
+\end{remark}
+
+\begin{remark}[カテゴリーと規範評価の分離]
+\label{rem:category_neutral}
+協力、
+寄生、
+支配、
+回避などは構造的な関係記述ラベルであり、
+その名称だけで望ましさ、
+有害性、
+可行性の変化方向を定めない。
+
+本論文は、カテゴリー名や六系への所属から、
+\S\ref{sec:three_principles} の SM・EU・FR の時刻別充足述語の真偽が定まることも
+一般的な帰結として置かない。
+関係の解釈とACS自身の内部認識については備考~\ref{rem:recognized_relation_category} の区別を用いる。
+規範的評価を与えないことは、
+関係記録に付随する差分が
+正・負のいずれであるかを問わないという意味ではない。
+差分の符号を記録することと、
+カテゴリー名に倫理的善悪を割り当てることを分離する。
+\end{remark}
+
+\begin{remark}[カテゴリー成立条件の未定義性]
+\label{rem:category_phase1a}
+代表18ラベルを列挙したことと、
+各ラベルの成立条件を与えたことは異なる。
+本節は必要十分条件、
+判定閾値、
+持続時間、
+強度尺度、
+時間的下位類型およびカテゴリー間の遷移規則を定義しない。
+これらの決定論的な詳細化はPhase~1.$\alpha$へ委ねる。
+例えば「どの程度の資源負荷を伴えば搾取と呼ぶか」、
+「どの程度の相互性があれば協力と呼ぶか」は、
+本節のラベル集合から導かれる判定規則ではない。
+
+長期的・累積的な支援のような時間的下位類型も、
+本節の一時刻ラベルからは決まらない。
+\end{remark}
+
+\begin{remark}[派生カテゴリーと複合カテゴリー]
+\label{rem:derived_composite_categories}
+委任、
+取引、
+所属、
+親交などは複数の関係カテゴリーの組合せとして
+記述されうるが、
+本節はその構成規則を定めない。
+あるカテゴリーから別のカテゴリーへの時間的変化も、
+本節の固定した記述形式だけで自動的に生成されるものではない。
+
+派生・複合カテゴリーの定義と遷移規則はPhase~1.$\alpha$へ委ねる。
+例えば参照・依存・支援・管理・利用等の記録を組み合わせることで
+委任や取引といった関係を記述する可能性はあるが、
+本論文はその組合せを正式なカテゴリー定義とはしない。
+支援から依存へ、
+警戒から対立へといった分類変化も、
+単一時刻の関係記述子だけからは演繹されない。
+\end{remark}
+
+\begin{remark}[カテゴリーと認識された関係性]
+\label{rem:recognized_relation_category}
+$\mathrm{cat}_{i\leftarrow j,t}$ は理論上の記述ラベルであり、
+$\Sigma_i$ がその関係を同じラベルで認識しているとは仮定しない。
+その区別は、
+\S\ref{sec:tipa} の内部識別と
+本節の記述上の分類の役割差とも整合する。
+
+認識された関係の指標 $\mathrm{recog}_{i\leftarrow j,t}$ 等は本節では記号候補として挙げるにとどめ、
+その値域・算出規則・カテゴリーとの対応は定義しない。
+したがって、
+本節の $\mathrm{cat}_{i\leftarrow j,t}$ からACS自身の認識内容や正誤を推論せず、
+詳細化をPhase~1.$\alpha$へ委ねる。
+例えば個体側が支援と認識している関係を理論上どのように記録するかは、
+ACS内部の認識内容と外部記述の対応を別途定義しなければ決まらない。
+本論文の $\mathrm{recog}_{i\leftarrow j,t}$ はその詳細化を予告する名称にとどまる。
+\end{remark}
+
+\begin{remark}[カテゴリーと閉塞・崩壊の節]
+\label{rem:categories_to_sec7}
+18カテゴリーや六系への所属は、
+\S\ref{sec:collapse_cond} の
+$\mathfrak{P}_{\mathrm{blk}}$ または $\mathfrak{P}_{\mathrm{col}}$ への帰属条件ではない。
+関係記録に付随して可行性関連量が変化しても、
+閉塞・崩壊の判定には状態量と軌道記録の条件を別途要する。
+局所サイズ指標がゼロとなることと、
+$A_{i,t}=\emptyset$ も同一視しない。
+結合系や親和系であっても、
+個体側の条件によって制約方向の差分が
+記録される可能性は排除されない。
+他方、
+競合隔離系のラベルをもつ記録から
+直ちに閉塞・崩壊への到達可能性が導かれるわけではない。
+経路集合との接続は、
+後続節で規定する時刻域と軌道の条件に依存する。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{射程外事項・後続節への接続と小括}
+\label{subsec:rel_phase1a}
+
+本小節では、
+確立した記述骨格とPhaseごとの委譲事項を区別し、
+閉塞・崩壊の節と組織ACSの節への接続を整理する。
+
+\begin{remark}[本節で確立した最小構造]
+\label{rem:sec6_established}
+本節が与えるのは、
+外部対象の記述上の三分類、
+条件付きで整形式となる六成分の単方向関係記述子、
+ACS同士の双方向合成と補助方向性、
+評価規則に相対する関係品質、
+代表カテゴリー18種と六系分類である。
+局所指標・有限窓差分・六成分記述子は、
+適用域と値が与えられた場合に
+記述を構成するための形式であり、
+任意の関係を必ず数値化できるという存在定理ではない。
+記述子の値が各時刻に実在すること、
+カテゴリーの成立条件、
+または関係の固有の因果効果を確立したものではない。
+\end{remark}
+
+\begin{remark}[Phase~1.$\alpha$ への委譲事項]
+\label{rem:phase1a_delegation}
+Phase~1.$\alpha$には、
+決定論的・離散時間の枠内で、
+次の詳細化を委ねる（\S\ref{subsec:phase1a}）。
+ここに挙げる名称は検討課題であり、
+現段階の定義や成立定理ではない。
+\begin{enumerate}
+ \item 18カテゴリーそれぞれの成立条件・成立閾値
+ （定義~\ref{def:category_set}、
+備考~\ref{rem:category_phase1a}）。
+ \item 関係の強度・持続時間と、長期的・累積的な支援等の時間的下位類型。
+ \item 関係の解除可能性・代替可能性・媒介性・終了条件。
+ \item 被支配・被管理・被操作・被搾取・被利用等の応答側カテゴリー
+ （備考~\ref{rem:homo_hetero_rel}）。
+ \item 支配や寄生等が双方向に現れた場合の複合的な記述規則
+ （備考~\ref{rem:no_mutual_form}）。
+ \item 委任・取引・所属・親交等の派生・複合カテゴリーとカテゴリー間遷移
+ （備考~\ref{rem:derived_composite_categories}）。
+ \item ACS内部が認識した関係と理論上のカテゴリーの対応
+ （備考~\ref{rem:recognized_relation_category}）。
+ \item 非ACSエージェント等との双方向的相互作用を記述する拡張形式
+ （備考~\ref{rem:nACS_limit}）。
+ \item 方向性指標 $\mathrm{dir}_{ij,t}$ の「主要」の定量的基準
+ （備考~\ref{rem:dir_undefined}）。
+ \item 局所サイズ指標 $\mathrm{sz}_i$ の評価域・具体形、
+ 有限近似や固定精度の被覆数による具体化、
+および必要に応じたサイズ性の追加条件
+ （定義~\ref{def:rel_size_functional}）。
+ \item 協力・共生・対立の双方向成立規則、単方向カテゴリーとの対応、
+ ならびに競争の単方向形と相互形を区別する定量的基準
+ （定義~\ref{def:bidirectional_category}、
+備考~\ref{rem:competition_directionality}）。
+\end{enumerate}
+
+対象同定の具体的手続きと、
+有限窓での関係記録を生成・更新する規則も、
+必要に応じてこの詳細化の側で扱う。
+これらの詳細化を、
+既に本節で定義されたものとして用いない。
+\end{remark}
+
+\begin{remark}[Phase 2への委譲事項]
+\label{rem:phase2_delegation}
+Phase~2には、
+確率的な成立・遷移・終了、
+連続時間化、
+外部対象の内部動学を含む相互作用、
+および社会的ネットワーク動学を委ねる（\S\ref{subsec:phase_outlook}）。
+分類写像が時刻によって変わる対象の記述も、
+本節の固定分類を超える課題である。
+外部対象の内部状態と内部動学を伴う相互作用や、
+複数の関係がネットワーク上で変化する過程は、
+本節の単方向・双方向の記述子だけでは規定されない。
+
+本論文で時刻添字を付したことを、
+確率的遷移則やネットワーク動学の導入と読み替えない。
+この委譲は、
+個別の記録窓における差分を確率量とみなすことを意味しない。
+\end{remark}
+
+\begin{remark}[閉塞・崩壊の節と組織ACSの節への接続]
+\label{rem:sec6_to_sec78}
+\S\ref{sec:collapse_cond} は閉塞・崩壊と各到達経路を、
+\S\ref{sec:org_acs} は組織自身についてACS構造が成立する組織ACSの条件を扱う。
+本節の関係記述子は両節への参照素材であって、
+失敗状態の判定や組織ACS成立の十分条件ではない。
+
+\S\ref{sec:collapse_cond} への接続では、関係記録に付随する三差分と
+個体の軌道上の閉塞・崩壊条件を区別する。
+\S\ref{sec:org_acs} への接続では、関係の順序対が記録されることと、
+組織自身についての組織水準のACS構造の成立とを区別する。
+本論文は、これらの後続節を読み込まない単独の本節から、
+両節の成立判定を一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[本節の記述方針の総括]
+\label{rem:sec6_summary}
+本節の関係カテゴリー、
+観測窓差分、
+局所サイズ指標は
+価値中立的な構造記述であり、
+規範判断、
+対象ごとの因果寄与、
+閉塞・崩壊への到達または組織ACSの成立を証明するものではない。
+さらに、
+指標値の大小を可行行動集合の包含関係へ読み替えることや、
+全ての外部対象・全時刻で関係記述子が定義されることも主張しない。
+差分を比べるときは窓長と指標の尺度を固定し、
+双方向の記録では
+それぞれの個体の記録有効時刻域と関係継続条件を区別する。
+後続節との接続は、
+各節が別途定める定義域・条件のもとでのみ行う。
+\end{remark}

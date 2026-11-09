@@ -1,0 +1,113 @@
+{
+ "id": "P7_e8_furnace_policies_r1",
+ "spec_md5": "f3e0e6579b12930e4382f5e1281d8916",
+ "registry_entry": "2026-10-26T11:06:34.319194+00:00\tf3e0e6579b12930e4382f5e1281d8916\t/home/claude/E4/specs/P7_e8_furnace_policies_r1.json\tP7_e8_furnace_policies_r1",
+ "run_at": "2026-10-26T11:07:02.791036+00:00",
+ "python": "3.13.16",
+ "seconds": 24.4,
+ "deviation": null,
+ "problems_at_run": [],
+ "n_units_per_variant_condition": 900,
+ "verdicts": [
+  {
+   "id": "H1",
+   "statement": "（回帰検査）u_t∈U^Viab(x_t) を選んだ時刻に核から出るのは、e_t∉E_req(x_t) の時刻に限られる。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 1748,
+      "holds": 1748
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H2",
+   "statement": "核維持応答を選ぶ方策の崩壊到達時刻は、一段先だけを見る方策（後続の tp を 3 に近づけ、次に燃料最大）以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 430,
+      "a>b": 229,
+      "a<b": 470,
+      "a==b": 201
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H3",
+   "statement": "核維持応答を選ぶ方策の崩壊到達時刻は、TIPA 機構以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "not supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 431,
+      "a>b": 226,
+      "a<b": 469,
+      "a==b": 205
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H4",
+   "statement": "TIPA 機構の崩壊到達時刻は、記憶をもたない観測反射以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 852,
+      "a>b": 599,
+      "a<b": 48,
+      "a==b": 253
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5a",
+   "statement": "TIPA 機構の崩壊到達時刻は、固定行動列以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 883,
+      "a>b": 883,
+      "a<b": 17,
+      "a==b": 0
+     }
+    }
+   },
+   "rule_dependent": false
+  },
+  {
+   "id": "H5b",
+   "statement": "TIPA 機構の崩壊到達時刻は、常に待機する方策以上である。",
+   "per_variant": {
+    "R0": {
+     "verdict": "supported",
+     "counts": {
+      "n": 900,
+      "a>=b": 900,
+      "a>b": 866,
+      "a<b": 0,
+      "a==b": 34
+     }
+    }
+   },
+   "rule_dependent": false
+  }
+ ],
+ "consistency": []
+}

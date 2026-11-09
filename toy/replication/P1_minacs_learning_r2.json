@@ -1,0 +1,11 @@
+{
+ "id": "P1_minacs_learning_r2",
+ "seconds": 17.2,
+ "units": 7200,
+ "identical": 7200,
+ "different": 0,
+ "not_in_record": 0,
+ "examples": [],
+ "verdicts_differing": [],
+ "verdicts_total": 6
+}

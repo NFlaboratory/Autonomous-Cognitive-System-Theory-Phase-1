@@ -1,0 +1,11 @@
+{
+ "id": "P6_e7_minacs_estimation_r1",
+ "seconds": 22.4,
+ "units": 5400,
+ "identical": 5400,
+ "different": 0,
+ "not_in_record": 0,
+ "examples": [],
+ "verdicts_differing": [],
+ "verdicts_total": 6
+}

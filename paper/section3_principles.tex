@@ -1,0 +1,4969 @@
+%======================================================================
+\section{三原理：SM・EU・FR}
+\label{sec:three_principles}
+
+本節では、自律認知システム（ACS）の長期的な可行性に関わる三つの制約軸、
+すなわち自己維持（SM）・環境利用（EU）・可行応答（FR）を、
+\S\ref{sec:acs_def} で定めた自己--環境構造と可行性構造の上に形式化する。
+本節の全結果は Phase~1 の決定論的・離散時間枠組みに限定され、
+各主張の強さは対応する定義・仮定・証明の強さを超えない。
+
+\begin{definition}[三原理の概念的定義]
+\label{def:three_principles_concept}
+
+本論文における\emph{三原理}とは、
+自己--環境境界をもつ ACS が、
+内部状態と外部環境状態との相互作用のもとで時間的に存続する際に問題となる
+可行性維持上の制約を、
+自己維持（Self-Maintenance; SM）、
+環境利用（Environmental Utilization; EU）、
+可行応答（Feasible Response; FR）
+の三つの相異なる制約軸として整理したものである。
+
+\begin{description}[style=nextline]
+  \item[SM]
+  ACS の内部状態を可行集合 $K$ の内に保つことに関わる制約軸である。
+  \item[EU]
+  一段階の可行性に関して臨界となる必要環境要因が、その局面で充足されることに関わる制約軸である。
+  \item[FR]
+  必要な局面で可行な応答が得られること、
+  およびその必要応答ポテンシャルの保持・獲得・回復・再構成に関わる制約軸である。
+  ここでいう「可行」は、本論文の可行性、すなわち次状態が $K$ に属することに固定する
+  （備考~\ref{rem:fr_scope}）。
+\end{description}
+
+これら三つの制約軸は、
+自己--環境関係をもつ ACS を時間的な存続構造として記述するとき、
+同時に意味をもつ。
+ただし、本論文は、三原理の時刻別充足述語が同時に真であることを要求しない。
+時刻別充足述語の偽と閉塞との関係は原理ごとに異なる。
+EU の時刻別充足述語が偽である場合、または EU が真で FR の時刻別充足述語が偽である場合には、いずれも閉塞を伴う。
+判定時刻の閉塞は、EU が偽である場合と、EU が真で FR が偽である場合とに排他的に分かれる
+（命題~\ref{prop:blockage_dichotomy}）。
+SM の時刻別充足述語の偽については、本論文は閉塞を一般的な帰結として置かない。
+いずれの時刻別充足述語の偽からも、本論文は崩壊を一般的な帰結として置かず、
+三原理が ACS の存続に関わる制約を網羅するとも主張しない。
+
+三原理は、ACS に外部から課される価値規範または目的関数ではなく、
+本論文の Phase~1 において、
+自己--環境相互作用下の時間的存続を記述するために採用する
+記述的な制約軸である。
+本定義は三原理という総称の概念的整理であり、
+原理そのものについて成立・不成立を述べない。
+各原理について真偽をもつのは、
+定義~\ref{def:SM}、定義~\ref{def:EU} および定義~\ref{def:FR} の
+時刻別充足述語である。
+\end{definition}
+
+%----------------------------------------------------------------------
+\subsection{記号・規約と記述水準}
+\label{subsec:s3_setup}
+
+本小節は、以降の各小節が繰り返し参照する記述上の規約と、
+時刻別充足述語の適用域を一度だけ与える。
+本節で新たに用いる主要記号の一覧は付録~\ref{app:symbols_s3} に示す。
+
+\subsubsection*{三原理の構造的前提}
+
+\S\ref{sec:acs_def} で導入された ACS は、
+固定された外部環境状態空間 $E_{\mathrm{ext}}$ を背景型として、
+内部状態型 $X$ と外部環境状態型 $E_{\mathrm{ext}}$ を区別し、
+状態遷移 $f:X\times U\times E_{\mathrm{ext}}\to X$ によって
+自己と外部環境との相互作用を記述する。
+必要環境空間 $E$ と必要環境充足集合 $E_{\mathrm{req}}(x)$ は、
+構造的自己の存続が外部環境条件と無関係ではないことを記述する。
+
+本節では、この自己--環境構造を所与として、
+現在の可行性、
+一段階の可行性に関して臨界となる必要環境要因の充足、
+必要な局面での可行な応答という
+三つの問題を SM、EU、FR として形式化する。
+Phase~1 は自己--環境境界の生成過程、
+個体発生過程、または境界形成の物理機構を扱わない。
+
+また、本節で導入される評価関連量については、
+\S\ref{subsec:description_levels_global} の全論文共通規約に従い、
+ACS 側に必要となる構造的評価機能と、
+それを論文上で記述する数学的形式表現とを区別する。
+本論文は、形式量の存在から、
+ACS がその真値を完全に知ること、
+または同一の数式を内部実装することを一般的な帰結として置かない。
+
+\subsubsection*{本節共通の記述規約}
+
+\begin{remark}[含意の扱いに関する規約：時刻別充足述語・評価量と失敗状態]
+\label{rem:conv_nonimplication}
+本節は、いずれかの時刻別充足述語が偽であること、または T-STAB の不充足だけから、
+整形式実現の不成立 $\mathrm{WF}_{i,t}=0$ または崩壊 $\mathrm{Col}_{i,t}=1$ を
+一般的な帰結として置かない。
+閉塞 $A_t=\emptyset$ については次のとおりである。
+\begin{enumerate}
+  \item $\mathrm{SM}_t$ の偽、T-STAB の不充足、
+  および $\chi_{\mathrm{EI},t}=0$ の一時刻の成立だけからは、
+  閉塞を一般的な帰結として置かない。
+  \item $\mathrm{EU}_t$ が偽ならば $A_t=\emptyset$ である（命題~\ref{prop:eu_blockage}）。
+  \item $\mathrm{FR}_t$ が偽ならば $A_t=\emptyset$ である（定義~\ref{def:FR}）。
+\end{enumerate}
+関係品質 $Q$ については、定義される場合の正・零・負の符号と、
+そもそも評価不能である場合とを区別する。
+時刻域 $\mathbb{T}_{\mathrm{P},i}$ を明示した一覧は
+備考~\ref{rem:principles_failure_table} に示す。
+\end{remark}
+
+\begin{remark}[記述水準規約：形式表現と内部評価の非同一性]
+\label{rem:conv_description_level}
+本節が導入する形式量は \S\ref{subsec:description_levels_global} の規約に従う理論記述であり、
+ACS がその真値や集合全体を内部で完全に保持・計算することを要求しない。
+内部評価・応答に用いられるのは、当該 ACS が実際に利用可能な情報である。
+構造的評価機能に要求する非退化性は、\S\ref{subsec:self_env_principles} で述べる。
+\end{remark}
+
+\begin{remark}[非規範性規約]
+\label{rem:conv_nonnormative}
+三原理および本節の評価量は、長期可行性に関わる記述的な制約軸と形式表現であり、
+外部から課す価値規範・単一の目的関数・最大化目標ではない。
+このことは、時刻別充足述語の真を道徳的な善悪と同一視することも、
+$Q$ や T-STAB を単一効用関数とみなすことも要求しない。
+\end{remark}
+
+\begin{remark}[非網羅・非最小規約]
+\label{rem:conv_nonexhaustive}
+本節は、三原理が存続に関わる全制約を網羅すること、三分解が唯一であること、
+三原理の時刻別充足述語が互いに冗長でないこと、
+および三原理の最小性を主張しない。
+三原理の間の関係は、
+\S\ref{subsec:principle_linkage} の連動と含意関係の限定として述べる。
+\end{remark}
+
+\begin{remark}[構造的環境結合・実現相互作用・EU・関係評価の水準区別]
+\label{rem:conv_ro_layers}
+本節では、次の数学的対象を区別する。
+$\mathrm{EC}(x_t)$ は定義~\ref{def:env_coupling} の構造的環境結合条件、
+$\chi_{\mathrm{EI},t}$ は定義~\ref{def:phi} の実現外部相互作用を表す二値指標、
+$e_t\in E_{\mathrm{req}}(x_t)$ は現在の必要環境充足を表す命題、
+$\mathrm{EU}_t$ は定義~\ref{def:EU} の時刻別充足述語、
+$Q_{i\leftarrow j,t}$ は \S\ref{sec:rel_min} で定める関係品質であり、定義域上でのみ値をもつ。
+これらを同一視せず、同値性または含意を用いる場合は個別に明示した条件による。
+また、命題~\ref{prop:pi_E_sensitivity} の一般化勾配感応性は、
+構造的環境結合条件とは別の局所的な可行性感応条件である。
+\end{remark}
+
+\begin{remark}[T-STAB 地位規約]
+\label{rem:conv_tstab_scope}
+T-STAB は三原理関連評価の有限窓時間統合条件であり、
+力学系論の Lyapunov 安定性・漸近安定性・構造安定性、
+三原理に追加される第四原理、外生的目標関数のいずれでもない。
+その充足のみから、無限時間可行性、収束、吸引性、不変集合の存在、
+または固定点への到達を一般的な帰結として置かない。
+\end{remark}
+
+\subsubsection{記述水準と時刻別充足述語の適用域}
+\label{subsubsec:s3_levels}
+
+\begin{remark}[本節における記述水準]
+\label{rem:s3_description_levels}
+本節では、次の水準を区別する。
+\begin{description}[style=nextline]
+  \item[原理]
+  自己維持（SM）・環境利用（EU）・可行応答（FR）は、存続中のACSに対する制約軸である。
+  本節は、原理そのものについて成立・不成立を述べない。
+  \item[原理応答項目]
+  各原理について、ACSの側で何が成り立っていることが問われるかを述べる項目である。
+  手段は書かない。
+  \item[時刻別充足述語]
+  各原理について時刻ごとに定める述語 $\mathrm{SM}_t$・$\mathrm{EU}_t$・$\mathrm{FR}_t$ である。
+  真偽をもつのはこの水準である。
+  本節は判定を「真である」「偽である」と書き、
+  「偽である」は、述語が定義されたうえで偽となることを指す。
+  述語が定義されない時刻を、偽である時刻に含めない。
+  \item[構造的機能と標準機能形式]
+  \S\ref{sec:acs_def} の基礎的な機能と基盤機能、
+  本節の三原理関連構造的機能（分類A）、
+  および \S\ref{sec:tipa} の TIPA・PSL・ISL（分類B）である。
+  作動・停止・低下を述べる対象はこの水準である。
+  \item[診断量]
+  応答多様度 $\mu_{\mathrm{eff},t}$、頑健存続可能段数、評価尺度 $s_{\cdot,t}$ その他の分類C量である。
+\end{description}
+本論文は、機能が作動していることから時刻別充足述語が真であることを、
+時刻別充足述語が偽であることから特定の機能の停止を、いずれも一般的な帰結として置かない。
+原理ごとの専用の機能は置かない。
+一つの原理応答項目を複数の構造的機能が共同して担うこと、
+および一つの構造的機能が複数の原理応答項目に関与することを排除しない。
+
+これらとは別の軸として、本節の理論上の量（$\Pi$、$A_t$、$\mathrm{Crit}^{(1)}(x_t)$ など）、
+ACS 内部でのそれらに関わる推定・評価、
+および外部観測者による測定・診断を区別する。
+時刻別充足述語の真理条件は理論上の量だけで定まり、
+内部の推定・評価の結果も、外部観測者の測定結果も用いない
+（備考~\ref{rem:crit_description_level}）。
+\end{remark}
+
+本節は単一のACS個体 $\Sigma_i$ を扱うため、
+\S\ref{sec:acs_def} の規約に従い、
+状態・環境・可行行動集合等の個体添字を省略して
+$x_t$、$e_t$、$A_t$ と書く。
+個体の同一性に関わる指標
+$\mathrm{WF}_{i,t}$、$\mathrm{Col}_{i,t}$、$\mathrm{FT}_{i,t}$ には添字を付す。
+
+\begin{definition}[原理判定時刻域]
+\label{def:principle_time_domain}
+ACS個体 $\Sigma_i$ について、
+\[
+  \mathbb{T}_{\mathrm{P},i}
+  :=
+  \bigl\{
+    t\in\mathbb{N}_0
+    \bigm|
+    \mathrm{FT}_{i,t}=0
+  \bigr\}
+\]
+を\emph{原理判定時刻域}と呼ぶ。
+ここで $\mathrm{FT}_{i,t}$ は定義~\ref{def:functional_termination} の機能的終端指標である。
+本節で定める時刻別充足述語は、
+$t\in\mathbb{T}_{\mathrm{P},i}$ の時刻にだけ定義する
+（\S\ref{sec:acs_def} 備考~\ref{rem:collapse_not_principle_failure}）。
+$t\notin\mathbb{T}_{\mathrm{P},i}$ の時刻には、
+いずれの時刻別充足述語も真とも偽ともしない。
+\end{definition}
+
+\begin{lemma}[原理判定時刻域の下方閉性]
+\label{lem:principle_time_domain_down}
+$t\in\mathbb{T}_{\mathrm{P},i}$ かつ $s\in\mathbb{N}_0$、$s\le t$ ならば、
+$s\in\mathbb{T}_{\mathrm{P},i}$ である。
+また、$t\in\mathbb{T}_{\mathrm{P},i}$ ならば $\mathrm{Col}_{i,t}=0$ である。
+\end{lemma}
+
+\begin{proof}
+$s<t$ かつ $\mathrm{FT}_{i,s}=1$ とすると、
+命題~\ref{prop:collapse_basic} の (C-2) により $\mathrm{FT}_{i,t}=1$ となり、
+$t\in\mathbb{T}_{\mathrm{P},i}$ に反する。
+よって $\mathrm{FT}_{i,s}=0$ である。
+$s=t$ の場合は仮定そのものである。
+後半は、$\mathrm{Col}_{i,t}=1$ ならば
+命題~\ref{prop:termination_order}(ii) により $\mathrm{FT}_{i,t}=1$ となることの対偶である。
+\end{proof}
+
+\begin{remark}[原理判定時刻域と整形式実現・軌道記録]
+\label{rem:principle_time_domain_scope}
+原理判定時刻域には $\mathrm{WF}_{i,t}=1$ を課さない。
+\S\ref{sec:acs_def} は実現状態について任意の時刻で
+$x_t\in X$、$e_t\in E_{\mathrm{ext}}$ とし、
+機能的終端と整形式実現の間にいずれの向きの含意も仮定しない
+（備考~\ref{rem:collapse_wf_relation}）。
+したがって、機能的終端に至る前に一時的に $\mathrm{WF}_{i,t}=0$ となる時刻も、
+時刻別充足述語の判定の対象に含まれる。
+同様に、原理判定時刻域には $x_t\in K$ も課さない。
+状態が可行集合の外にありながら機能的終端に至っていない時刻、
+たとえば身体の状態が閾値を割り込んだが回復の途上にある生物、
+あるいは電力が閾値を下回ったが復帰の手段を残すロボットに相当する時刻も、
+判定の対象に含まれる（例示の地位は備考~\ref{rem:example_status} による）。
+このような時刻では、$\mathrm{SM}_t$ は偽であり、
+$\mathrm{EU}_t$ と $\mathrm{FR}_t$ は一段階での $K$ への回復に関わる局面を記述する
+（\S\ref{subsec:eu}、\S\ref{subsec:fr}）。
+また補題~\ref{lem:principle_time_domain_down} により、
+$t\in\mathbb{T}_{\mathrm{P},i}$ ならば、
+$\Sigma_i$ の崩壊指標列を記録する軌道記録 $\sigma$ について
+$t\in I_{\mathrm{ACS}}(\sigma)$ である（\S\ref{sec:collapse_cond} 定義~\ref{def:acs_valid_time_domain}）。
+逆に $I_{\mathrm{ACS}}(\sigma)$ は機能的終端後の時刻を含みうるので、
+$I_{\mathrm{ACS}}(\sigma)$ を原理判定時刻域として用いない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{自己--環境関係と三原理の前提}
+\label{subsec:self_env_principles}
+
+本小節では、三原理が本理論においてなぜ導入されるかを、
+\S\ref{sec:acs_def} で確立された自己--環境構造から整理し、
+三原理それぞれの前提と統一的な記述形式を与える。
+三原理の時刻別充足述語の形式的定義は
+\S\ref{subsec:sm_foundational}、\S\ref{subsec:eu}、\S\ref{subsec:fr} が担う。
+本小節では新たな仮定、命題または証明を置かない。
+
+\subsubsection{自己--環境境界と相互作用の前提}
+
+\S\ref{sec:acs_def} は、固定された外部環境状態空間
+$E_{\mathrm{ext}}$ を背景型として、ACS を
+\[
+  \Sigma=(X,U,E,f,\Pi,M,\mathrm{Update})
+\]
+と記述し、型分離規約 TSC のもとで
+内部状態型 $X$ と外部環境状態型 $E_{\mathrm{ext}}$ を区別する。
+この区別は、自己--環境境界
+$B_{SE}=(X,E_{\mathrm{ext}})$
+（定義~\ref{def:b_se}）として記述される。
+
+ここで重要なのは、$X$ と $E_{\mathrm{ext}}$ の一方を
+他方から時間的に生成することではない。
+Phase~1 は境界形成の時間発展を扱わず、
+境界に相対して内部と外部が区別された形式構造を所与とする。
+したがって、本論文でいう自己と環境の「同時的成立」は、
+両者が同じ境界関係によって相対的に区別されるという
+\emph{構造的同時性}を意味する。
+
+この境界は、自己と環境の切断を意味しない。
+状態遷移写像
+\[
+  f:X\times U\times E_{\mathrm{ext}}\to X
+\]
+（定義~\ref{def:state_transition}）は、
+次状態を現在状態、実効行動、実現外部環境状態の関数として記述する。
+したがって、外部環境状態は状態遷移へ関与しうる形式変数として
+ACS の時間発展に組み込まれる。
+
+ただし、写像の型だけから
+\[
+  e\neq e'
+  \;\Longrightarrow\;
+  f(x,u,e)\neq f(x,u,e')
+\]
+のような環境引数への非退化性は仮定しない。
+同一の $(x,u)$ に対して異なる外部環境状態が
+同一の次状態を与えることも、形式上は許される。
+本論文が必要環境依存として要求する内容は、
+状態遷移写像の引数型だけではなく、
+必要環境空間 $E$ と構成要件 CR-1
+（\S\ref{subsec:environment_space}）によって与えられる。
+
+必要環境空間 $E$ は、
+固定された $E_{\mathrm{ext}}$ のもとで、
+ACS の存続に必要な環境要因を状態依存に記述する。
+必要環境充足集合
+\[
+  E_{\mathrm{req}}(x)
+  =
+  \{e\in E_{\mathrm{ext}}\mid
+    \forall\eta\in E,\ \eta(x,e)=1\}
+\]
+（定義~\ref{def:E_req}）は、
+状態 $x$ において必要環境要因を同時に充足する
+外部環境状態を表す。
+したがって、ACS の構造的自己は外部環境から区別される一方、
+その存続条件の一部は外部環境条件に依存しうる。
+
+また、持続評価関数 $\Pi$、可行集合 $K$、
+可行行動対応 $A(x,e)$
+（\S\ref{subsec:viability_function_and_blockage}）は、
+現在状態と実現外部環境状態のもとで、
+実効行動を介した一段階の状態遷移が
+可行集合 $K$ に留まりうるかを記述する。
+ここで「行動を介する」とは、
+指向的介入だけを意味しない。
+選択的待機を含む本論文の行動空間 $U$ の要素を通じて、
+一段階の可行性維持可能性を記述するという意味である。
+
+以上より、Phase~1 の ACS は、
+内部と外部を区別しながら、
+外部環境状態を引数として状態遷移し、
+さらに必要環境条件に存続上依存しうる構造として記述される。
+三原理は、この自己--環境関係を前提として導入される。
+
+\subsubsection{三つの構造的問いと三原理}
+
+自己--環境境界と必要環境依存を備えた ACS を
+時間的に存続する構造として考えると、
+少なくとも次の三つの問いが同時に意味をもつ。
+
+\begin{description}[style=nextline]
+  \item[問い1（構造的自己の可行性）]
+  現在の構造的自己は、現在時刻において可行条件を満たしているか。
+  形式的には、現在状態が可行集合 $K$ に属するか、
+  すなわち $\Pi(x_t)\ge0$ であるかという問題に接続する。
+
+  \item[問い2（臨界必要要因の充足）]
+  ある必要環境要因が充足されなければ、
+  どの行動によっても次状態を $K$ に置けない局面において、
+  その要因が実際に充足されているか。
+  このような要因を、以下では臨界必要要因と呼ぶ（定義~\ref{def:eu_fire}）。
+  この局面は、現在の状態が $K$ の内にあるとき（維持）にも、外にあるとき（回復）にも生じうる。
+
+  \item[問い3（必要な局面での可行な応答）]
+  臨界必要要因がすべて充足されている局面において、
+  次状態を $K$ に置く応答、すなわち可行性を維持する応答、
+  または $K$ の外から一段階で回復する応答が存在するか。
+  また、そのような応答の可能性が時間を通じて保持・獲得・回復・再構成されているか。
+\end{description}
+
+本論文は、これら三つの問いに対応する制約軸として、
+それぞれ自己維持 SM、環境利用 EU、可行応答 FR を採用する。
+各原理の時刻別充足述語は
+定義~\ref{def:SM}、定義~\ref{def:EU}、定義~\ref{def:FR}
+で与える。
+
+ここで、三原理が「自己--環境関係から導出される」とは主張しない。
+本論文が主張するのは、自己と環境を区別し、
+その相互作用と必要環境依存のもとで時間的存続を扱うとき、
+現在の可行性、臨界必要要因の充足、必要な局面での可行な応答という
+三つの構造問題が同時に記述対象となり、
+Phase~1 ではそれらを SM・EU・FR の三軸として形式化する、
+という範囲である。
+
+外部環境状態の差異に対して ACS が機能的に閉鎖し切っていないこと、
+すなわち自己と環境の構造的な結合は、
+三原理のいずれでもなく、EU の前提・背景構造として
+\S\ref{subsec:env_coupling} で扱う。
+
+また、問い1の数式 $\Pi(x_t)\ge0$ 自体は
+$X$ と $\Pi$ が与えられれば形式的に記述できる。
+したがって、本論文は「自己--環境境界がなければ
+可行性という数式そのものが定義不能である」とは主張しない。
+ここでの主張は、三つの問いを\emph{同一の ACS の存続問題として}
+統合的に位置づける際に、自己--環境境界とその相互作用構造が
+共通の前提となる、というものである。
+
+\begin{remark}[三原理の構造的同時性]
+\label{rem:principles_simultaneity}
+本小節でいう同時性は、
+SM、EU、FR が時間軸上の異なる時点で順次発生するという意味ではなく、
+自己--環境関係を備えた ACS の存続を記述するとき、
+三つの制約問題が論理的に並立して意味をもつという意味である。
+
+したがって、
+\[
+  \text{三原理の構造的同時性}
+  \;\neq\;
+  \text{三原理の時刻別充足述語の常時の真}
+\]
+である。
+ある時刻に一つまたは複数の時刻別充足述語が偽であることは、
+本理論において排除されない。
+
+また、一つまたは複数の時刻別充足述語が偽であることから
+$\mathrm{Col}_{i,t}=1$
+を一般的な帰結として置かない。
+崩壊の定義は \S\ref{sec:acs_def}（定義~\ref{def:collapse}）にあり、
+その周辺の状態と経路の整理は \S\ref{sec:collapse_cond} の責務である。
+可行行動集合が空である状態
+$A_t=\emptyset$
+（閉塞、定義~\ref{def:blockage_sec2}）についても、
+崩壊または整形式実現の不成立と同一視しない。
+
+三原理の時刻別充足述語の間の関係は、
+\S\ref{subsec:principle_linkage} で連動と含意関係の限定として述べる。
+\end{remark}
+
+\subsubsection{三原理の前提と統一記述形式}
+
+三原理の前提は、原理（構造体への制約）ではなく、
+対象とする ACS のクラスと世界の記述である。
+前提を規約・構成要件・仮定のいずれに属するかとともに示す。
+
+\begin{description}[style=nextline]
+  \item[SM の前提]
+  (P-SM1) 構造的自己には可行集合 $K=\{x\mid\Pi(x)\ge0\}$ がある
+  （定義~\ref{def:Pi}、定義~\ref{def:K}）。
+  (P-SM2) 状態は行動の選択によらずに変化しうる
+  （仮定~\ref{ass:f_decomposition} の $f_{\mathrm{auto}}$）。
+  \item[EU の前提]
+  (P-EU1) ACS は外部環境の中にある
+  （$E_{\mathrm{ext}}$、規約 TSC、$B_{SE}$、$f:X\times U\times E_{\mathrm{ext}}\to X$）。
+  (P-EU2) 環境入力は退化していない
+  （仮定~\ref{ass:env_input_nondegeneracy}、仮定~\ref{ass:env_viable_nondegeneracy}）。
+  (P-EU3) 必要環境要因があり、それを欠けば存続できない
+  （構成要件 CR-1、\S\ref{subsec:environment_space}）。
+  自己と環境の構造的結合（\S\ref{subsec:env_coupling}）は EU の背景構造である。
+  \item[FR の前提]
+  (P-FR1) 将来の状態は、現在の行動と実現する外部環境状態の列に依存して定まる
+  （定義~\ref{def:state_transition}）。
+\end{description}
+
+仮定~\ref{ass:nonstationary}（非定常環境）は、
+FR の時刻別充足述語の前件ではなく、
+Phase~1 の背景仮定として対象のクラスを限定する
+（\S\ref{subsubsec:real_world_scope}）。
+仮定~\ref{ass:theta_exterior_blockage} は前提ではなく、
+\S\ref{subsec:sd_necessity} の条件付き解析において、可行性核の外への持続を閉塞へ接続する系にだけ用いる追加仮定である。
+
+三原理を、次の統一的な形式で記述する。
+「原理応答項目」は、各原理について ACS の側で何が成り立っていることが問われるかを述べる項目であり、
+それを担う手段は書かない。
+時間射程の欄は説明のためのものであり、形式上の分類ではない。
+
+\begin{center}
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{p{2.6cm} p{3.9cm} p{3.9cm} p{3.9cm}}
+\hline
+\textbf{項目} & \textbf{SM} & \textbf{EU} & \textbf{FR} \\
+\hline
+対象 & 構造的自己の状態 & 自己と必要環境要因の関係 & 必要な局面での応答 \\[3pt]
+適用域 & $t\in\mathbb{T}_{\mathrm{P},i}$ & $t\in\mathbb{T}_{\mathrm{P},i}$ & $t\in\mathbb{T}_{\mathrm{P},i}$ かつ $(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$（$\mathrm{EU}_t$ が真の時刻） \\[3pt]
+問われる局面 & すべての判定時刻 & すべての判定時刻（$\mathrm{Crit}^{(1)}(x_t)=\emptyset$ の時刻には空虚に真） & 適用域のすべての時刻（$K$ の内では維持、外では一段階の回復） \\[3pt]
+時刻別充足述語 & $x_t\in K$（定義~\ref{def:SM}） & $\forall\eta\in\mathrm{Crit}^{(1)}(x_t):\eta(x_t,e_t)=1$（定義~\ref{def:EU}） & $A_t\neq\emptyset$（定義~\ref{def:FR}） \\[3pt]
+原理応答項目 & 現在の状態が $K$ 内にあり、将来の可行性を損なわない状態が形成・保持されていること & 一段階の可行性に関して臨界となる必要環境要因について、その充足に至る自己と環境の関係が成り立っていること & $\mathcal{D}_{\mathrm{FR}}$ の局面で $K$ 側へつながる応答が存在し、その必要応答ポテンシャルが時間を通じて保持・獲得・回復・再構成されていること \\[3pt]
+時間射程（説明） & 即時：現在の状態。拡張：$\mathrm{Hor}_f$、T-STAB (T1) & 即時：一段階の臨界必要要因の充足。拡張：持続的な充足（CR-1 の側で扱う） & 即時：局所 FR。拡張：\S\ref{subsec:sd_necessity}、T-STAB (T2) \\[3pt]
+閉塞との関係 & 偽は閉塞の定義条件でない & 偽ならば閉塞（命題~\ref{prop:eu_blockage}） & 偽と閉塞は一致（$\mathcal{D}_{\mathrm{FR}}$ 上）。閉塞は EU の偽か、EU の真かつ FR の偽に排他的に分かれる（命題~\ref{prop:blockage_dichotomy}） \\
+\hline
+\end{tabular}
+\endgroup
+\end{center}
+
+\subsubsection{三原理制約と内発的評価機能}
+
+三原理は制約軸であるが、
+それらに関係する差異が ACS の作動と完全に切断されてよいわけではない。
+評価に関する構成要件としては、
+\S\ref{sec:acs_def} の構成要件 CR-2 の (CR-2b)(iii) が、
+評価の対象の違いを非等価に扱う場合が存在すること（非退化性）と、
+$K\neq\emptyset$ かつ $X\setminus K\neq\emptyset$ のときに
+$K$ に属する状態と属さない状態の違いに対して評価が異なる場合が存在すること
+（可行性感応性）を要請する
+（定義~\ref{def:three_primitives}、\S\ref{subsec:three_primitive_functions}）。
+本節は構成要件の内容を変更しない。
+
+本節はこれに加えて、三原理制約を自己--環境相互作用のなかで維持する
+ACS の機能構造を記述するため、
+可行性の低下、必要環境要因の非充足、可行な応答の縮退、
+外部との関係の悪化等に関係する差異の少なくとも一部が、
+ACS の応答形成に利用可能であることを、
+構造的評価機能の機能要件として記述する。
+評価対象に三原理に関係する状態差、関係差または時間変化が存在する場合、
+その差異の少なくとも一部に対して評価結果または内部応答が変化しうることを、
+評価機能の非退化性の最低線とする。
+この機能要件は、三原理の時刻別充足述語の条件でも、構成要件でも、仮定でもなく、
+三原理に関係する内発的評価機能の記述上の要件である。
+すべての相異なる状態を識別すること、
+形式値と内部評価が一致すること、
+または一般的な誤差上界をこの要件から要求しない。
+定量的精度条件が必要な場合には、該当する後続節で追加仮定として明示する。
+
+本論文は、この役割を\emph{構造的評価機能}として扱う。
+構造的評価機能は、外部の観測者が ACS に対して任意に設定する
+合否判定規約ではなく、
+自己--環境相互作用から得られる利用可能な情報に基づき、
+当該 ACS が応答形成へ利用しうる評価機能として位置づけられる。
+
+ただし、この内発性は、ACS が形式モデル上の真値を
+完全に認識・計算することを意味しない。
+たとえば、後続小節で用いられる $\Pi$、$K$、$A(x,e)$、
+$E_{\mathrm{req}}(x)$、$\mathrm{Crit}^{(1)}(x)$、$\mu_{\mathrm{eff}}$ 等について、
+ACS がそれらの真値または集合全体を完全に内部表象することは要求しない。
+また、形式モデルから導かれる可行性核のような解析対象は、
+ACS の内発的評価機能そのものとは区別する。
+後続の外部関係に伴う可行性関連差異の評価および三原理の時間的統合評価でも、
+評価機能自体は ACS 側に内発的に必要な機能として扱う一方、
+具体的な尺度、閾値、精度、符号化および時間窓は
+特定の実装として固定しない。
+
+\begin{remark}[例示の地位]
+\label{rem:example_status}
+本節および後続節では、構造的評価機能の直感的理解を助けるために、
+人間、他の生物または人工的な認知システムについて、
+当該機能との構造的対応を説明する直感的な例を
+少数、補足として述べる場合がある。
+
+これらの例は、当該機能の存在証明、
+ACS 一般に共通する具体実装、
+または因果機構の実証ではない。
+経験的事実として述べる場合には文献根拠を付し、
+文献根拠を伴わない例は、Phase~1 の形式的帰結ではなく
+理論理解を助ける解釈的補足として扱う。
+\end{remark}
+
+\subsubsection{後続小節への接続}
+
+以上により、本節では、
+自己--環境境界、状態遷移、必要環境依存および可行性構造を前提として、
+SM、EU、FR が同時に意味をもつ三つの制約軸として導入される。
+
+以下、\S\ref{subsec:sm_foundational} で SM を、
+\S\ref{subsec:viab_core} で $E_{\mathrm{req}}$ ロバスト可行性核と有限段頑健可行集合を、
+\S\ref{subsec:env_coupling} で構造的環境結合とその補助記述・診断量を、
+\S\ref{subsec:eu} で EU を、
+\S\ref{subsec:fr} で FR を扱う。
+続いて \S\ref{subsec:principle_failure_relation} で三原理と閉塞・整形式実現・崩壊の関係を、
+\S\ref{subsec:principle_linkage} で三原理の連動と含意関係の限定を、
+\S\ref{subsec:sd_necessity} で応答多様性縮退と長期可行性の条件付き接続を整理する。
+さらに \S\ref{subsec:s3_tstab} で三原理の時間的統合評価を、
+\S\ref{subsec:principles_to_tipa} で構造的機能と標準機能形式への接続を扱う。
+各小節では、主張を定義的等値性、追加仮定のもとでの条件付き含意、
+または構造的接続として区別し、
+主張の強さが証明および仮定の強さを超えないように扱う。
+
+%----------------------------------------------------------------------
+\subsection{SM}
+\label{subsec:sm_foundational}
+
+本小節では、SM の時刻別充足述語と、その判定に用いる可行性余裕度 $\Pi$ の構造を与える。
+SM は、時刻 $t$ の状態 $x_t$ が \S\ref{sec:acs_def} で定義された可行集合 $K$ に属するかを問う
+制約軸であり、新たな目的関数、最適化規則、
+または他の二原理に先行する時間的生成条件ではない。
+はじめに、$\Pi$ の一般化勾配構造と、$\Pi$ の最小値が捨てる成分別の診断量を整える。
+
+\subsubsection{$\Pi$ の Clarke 一般化勾配構造}
+
+定義~\ref{def:Pi} の $\Pi$ は
+式 $\min_k(x_k-\theta_k)$ により
+$\mathbb{R}^n$ 上でも同一に定義される。
+Clarke 一般化勾配は開集合上の局所 Lipschitz 関数に対して取り扱うのが標準であるため、
+まず $\mathbb{R}^n$ 上への拡張
+\[
+  \widetilde{\Pi}:\mathbb{R}^n\to\mathbb{R},\qquad \widetilde{\Pi}(x):=\min_k\bigl(x_k-\theta_k\bigr)
+\]
+を定義し、
+ACS の状態空間 $X$ 上ではその制限 $\Pi:=\widetilde{\Pi}|_X$ を用いる。
+Clarke 一般化勾配は $\widetilde{\Pi}$ に対して取り、
+その値を $\partial^C\widetilde{\Pi}(x)$ と書く。
+$x\in X$ に対しては、以下すべてにわたり略記として
+\[
+  \partial\Pi(x)\;:=\;\partial^C\widetilde{\Pi}(x)
+\]
+を用いる。
+この拡張により、$X$ の境界点 $x\in\partial X$ においても
+一般化勾配が $\mathbb{R}^n$ の開近傍上の局所 Lipschitz 関数に対するものとして矛盾なく定義される。
+以下では、この $\Pi$ について、以降で用いる基本的性質を命題として確立する。
+
+\begin{proposition}[$\Pi$ の Lipschitz 連続性と Clarke 一般化勾配構造]
+\label{prop:pi_subdiff}
+定義~\ref{def:Pi} の持続評価関数
+\[
+  \Pi=\widetilde{\Pi}|_X,
+  \qquad
+  \widetilde{\Pi}(x)
+  =
+  \min_k(x_k-\theta_k)
+\]
+のもとで、以下が成立する。
+
+\textbf{(i) Lipschitz 連続性：}$\Pi$ は $X$ 上 Lipschitz 定数 $L=1$ で Lipschitz 連続である：
+\[
+  |\Pi(x)-\Pi(x')| \;\le\; \|x-x'\|_\infty \qquad \forall\, x,x'\in X.
+\]
+
+\textbf{(ii) Clarke 一般化勾配の明示形式：}任意の $x_t\in X$ において、
+Clarke 一般化勾配 $\partial\Pi(x_t)=\partial^C\widetilde{\Pi}(x_t)$ は
+非空コンパクト凸集合をなし、
+\[
+  \partial\Pi(x_t)\;=\;\operatorname{conv}\bigl\{\,e_k \;\bigm|\; k\in\arg\min_j\bigl(x_{j,t}-\theta_j\bigr)\,\bigr\}
+\]
+と表される。
+ここで $e_k\in\mathbb{R}^n$ は第 $k$ 成分が $1$、
+他が $0$ の標準基底ベクトルである。
+\end{proposition}
+
+\begin{proof}
+\textbf{(i)} 各アフィン関数 $\ell_k(x)=x_k-\theta_k$ は
+Lipschitz 定数 $1$ で Lipschitz 連続である。
+有限個の Lipschitz 連続関数の下限（pointwise minimum）が
+同一の Lipschitz 定数で Lipschitz 連続であることは直接確認できる標準的事実であり、
+変分解析の一般的背景については
+Rockafellar and Wets~\cite{RockafellarWets1998} を参照する。
+
+\textbf{(ii)} $\widetilde{\Pi}$ は
+有限個の $C^1$ アフィン関数の pointwise minimum であるから、
+Clarke の一般化勾配の標準的性質\cite{Clarke1990}
+（一般化勾配の和・最大／最小に関する計算規則）により、
+Clarke 一般化勾配は最小値を達成するインデックスに対応する勾配の凸包と一致する：
+\[
+  \partial\Pi(x_t)=\operatorname{conv}\bigl\{\nabla\ell_k(x_t)\mid k\in\arg\min_j\ell_j(x_t)\bigr\}.
+\]
+$\nabla\ell_k(x)=e_k$ より所期の形を得る。
+有限個のベクトルの凸包は $\mathbb{R}^n$ の非空コンパクト凸集合をなす。
+\end{proof}
+
+\begin{remark}[$L_\infty$ ノルムの採用]
+\label{rem:linf}
+命題~\ref{prop:pi_subdiff}(i) で採用する $L_\infty$ ノルムは、
+定義~\ref{def:Pi} の $\Pi(x_t)=\min_k(x_{k,t}-\theta_k)$ が
+各成分の最小値として定義されることと構造的に整合する。
+各成分の最大誤差が可行性余裕度 $\Pi$ の変動上限を直接規定する。
+\end{remark}
+
+\subsubsection{閾値割れ集合と不足量}
+
+\begin{definition}[閾値割れ集合と不足量ベクトル（分類C）]
+\label{def:violation_profile}
+状態 $x_t$ に対して、\emph{閾値割れ集合} $V^-(x_t)$ を
+\[
+  V^-(x_t)\;:=\;\bigl\{\,k\in\{1,\ldots,n\}\;\bigm|\;x_{k,t}-\theta_k<0\,\bigr\}
+\]
+と定義する。
+また、\emph{不足量ベクトル} $d^-(x_t)\in\mathbb{R}^n$ を
+\[
+  d^-(x_t)\;:=\;\bigl((\theta_1-x_{1,t})_+,\ldots,(\theta_n-x_{n,t})_+\bigr),\qquad (a)_+:=\max(a,0)
+\]
+と定義する。
+
+$V^-(x_t)$ は閾値を下回る成分の添字集合、
+$d^-(x_t)$ は各成分の閾値不足量を表し、
+\[
+  V^-(x_t)
+  =
+  \bigl\{
+    k
+    \mid
+    d^-_k(x_t)>0
+  \bigr\}
+\]
+が成り立つ。
+\end{definition}
+
+\begin{proposition}[$\Pi$ と閾値割れ集合の関係]
+\label{prop:pi_violation_profile}
+定義~\ref{def:Pi} の $\Pi(x_t)=\min_k(x_{k,t}-\theta_k)$ および
+定義~\ref{def:violation_profile} のもとで、
+\[
+  \Pi(x_t)\ge0\;\iff\;V^-(x_t)=\emptyset\;\iff\;d^-(x_t)=\mathbf{0},
+\]
+かつ
+\[
+  \Pi(x_t)<0\;\iff\;V^-(x_t)\neq\emptyset.
+\]
+\end{proposition}
+
+\begin{proof}
+まず第一の同値連鎖を示す。
+\[
+  \Pi(x_t)\ge0
+  \iff
+  \min_k(x_{k,t}-\theta_k)\ge0
+  \iff
+  \forall k,\;
+  x_{k,t}-\theta_k\ge0
+\]
+である。
+最右辺は、定義~\ref{def:violation_profile} より
+$V^-(x_t)=\emptyset$ と同値であり、
+また $\forall k,\; (\theta_k-x_{k,t})_+=0$、
+すなわち $d^-(x_t)=\mathbf{0}$ とも同値である。
+よって
+\[
+  \Pi(x_t)\ge0
+  \iff
+  V^-(x_t)=\emptyset
+  \iff
+  d^-(x_t)=\mathbf{0}
+\]
+を得る。
+
+第二の同値は第一式の否定として、
+\[
+  \Pi(x_t)<0
+  \iff
+  \exists k,\;
+  x_{k,t}-\theta_k<0
+  \iff
+  V^-(x_t)\neq\emptyset
+\]
+により得られる。
+\end{proof}
+
+
+\subsubsection{SM の時刻別充足述語と可行集合}
+
+\begin{definition}[SM の時刻別充足述語]
+\label{def:SM}
+$t\in\mathbb{T}_{\mathrm{P},i}$ について、
+SM の時刻別充足述語 $\mathrm{SM}_t$ は
+\[
+  x_t\in K
+\]
+のとき真、$x_t\notin K$ のとき偽とする。
+\end{definition}
+
+\begin{proposition}[SM と可行集合の同値性]
+\label{prop:sm_K_equiv}
+\begin{enumerate}[label=(\roman*)]
+  \item 任意の $t\in\mathbb{N}_0$ について
+  $\Pi(x_t)\ge0 \iff x_t\in K$ である。
+  \item $t\in\mathbb{T}_{\mathrm{P},i}$ ならば、
+  $\mathrm{SM}_t$ が真であること、$\Pi(x_t)\ge0$、$x_t\in K$ の三条件は同値である。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) は $K$ の定義（定義~\ref{def:K}）と $x_t\in X$ による。
+(ii) は定義~\ref{def:SM} と (i) による。
+\end{proof}
+
+\begin{proposition}[一段階の $K$ 保持と $A_t$]
+\label{prop:sm_one_step_A}
+\begin{enumerate}[label=(\roman*)]
+  \item 任意の $t\in\mathbb{N}_0$ と $u\in U$ について
+  \[
+    u\in A_t
+    \iff
+    f(x_t,u,e_t)\in K
+    \iff
+    \Pi\bigl(f(x_t,u,e_t)\bigr)\ge0 .
+  \]
+  \item 任意の $t\in\mathbb{N}_0$ について、
+  $x_{t+1}\in K \iff u_t\in A_t$ である。
+  \item $t+1\in\mathbb{T}_{\mathrm{P},i}$ ならば、
+  $\mathrm{SM}_{t+1}$ が真であることと $u_t\in A_t$ は同値である。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) の前半は可行行動対応の定義（定義~\ref{def:at}）、後半は $K$ の定義による。
+(ii) は状態遷移 $x_{t+1}=f(x_t,u_t,e_t)$（定義~\ref{def:state_transition}）と (i) による。
+(iii) は (ii) と定義~\ref{def:SM} による。
+\end{proof}
+
+\subsubsection{SM、閉塞、崩壊、必要環境充足の区別}
+
+\begin{remark}[SM の基底的位置]
+\label{rem:sm_foundational_status}
+命題~\ref{prop:sm_K_equiv} が示す意味で、
+SM は三原理のうち、
+現在状態が可行集合 $K$ に属するか否かを直接記述する制約軸である。
+
+ここでいう「基底的」とは、
+可行集合 $K$ が、現在状態の判定だけでなく、
+可行行動集合 $A_t$、
+EU の一段階臨界域 $\mathrm{Crit}^{(1)}_\eta$、
+FR の定義域 $\mathcal{D}_{\mathrm{FR}}$、
+可行性保持指示関数 $\varphi_u$ および応答多様度 $\mu_{\mathrm{eff},t}$ の
+基準集合としても参照されるという、形式体系上の位置を指す。
+$\mathrm{Crit}^{(1)}_\eta$ と $\mathcal{D}_{\mathrm{FR}}$ は $K$ を $A$ を通して参照するが、
+$\mathrm{EU}_t$ と $\mathrm{FR}_t$ の定義域は $x_t\in K$ を要求しない（定義~\ref{def:EU}、定義~\ref{def:FR}）。
+
+したがって本論文は、$\mathrm{SM}_t$ の真から
+$\mathrm{EU}_t$ または $\mathrm{FR}_t$ の真を一般的な帰結として置かず、
+SM が他の二原理を論理的に包含することも主張しない
+（備考~\ref{rem:principle_implication_scope}）。
+\end{remark}
+
+\begin{remark}[現在の SM と次時刻の $K$ 保持は別条件である]
+\label{rem:sm_current_next}
+命題~\ref{prop:sm_one_step_A} は、
+現在時刻の状態条件と一段階先の $K$ 保持の可能性を区別する。
+現在時刻の SM は $x_t\in K$ という状態条件である。
+これに対して $A_t\neq\emptyset$ は、
+実現外部環境状態 $e_t$ のもとで、
+一段階先を $K$ に置く行動が存在するという遷移の条件である。
+
+したがって本論文は、定義だけから
+$x_t\in K \iff A_t\neq\emptyset$
+を仮定しない。
+$A_t=\emptyset$ となる時刻の扱いは、$x_t\in K$ の場合も $x_t\notin K$ の場合も、
+\S\ref{subsec:principle_failure_relation} の閉塞の二分
+（命題~\ref{prop:blockage_dichotomy}）で整理する。
+\end{remark}
+
+\begin{remark}[SM と閉塞の論理的区別]
+\label{rem:sm_blockage_distinction}
+$x_t\in K$ と閉塞 $A_t=\emptyset$ は同一の条件ではない。
+SM は現在状態 $x_t$ の $K$ への所属によって定まり、
+$A_t$ は $f(x_t,u,e_t)\in K$ を満たす行動 $u$ の存在によって定まる。
+前者は時刻 $t$ の状態条件、
+後者は同じ時刻の状態と実現外部環境状態から
+一段階先の可行状態へ至る行動があるかを表す遷移の条件である。
+
+Phase~1 の一般定義は、
+\[
+  A_t=\emptyset
+  \Longrightarrow
+  x_t\notin K
+\]
+も、
+\[
+  x_t\notin K
+  \Longrightarrow
+  A_t=\emptyset
+\]
+も仮定しない。
+個別の ACS で一方の含意が成り立つか否かは、
+$f$、$U$、$e_t$ および $K$ の具体的構造に依存する。
+\end{remark}
+
+\begin{remark}[SM の時刻別充足述語が偽であることと崩壊の区別]
+\label{rem:sm_not_collapse}
+$t\in\mathbb{T}_{\mathrm{P},i}$ で $\mathrm{SM}_t$ が偽であること、
+すなわち $\Pi(x_t)<0$（$x_t\notin K$）は、
+時刻 $t$ の状態が可行集合の外にあることを表す。
+これは \S\ref{sec:acs_def} の崩壊 $\mathrm{Col}_{i,t}=1$（定義~\ref{def:collapse}）と同一ではない。
+本論文は
+\[
+  x_t\notin K
+  \Longrightarrow
+  \mathrm{Col}_{i,t}=1
+\]
+を一般には仮定しない。
+また、$\mathrm{SM}_t$ が判定される時刻では
+補題~\ref{lem:principle_time_domain_down} により $\mathrm{Col}_{i,t}=0$ である。
+
+逆に、崩壊の判定条件を SM の定義へ組み込むこともしない。
+SM は単一時刻の状態条件であり、
+崩壊は同一個体としての非回復性を含む \S\ref{sec:acs_def} の概念である（定義~\ref{def:collapse}）。
+整形式実現の不成立 $\mathrm{WF}_{i,t}=0$ についても、
+本論文は $\mathrm{SM}_t$ の偽だけからこれを一般的な帰結として置かない
+（備考~\ref{rem:principles_failure_table}）。
+\end{remark}
+
+\begin{remark}[SM と必要環境充足の区別]
+\label{rem:sm_vs_Ereq}
+必要環境充足集合
+\[
+  E_{\mathrm{req}}(x_t)
+  =
+  \bigl\{
+    e\in E_{\mathrm{ext}}
+    \bigm|
+    \forall\eta\in E,\;
+    \eta(x_t,e)=1
+  \bigr\}
+\]
+は、状態 $x_t$ に相対して
+すべての必要環境要因を充足する外部環境状態を表す。
+これに対し SM は、現在状態 $x_t$ 自体が $K$ に属するかを問う。
+したがって、$e_t\in E_{\mathrm{req}}(x_t)$ と $x_t\in K$ は別の条件であり、
+本論文は両者の同値性を仮定しない。
+
+これは、必要環境要因の充足が構造的自己の存続に無関係であることを意味しない。
+構成要件 CR-1 は、構造的自己の存続が外部環境条件と関係することを要求する
+（\S\ref{subsec:environment_space}）。
+ただし、その関係は
+「必要環境要因が現在充足されているならば現在状態は $K$ に属する」
+という一時刻の同値では表されない。
+内部損傷、内部資源状態、過去からの履歴その他の状態差は $x_t$ に含まれうるため、
+必要環境要因が現在充足されていても $x_t\notin K$ である場合を、
+一般定義から排除しない。
+また、必要環境要因の一時的な非充足から、
+直ちに $x_t\notin K$ または崩壊を導くことも仮定しない。
+必要環境要因のうち、時刻 $t$ の臨界必要要因の充足は EU の時刻別充足述語として扱う
+（\S\ref{subsec:eu}）。
+\end{remark}
+
+\begin{remark}[必要環境依存性と SM の構造的接続]
+\label{rem:sm_environment_dependency}
+SM は内部状態だけを引数とする $\Pi:X\to\mathbb{R}$ によって判定されるが、
+そのことは SM が外部環境から因果的・構造的に独立であることを意味しない。
+状態遷移 $f:X\times U\times E_{\mathrm{ext}}\to X$ は外部環境状態を引数に含み、
+必要環境空間 $E$ と構成要件 CR-1 は
+構造的自己の存続に必要な外部条件を記述する。
+したがって、外部環境状態の差異は状態遷移を介して
+将来の $x_{t+1}$、ひいては $\Pi(x_{t+1})$ に関係しうる。
+
+ただし、$f$ の型だけから外部環境引数への非退化な依存を導くことはしない。
+どの外部環境の差が将来の $K$ 保持に関与するかは、
+当該 ACS の $f$、$E$、$E_{\mathrm{req}}$ および状態構造に相対して決まる。
+外部環境状態の差異が環境応答成分の次状態に反映されうるという構造は、
+\S\ref{subsec:env_coupling} の構造的環境結合条件として、
+三原理とは別に記述する。
+\end{remark}
+
+\begin{remark}[単一時刻条件と時間的維持の区別]
+\label{rem:sm_temporal_scope}
+定義~\ref{def:SM} の $\mathrm{SM}_t$ は、
+各時刻 $t\in\mathbb{T}_{\mathrm{P},i}$ ごとに判定される単一時刻の述語である。
+本論文は、ある時刻 $t$ で $\mathrm{SM}_t$ が真であることだけから、
+後続の $s>t$ について $x_s\in K$ が成り立つことを一般的な帰結として置かない。
+
+有限時間区間 $\{t,t+1,\ldots,t+T\}$（$T\in\mathbb{N}_0$）にわたり
+状態が $K$ に留まるという主張は、
+\[
+  x_{t+\tau}\in K
+  \qquad
+  \forall\,\tau\in\{0,1,\ldots,T\}
+\]
+という時刻列上の条件を別に要求する。
+将来へ向かう頑健性の段数は
+\S\ref{subsec:viab_core} の $\mathrm{Hor}_f$ で、
+有限窓内の正の可行性余裕度は
+\S\ref{subsec:s3_tstab} の (T1) で、それぞれ記述する。
+これらはいずれも $\mathrm{SM}_t$ の真理条件ではない。
+無期限の可行性保存を論じる場合には、
+状態遷移、可行行動、必要環境条件、
+および可行性核等の動学的構造が必要となる。
+本論文は、単一時刻の $\mathrm{SM}_t$ の真から長期可行性を一般的な帰結として置かない。
+\end{remark}
+
+\subsubsection{本小節の位置づけ}
+
+以上より、Phase~1 における SM の時刻別充足述語は、
+$t\in\mathbb{T}_{\mathrm{P},i}$ の時刻について
+\[
+  \mathrm{SM}_t\ \text{が真}
+  \iff
+  \Pi(x_t)\ge0
+  \iff
+  x_t\in K
+\]
+という現在状態の可行性条件として位置づけられる。
+この条件は、一段階の可行行動の存在、
+必要環境要因の現在充足、閉塞、崩壊、
+または将来にわたる可行性保存と同一ではない。
+
+次小節では、$E_{\mathrm{req}}$ ロバスト可行性核と有限段頑健可行集合を導入し、
+SM の原理応答項目のうち将来へ向かう側面を、
+分類Cの量として記述する。
+
+%----------------------------------------------------------------------
+\subsection{$E_{\mathrm{req}}$ ロバスト可行性核と有限段頑健可行集合}
+\label{subsec:viab_core}
+
+本小節では、必要環境充足集合 $E_{\mathrm{req}}(x)$ のすべての外部環境状態に対して
+一つの共通の行動で可行性を保つことができる状態の集合を導入し、
+その有限段の版と段数を分類Cの量として定める。
+これらは SM の原理応答項目のうち将来へ向かう側面を記述するものであり、
+いずれの時刻別充足述語の真理条件でもない。
+後続の \S\ref{subsec:fr} と \S\ref{subsec:sd_necessity} は本小節の結果を用いる。
+
+\subsubsection{必要環境充足状態域と $E_{\mathrm{req}}$ ロバスト可行性核}
+
+\begin{definition}[必要環境充足状態域]
+\label{def:req_domain}
+必要環境要因を充足する外部環境状態が少なくとも一つ存在する
+状態の集合を
+\[
+  D_{\mathrm{req}}
+  :=
+  \bigl\{\,x\in X \bigm| E_{\mathrm{req}}(x)\neq\emptyset \,\bigr\}
+  \subseteq X
+\]
+と書き、その可行集合との共通部分を
+\[
+  K_{\mathrm{req}}
+  :=
+  K\cap D_{\mathrm{req}}
+\]
+と書く。
+
+$D_{\mathrm{req}}$ および $K_{\mathrm{req}}$ は、
+必要環境空間 $E$ と可行集合 $K$ から
+\S\ref{sec:acs_def} の形式体系において一意に定まる派生集合であり、
+解析者が選択する対象ではない。
+$E_{\mathrm{req}}(x)\neq\emptyset$ ならば、ある $e\in E_{\mathrm{ext}}$ がすべての $\eta\in E$ について $\eta(x,e)=1$ を満たすので、
+\S\ref{sec:acs_def} の要因別充足状態域（定義~\ref{def:eta_satisfiable_domain}）とのあいだに
+$D_{\mathrm{req}}\subseteq\bigcap_{\eta\in E}D_\eta$ が成り立つ。
+
+\textit{注：}
+\S\ref{sec:acs_def} は
+$\forall x\in X:E_{\mathrm{req}}(x)\neq\emptyset$ を要求していない。
+構成要件 CR-1 の (CR-1b) が要求するのは
+$E_{\mathrm{req}}(x)\neq\emptyset$ なる $x$ の存在であり、
+全域的な非空性ではない。
+したがって $D_{\mathrm{req}}\subsetneq X$ および
+$K_{\mathrm{req}}\subsetneq K$ である場合を排除しない。
+\end{definition}
+
+\begin{definition}[$E_{\mathrm{req}}$ ロバスト可行性核]
+\label{def:viab_core}
+状態遷移 $x_{t+1}=f(x_t,u_t,e_t)$
+（定義~\ref{def:state_transition}）のもとで、
+部分集合 $K'\subseteq K_{\mathrm{req}}$ が
+\emph{$E_{\mathrm{req}}$ 不変}であるとは、
+\[
+  \forall x\in K',\;
+  \exists u\in U
+  \;\text{ s.t. }\;
+  \forall e\in E_{\mathrm{req}}(x),\;
+  f(x,u,e)\in K'
+  \tag{$\ast$}
+\]
+が成立することをいう。
+
+$E_{\mathrm{req}}$ 不変な $K_{\mathrm{req}}$ の部分集合全体の族を
+$\mathfrak{K}$ と書き、
+\emph{$E_{\mathrm{req}}$ ロバスト可行性核}を
+\[
+  \mathrm{Viab}_f(K)
+  :=
+  \bigcup_{K'\in\mathfrak{K}} K'
+\]
+と定義する。
+この和集合が $\mathfrak{K}$ の最大元であることは
+命題~\ref{prop:viab_core_max} で示す。
+定義より
+\[
+  \mathrm{Viab}_f(K)
+  \subseteq
+  K_{\mathrm{req}}
+  \subseteq
+  K
+\]
+である。
+
+\textit{注（量化順序）：}
+条件 $(\ast)$ は $\exists u\,\forall e$ の順序であり、
+\emph{一つの共通行動}が $E_{\mathrm{req}}(x)$ の
+すべての外部環境状態に対して可行性を保持することを要求する。
+これは
+\[
+  \forall e\in E_{\mathrm{req}}(x),\;
+  \exists u\in U
+  \;\text{ s.t. }\;
+  f(x,u,e)\in K'
+\]
+という、外部環境状態ごとに異なる行動を選んでよい条件とは
+異なる。本小節ではこの量化順序を入れ替えない。
+
+\textit{注（定義域の限定）：}
+$\mathfrak{K}$ の要素を $K_{\mathrm{req}}$ の部分集合に限るのは、
+$E_{\mathrm{req}}(x)=\emptyset$ である状態において
+$(\ast)$ の全称量化が空虚に成立し、
+そのような状態が無条件に核へ含まれることを避けるためである。
+$x\notin K_{\mathrm{req}}$ の状態は、本診断の対象外として扱う。
+本論文は、この扱いから当該状態が将来失敗することを一般的な帰結として置かない。
+
+\textit{注（標準 Viability Kernel との関係）：}
+本定義は $E_{\mathrm{req}}(x)$ 上のロバスト条件を採用した
+本論文固有の構成であり、
+標準的な Viability Kernel との数学的同一性を主張しない。
+\end{definition}
+
+\begin{proposition}[最大 $E_{\mathrm{req}}$ 不変集合の存在]
+\label{prop:viab_core_max}
+$\mathrm{Viab}_f(K)$ は $E_{\mathrm{req}}$ 不変であり、
+したがって $\mathfrak{K}$ の最大元である。
+\end{proposition}
+
+\begin{proof}
+$\mathfrak{K}\ni\emptyset$ であるから
+$\mathfrak{K}\neq\emptyset$ であり、和集合は定義される
+（$\mathfrak{K}=\{\emptyset\}$ のときは
+$\mathrm{Viab}_f(K)=\emptyset$ となる）。
+
+$x\in\mathrm{Viab}_f(K)$ を任意にとる。
+和集合の定義より、ある $K'\in\mathfrak{K}$ が存在して
+$x\in K'$ である。
+$K'$ の $E_{\mathrm{req}}$ 不変性より、ある $u\in U$ が存在して
+\[
+  \forall e\in E_{\mathrm{req}}(x),\;
+  f(x,u,e)\in K'.
+\]
+$K'\subseteq\mathrm{Viab}_f(K)$ であるから、
+同じ $u$ について
+\[
+  \forall e\in E_{\mathrm{req}}(x),\;
+  f(x,u,e)\in\mathrm{Viab}_f(K).
+\]
+$x$ は任意であったから $\mathrm{Viab}_f(K)$ は
+$E_{\mathrm{req}}$ 不変である。
+また $\mathrm{Viab}_f(K)\subseteq K_{\mathrm{req}}$ であるから
+$\mathrm{Viab}_f(K)\in\mathfrak{K}$ であり、
+和集合の構成より任意の $K'\in\mathfrak{K}$ について
+$K'\subseteq\mathrm{Viab}_f(K)$ である。
+\end{proof}
+
+\begin{remark}[Viability Theory との構造的関係]
+\label{rem:viability_relation}
+本論文の $E_{\mathrm{req}}$ に相対する
+ロバスト不変集合構成は、
+Viability Theory~\cite{Aubin1991,SaintPierre1994} および
+集合値解析~\cite{AubinFrankowska1990} における
+可行性・不変性の考え方と構造的に関係する。
+
+本論文は状態空間のコンパクト性
+（仮定~\ref{ass:compact_spaces}）および
+状態遷移写像の連続性
+（仮定~\ref{ass:f_continuity}）を用いる一方、
+定義~\ref{def:viab_core} では、
+状態依存の必要環境充足集合
+$E_{\mathrm{req}}(x)$ を量化域として、
+\[
+  \exists u\in U\;
+  \forall e\in E_{\mathrm{req}}(x)
+\]
+という本論文固有のロバスト条件を採用する。
+
+したがって、
+本論文の $\mathrm{Viab}_f(K)$ と
+標準的な Viability Kernel との数学的同一性、
+または特定の Viability Theory の
+標準公理体系への一致を主張しない。
+ここでいう関係は、
+可行集合内に状態を保持しうる制御・不変性を扱うという
+概念的・構造的対応に限られる。
+
+また、
+$E_{\mathrm{req}}:X\rightrightarrows E_{\mathrm{ext}}$ について、
+閉グラフ性、上半連続性またはコンパクト値性を
+\S\ref{sec:acs_def} は一般には仮定していない
+（定義~\ref{def:acs}(3) は $\eta$ に正則性を課さない）。
+したがって本論文は、
+Viability Theory の一般論のみから
+$\mathrm{Viab}_f(K)$ が $X$ の閉部分集合であることを主張しない。
+閉性を要する主張は本小節では用いない。
+\end{remark}
+
+\subsubsection{可行性核の理論上の地位}
+
+\begin{remark}[$\mathrm{Viab}_f(K)$ の存在論的・認識論的地位]
+\label{rem:viab_core_status}
+$\mathrm{Viab}_f(K)$ は、ACS の内部に実装される認知表象ではなく、
+ACS が計算する対象でもなく、
+ACS が直接の目標とする集合でもない。
+
+本論文における $\mathrm{Viab}_f(K)$ は、
+状態遷移写像 $f$、可行集合 $K$、行動空間 $U$、および
+必要環境充足集合 $E_{\mathrm{req}}$ を固定したときに、
+どの状態から $E_{\mathrm{req}}$ ロバストな可行性保持が
+可能であるかを数学的に特徴づける、
+モデル由来の派生的解析対象である。
+
+したがって本論文では、
+「ACS が可行性核を目指す」、
+「ACS が可行性核へ戻ろうとする」、
+「ACS が可行性核を認識している」
+といった目的論的・認知論的表現を用いない。
+
+\textit{注（モデル相対性）：}
+$\mathrm{Viab}_f(K)$ は解析者が恣意的に選ぶ集合ではない。
+モデルが固定されれば、それは当該モデルから数学的に定まる。
+ただし、現実のACSを記述するにあたって
+どの $f$、どの $K$、どの必要環境要因を採用するかには
+モデル化が介在する。
+したがって本論文は、現実そのものに対して観測者非依存の
+既知な可行性核が与えられているとは扱わず、
+$\mathrm{Viab}_f(K)$ を
+指定された形式モデルに相対的に定まる解析対象として扱う。
+\end{remark}
+
+\begin{remark}[形式モデル上の核・内部予測・実現軌道の区別]
+\label{rem:three_layers}
+本論文では次の三者を区別し、同一視しない。
+
+第一に、形式モデル上の可行性核 $\mathrm{Viab}_f(K)$。
+これは解析者が形式体系から数学的に導く集合である。
+
+第二に、ACS 内部の予測および評価。
+これは内部モデル $M$、内部環境推定 $\hat e_t$
+（定義~\ref{def:internal_env_estimate}）、および
+\S\ref{sec:tipa} の機構を通じて ACS が扱う、
+利用可能な内部情報である。
+本論文は、それが形式モデルと一致することを仮定しない。
+
+第三に、実際に実現した軌道 $x_0,x_1,x_2,\ldots$ である。
+
+本論文は、現実のACSについて、
+真の状態遷移法則の把握、将来の外部環境状態の把握、
+必要環境要因の特定、可行性核の計算、
+または将来軌道の予測が可能であることを仮定しない。
+Phase~1 において $\mathrm{Viab}_f(K)$ を定義できることと、
+実在ACSがその集合を認識または計算できることとは別問題である。
+
+したがって、ACS が $\mathrm{Viab}_f(K)$ を知らない場合でも、
+結果として長期にわたりその内部に留まることはありうる。
+逆に、ACS 自身の内部評価が良好であっても、
+内部モデルが不完全であれば
+形式モデル上の可行領域から外れることはありうる。
+
+現実のACSについて本論文が述べるのは、
+局所的な評価・応答・更新の結果として
+可行性核内に留まりうる、という水準までである。
+
+\textit{注：}
+モデル不確実性、部分観測、推定誤差、および
+将来の外部環境状態に関する不確実性により、
+形式モデル上の可行性核と ACS 内部の予測可能領域は
+一致しない場合がある。
+確率モデル、部分観測モデル、推定誤差の分布、信念状態、
+および確率的可行性核の形式化は Phase~1 では導入せず、
+Phase~2 の課題とする（\S\ref{subsec:limitations_list} の L1、within present framework）。
+\end{remark}
+
+\begin{remark}[可行性核外部性の意味の限定]
+\label{rem:viab_core_exterior}
+本論文は、ある状態が $\mathrm{Viab}_f(K)$ の外部にあることから、
+その状態から将来必ず失敗することを一般的な帰結として置かない。
+
+$x\notin\mathrm{Viab}_f(K)$ から従うのは、
+定義~\ref{def:viab_core} の量化条件のもとで、
+$E_{\mathrm{req}}$ ロバストな可行性保持を与える
+共通方策が存在しないことに限られる。
+
+実現する外部環境状態の列が
+$E_{\mathrm{req}}(x_s)$ 全体を走査するとは限らず、
+また ACS が $\mathrm{Update}$ によって
+内部モデルおよび応答方略を変化させることもありうる。
+したがって、実現軌道が可行性を保つことは排除されない。
+
+本論文では「核外部にあること」を
+「将来の破綻が確定していること」と記述しない。
+
+\textit{注（時刻間変化との関係）：}
+本小節の $\mathrm{Viab}_f(K)$ は、
+$f$、$K$、$U$、$E_{\mathrm{req}}$ を固定した
+Phase~1 の形式構造に対する解析対象である。
+これに対し \S\ref{sec:extended_dynamics} では、
+内部モデル・記憶・応答方略が $\mathrm{Update}$ によって
+時刻間で変化する過程を扱う。
+したがって本論文は、
+一度可行性核の外部へ出たACSが回復しないとは述べない。
+実効的な応答能力の時刻間変化と可行性構造との関係は
+\S\ref{sec:extended_dynamics} の備考~\ref{rem:s5_learning_viability} で述べる。
+\end{remark}
+
+\subsubsection{有限段頑健可行集合と頑健存続可能段数}
+
+\begin{definition}[有限段 $E_{\mathrm{req}}$ 頑健可行集合（分類C）]
+\label{def:viab_stage}
+$K_{\mathrm{req}}=K\cap D_{\mathrm{req}}$（定義~\ref{def:req_domain}）とする。
+$\nu\in\mathbb{N}_0$ について、集合 $\mathrm{Viab}_f^{(\nu)}(K)\subseteq K_{\mathrm{req}}$ を
+\[
+  \mathrm{Viab}_f^{(0)}(K):=K_{\mathrm{req}},
+\]
+\[
+  \mathrm{Viab}_f^{(\nu)}(K)
+  :=
+  \bigl\{
+    x\in K_{\mathrm{req}}
+    \bigm|
+    \exists u\in U\;
+    \forall e\in E_{\mathrm{req}}(x):\;
+    f(x,u,e)\in\mathrm{Viab}_f^{(\nu-1)}(K)
+  \bigr\}
+  \qquad(\nu\ge1)
+\]
+により帰納的に定め、
+\emph{$\nu$ 段 $E_{\mathrm{req}}$ 頑健可行集合}と呼ぶ。
+上付きの $(\nu)$ は反復の段数を表す。
+量化の順序は定義~\ref{def:viab_core} と同じく $\exists u\,\forall e$ である。
+各段の元を $K_{\mathrm{req}}$ に限るので、
+$E_{\mathrm{req}}(x)=\emptyset$ の状態で全称量化が空虚に成立する場合は含まれない。
+\end{definition}
+
+\begin{definition}[頑健存続可能段数（分類C）]
+\label{def:viab_horizon}
+$x\in K_{\mathrm{req}}$ について、
+\[
+  \mathrm{Hor}_f(x)
+  :=
+  \sup
+  \bigl\{
+    \nu\in\mathbb{N}_0
+    \bigm|
+    x\in\mathrm{Viab}_f^{(\nu)}(K)
+  \bigr\}
+  \in\mathbb{N}_0\cup\{\infty\}
+\]
+を\emph{頑健存続可能段数}と呼ぶ。
+$x\in\mathrm{Viab}_f^{(0)}(K)$ であるから、上の集合は空でない。
+\end{definition}
+
+\begin{proposition}[有限段頑健可行集合の入れ子性]
+\label{prop:viab_stage_nested}
+\begin{enumerate}[label=(\roman*)]
+  \item すべての $\nu\in\mathbb{N}_0$ について
+  $\mathrm{Viab}_f^{(\nu+1)}(K)\subseteq\mathrm{Viab}_f^{(\nu)}(K)$ である。
+  \item $x\in K_{\mathrm{req}}$ と $\nu\in\mathbb{N}_0$ について、
+  $x\in\mathrm{Viab}_f^{(\nu)}(K)\iff\nu\le\mathrm{Hor}_f(x)$ である。
+  $\mathrm{Hor}_f(x)<\infty$ のとき、
+  定義~\ref{def:viab_horizon} の上限は最大値として達成される。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i)：$\nu$ についての帰納法による。
+$\nu=0$ のとき、定義から $\mathrm{Viab}_f^{(1)}(K)\subseteq K_{\mathrm{req}}=\mathrm{Viab}_f^{(0)}(K)$ である。
+$\nu\ge1$ とし、$\mathrm{Viab}_f^{(\nu)}(K)\subseteq\mathrm{Viab}_f^{(\nu-1)}(K)$ を仮定する。
+$x\in\mathrm{Viab}_f^{(\nu+1)}(K)$ をとると、$x\in K_{\mathrm{req}}$ であり、
+ある $u\in U$ が存在して、すべての $e\in E_{\mathrm{req}}(x)$ について
+$f(x,u,e)\in\mathrm{Viab}_f^{(\nu)}(K)\subseteq\mathrm{Viab}_f^{(\nu-1)}(K)$ である。
+よって $x\in\mathrm{Viab}_f^{(\nu)}(K)$ である。
+
+(ii)：$S_{\mathrm{Hor}}(x):=\{\nu\in\mathbb{N}_0\mid x\in\mathrm{Viab}_f^{(\nu)}(K)\}$ とおく。
+(i) を繰り返し用いると、$\nu\in S_{\mathrm{Hor}}(x)$ かつ $\mu\le\nu$ ならば $\mu\in S_{\mathrm{Hor}}(x)$ である。
+$\nu\in S_{\mathrm{Hor}}(x)$ ならば上限の定義から $\nu\le\mathrm{Hor}_f(x)$ である。
+逆に $\nu\le\mathrm{Hor}_f(x)$ とする。
+$\mathrm{Hor}_f(x)<\infty$ のとき、$S_{\mathrm{Hor}}(x)$ は上に有界な $\mathbb{N}_0$ の空でない部分集合なので
+最大元をもち、それは $\mathrm{Hor}_f(x)$ に等しい。
+下方閉性から $\nu\in S_{\mathrm{Hor}}(x)$ である。
+$\mathrm{Hor}_f(x)=\infty$ のとき、$S_{\mathrm{Hor}}(x)$ は上に有界でないので
+$\nu\le\nu'$ となる $\nu'\in S_{\mathrm{Hor}}(x)$ が存在し、下方閉性から $\nu\in S_{\mathrm{Hor}}(x)$ である。
+\end{proof}
+
+\begin{proposition}[$E_{\mathrm{req}}$ ロバスト可行性核と有限段頑健可行集合]
+\label{prop:viab_stage_core}
+すべての $\nu\in\mathbb{N}_0$ について
+$\mathrm{Viab}_f(K)\subseteq\mathrm{Viab}_f^{(\nu)}(K)$ である。
+したがって、$x\in\mathrm{Viab}_f(K)$ ならば $\mathrm{Hor}_f(x)=\infty$ である。
+\end{proposition}
+
+\begin{proof}
+$\nu$ についての帰納法による。
+$\nu=0$ のとき、定義~\ref{def:viab_core} から $\mathrm{Viab}_f(K)\subseteq K_{\mathrm{req}}$ である。
+$\nu\ge1$ とし、$\mathrm{Viab}_f(K)\subseteq\mathrm{Viab}_f^{(\nu-1)}(K)$ を仮定する。
+$x\in\mathrm{Viab}_f(K)$ をとる。
+命題~\ref{prop:viab_core_max} により $\mathrm{Viab}_f(K)$ は $E_{\mathrm{req}}$ 不変であるから、
+ある $u\in U$ が存在して、すべての $e\in E_{\mathrm{req}}(x)$ について
+$f(x,u,e)\in\mathrm{Viab}_f(K)\subseteq\mathrm{Viab}_f^{(\nu-1)}(K)$ である。
+また $x\in K_{\mathrm{req}}$ である。
+よって $x\in\mathrm{Viab}_f^{(\nu)}(K)$ である。
+後半は定義~\ref{def:viab_horizon} による。
+\end{proof}
+
+\begin{proposition}[有限状態空間における可行性核と有限段頑健可行集合]
+\label{prop:viab_stage_finite}
+内部状態空間 $X$ が有限集合であるとする。
+このとき、$\nu^{\ast}\le|K_{\mathrm{req}}|$ なる $\nu^{\ast}\in\mathbb{N}_0$ が存在して、
+すべての $\nu\ge\nu^{\ast}$ について
+$\mathrm{Viab}_f^{(\nu)}(K)=\mathrm{Viab}_f^{(\nu^{\ast})}(K)$ であり、
+\[
+  \mathrm{Viab}_f(K)
+  =
+  \mathrm{Viab}_f^{(\nu^{\ast})}(K)
+  =
+  \bigcap_{\nu\in\mathbb{N}_0}\mathrm{Viab}_f^{(\nu)}(K)
+\]
+である。
+したがって、$x\in K_{\mathrm{req}}$ について
+$\mathrm{Hor}_f(x)=\infty\iff x\in\mathrm{Viab}_f(K)$ である。
+本命題は仮定を用いない。
+\end{proposition}
+
+\begin{proof}
+各段の集合を $V^{(\nu)}:=\mathrm{Viab}_f^{(\nu)}(K)$ と書く。
+$K_{\mathrm{req}}$ の部分集合 $V$ に対し
+\[
+  \Phi(V):=\bigl\{x\in K_{\mathrm{req}}\bigm|\exists u\in U\;\forall e\in E_{\mathrm{req}}(x):\;f(x,u,e)\in V\bigr\}
+\]
+とおくと、定義~\ref{def:viab_stage} より $V^{(0)}=K_{\mathrm{req}}$、$V^{(\nu)}=\Phi(V^{(\nu-1)})$（$\nu\ge1$）である。
+
+第一に、段数の停止を示す。
+命題~\ref{prop:viab_stage_nested} (i) より $V^{(\nu+1)}\subseteq V^{(\nu)}$ であり、
+$|V^{(0)}|=|K_{\mathrm{req}}|$ は有限である。
+$\nu=0,1,\ldots,|K_{\mathrm{req}}|$ のすべてで $V^{(\nu+1)}\subsetneq V^{(\nu)}$ であったとすると、
+$|V^{(|K_{\mathrm{req}}|+1)}|\le|K_{\mathrm{req}}|-(|K_{\mathrm{req}}|+1)<0$ となり矛盾する。
+よって $V^{(\nu^{\ast}+1)}=V^{(\nu^{\ast})}$ なる $\nu^{\ast}\le|K_{\mathrm{req}}|$ が存在する。
+$V^{(\nu+1)}=V^{(\nu)}$ ならば $V^{(\nu+2)}=\Phi(V^{(\nu+1)})=\Phi(V^{(\nu)})=V^{(\nu+1)}$ であるから、
+帰納法により、すべての $\nu\ge\nu^{\ast}$ について $V^{(\nu)}=V^{(\nu^{\ast})}$ である。
+列は減少するので、$\bigcap_{\nu}V^{(\nu)}=V^{(\nu^{\ast})}$ である。
+
+第二に、$V^{\ast}:=V^{(\nu^{\ast})}$ が $E_{\mathrm{req}}$ 不変であることを示す。
+$x\in V^{\ast}=V^{(\nu^{\ast}+1)}=\Phi(V^{\ast})$ ならば、
+$x\in K_{\mathrm{req}}$ であり、ある $u\in U$ が存在して、
+すべての $e\in E_{\mathrm{req}}(x)$ について $f(x,u,e)\in V^{\ast}$ である。
+よって $V^{\ast}\subseteq K_{\mathrm{req}}$ は定義~\ref{def:viab_core} の意味で $E_{\mathrm{req}}$ 不変であり、
+$V^{\ast}\subseteq\mathrm{Viab}_f(K)$ である。
+逆の包含 $\mathrm{Viab}_f(K)\subseteq\bigcap_{\nu}V^{(\nu)}=V^{\ast}$ は命題~\ref{prop:viab_stage_core} による。
+
+第三に、$x\in K_{\mathrm{req}}$ について、
+命題~\ref{prop:viab_stage_nested} (ii) より
+$\mathrm{Hor}_f(x)=\infty$ はすべての $\nu$ で $x\in V^{(\nu)}$ であることと同値であり、
+これは $x\in\bigcap_{\nu}V^{(\nu)}=\mathrm{Viab}_f(K)$ と同値である。
+\end{proof}
+
+\begin{remark}[頑健存続可能段数の地位と限定]
+\label{rem:viab_stage_scope}
+\begin{enumerate}
+  \item 本論文は $\mathrm{Viab}_f(K)=\bigcap_{\nu\in\mathbb{N}_0}\mathrm{Viab}_f^{(\nu)}(K)$ を主張しない。
+  右辺の元は各有限段で頑健であるが、本論文は、右辺が $E_{\mathrm{req}}$ 不変な集合であることを示していない。
+  同じ理由で、本論文は $\mathrm{Hor}_f(x)=\infty\Rightarrow x\in\mathrm{Viab}_f(K)$ を主張しない。
+  ただし $X$ が有限集合の場合は、命題~\ref{prop:viab_stage_finite} により両者が成立する。
+  \item $\mathrm{Hor}_f(x)$ は $E_{\mathrm{req}}(x)$ のすべての外部環境状態に対する頑健性の段数であり、
+  実現する外部環境状態列のもとで存続する時刻数の予測ではない。
+  \item $\mathrm{Hor}_f$ は $\mathrm{SM}_t$ の真理条件ではない。
+  SM の原理応答項目のうち将来へ向かう側面を記述する分類Cの量である。
+  \item $\mathrm{Viab}_f(K)=\emptyset$ であっても、ある $\nu$ について
+  $\mathrm{Viab}_f^{(\nu)}(K)\neq\emptyset$ となる系を記述できる。
+  例えば $X=\{0,1,2\}\subseteq\mathbb R$、$\Pi(x)=x-1$（したがって $K=\{1,2\}$）、$U=\{u\}$、
+  $E_{\mathrm{ext}}=\{e\}$、$E=\{\eta\}$、$\eta\equiv1$、$f(2,u,e)=1$、$f(1,u,e)=f(0,u,e)=0$ とすると、
+  $\mathrm{Viab}_f^{(1)}(K)=\{2\}$、$\mathrm{Viab}_f^{(2)}(K)=\emptyset$ であり、
+  命題~\ref{prop:viab_stage_finite} により $\mathrm{Viab}_f(K)=\emptyset$ である（型の水準の例）。
+  本論文は、どの系でも有限段の集合が空でないとは主張しない。
+  \item ACS がこれらの量を内部に保持または計算することを要求しない
+  （\S\ref{subsec:description_levels_global}）。
+\end{enumerate}
+\end{remark}
+
+\subsubsection{全環境に対する頑健な核と楽観的な核との関係}
+
+定義~\ref{def:viab_core} の可行性核は、外部環境状態の量化の範囲を各状態の $E_{\mathrm{req}}(x)$ に取る。
+本小節では、比較のために、量化の範囲を外部環境状態空間 $E_{\mathrm{ext}}$ 全体に取る二つの核を置き、
+可行性核との包含関係を示す。
+
+\begin{definition}[全環境頑健核と楽観核（分類C）]
+\label{def:kernel_all_any}
+部分集合 $K'\subseteq K$ が\emph{全環境頑健不変}であるとは、
+\[
+  \forall x\in K',\;\exists u\in U\;\text{ s.t. }\;\forall e\in E_{\mathrm{ext}},\;f(x,u,e)\in K'
+\]
+が成立することをいい、\emph{楽観不変}であるとは、
+\[
+  \forall x\in K',\;\exists u\in U,\;\exists e\in E_{\mathrm{ext}}\;\text{ s.t. }\;f(x,u,e)\in K'
+\]
+が成立することをいう。
+全環境頑健不変な $K$ の部分集合全体の和集合を\emph{全環境頑健核} $\mathrm{Viab}_f^{\mathrm{all}}(K)$、
+楽観不変な $K$ の部分集合全体の和集合を\emph{楽観核} $\mathrm{Viab}_f^{\mathrm{any}}(K)$ と書く。
+上付きの $\mathrm{all}$・$\mathrm{any}$ は量化の種類を表すラベルであり、
+有限段の段数を表す括弧付きの上付き $(\nu)$ とは異なる。
+
+\textit{注：}
+二つの核は必要環境空間 $E$ と $E_{\mathrm{req}}$ を用いず、$K$ の部分集合として定める。
+したがって $\mathrm{Viab}_f(K)$ と異なり、$K_{\mathrm{req}}$ に含まれることを要件としない。
+いずれも比較のための集合であり、三原理の時刻別充足述語の真理条件ではない。
+\end{definition}
+
+\begin{proposition}[可行性核と全環境頑健核・楽観核の包含関係]
+\label{prop:kernel_standard_comparison}
+\begin{enumerate}[label=(\roman*)]
+  \item $\mathrm{Viab}_f^{\mathrm{all}}(K)$ は全環境頑健不変であり、$\mathrm{Viab}_f^{\mathrm{any}}(K)$ は楽観不変である。
+  \item $\mathrm{Viab}_f(K)\subseteq\mathrm{Viab}_f^{\mathrm{any}}(K)$ である。
+  \item $\mathrm{Viab}_f^{\mathrm{all}}(K)\subseteq\mathrm{Viab}_f(K)$ であることと、
+  $\mathrm{Viab}_f^{\mathrm{all}}(K)\subseteq D_{\mathrm{req}}$ であることは同値である。
+\end{enumerate}
+本命題は仮定を用いない。
+\end{proposition}
+
+\begin{proof}
+(i)：$x\in\mathrm{Viab}_f^{\mathrm{all}}(K)$ ならば、ある全環境頑健不変な $K'\subseteq K$ について $x\in K'$ であり、
+ある $u\in U$ が存在して、すべての $e\in E_{\mathrm{ext}}$ について
+$f(x,u,e)\in K'\subseteq\mathrm{Viab}_f^{\mathrm{all}}(K)$ である。
+楽観核についても、存在量化を保ったまま同じ議論が成り立つ。
+
+(ii)：$x\in\mathrm{Viab}_f(K)$ とする。
+$\mathrm{Viab}_f(K)\subseteq K_{\mathrm{req}}$ より $E_{\mathrm{req}}(x)\neq\emptyset$ である。
+命題~\ref{prop:viab_core_max} により、ある $u\in U$ が存在して、
+すべての $e\in E_{\mathrm{req}}(x)$ について $f(x,u,e)\in\mathrm{Viab}_f(K)$ である。
+$E_{\mathrm{req}}(x)\subseteq E_{\mathrm{ext}}$ の元 $e$ を一つとれば、
+$f(x,u,e)\in\mathrm{Viab}_f(K)$ となる $u$ と $e$ が存在する。
+よって $\mathrm{Viab}_f(K)\subseteq K$ は楽観不変であり、$\mathrm{Viab}_f(K)\subseteq\mathrm{Viab}_f^{\mathrm{any}}(K)$ である。
+
+(iii)：$R:=\mathrm{Viab}_f^{\mathrm{all}}(K)$ とおく。
+$R\subseteq\mathrm{Viab}_f(K)$ ならば、$\mathrm{Viab}_f(K)\subseteq K_{\mathrm{req}}\subseteq D_{\mathrm{req}}$ より $R\subseteq D_{\mathrm{req}}$ である。
+逆に $R\subseteq D_{\mathrm{req}}$ とする。
+$R\subseteq K$ であるから $R\subseteq K\cap D_{\mathrm{req}}=K_{\mathrm{req}}$ である。
+(i) により、各 $x\in R$ についてある $u\in U$ が存在して、
+すべての $e\in E_{\mathrm{ext}}$ について $f(x,u,e)\in R$ である。
+$E_{\mathrm{req}}(x)\subseteq E_{\mathrm{ext}}$ であるから、
+すべての $e\in E_{\mathrm{req}}(x)$ についても $f(x,u,e)\in R$ である。
+よって $R$ は $K_{\mathrm{req}}$ の $E_{\mathrm{req}}$ 不変な部分集合であり、
+定義~\ref{def:viab_core} により $R\subseteq\mathrm{Viab}_f(K)$ である。
+\end{proof}
+
+\begin{remark}[包含関係の読み方と限定]
+\label{rem:kernel_standard_comparison_scope}
+\begin{enumerate}
+  \item 命題~\ref{prop:kernel_standard_comparison} (iii) は、すべての外部環境状態に対して頑健に保てる状態であっても、
+  必要環境要因を充足する外部環境状態が存在しない状態を含むならば、
+  可行性核に含まれないことを表す。
+  可行性核は、$E_{\mathrm{ext}}$ 全体への頑健性ではなく、
+  必要環境要因が充足される範囲での頑健性を表す集合である。
+  \item 本論文は、(ii) および (iii) の包含が真部分集合となるか等号となるかを一般的な帰結として置かない。
+  それは $f$、$K$、$E$ の具体的構造に依存する。
+  \item 本命題は、差別化核その他の既存の核との定義の同一性を主張しない
+  （\S\ref{subsec:related}）。
+  \item ACS がこれらの集合を内部に保持または計算することを要求しない
+  （\S\ref{subsec:description_levels_global}）。
+\end{enumerate}
+\end{remark}
+
+$E_{\mathrm{req}}$ ロバスト可行性核と比較用の集合との包含関係を図~\ref{fig:s3_kernel_inclusion} に示す。
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}[
+  font=\footnotesize,
+  set/.style={draw, rounded corners=2pt, align=center, inner sep=3pt},
+  cond/.style={font=\scriptsize, inner sep=1pt},
+  note/.style={font=\scriptsize, align=left, inner sep=1pt},
+  plabel/.style={font=\small, anchor=west, inner sep=0pt},
+  sub/.style={-{Latex[length=1.6mm]}},
+  csub/.style={-{Latex[length=1.6mm]}, dashed},
+]
+\node[plabel] at (0,1.6) {(a)\ 追加の条件なしに成り立つ包含};
+\node[set] (VF)  at (0.9,0)  {$\mathrm{Viab}_f(K)$};
+\node[set] (Vn1) at (3.6,0)  {$\mathrm{Viab}_f^{(\nu+1)}(K)$};
+\node[set] (Vn)  at (6.0,0)  {$\mathrm{Viab}_f^{(\nu)}(K)$};
+\node[set] (V0)  at (9.0,0)  {$\mathrm{Viab}_f^{(0)}(K)$\\$=K_{\mathrm{req}}$};
+\node[set] (K)   at (11.6,0) {$K$};
+\node[set] (Dr)  at (9.0,-1.4) {$D_{\mathrm{req}}$};
+\node[set] (Vany) at (3.6,-2.3) {$\mathrm{Viab}_f^{\mathrm{any}}(K)$};
+\node[set] (Vall) at (11.6,1.3) {$\mathrm{Viab}_f^{\mathrm{all}}(K)$};
+\draw[sub] (VF) -- node[cond, above]{$\forall\nu$} (Vn1);
+\draw[sub] (Vn1) -- (Vn);
+\draw[sub] (Vn) -- node[cond, above=3pt]{入れ子} (V0);
+\draw[sub] (V0) -- (K);
+\draw[sub] (V0) -- (Dr);
+\draw[sub] (VF) |- (Vany);
+\draw[sub] (Vany) -| (K);
+\draw[sub] (Vall) -- (K);
+\node[note, anchor=north west] at (5.0,-2.55)
+ {$\nu\in\mathbb{N}_0$ は任意。$\mathrm{Viab}_f(K)$ は各段に含まれる};
+
+\begin{scope}[yshift=-5.0cm]
+\node[plabel] at (0,1.0) {(b)\ 条件のもとでの関係};
+\node[set] (Vall2) at (1.4,0) {$\mathrm{Viab}_f^{\mathrm{all}}(K)$};
+\node[set] (VF2)   at (10.6,0) {$\mathrm{Viab}_f(K)$};
+\draw[csub] (Vall2) -- node[cond, above]{$\mathrm{Viab}_f^{\mathrm{all}}(K)\subseteq D_{\mathrm{req}}$ のとき、かつそのときに限り成り立つ}
+ node[cond, below]{命題~\ref{prop:kernel_standard_comparison} (iii)} (VF2);
+\node[set, dashed, anchor=north west, align=left] at (0,-1.0)
+ {$X$ が有限集合のとき（命題~\ref{prop:viab_stage_finite}）：
+  ある $\nu^{\ast}\le|K_{\mathrm{req}}|$ について\\
+  $\mathrm{Viab}_f(K)=\mathrm{Viab}_f^{(\nu^{\ast})}(K)=\bigcap_{\nu\in\mathbb{N}_0}\mathrm{Viab}_f^{(\nu)}(K)$};
+
+\begin{scope}[shift={(0,-2.9)}]
+\draw[sub] (0,0) -- (0.8,0); \node[anchor=west, font=\scriptsize] at (0.9,0) {$A\to B$：$A\subseteq B$};
+\draw[csub] (6.3,0) -- (7.1,0); \node[anchor=west, font=\scriptsize] at (7.2,0) {条件のもとで成り立つ包含};
+\end{scope}
+\end{scope}
+\end{tikzpicture}
+\caption{$E_{\mathrm{req}}$ ロバスト可行性核と、有限段頑健可行集合・全環境頑健核・楽観核の包含関係。
+矢印の向きは部分集合の向きを表す。
+線のない組については、本図は包含関係を表示しない。
+本図は、包含が真部分集合であるか等号であるかを表さない（備考~\ref{rem:kernel_standard_comparison_scope}）。
+(a) の根拠は定義~\ref{def:req_domain}・定義~\ref{def:viab_core}・定義~\ref{def:viab_stage}・定義~\ref{def:kernel_all_any}・
+命題~\ref{prop:viab_stage_nested}・命題~\ref{prop:viab_stage_core}・命題~\ref{prop:kernel_standard_comparison} (ii) である。
+(b) の等号は、$X$ が有限集合の場合に命題~\ref{prop:viab_stage_finite} により成り立つ。
+一般の場合については本論文は主張しない（備考~\ref{rem:viab_stage_scope}）。
+$\mathrm{Viab}_f(K)$ が空で、ある段の $\mathrm{Viab}_f^{(\nu)}(K)$ が空でない系も記述できる。}
+\label{fig:s3_kernel_inclusion}
+\end{figure}
+
+\subsubsection{行動応答成分の応答を考慮した頑健性}
+
+定義~\ref{def:viab_core} の可行性核は、各状態 $x$ で $E_{\mathrm{req}}(x)$ のすべての元にわたって量化する。
+\S\ref{sec:acs_def} の分解 $E_{\mathrm{ext}}=E^{\mathrm{bg}}\times O$（定義~\ref{def:Eext_decomposition}）のもとでは、
+この量化は行動応答成分 $o$ についても、同じ時刻にありえた別の値をすべて含む。
+本小節では、これとは別に、現在の行動応答成分を固定し、
+その次の値を遷移写像 $g_O$（定義~\ref{def:env_realization}）で定める頑健性を置く。
+
+\begin{definition}[応答込み頑健可行性核（分類C）]
+\label{def:viab_resp}
+$(x,o)\in X\times O$ について、
+\[
+  B_{\mathrm{req}}(x,o)
+  :=
+  \bigl\{\,b\in E^{\mathrm{bg}}\bigm|(b,o)\in E_{\mathrm{req}}(x)\,\bigr\}
+\]
+を\emph{背景充足集合}と呼び、
+\[
+  K_{\mathrm{req}}^{\mathrm{resp}}
+  :=
+  \bigl\{\,(x,o)\in K\times O\bigm| B_{\mathrm{req}}(x,o)\neq\emptyset\,\bigr\}
+\]
+と置く。
+部分集合 $K'\subseteq K_{\mathrm{req}}^{\mathrm{resp}}$ が\emph{応答込みで $E_{\mathrm{req}}$ 不変}であるとは、
+\[
+  \forall (x,o)\in K',\;
+  \exists u\in U
+  \;\text{ s.t. }\;
+  \forall b\in B_{\mathrm{req}}(x,o),\;
+  \bigl(f(x,u,(b,o)),\ g_O(o,x,u,b)\bigr)\in K'
+\]
+が成立することをいう。
+そのような部分集合全体の族を $\mathfrak{K}^{\mathrm{resp}}$ と書き、
+\[
+  \mathrm{Viab}^{\mathrm{resp}}_f(K)
+  :=
+  \bigcup_{K'\in\mathfrak{K}^{\mathrm{resp}}}K'
+  \subseteq X\times O
+\]
+を\emph{応答込み頑健可行性核}と呼ぶ。
+$B_{\mathrm{req}}(x,o)\neq\emptyset$ を要求するのは、
+定義~\ref{def:viab_core} で $K_{\mathrm{req}}$ に限ったのと同じく、
+全称量化が空虚に成立する組を含めないためである。
+\end{definition}
+
+\begin{proposition}[応答込み頑健可行性核の不変性]
+\label{prop:viab_resp_max}
+$\mathrm{Viab}^{\mathrm{resp}}_f(K)$ は応答込みで $E_{\mathrm{req}}$ 不変であり、
+したがって $\mathfrak{K}^{\mathrm{resp}}$ の最大元である。
+\end{proposition}
+
+\begin{proof}
+$\emptyset\in\mathfrak{K}^{\mathrm{resp}}$ であるから和集合は定義される。
+$(x,o)\in\mathrm{Viab}^{\mathrm{resp}}_f(K)$ をとれば、ある $K'\in\mathfrak{K}^{\mathrm{resp}}$ について $(x,o)\in K'$ であり、
+ある $u\in U$ が存在して、すべての $b\in B_{\mathrm{req}}(x,o)$ について次の組が $K'$ に属する。
+$K'\subseteq\mathrm{Viab}^{\mathrm{resp}}_f(K)$ であるから、同じ $u$ について次の組は $\mathrm{Viab}^{\mathrm{resp}}_f(K)$ に属する。
+また $\mathrm{Viab}^{\mathrm{resp}}_f(K)\subseteq K_{\mathrm{req}}^{\mathrm{resp}}$ である。
+\end{proof}
+
+二つの核を比べるため、$\mathrm{Viab}^{\mathrm{resp}}_f(K)$ の $X$ への射影を
+\[
+  \pi_X\bigl(\mathrm{Viab}^{\mathrm{resp}}_f(K)\bigr)
+  :=
+  \bigl\{\,x\in X\bigm|\exists o\in O:\ (x,o)\in\mathrm{Viab}^{\mathrm{resp}}_f(K)\,\bigr\}
+\]
+と書く。
+
+\begin{proposition}[二つの頑健性の非包含]
+\label{prop:robust_noninclusion}
+本小節と定義~\ref{def:viab_core} の定義が適用できる型の条件をみたす
+$(X,U,E^{\mathrm{bg}},O,f,K,E,g_O)$ について、
+$\mathrm{Viab}_f(K)$ と $\pi_X\bigl(\mathrm{Viab}^{\mathrm{resp}}_f(K)\bigr)$ の間には、
+どちら向きの包含も一般には成り立たない。
+すなわち、次の (i)(ii) をそれぞれみたす例が存在する。
+\begin{enumerate}[label=(\roman*)]
+  \item $\mathrm{Viab}_f(K)\not\subseteq\pi_X\bigl(\mathrm{Viab}^{\mathrm{resp}}_f(K)\bigr)$。
+  \item $\pi_X\bigl(\mathrm{Viab}^{\mathrm{resp}}_f(K)\bigr)\not\subseteq\mathrm{Viab}_f(K)$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+いずれの例でも $X=\{0,1\}\subseteq\mathbb R$、$\Pi(x)=x-1$（したがって $K=\{1\}$）、
+$U=\{u_{\emptyset}\}$ とし、枠は一つ（$\mathcal A_O=\{a\}$）、$E=\{\eta\}$ とする。
+有限集合には離散位相を置く。
+
+(i)：$E^{\mathrm{bg}}=\{b\}$、$O=O_a=\{\bot_a,\mathrm{food}\}$ とし、
+$\eta(x,(b,o))=1\iff o=\mathrm{food}$ と置く。
+$f(1,u_{\emptyset},(b,\mathrm{food}))=1$、それ以外の引数では $f=0$ とし、
+$g_O\equiv\bot_a$ とする。
+このとき $E_{\mathrm{req}}(x)=\{(b,\mathrm{food})\}$ であり、$K_{\mathrm{req}}=\{1\}$ である。
+$\{1\}$ は $E_{\mathrm{req}}$ 不変であるから $1\in\mathrm{Viab}_f(K)$ である。
+一方、$(1,\mathrm{food})$ の次の組は $(1,\bot_a)$ であり、$B_{\mathrm{req}}(1,\bot_a)=\emptyset$ なので
+$(1,\bot_a)\notin K_{\mathrm{req}}^{\mathrm{resp}}$ である。
+したがって $(1,\mathrm{food})$ を含む応答込み不変集合は存在せず、
+$(1,\bot_a)$ と $(0,o)$ はそもそも $K_{\mathrm{req}}^{\mathrm{resp}}$ に属さないので、
+$\mathrm{Viab}^{\mathrm{resp}}_f(K)=\emptyset$ である。
+
+(ii)：$E^{\mathrm{bg}}=\{b_1,b_2\}$、$O=O_a=\{\bot_a,\mathrm{good},\mathrm{bad}\}$ とし、
+$\eta(x,(b,o))=1\iff b=b_1$ と置く。
+$f(1,u_{\emptyset},(b_1,\mathrm{good}))=1$、それ以外の引数では $f=0$ とし、
+$g_O\equiv\mathrm{good}$ とする。
+このとき $(b_1,\mathrm{bad})\in E_{\mathrm{req}}(1)$ に対して $f=0\notin K$ であるから、
+どの $K'\subseteq K_{\mathrm{req}}$ も $1$ を含んで $E_{\mathrm{req}}$ 不変にはならず、
+$\mathrm{Viab}_f(K)=\emptyset$ である。
+一方、$B_{\mathrm{req}}(1,\mathrm{good})=\{b_1\}$ であり、$(1,\mathrm{good})$ の次の組はつねに $(1,\mathrm{good})$ であるから、
+$\{(1,\mathrm{good})\}$ は応答込みで $E_{\mathrm{req}}$ 不変であり、
+$1\in\pi_X\bigl(\mathrm{Viab}^{\mathrm{resp}}_f(K)\bigr)$ である。
+\end{proof}
+
+\begin{remark}[二つの例の読みと射程]
+\label{rem:robust_noninclusion_reading}
+(i) は、取り込みによって行動応答成分が失われる場合である。
+既存の核は次の時刻の成分の値を固定せずに量化するので、資源の枯渇を反映しない。
+(ii) は、行動応答成分が当該ACSのもとで保たれる場合である。
+既存の核は、実現しない成分の値まで量化に含める。
+二つの例は、本小節の定義が適用できる型の水準で構成したものであり、
+\S\ref{sec:acs_def} の構成要件と仮定のすべてをみたす個体であることまでは、本命題の主張に含めない。
+\end{remark}
+
+\begin{remark}[同じ時刻にありえた外部環境状態にわたる量化]
+\label{rem:same_time_alternatives}
+本節で $E_{\mathrm{ext}}$ または $E_{\mathrm{req}}(x)$ にわたって量化する条件
+（一段階臨界域 $\mathrm{Crit}^{(1)}_\eta$、$\mathcal D_{\mathrm{FR}}$、$\mu_{\mathrm{eff}}$、$\mathrm{EC}(x)$、
+定義~\ref{def:viab_core}・\ref{def:viab_stage} の頑健性、
+\S\ref{subsec:sd_necessity} の応答不能環境集合）は、
+行動応答成分についても、同じ時刻にありえた別の値を含む。
+これらは、履歴から当該の値に到達できるかを問わない、同じ時刻の外部環境状態の比較である。
+真理条件は \S\ref{sec:acs_def} の分解の前後で変わらない。
+応答込みの版を置くのは定義~\ref{def:viab_resp} だけとし、
+応答不能環境集合、$\mu_{\mathrm{eff}}$ および \S\ref{subsec:sd_necessity} の条件付き解析の応答込みの版は、
+Phase~1.$\alpha$ の課題とする（\S\ref{subsec:phase1a}）。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{構造的環境結合とその補助記述・診断量}
+\label{subsec:env_coupling}
+
+本小節では、ACS が外部環境状態の差異に対して機能的に閉鎖し切っていないという
+自己と環境の構造的な結合を、三原理から独立した条件として形式化し、
+EU の前提・背景構造として位置づける。
+あわせて、環境応答成分、一般化勾配の環境応答方向への感応性、
+および実現外部相互作用を、補助的な記述・診断量として整理する。
+ここでいう「補助」とは、三原理の時刻別充足述語の真理条件ではないことを意味する。
+
+本小節では、次の三つを互いに同一視しない。
+\begin{enumerate}
+  \item 構造的環境結合：外部環境状態の差異が ACS の次状態に反映されうる構造があるか
+  （定義~\ref{def:env_coupling}）。
+  \item 実現した環境相互作用・環境感応性：
+  境界横断的な外部作用が実現しているか（定義~\ref{def:phi}）、
+  および可行性余裕度を定める最弱成分が環境応答座標に属するか
+  （命題~\ref{prop:pi_E_sensitivity}）。
+  \item EU：一段階の臨界必要要因がすべて充足されているか（定義~\ref{def:EU}）。
+\end{enumerate}
+
+\subsubsection{環境応答成分 $x_E$}
+
+\begin{assumption}[環境応答成分の構造的決定]
+\label{ass:env_response}
+ACS $\Sigma$ に対して、状態空間 $X$ の座標系が所与である。
+この座標系において、状態ベクトル $x_t$ の成分のうち、
+外部環境状態との差異に対する応答に関係する成分インデックス集合
+\[
+  I_E\subseteq\{1,2,\ldots,n\},
+  \qquad
+  |I_E|=n_E,\quad
+  1\le n_E\le n
+\]
+が、当該 ACS の形式記述に相対して固定される。
+
+Phase~1 では $I_E$ を、
+解析者が構造的環境結合条件の判定のため任意に選択する評価集合ではなく、
+当該 ACS に固有の構造パラメータとして扱う。
+ただし、この仮定は特定の神経回路、アルゴリズム、
+センサ構成またはハードウェア実装を要求するものではない。
+
+導入地位：S（構造的）。強さ：中。
+依拠箇所：環境応答成分の定義（定義~\ref{def:x_E}）と命題~\ref{prop:pi_E_sensitivity}。
+\end{assumption}
+
+\begin{definition}[環境応答成分 $x_E$ と座標射影 $\pi_E$]
+\label{def:x_E}
+仮定~\ref{ass:env_response} のもとで、
+$I_E=\{k_1<k_2<\cdots<k_{n_E}\}$ とし、
+座標射影
+\[
+  \pi_E:\mathbb{R}^n\to\mathbb{R}^{n_E}
+\]
+を
+\[
+  \pi_E(z)
+  :=
+  \bigl(
+    z_{k_1},
+    z_{k_2},
+    \ldots,
+    z_{k_{n_E}}
+  \bigr),
+  \qquad
+  z\in\mathbb{R}^n
+\]
+で一意に定める。
+
+$\pi_E$ は $\mathbb{R}^n$ 上の線形写像であり、
+状態ベクトル
+$x_t\in X\subseteq\mathbb{R}^n$
+に対する $\pi_E(x_t)$ と、
+一般化勾配ベクトル
+$g\in\partial\Pi(x_t)\subseteq\mathbb{R}^n$
+に対する $\pi_E(g)$ は、
+いずれも同一の座標射影 $\pi_E$ の適用である。
+型の曖昧さを避けるため、
+$\pi_E$ の定義域を状態空間 $X$ ではなく
+$\mathbb{R}^n$ とする。
+
+記号
+\[
+  x_E:=\pi_E(x_t)\in\mathbb{R}^{n_E}
+\]
+を\emph{環境応答成分}と呼ぶ。
+$x_E$ は状態ベクトル $x_t$ の
+$I_E$ 成分への制限を表す。
+ここで $x_E$ は $x_t\in X$ の内部状態成分であり、
+実現外部環境状態 $e_t\in E_{\mathrm{ext}}$、
+外部環境状態空間 $E_{\mathrm{ext}}$ そのもの、
+または必要環境空間 $E$ を表すものではない。
+
+$\pi_E(X)$ は $X$ のコンパクト性
+（仮定~\ref{ass:compact_spaces}）と
+$\pi_E$ の連続性により、
+$\mathbb{R}^{n_E}$ のコンパクト部分集合をなす。
+
+さらに、$x_E$ 方向の一般化勾配射影集合を
+\[
+  \partial_{x_E}\Pi(x_t)
+  :=
+  \bigl\{
+    \pi_E(g)
+    \;\bigm|\;
+    g\in\partial\Pi(x_t)
+  \bigr\}
+  \subseteq
+  \mathbb{R}^{n_E}
+\]
+と定義する。
+
+$\partial_{x_E}\Pi(x_t)$ は
+$\partial\Pi(x_t)$ の線形像として
+非空コンパクト凸集合をなす
+（命題~\ref{prop:pi_subdiff} と
+$\pi_E$ の線形性による）。
+
+この記号は、
+命題~\ref{prop:pi_E_sensitivity} において、
+可行性余裕度を規定する最弱成分のうち
+環境応答座標に属するものが存在するかを記述するために用いる。
+条件
+\[
+  \partial_{x_E}\Pi(x_t)
+  \neq
+  \{\mathbf{0}_{n_E}\}
+\]
+は構造的環境結合に関連する環境感応性の補助条件であるが、
+本小節で定義する構造的環境結合条件（定義~\ref{def:env_coupling}）そのものではない。
+\end{definition}
+
+\begin{remark}[環境応答成分の観察的対応]
+\label{rem:env_response_observation}
+現実の生物的・人工的認知システムにおいて、
+異なる外部環境状態 $e,e'\in E_{\mathrm{ext}}$ に対して
+内部状態成分が系統的に異なる応答を示す場合、
+その成分は $I_E$ の観察的候補となりうる。
+形式的には、ある
+$x\in X$、$u\in U$、$e\neq e'\in E_{\mathrm{ext}}$ について
+$[f(x,u,e)]_k\neq [f(x,u,e')]_k$
+が確認されるとき、第 $k$ 成分はその候補となる。
+
+ただし、本条件は $I_E$ の一般的な因果同定規則を定義するものではない。
+観測ノイズ、時間遅延、内部フィードバック等を考慮した
+操作的・因果的決定基準の形式化はPhase~2 の課題とする。
+\end{remark}
+
+\subsubsection{構造的環境結合条件}
+
+\begin{definition}[構造的環境結合条件（分類C）]
+\label{def:env_coupling}
+状態 $x\in X$ が\emph{構造的環境結合条件}を満たすとは、
+外部環境状態の差異が、少なくとも一つの行動のもとで
+環境応答成分の次状態に非自明な差異を与えうること、すなわち
+\[
+  \exists\,u\in U,\;
+  \exists\,e,e'\in E_{\mathrm{ext}}
+  \quad\text{s.t.}\quad
+  e\neq e',
+  \qquad
+  \pi_E\bigl(f(x,u,e)\bigr)
+  \neq
+  \pi_E\bigl(f(x,u,e')\bigr)
+\]
+が成り立つことをいい、これを $\mathrm{EC}(x)$ と書く。
+時刻 $t$ については $\mathrm{EC}(x_t)$ を用いる。
+
+本条件は、自己--環境境界をもつ ACS が
+外部環境状態の差異に対して機能的に閉じていないことを表す
+Phase~1 の最小構造条件であり、
+三原理の時刻別充足述語ではない。
+本条件は入力側の構造の部分的な形式化である。
+外生背景成分の列の生成則などの独立の環境動学は Phase~1 では定式化せず、
+行動応答成分の遷移は定義~\ref{def:env_realization} の写像 $g_O$ として与えるにとどめる
+（\S\ref{subsec:limitations_list} の L2）。
+
+本条件は、特定の外部対象との関係が現在実現していること、
+当該外部状態へ実際に到達可能であること、
+必要環境要因が充足されていること、
+EU の時刻別充足述語が真であること、
+または関係品質が正であることを、その定義条件に含まない。
+\end{definition}
+
+\begin{remark}[構造的環境結合条件と一般化勾配感応性の区別]
+\label{rem:ro_two_layer_intuition}
+定義~\ref{def:env_coupling} の構造的環境結合条件は、
+外部環境状態の差異が環境応答成分の次状態へ
+非自明に反映されうるという\emph{構造的結合可能性}を記述する。
+
+これに対して、命題~\ref{prop:pi_E_sensitivity} の条件
+\[
+  \exists\,g\in\partial\Pi(x_t)
+  \quad\text{s.t.}\quad
+  \pi_E(g)\neq\mathbf{0}_{n_E}
+\]
+は、現在の可行性余裕度を規定する最弱成分の少なくとも一つが
+環境応答座標に属することを表す\emph{局所的な可行性感応条件}である。
+
+両者は異なる条件であり、本論文はいずれの向きの含意も一般的な帰結として置かない。
+したがって本論文は、構造的結合可能性、局所的可行性感応性、
+実現外部相互作用、EU、および関係品質を相互に区別する。
+\end{remark}
+
+\begin{remark}[出力側の構造的手がかり：外部作用行動]
+\label{rem:u_ext_output_cue}
+\S\ref{sec:acs_def} の備考~\ref{rem:action_space_structure} は、
+外部環境へ直接作用する行動の集合 $U_{\mathrm{ext}}\subseteq U$ を置く。
+$U_{\mathrm{ext}}$ は、ACS から外部環境へ向かう作用の、
+出力側の構造的手がかりを与える。
+ただし、$U_{\mathrm{ext}}$ が空でないことだけからは、
+実現した環境相互作用、臨界必要要因の存在、EU の時刻別充足述語の真のいずれも
+一般的な帰結として置かない。
+$U_{\mathrm{ext}}$ は三原理の時刻別充足述語の条件ではない。
+\end{remark}
+
+\subsubsection{$\pi_E$ と $\Pi$ の関係に関する命題}
+
+\begin{proposition}[$\pi_E$ の最小感応性：同値版]
+\label{prop:pi_E_sensitivity}
+仮定~\ref{ass:env_response} および命題~\ref{prop:pi_subdiff} のもとで、
+\[
+  \bigl[\exists\,g\in\partial\Pi(x_t)\;\text{ s.t. }\;\pi_E(g)\neq\mathbf{0}_{n_E}\bigr]
+  \;\iff\;
+  I_E\cap\arg\min_k\bigl(x_{k,t}-\theta_k\bigr)\neq\emptyset.
+\]
+\end{proposition}
+
+\begin{proof}
+命題~\ref{prop:pi_subdiff}(ii) より、
+\[
+  \partial\Pi(x_t)
+  =
+  \operatorname{conv}
+  \bigl\{
+    e_k
+    \bigm|
+    k\in\arg\min_j(x_{j,t}-\theta_j)
+  \bigr\}
+\]
+である。
+
+\textbf{($\Rightarrow$)}\;
+任意の $g\in\partial\Pi(x_t)$ は
+\[
+  g
+  =
+  \sum_{k\in\arg\min_j(x_{j,t}-\theta_j)}
+  \lambda_k e_k
+  \qquad
+  (\lambda_k\ge0,\quad \textstyle\sum_k\lambda_k=1)
+\]
+と表される。
+$\pi_E$ の線形性より
+$\pi_E(g)=\sum_{k\in\arg\min_j(x_{j,t}-\theta_j)}\lambda_k\,\pi_E(e_k)$
+となる。
+$k\notin I_E$ のとき $\pi_E(e_k)=\mathbf{0}_{n_E}$ であるため、
+$I_E\cap\arg\min_j(x_{j,t}-\theta_j)=\emptyset$ と仮定すると、
+すべての $k\in\arg\min_j(x_{j,t}-\theta_j)$ に対して
+$\pi_E(e_k)=\mathbf{0}_{n_E}$ となり、
+任意の $g\in\partial\Pi(x_t)$ について
+$\pi_E(g)=\mathbf{0}_{n_E}$ を得る。
+よって対偶により、
+$\pi_E(g)\neq\mathbf{0}_{n_E}$ を満たす
+$g\in\partial\Pi(x_t)$ が存在するならば、
+$I_E\cap\arg\min_j(x_{j,t}-\theta_j)\neq\emptyset$ である。
+
+\textbf{($\Leftarrow$)}\;
+$k^*\in I_E\cap\arg\min_j(x_{j,t}-\theta_j)$ を取る。
+$k^*\in\arg\min_j(x_{j,t}-\theta_j)$ より
+$e_{k^*}\in\partial\Pi(x_t)$ である。
+また $k^*\in I_E$ より $k^*=k_r$ となる
+$r\in\{1,\ldots,n_E\}$ が存在し、
+\[
+  \pi_E(e_{k^*})
+  =
+  e_r^{(n_E)}
+  \neq
+  \mathbf{0}_{n_E}
+\]
+となる（ここで $e_r^{(n_E)}$ は
+$\mathbb{R}^{n_E}$ の第 $r$ 標準基底ベクトル）。
+したがって $g:=e_{k^*}\in\partial\Pi(x_t)$ は
+$\pi_E(g)\neq\mathbf{0}_{n_E}$ を満たす。
+\end{proof}
+
+\begin{remark}[$x_E$ 方向の局所感応性]
+\label{rem:pi_E_local_sensitivity}
+命題~\ref{prop:pi_E_sensitivity} の条件
+\[
+  I_E\cap\arg\min_k(x_{k,t}-\theta_k)\neq\emptyset
+\]
+が成立し、
+かつ $x_t\in\operatorname{int}X$ である場合には、
+最小値を達成する環境応答成分の一つを十分小さく減少させることで、
+$\Pi(x_t)$ の値も減少する。
+したがって、この条件は内点において
+$\Pi$ が少なくとも一つの $x_E$ 方向に
+局所的に非定値であることと整合する。
+境界点では許容される摂動方向が $X$ の局所形状に依存するため、
+一般的な方向解析は Phase~2 の課題とする。
+\end{remark}
+
+\subsubsection{環境応答成分の閾値割れと診断指標の役割}
+
+\begin{definition}[環境応答成分の閾値割れ集合（分類C）]
+\label{def:ro_related_violation}
+環境応答成分の添字集合 $I_E$（定義~\ref{def:x_E}）を用いて
+\emph{環境応答成分の閾値割れ集合} $V^-_E(x_t)$ を
+\[
+  V^-_E(x_t)\;:=\;I_E\cap V^-(x_t)
+\]
+と定義する。
+$V^-_E(x_t)\neq\emptyset$ は、
+環境応答成分の少なくとも一つが閾値を下回っていることを意味する。
+\end{definition}
+
+\begin{remark}[$\min$ 型 $\Pi$ の診断限界と補完指標の役割]
+\label{rem:diagnostic_role}
+$\Pi(x_t)=\min_k(x_{k,t}-\theta_k)$ は
+最悪成分のみを代表するスカラーであり、
+複数の閾値割れを識別しない。
+たとえば
+$(x_{k,t}-\theta_k)_k=(-2,-1,+3)$ のとき
+$\Pi=-2$ となり、
+第二成分の閾値割れ（$-1$）は $\Pi$ 単独では診断上区別されない。
+$V^-(x_t)$ は割れている成分の全体を、
+$d^-(x_t)$ は各成分の不足量を明示的に保持することで、この診断限界を補完する。
+
+各指標の役割は次のように分担される。
+$\Pi$ は可行・不可行判定および最悪成分の代表スカラー、
+$\partial\Pi=\partial^C\widetilde{\Pi}$ は最弱成分の方向、
+$V^-$ は閾値割れ成分の全体、
+$d^-$ は各成分の不足量、
+$V^-_E$ は環境応答成分の閾値割れを、それぞれ理論上表す。
+これらは診断上の理論量であり、ACS 内部の感知・評価が同じ量を検出することを表さない。
+
+$V^-_E(x_t)$ は、
+命題~\ref{prop:pi_E_sensitivity} の
+\[
+  I_E\cap
+  \arg\min_k(x_{k,t}-\theta_k)
+\]
+とは一般に異なる集合である。
+後者は最弱成分
+（$\arg\min$）のうち環境応答成分であるものを表すのに対し、
+$V^-_E$ は最弱であるか否かによらず、
+閾値を下回る環境応答成分を表す。
+したがって、環境応答成分が閾値割れしていても
+最弱成分でない場合、
+$\partial\Pi$ に基づく環境応答座標への局所感応性判定
+（命題~\ref{prop:pi_E_sensitivity}）はこれを表さないが、
+$V^-_E$ はこれを表す。
+
+これらの補完指標は、
+本節における三原理の時刻別充足述語の定義および
+構造的命題には要しない診断上の精密化であり、
+その動学的利用は Phase~2 の課題とする
+（within present framework）。
+
+したがって
+$V^-_E(x_t)\neq\emptyset$
+から、構造的環境結合条件（定義~\ref{def:env_coupling}）を一般的な帰結として置かない。
+$V^-_E$ は環境応答成分の閾値割れを理論上表す診断指標であり、
+命題~\ref{prop:pi_E_sensitivity} の環境応答座標への局所感応性条件、
+および定義~\ref{def:env_coupling} の構造的環境結合条件とは
+それぞれ別概念である。
+これらの間に一般的な必要十分関係は仮定しない。
+\end{remark}
+
+\subsubsection{実現外部相互作用の記述}
+
+\begin{definition}[外部相互作用指標 $\chi_{\mathrm{EI},t}$（分類C）]
+\label{def:phi}
+時刻 $t\in\mathbb{N}_0$ における ACS $\Sigma$ の
+\emph{外部相互作用指標}
+\[
+  \chi_{\mathrm{EI},t}\in\{0,1\}
+\]
+を、自己--環境境界を横断する外部作用が
+時刻 $t$ に実現しているか否かを表す記述量として
+\[
+  \chi_{\mathrm{EI},t}
+  :=
+  \begin{cases}
+    1,
+    &
+    \text{境界横断的な外部作用が少なくとも一つ実現している場合},
+    \\[4pt]
+    0,
+    &
+    \text{そのような外部作用が一つも実現していない場合}
+  \end{cases}
+\]
+と定義する。
+
+ここでいう境界横断的な外部作用は、
+外部から ACS への入力だけに限定しない。
+自己--環境境界を横断する作用である限り、
+外部から内部への取り込み、
+内部から外部への作用・排出・放散、
+および双方向的な作用を含みうる。
+
+$\chi_{\mathrm{EI},t}=1$ は、
+少なくとも一つの境界横断作用が
+時刻 $t$ に実現していることのみを表す。
+したがって、それだけから
+必要環境要因が充足されていること、
+当該相互作用が可行性維持に十分であること、
+または当該相互作用の関係品質が正であることを、本論文は一般的な帰結として置かない。
+
+一方、
+\[
+  \chi_{\mathrm{EI},t}=0
+\]
+を、本論文では時刻 $t$ における
+\emph{完全孤立状態}と呼ぶ。
+これは境界横断的作用の実現がないことを表す記述であり、
+構造的環境結合条件が成り立たないこと、$x_t\notin K$、
+EU の時刻別充足述語の偽、閉塞または崩壊の別名ではない。
+\end{definition}
+
+\begin{remark}[$\chi_{\mathrm{EI}}$ の理論上の地位]
+\label{rem:chi_ei_status}
+$\chi_{\mathrm{EI},t}$ は分類Cの記述・診断量であり、
+7タプル $\Sigma$ の新たな構成要素ではない。
+また、実在 ACS が同一の二値変数を
+内部で保持または計算することを要求しない。
+
+本指標は、
+「その時刻に境界横断作用が実現しているか」
+という実現状態を理論上区別するための数学的表現である。
+作用の強度、流量、方向別分解、持続時間、
+複数相互作用の集約、および操作的測定法は
+Phase~1 では固定しない。
+\end{remark}
+
+\begin{definition}[終端的完全孤立]
+\label{def:terminal_isolation}
+ある時刻 $t_0\in\mathbb{N}_0$ が存在して
+\[
+  \forall t\ge t_0,
+  \qquad
+  \chi_{\mathrm{EI},t}=0
+\]
+が成立するとき、
+その実現軌道は時刻 $t_0$ 以降
+\emph{終端的完全孤立}にあるという。
+
+終端的完全孤立は、
+完全孤立状態がある一時刻に成立することより強い
+時間的記述である。
+ただし、本定義それ自体は
+可行性喪失、閉塞または崩壊を帰結として含まない。
+\end{definition}
+
+\subsubsection{構造的環境結合・実現外部相互作用・必要環境充足・EU の区別}
+
+\begin{remark}[構造的結合可能性と実現相互作用の区別]
+\label{rem:ro_realized_interaction_distinction}
+定義~\ref{def:env_coupling} の構造的環境結合条件は、
+状態 $x_t$ を基準として、
+異なる外部環境状態 $e,e'\in E_{\mathrm{ext}}$ が
+環境応答成分の次状態に異なる結果を与えうるという
+構造的結合可能性を記述する。
+
+これに対し、
+$\chi_{\mathrm{EI},t}$ は
+時刻 $t$ に実際の境界横断作用が
+成立しているか否かを記述する。
+
+したがって両者は、
+\[
+  \text{結合構造}
+  \qquad\text{と}\qquad
+  \text{実現イベント}
+\]
+という異なる論理的対象である。
+Phase~1 の一般定義は、
+\[
+  \mathrm{EC}(x_t)
+  \Longrightarrow
+  \chi_{\mathrm{EI},t}=1
+\]
+も、
+\[
+  \chi_{\mathrm{EI},t}=1
+  \Longrightarrow
+  \mathrm{EC}(x_t)
+\]
+も仮定しない。
+\end{remark}
+
+\begin{remark}[必要環境空間・構造的環境結合・EU は同一ではない]
+\label{rem:ereq_not_ro}
+必要環境空間 $E$ と
+必要環境充足集合 $E_{\mathrm{req}}(x)$ は、
+ACS の存続が外部環境条件と無関係ではないという
+外部依存の背景構造を与える。
+
+これに対し構造的環境結合条件は、
+定義~\ref{def:env_coupling} により、
+外部環境状態の差異が
+ACS の環境応答成分の次状態へ
+非自明に反映されうるという
+ACS 側の構造的な結合を記述する。
+また EU は、時刻ごとの臨界必要要因の充足を問う時刻別充足述語である。
+
+したがって、
+\[
+  E,\quad E_{\mathrm{req}}(x),\quad \mathrm{EC}(x),\quad \mathrm{EU}_t
+\]
+は相互に関連するが同一ではない。
+とくに本論文は、
+$E_{\mathrm{req}}(x_t)\neq\emptyset$ であることのみから
+$\mathrm{EC}(x_t)$ を、
+$\mathrm{EC}(x_t)$ から
+$E_{\mathrm{req}}(x_t)\neq\emptyset$ を、
+$\mathrm{EC}(x_t)$ から $\mathrm{EU}_t$ の真を、
+いずれも一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[補助記述・診断量と EU の真理条件]
+\label{rem:env_coupling_not_eu_truth}
+本小節の量は、EU の時刻別充足述語の真理条件ではない。
+とくに本論文は、
+$\chi_{\mathrm{EI},t}=0$ から $\mathrm{EU}_t$ の偽を、
+命題~\ref{prop:pi_E_sensitivity} の環境応答方向への感応性から $\mathrm{EU}_t$ の真を、
+いずれも一般的な帰結として置かない。
+EU の時刻別充足述語は、定義~\ref{def:EU} の臨界必要要因の充足だけで定まる。
+\end{remark}
+
+\begin{remark}[実現相互作用と必要環境充足の区別]
+\label{rem:ei_vs_ereq}
+\S\ref{sec:acs_def} で定義された
+必要環境充足集合
+\[
+  E_{\mathrm{req}}(x_t)
+  =
+  \bigl\{
+    e\in E_{\mathrm{ext}}
+    \bigm|
+    \forall\eta\in E,\;
+    \eta(x_t,e)=1
+  \bigr\}
+\]
+に対し、
+$e_t\in E_{\mathrm{req}}(x_t)$
+は、現在状態 $x_t$ に相対して
+実現外部環境状態 $e_t$ が
+すべての必要環境要因を充足していることを表す。
+
+これは、
+境界横断作用が現在実現していることを表す
+$\chi_{\mathrm{EI},t}=1$
+とは別の条件である。
+本論文は一般に、
+\[
+  e_t\in E_{\mathrm{req}}(x_t)
+  \Longrightarrow
+  \chi_{\mathrm{EI},t}=1
+\]
+も、
+\[
+  \chi_{\mathrm{EI},t}=1
+  \Longrightarrow
+  e_t\in E_{\mathrm{req}}(x_t)
+\]
+も仮定しない。
+
+同様に、
+$e_t\notin E_{\mathrm{req}}(x_t)$
+は、少なくとも一つの必要環境要因が
+現在の $(x_t,e_t)$ において充足されていないことを表す。
+本論文は、これから完全孤立
+$\chi_{\mathrm{EI},t}=0$
+を一般的な帰結として置かない。
+逆に、完全孤立から
+$e_t\notin E_{\mathrm{req}}(x_t)$ を
+定義だけで導くこともしない。
+\end{remark}
+
+\subsubsection{実現相互作用に関する時間的限定}
+
+\begin{remark}[一時的孤立と終端的完全孤立の区別]
+\label{rem:temporary_terminal_isolation}
+単一時刻における
+$\chi_{\mathrm{EI},t}=0$
+と、定義~\ref{def:terminal_isolation} の
+終端的完全孤立
+\[
+  \exists t_0\;
+  \forall t\ge t_0:\
+  \chi_{\mathrm{EI},t}=0
+\]
+は区別される。
+
+前者は一時的な実現相互作用の不在であり、
+後者はある有限時刻以降の恒常的な実現相互作用不在である。
+ただし後者についても、
+CR-1 に関係する必要環境要因の持続的欠損、
+$K$ 外部への持続、閉塞または崩壊との接続は
+別途示されなければならない。
+
+したがって、
+時間長だけを根拠として
+\[
+  \chi_{\mathrm{EI},t}=0
+  \Longrightarrow
+  \mathrm{Col}_{i,t}=1
+\]
+という一般則を導入しない。
+\end{remark}
+
+\subsubsection{本小節の位置づけ}
+
+以上の構造的環境結合条件、実現外部相互作用、必要環境充足、EU の時刻別充足述語は、
+備考~\ref{rem:conv_ro_layers} に示した異なる記述水準に属し、同一視しない。
+構造的環境結合条件は、必要環境要因の充足が問われる自己と環境の関係の背景構造であり、
+次小節では、その充足を EU の時刻別充足述語として定める。
+
+%----------------------------------------------------------------------
+\subsection{EU}
+\label{subsec:eu}
+
+本小節では、EU の時刻別充足述語を定める。
+EU が問うのは、必要環境要因のすべてが常時充足されていることではなく、
+充足されなければ次状態を $K$ に置く行動が残らない局面において、
+当該要因が充足されていることである。
+この局面は、現在の状態が $K$ の内にあるか外にあるかによらず生じうる。
+$K$ の内では、要因の充足は可行性の維持に必要であり、
+$K$ の外では、一段階での $K$ への回復に必要である。
+この局面を、要因ごとの一段階臨界域と一段階臨界必要要因集合によって定める。
+いずれも \S\ref{sec:acs_def} の必要環境空間 $E$ と可行行動対応 $A$ だけから定まり、
+新たな仮定を用いない。
+
+\begin{definition}[一段階臨界域（分類C）]
+\label{def:eu_critical_domain}
+必要環境要因 $\eta\in E$ について、
+次の (i)〜(iii) をすべて満たす $x\in X$ の集合を $\mathrm{Crit}^{(1)}_\eta\subseteq X$ と書き、
+$\eta$ の\emph{一段階臨界域}と呼ぶ。
+\begin{enumerate}[label=(\roman*)]
+  \item ある $e^0\in E_{\mathrm{ext}}$ について $\eta(x,e^0)=0$。
+  \item すべての $e'\in E_{\mathrm{ext}}$ について、$\eta(x,e')=0$ ならば $A(x,e')=\emptyset$。
+  \item ある $e\in E_{\mathrm{ext}}$ について、$\eta(x,e)=1$ かつ $A(x,e)\neq\emptyset$。
+\end{enumerate}
+\end{definition}
+
+各条件は、$\eta:X\times E_{\mathrm{ext}}\to\{0,1\}$ と
+可行行動対応 $A:X\times E_{\mathrm{ext}}\rightrightarrows U$（定義~\ref{def:at}）の値だけで定まり、
+$x\in X$ のすべてについて意味をもつ。
+(i) は、(ii) が空虚に成り立つ場合を除くための条件である。
+(ii) は、当該要因が充足されない外部環境状態ではどの行動も次状態を $K$ に置かないことを、
+(iii) は、当該要因が充足される外部環境状態のなかに次状態を $K$ に置く行動がある場合があることを表す。
+$x\in K$ では、$A(x,e)$ は可行性を維持する行動の集合であり、
+$x\notin K$ では、一段階で $K$ へ回復する行動の集合である（定義~\ref{def:at}）。
+$\mathrm{Crit}^{(1)}_\eta$ は一段階の条件であり、$K$ の位相的境界とは同一視しない。
+本論文は $\mathrm{Crit}^{(1)}_\eta\neq\emptyset$ を一般には主張しない。
+
+\begin{definition}[一段階臨界必要要因集合（分類C）]
+\label{def:eu_fire}
+写像 $\mathrm{Crit}^{(1)}:X\to 2^{E}$ を
+\[
+  \mathrm{Crit}^{(1)}(x)
+  :=
+  \bigl\{
+    \eta\in E
+    \bigm|
+    x\in\mathrm{Crit}^{(1)}_\eta
+  \bigr\}
+\]
+で定め、$\mathrm{Crit}^{(1)}(x)$ を $x$ における\emph{一段階臨界必要要因集合}と呼ぶ。
+定義により $\eta\in\mathrm{Crit}^{(1)}(x)\iff x\in\mathrm{Crit}^{(1)}_\eta$ であり、
+$\mathrm{Crit}^{(1)}_\eta\subseteq X$ は状態の集合、$\mathrm{Crit}^{(1)}(x)\subseteq E$ は要因の集合である。
+下付きの $\eta$ との混同を避けるため、時刻については $\mathrm{Crit}^{(1)}(x_t)$ と書き、時刻添字による略記は置かない。
+$\mathrm{Crit}^{(1)}(x)$ は $x$ だけで定まり、実現外部環境状態には依存しない。
+$\eta\in\mathrm{Crit}^{(1)}(x)$ であることを、$\eta$ が状態 $x$ で\emph{臨界必要要因である}という。
+$E$ のすべての元は必要環境要因であるが、そのうち当該状態で一段階の可行性に関して臨界となっているものが臨界必要要因である。
+上付きの $(1)$ は一段階の条件であることを表す（備考~\ref{rem:eu_one_step_scope}）。
+\end{definition}
+
+\begin{remark}[一段階臨界必要要因集合の記述水準]
+\label{rem:crit_description_level}
+$\mathrm{Crit}^{(1)}(x)$ は、$\eta$、$f$、$K$ から理論上定まる分類Cの量であり、
+ある要因が当該状態で一段階の可行性の維持または回復に関して臨界となっていることを、
+ACS がそれを認識しているか否かとは独立に記述する。
+本論文では次の三つを区別する。
+\begin{enumerate}
+  \item 理論上の臨界必要要因：$\mathrm{Crit}^{(1)}(x_t)$。
+  \item ACS 内部での必要性の推定・評価：感知・識別・評価の機能と、
+  \S\ref{sec:tipa} の TIPA 等の標準機能形式によって形成される内部の評価。
+  \item 外部観測者による測定・診断：観測可能な情報と測定規則に依存する。
+\end{enumerate}
+理論上は臨界必要要因である要因が内部で必要と評価されないこと（見逃し）も、
+理論上は臨界必要要因でない要因が内部で必要と評価されること（誤評価）も、
+本論文の一般構造は排除しない。
+EU の時刻別充足述語（定義~\ref{def:EU}）の真理条件は (1) だけで定まり、
+(2) の内部評価の結果も、(3) の測定結果も用いない。
+(2) の標準的な記述は \S\ref{sec:tipa} の責務であり、本節ではそのための記号を置かない。
+ACS がその内部評価で $\mathrm{Crit}^{(1)}(x_t)$ を保持または計算することは要求しない
+（備考~\ref{rem:s3_description_levels}）。
+
+本論文は、三つの水準を語彙の上でも分ける。
+(1) には「臨界である」「必要である」「充足される」を、
+(2) には「内部で推定する」「検出する」「評価する」「発火する」「作動する」を、
+(3) には「観測者が推定する」「観測する」「測定する」「診断する」を用いる。
+「推定」は (2) と (3) のいずれにも現れうるので、推定の主体を明示する。
+とくに「発火」は (2) の内部の作動を表す語として留保し、(1) の理論上の量には用いない。
+\end{remark}
+
+\begin{definition}[EU の時刻別充足述語]
+\label{def:EU}
+$t\in\mathbb{T}_{\mathrm{P},i}$ について、
+EU の時刻別充足述語 $\mathrm{EU}_t$ は、
+\[
+  \forall\eta\in\mathrm{Crit}^{(1)}(x_t):\quad \eta(x_t,e_t)=1
+\]
+のとき真、そうでないとき偽とする。
+$t\notin\mathbb{T}_{\mathrm{P},i}$ の時刻には、$\mathrm{EU}_t$ を定義しない。
+\end{definition}
+
+\begin{remark}[EU の真が表すことの範囲]
+\label{rem:eu_vacuous}
+$\mathrm{Crit}^{(1)}(x_t)=\emptyset$ のとき、定義~\ref{def:EU} の全称量化は空虚に成立し、
+$\mathrm{EU}_t$ は真である。
+$\mathrm{EU}_t$ が真であることの定義条件は、時刻 $t$ の臨界必要要因がすべて充足されていることだけであり、
+臨界必要要因でない要因の充足を含めない。
+したがって $\mathrm{EU}_t$ の真は、すべての必要環境要因が利用可能であること、
+または環境を利用する機能が健全であることを表さない
+（備考~\ref{rem:eu_env_utilization}）。
+$\mathrm{EU}_t$ の定義域は $\mathrm{SM}_t$ の真を前提としない。
+SM と EU は相異なる制約軸として、それぞれ別個に判定される。
+\end{remark}
+
+\begin{proposition}[臨界必要要因の非充足と閉塞]
+\label{prop:eu_blockage}
+\begin{enumerate}[label=(\roman*)]
+  \item 任意の $t\in\mathbb{N}_0$ と $\eta\in E$ について、
+  $x_t\in\mathrm{Crit}^{(1)}_\eta$ かつ $\eta(x_t,e_t)=0$ ならば $A_t=\emptyset$ である。
+  \item $t\in\mathbb{T}_{\mathrm{P},i}$ で $\mathrm{EU}_t$ が偽ならば、$A_t=\emptyset$ である。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i)：定義~\ref{def:eu_critical_domain} (ii) に $e'=e_t$ を代入すると $A(x_t,e_t)=\emptyset$ である。
+(ii)：$\mathrm{EU}_t$ が偽ならば、ある $\eta\in\mathrm{Crit}^{(1)}(x_t)$ について $\eta(x_t,e_t)\neq1$、
+すなわち $\eta(x_t,e_t)=0$ である。
+$\eta\in\mathrm{Crit}^{(1)}(x_t)$ は $x_t\in\mathrm{Crit}^{(1)}_\eta$ を意味するので、(i) を適用する。
+\end{proof}
+
+\begin{proposition}[臨界必要要因の非充足と次時刻の状態]
+\label{prop:eu_sm_next}
+命題~\ref{prop:eu_blockage} の (i) または (ii) の前件が成り立つならば、
+$x_{t+1}\notin K$ である。
+さらに $t+1\in\mathbb{T}_{\mathrm{P},i}$ ならば、$\mathrm{SM}_{t+1}$ は偽である。
+\end{proposition}
+
+\begin{proof}
+命題~\ref{prop:eu_blockage} により $A_t=\emptyset$ であり、
+命題~\ref{prop:sm_one_step_A} (ii) と $u_t\in U$ により $x_{t+1}\notin K$ である。
+後半は定義~\ref{def:SM} による。
+\end{proof}
+
+\begin{remark}[維持の局面と回復の局面]
+\label{rem:eu_maintenance_recovery}
+$x_t\in K$ で $\mathrm{EU}_t$ が偽ならば、命題~\ref{prop:eu_sm_next} により
+次時刻に状態は $K$ を外れる。
+$x_t\notin K$ で $\mathrm{EU}_t$ が偽ならば、次時刻にも状態は $K$ の外にある。
+すなわち、臨界必要要因の非充足は、$K$ の内では一段階での可行性の維持を、
+$K$ の外では一段階での $K$ への回復を妨げる。
+いずれの場合も、本論文は $\mathrm{EU}_t$ の偽だけから、
+多段の時間幅での回復不能、$\mathrm{WF}_{i,t}=0$ または崩壊を一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[一段階の必要性の射程]
+\label{rem:eu_one_step_scope}
+$\mathrm{Crit}^{(1)}_\eta$ と $\mathrm{Crit}^{(1)}$ は一段階の条件である。
+したがって次の二つは、$\mathrm{Crit}^{(1)}$ と EU の時刻別充足述語の真理条件に含まれない。
+\begin{enumerate}
+  \item 一時刻の欠如では次状態を $K$ に置く行動が残るが、欠如の持続によって可行性が失われる要因。
+  \item $K$ の外の状態から数段階を経て $K$ へ回復するために要する要因。
+\end{enumerate}
+(1) のうち要因の非充足が持続する場合は、
+構成要件 CR-1 の (CR-1a)(ii) が整形式実現の水準で扱う（備考~\ref{rem:eu_cr1_connection}）。
+$K$ への多段の回復可能性・有限時間到達可能性と必要環境要因との接続は、
+本論文の範囲では定式化しない（\S\ref{sec:limitations_and_outlook}）。
+\end{remark}
+
+\begin{remark}[EU と構成要件 CR-1 の接続範囲]
+\label{rem:eu_cr1_connection}
+$\mathrm{EU}_t$ が偽であることは、ある臨界必要要因 $\eta$ が時刻 $t$ に充足されないことであり、
+命題~\ref{prop:eu_blockage} により時刻 $t$ の閉塞を伴う。
+一方、整形式実現の喪失との接続は構成要件 CR-1 の (CR-1a)(ii)
+（\S\ref{subsec:environment_space}）による。
+すなわち、同一の要因 $\eta$ について、ある $t_0\ge1$ で
+$\mathrm{WF}_{i,t_0-1}=1$、$\eta(x_{t_0-1},e_{t_0-1})=1$ であり、
+すべての $s\ge t_0$ で $\eta(x_s,e_s)=0$ となるならば、
+ある有限時刻 $T\ge t_0$ 以後のすべての時刻で $\mathrm{WF}_{i,s}=0$ である。
+本論文は、$\mathrm{EU}_t$ が偽である時刻があることだけから、この前件を一般的な帰結として置かない。
+臨界必要要因が時刻ごとに異なる場合、および要因の非充足が持続しない場合は、
+(CR-1a)(ii) の前件を満たさない。
+また (CR-1a)(ii) の帰結は整形式実現の喪失であって、
+機能的終端 $\mathrm{FT}_{i,t}=1$ でも崩壊 $\mathrm{Col}_{i,t}=1$ でもない。
+\end{remark}
+
+\begin{proposition}[臨界必要要因と要因別充足状態域]
+\label{prop:eu_fire_domain}
+$\eta\in E$ とし、$D_\eta$ を \S\ref{sec:acs_def} の要因別充足状態域
+（定義~\ref{def:eta_satisfiable_domain}）とする。
+\begin{enumerate}[label=(\roman*)]
+  \item $\mathrm{Crit}^{(1)}_\eta\subseteq D_\eta$ である。
+  したがって、$\eta\in\mathrm{Crit}^{(1)}(x)$ ならば $x\in D_\eta$ である。
+  \item $x\notin D_\eta$ ならば、$\eta\notin\mathrm{Crit}^{(1)}(x)$ である。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i)：定義~\ref{def:eu_critical_domain} の (iii) から、$\eta(x,e)=1$ となる $e\in E_{\mathrm{ext}}$ が存在するので、
+定義~\ref{def:eta_satisfiable_domain} により $x\in D_\eta$ である。
+後半は定義~\ref{def:eu_fire} による。
+(ii)：(i) の対偶である。
+\end{proof}
+
+\begin{remark}[現在状態で充足不能な要因と EU]
+\label{rem:eu_env_utilization}
+$x\notin D_\eta$ は、現在の状態 $x$ では、当該要因 $\eta$ がどの外部環境状態によっても充足されないことを表す
+（定義~\ref{def:eta_satisfiable_domain}）。
+必要環境充足判定 $\eta(x,e)$ は内部状態 $x$ に依存するので、
+摂取・取得・接続に関わる内部状態の変化もこの関係のなかに表される。
+命題~\ref{prop:eu_fire_domain} (ii) により、このとき $\eta$ は臨界必要要因にならず、
+EU の時刻別充足述語は $\eta$ の充足を問わない。
+このような状態で $E_{\mathrm{req}}(x)=\emptyset$ となることは、
+\S\ref{sec:acs_def} 備考~\ref{rem:env_utilization_function} の (a) による。
+また、$x\notin D_\eta$ だけから閉塞、$\mathrm{WF}_{i,t}=0$、機能的終端または崩壊を一般的な帰結として置かないことは、
+同備考の (c) と同じ扱いである。
+このような状態で閉塞が生じる場合、その閉塞は命題~\ref{prop:blockage_dichotomy} の分割において、
+$\eta$ の非充足を理由とする (B1) には数えられない。
+本論文は、この場合を EU の側の事態として別に数える定義を置かない。
+
+同備考の必要環境利用機能は、内部状態を $D_\eta$ に属させる条件の成立に関与する
+既存機能の協働の総称であり、EU の原理応答項目に関与する。
+ただし本論文は、必要環境利用機能が作動していることから $\mathrm{EU}_t$ の真を、
+$\mathrm{EU}_t$ の偽から当該機能の停止を、いずれも一般的な帰結として置かない
+（備考~\ref{rem:s3_description_levels}）。
+\end{remark}
+
+\begin{remark}[CR-1 と実現外部相互作用の接続範囲]
+\label{rem:cr1_ei_connection}
+構成要件 CR-1（\S\ref{subsec:environment_space}）は、
+$E$ の各要素が
+構造的自己の存続にとって実質的な必要環境要因であることを、
+欠損の実現可能性、欠損時の存続不能性、
+および共同充足可能性によって規定する。
+
+したがって、ある必要環境要因 $\eta\in E$ について、
+CR-1 が定める持続的欠損の前件が
+実現軌道上で成立する場合には、
+その帰結は CR-1 に従って評価される。
+しかし、
+$\chi_{\mathrm{EI},t}=0$
+という事実だけから、
+特定の $\eta$ の持続的欠損条件が成立したとはいえない。
+
+この区別は、
+必要環境要因の充足判定が
+\[
+  \eta:X\times E_{\mathrm{ext}}\to\{0,1\}
+\]
+として内部状態 $x_t$ にも依存することと整合する。
+内部備蓄、内部補償、状態依存の許容時間等によって、
+一時的な外部作用の欠如が
+直ちに必要環境要因の持続的欠損へ一致しない場合を
+Phase~1 の一般構造は排除しない。
+
+したがって本論文では、
+「終端的完全孤立だから必ず可行性を失う」
+という無条件命題を置かない。
+終端的完全孤立と存続不能性を接続する場合には、
+少なくとも、当該孤立が CR-1 における
+必要環境要因の持続的欠損条件へ実際に接続することを
+別途確認または仮定する必要がある。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{FR}
+\label{subsec:fr}
+
+本小節では、FR の時刻別充足述語（局所 FR）を定める。
+局所 FR は、時刻 $t$ の臨界必要要因がすべて充足されている局面に限って、
+次状態を $K$ に置く行動が存在するかを問う。
+現在の状態が $K$ の内にあれば、これは可行性を維持する行動の存在であり、
+$K$ の外にあれば、一段階で $K$ へ回復する行動の存在である。
+臨界必要要因が充足されないことに伴う閉塞は EU の偽として扱い、局所 FR の判定には含めない。
+あわせて、応答の多様性を表す診断量として応答多様度を定める。
+
+\begin{definition}[FR の定義域]
+\label{def:fr_domain}
+\[
+  \mathcal{D}_{\mathrm{FR}}
+  :=
+  \bigl\{
+    (x,e)\in X\times E_{\mathrm{ext}}
+    \bigm|
+    \forall\eta\in\mathrm{Crit}^{(1)}(x):\ \eta(x,e)=1
+  \bigr\}
+\]
+を FR の\emph{定義域}と呼ぶ。
+$\mathrm{Crit}^{(1)}$ は $X$ 上の写像であるから（定義~\ref{def:eu_fire}）、条件はすべての $(x,e)$ で定まる。
+$\mathrm{Crit}^{(1)}(x)=\emptyset$ のとき、すべての $e\in E_{\mathrm{ext}}$ について $(x,e)\in\mathcal{D}_{\mathrm{FR}}$ である。
+\end{definition}
+
+\begin{definition}[FR の時刻別充足述語（局所 FR）]
+\label{def:FR}
+$t\in\mathbb{T}_{\mathrm{P},i}$ かつ $(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ の時刻について、
+FR の時刻別充足述語 $\mathrm{FR}_t$ は
+\[
+  A_t\neq\emptyset
+\]
+のとき真、$A_t=\emptyset$ のとき偽とする。
+これを\emph{局所 FR} とも呼ぶ。
+$t\notin\mathbb{T}_{\mathrm{P},i}$ または $(x_t,e_t)\notin\mathcal{D}_{\mathrm{FR}}$ の時刻には、
+$\mathrm{FR}_t$ を定義しない。
+\end{definition}
+
+\begin{remark}[FR の定義上の限定]
+\label{rem:fr_scope}
+\begin{enumerate}
+  \item 「可行」は本論文の可行性、すなわち $f(x,u,e)\in K$ に固定する。
+  行動の実行可能性一般、行動の試行の成否、または実行の成功の度合いを意味しない
+  （\S\ref{sec:acs_def} 備考~\ref{rem:f_reading}）。
+  \item 制約軸としての FR は、必要な局面で可行な応答が得られること、
+  およびその必要応答ポテンシャルの保持・獲得・回復・再構成に関わる。
+  局所 FR はその一時刻の側面であり、長期の側面は \S\ref{subsec:sd_necessity} と
+  \S\ref{subsec:s3_tstab} で部分的に扱う。
+  \item $\mathcal{D}_{\mathrm{FR}}$ 上で $\mathrm{FR}_t$ の偽と閉塞 $A_t=\emptyset$ は一致する。
+  しかし FR は閉塞の言い換えではない。
+  閉塞は時刻ごとの状態の診断であり、
+  FR は長期の側面を含む応答側の制約軸である。
+  \item $x_t\notin K$ の時刻の局所 FR は、一段階で $K$ へ回復する行動が存在するかを問う。
+  この時刻に $\mathrm{FR}_t$ が偽であることは、一段階では $K$ へ戻れないことであり、
+  数段階を経た $K$ への回復の可能性については何も述べない（備考~\ref{rem:eu_one_step_scope}）。
+  この時刻に当該ACSが回復に寄与する行動を実行していることは排除されず、
+  $\mathrm{FR}_t$ の偽は、回復に寄与する行動が存在しないこと、回復の過程が進んでいないこと、
+  または応答の機構が損なわれていることを意味しない
+  （\S\ref{sec:acs_def} 備考~\ref{rem:blockage_scope_sec2}）。
+  \item 自己発展は、必要応答ポテンシャルを獲得・拡張する原理応答項目の一つの様式として位置づける。
+  \item 「応答能力」は一般語としてだけ用い、形式上の用語は「必要応答ポテンシャル」とする。
+\end{enumerate}
+\end{remark}
+
+\begin{remark}[定義域の役割]
+\label{rem:fr_domain_role}
+$\mathcal{D}_{\mathrm{FR}}$ は $A_t$ の値を変えない。
+$\mathcal{D}_{\mathrm{FR}}$ が定めるのは、閉塞のうち、
+どれを FR の時刻別充足述語が偽である時刻として数えるかである。
+臨界必要要因が充足されないことに伴う閉塞は EU の偽として扱い、FR の判定には含めない
+（命題~\ref{prop:blockage_dichotomy}）。
+$\mathcal{D}_{\mathrm{FR}}$ は $x\in K$ を条件に含まないので、
+$K$ の外での一段階の回復の可否も FR の判定に含まれる。
+\end{remark}
+
+\begin{definition}[応答多様度（分類C）]
+\label{def:mu_eff}
+$(x,e)\in X\times E_{\mathrm{ext}}$ を固定する。
+各 $u\in A(x,e)$ に対し、可行性保持指示関数
+$\varphi_u:E_{\mathrm{req}}(x)\to\{0,1\}$ を
+\[
+  \varphi_u(e'):=\mathbf{1}\bigl[f(x,u,e')\in K\bigr]
+\]
+で定め、$A(x,e)$ 上の同値関係 $\sim$ を
+$u\sim u' :\Longleftrightarrow \varphi_u=\varphi_{u'}$（$E_{\mathrm{req}}(x)$ 上の関数として等しい）で定める。
+\emph{応答多様度}を商集合の基数
+\[
+  \mu_{\mathrm{eff}}(x,e):=\bigl|A(x,e)/\!\sim\bigr|
+\]
+として定め、$\mu_{\mathrm{eff},t}:=\mu_{\mathrm{eff}}(x_t,e_t)$ と書く。
+$\mu_{\mathrm{eff}}$ の有限性は仮定しない。
+$\mu_{\mathrm{eff}}$ はすべての $(x,e)$ で定まる診断量であり、
+いずれの原理の時刻別充足述語の定義にも用いない。
+\end{definition}
+
+\begin{proposition}[定義域と EU の時刻別充足述語]
+\label{prop:fr_domain_eu}
+$t\in\mathbb{T}_{\mathrm{P},i}$ ならば、
+\[
+  \mathrm{EU}_t\ \text{が真}
+  \iff
+  (x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}
+\]
+である。
+したがって、$t\in\mathbb{T}_{\mathrm{P},i}$ の時刻に $\mathrm{FR}_t$ が定義されることは、
+$\mathrm{EU}_t$ が真であることと同値である。
+\end{proposition}
+
+\begin{proof}
+$\mathrm{EU}_t$ が真である条件（定義~\ref{def:EU}）と
+$(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ の条件（定義~\ref{def:fr_domain}）は、
+いずれも $\forall\eta\in\mathrm{Crit}^{(1)}(x_t):\eta(x_t,e_t)=1$ である。
+後半は定義~\ref{def:FR} による。
+\end{proof}
+
+\begin{proposition}[系：局所 FR と次状態の $K$ への所属]
+\label{prop:fr_one_step}
+$t\in\mathbb{T}_{\mathrm{P},i}$ かつ $(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ ならば、
+\[
+  \mathrm{FR}_t\ \text{が真}
+  \iff
+  A_t\neq\emptyset
+  \iff
+  \exists u\in U:\ f(x_t,u,e_t)\in K
+  \iff
+  \exists u\in U:\ \Pi\bigl(f(x_t,u,e_t)\bigr)\ge0
+\]
+である。
+\end{proposition}
+
+\begin{proof}
+第一の同値は定義~\ref{def:FR}、第二・第三は命題~\ref{prop:sm_one_step_A} (i) による。
+\end{proof}
+
+\begin{proposition}[局所 FR の偽と次時刻の状態]
+\label{prop:fr_next_sm}
+$t\in\mathbb{T}_{\mathrm{P},i}$、$(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ で $\mathrm{FR}_t$ が偽ならば、
+$A_t=\emptyset$ であり、$x_{t+1}\notin K$ である。
+さらに $t+1\in\mathbb{T}_{\mathrm{P},i}$ ならば、$\mathrm{SM}_{t+1}$ は偽である。
+\end{proposition}
+
+\begin{proof}
+定義~\ref{def:FR} により $A_t=\emptyset$ である。
+命題~\ref{prop:sm_one_step_A} (ii) と $u_t\in U$ により $x_{t+1}\notin K$ である。
+後半は定義~\ref{def:SM} による。
+\end{proof}
+
+\begin{proposition}[局所 FR と応答多様度]
+\label{prop:fr_mu_eff}
+\begin{enumerate}[label=(\roman*)]
+  \item 任意の $(x,e)\in X\times E_{\mathrm{ext}}$ について、
+  $A(x,e)=\emptyset\iff\mu_{\mathrm{eff}}(x,e)=0$ である。
+  \item $t\in\mathbb{T}_{\mathrm{P},i}$ かつ $(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ ならば、
+  $\mathrm{FR}_t$ が真であることと $\mu_{\mathrm{eff},t}\ge1$ は同値である。
+  とくに $\mu_{\mathrm{eff},t}\ge2$ ならば $\mathrm{FR}_t$ は真である。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i)：$A(x,e)=\emptyset$ ならば商集合は空であり、基数は $0$ である。
+$A(x,e)\neq\emptyset$ ならば、$u\in A(x,e)$ の同値類が商集合の元となるので、基数は $1$ 以上である。
+(ii)：定義~\ref{def:FR} と (i) による。
+\end{proof}
+
+\begin{remark}[$E_{\mathrm{req}}(x_t)=\emptyset$ の場合の応答多様度]
+\label{rem:mu_eff_empty_req}
+$E_{\mathrm{req}}(x_t)=\emptyset$ のとき、すべての $u\in A_t$ について $\varphi_u$ は空集合上の唯一の関数となるので、
+$A_t\neq\emptyset$ ならば $\mu_{\mathrm{eff},t}=1$ である。
+これは比較の対象となる必要環境充足状態がないことの集合論上の帰結であり、
+応答の可能性が一種類に縮退していることを示すものではない。
+命題~\ref{prop:fr_mu_eff} はこの場合も含めて成り立つ。
+\end{remark}
+
+\begin{remark}[環境比較基準の内在性]
+\label{rem:env_basis_intrinsic}
+$\varphi_u$、$\sim$、$\mu_{\mathrm{eff},t}$ の比較基準には、
+\S\ref{sec:acs_def} の必要環境充足集合
+$E_{\mathrm{req}}(x_t)$
+を用いる。
+これは、固定された外部環境状態空間 $E_{\mathrm{ext}}$ のもとで、
+必要環境空間 $E$ と状態 $x_t$ から一意に派生する集合であり、
+解析者が応答多様度の評価のため任意に選択する評価領域ではない。
+
+また、
+$E_{\mathrm{req}}(x_t)$ と
+一段階可行環境対応
+$\mathcal{E}_{\mathrm{viab}}^{(1)}(x_t)$
+（定義~\ref{def:one_step_viable_environment}）との間に、
+いずれの向きの包含関係も仮定しない。
+\end{remark}
+
+\begin{remark}[局所 FR と長期の側面の時間的区別]
+\label{rem:sd_local_scope}
+定義~\ref{def:FR} の局所 FR は、
+固定された現在状態 $x_t$ と実現外部環境状態 $e_t$ を基準とする
+一段階の条件である。
+したがって本論文は、ある時刻 $t$ で $\mathrm{FR}_t$ が真であることから、
+後続時刻 $s>t$ で $\mathrm{FR}_s$ が定義されて真であることを一般的な帰結として置かない。
+応答多様度についても同様に、
+$\mu_{\mathrm{eff},t}\ge2$ や $\mu_{\mathrm{eff},t}=1$ は時刻 $t$ の局所量であり、
+後続時刻の値を定めない。
+
+\S\ref{subsubsec:real_world_scope} で述べたとおり、
+本論文が対象とする ACS は、時間変化する環境のもとで、
+有限の計算資源、有限の応答時間、有限の記憶容量、
+供給・エネルギー制約、および構成要素の損傷・劣化可能性を伴って作動する。
+したがって、後続時刻 $s>t$ において
+\[
+  x_s=x_t,\qquad
+  e_s=e_t,\qquad
+  A_s=A_t,\qquad
+  E_{\mathrm{req}}(x_s)=E_{\mathrm{req}}(x_t)
+\]
+が維持されることを一般には仮定しない。
+各時刻の $x_s$ と $e_s$ に応じて、
+$A_s$、$E_{\mathrm{req}}(x_s)$、$\mathrm{FR}_s$ および
+$\mu_{\mathrm{eff},s}$ は改めて評価される。
+
+また、Phase~1 で実現列を所与として解析することは、
+ACS 自身または外部観測者による将来系列の事前把握可能性を
+仮定するものではない（備考~\ref{rem:three_layers}）。
+Phase~1 は将来系列に確率測度を導入しない。
+
+FR の長期の側面、すなわち必要応答ポテンシャルの保持・獲得・回復・再構成について、
+Phase~1 は独立した無限時間の判定条件を与えない。
+局所 FR の有限窓内の持続は \S\ref{subsec:s3_tstab} の (T2) で、
+応答多様性の縮退の持続と長期可行性との条件付き接続は
+\S\ref{subsec:sd_necessity} で、
+有限段の頑健性は \S\ref{subsec:viab_core} の $\mathrm{Hor}_f$ で、
+それぞれ部分的に記述する。
+内部状態の時刻間変化と応答方略の更新は
+\S\ref{sec:extended_dynamics} の責務である。
+長期の側面の本格的な理論は Phase~1.$\alpha$ の課題とする
+（\S\ref{sec:limitations_and_outlook}）。
+\end{remark}
+
+\begin{remark}[可行性余裕度の改善可能性]
+\label{rem:sd_improvement_aux}
+条件
+\[
+  \exists\,u\in A_t
+  \quad\text{s.t.}\quad
+  \Pi\bigl(f(x_t,u,e_t)\bigr)>\Pi(x_t)
+\]
+は、現在の実現外部環境状態 $e_t$ のもとで
+可行性余裕度を一段階で厳密に改善できる行動が存在することを表す。
+
+本論文では、この条件を
+\emph{可行性余裕度の改善可能性}を表す補助診断条件として保持するが、
+定義~\ref{def:FR} の局所 FR の条件とはしない。
+現在すでに高い可行性余裕をもつ状態や、
+可行な応答を保ちつつ一段階では
+$\Pi$ を厳密増加させない状態を、
+この条件だけを理由に局所 FR の偽とはしないためである。
+\end{remark}
+
+\begin{proposition}[有限段頑健可行集合と局所 FR]
+\label{prop:viab_stage_fr}
+$\nu\ge1$、$x_t\in\mathrm{Viab}_f^{(\nu)}(K)$、$e_t\in E_{\mathrm{req}}(x_t)$ ならば、
+$(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ かつ $A_t\neq\emptyset$ である。
+さらに $t\in\mathbb{T}_{\mathrm{P},i}$ ならば、$\mathrm{FR}_t$ は真である。
+\end{proposition}
+
+\begin{proof}
+定義~\ref{def:viab_stage} により、ある $u\in U$ が存在して、
+すべての $e\in E_{\mathrm{req}}(x_t)$ について
+$f(x_t,u,e)\in\mathrm{Viab}_f^{(\nu-1)}(K)\subseteq K_{\mathrm{req}}\subseteq K$ である。
+$e_t\in E_{\mathrm{req}}(x_t)$ であるから $u\in A_t$ であり、$A_t\neq\emptyset$ である。
+$e_t\in E_{\mathrm{req}}(x_t)$ と定義~\ref{def:E_req} により、すべての $\eta\in E$ について $\eta(x_t,e_t)=1$ である。
+$\mathrm{Crit}^{(1)}(x_t)\subseteq E$（定義~\ref{def:eu_fire}）であるから、
+すべての $\eta\in\mathrm{Crit}^{(1)}(x_t)$ について $\eta(x_t,e_t)=1$ であり、
+$(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ である。
+後半は定義~\ref{def:FR} による。
+\end{proof}
+
+\begin{proposition}[選択の責務]
+\label{prop:selection_responsibility}
+任意の $t\in\mathbb{N}_0$ について、$u_t\notin A_t$ ならば $x_{t+1}\notin K$ である。
+とくに、$t\in\mathbb{T}_{\mathrm{P},i}$ で $\mathrm{SM}_t$・$\mathrm{EU}_t$・$\mathrm{FR}_t$ がすべて真であっても、
+$u_t\notin A_t$ ならば $x_{t+1}\notin K$ である。
+\end{proposition}
+
+\begin{proof}
+命題~\ref{prop:sm_one_step_A} (ii) による。
+\end{proof}
+
+\begin{remark}[選択の責務と構成要件]
+\label{rem:selection_responsibility}
+本論文は $u_t\in A_t$ を構成要件にも仮定にも置かない。
+三原理の時刻別充足述語がすべて真であれば $A_t\neq\emptyset$ である（定義~\ref{def:FR}）。
+しかし、時刻別充足述語の定義には $u_t\in A_t$ を含めず、
+本論文は、三原理の時刻別充足述語がすべて真であることから $u_t\in A_t$ を要求しない。
+実効行動の形成は \S\ref{sec:tipa} の TIPA・PSL の責務であり、
+同節は $\mathrm{Cand}_t=A_t$ を要求しない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{三原理と閉塞・整形式実現・崩壊の関係}
+\label{subsec:principle_failure_relation}
+
+本小節では、閉塞を臨界必要要因の充足の有無によって二つに分け、
+三原理の時刻別充足述語と閉塞・整形式実現・崩壊との関係を整理する。
+二分の対象は、現在の状態が $K$ の内にある時刻の閉塞（一段階で可行性を維持できない局面）と、
+$K$ の外にある時刻の閉塞（一段階では $K$ へ戻れない局面）の両方である。
+
+\begin{proposition}[閉塞の二分]
+\label{prop:blockage_dichotomy}
+$A_t=\emptyset$ の時刻 $t$ について、次の (B1) と (B2) のちょうど一方が成り立つ。
+\begin{description}[style=nextline]
+  \item[(B1) 臨界必要要因非充足閉塞]
+  ある $\eta\in\mathrm{Crit}^{(1)}(x_t)$ について $\eta(x_t,e_t)=0$。
+  \item[(B2) 臨界必要要因充足下閉塞]
+  $(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$。
+\end{description}
+また、任意の時刻 $t$ について、(B1) の条件が成り立てば $A_t=\emptyset$ である。
+さらに $t\in\mathbb{T}_{\mathrm{P},i}$ の時刻について、次が成り立つ。
+\begin{enumerate}[label=(\roman*)]
+  \item (B1) の閉塞の時刻とは、$\mathrm{EU}_t$ が偽である時刻であり、
+  このとき $(x_t,e_t)\notin\mathcal{D}_{\mathrm{FR}}$ であるから $\mathrm{FR}_t$ は定義されない。
+  \item (B2) の閉塞の時刻とは、$\mathrm{EU}_t$ が真であり、かつ $\mathrm{FR}_t$ が偽である時刻である。
+  \item $A_t=\emptyset$ であることは、
+  「$\mathrm{EU}_t$ が偽である」か「$\mathrm{EU}_t$ が真であり、かつ $\mathrm{FR}_t$ が偽である」かの
+  いずれかが成り立つことと同値であり、この二つは同時には成り立たない。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+定義~\ref{def:fr_domain} により、(B2) の条件は $\forall\eta\in\mathrm{Crit}^{(1)}(x_t):\eta(x_t,e_t)=1$ であり、
+$\eta$ の値は $\{0,1\}$ に属するので、(B1) の条件はその否定である。
+よって、$A_t=\emptyset$ の時刻ではちょうど一方が成り立つ。
+(B1) の条件から $A_t=\emptyset$ が従うことは命題~\ref{prop:eu_blockage} (i) による。
+
+$t\in\mathbb{T}_{\mathrm{P},i}$ とする。
+(i)：定義~\ref{def:EU} により、$\mathrm{EU}_t$ が偽であることは (B1) の条件と同じであり、
+そのとき $A_t=\emptyset$ である。
+命題~\ref{prop:fr_domain_eu} により $(x_t,e_t)\notin\mathcal{D}_{\mathrm{FR}}$ であり、
+定義~\ref{def:FR} により $\mathrm{FR}_t$ は定義されない。
+(ii)：$\mathrm{EU}_t$ が真であることは $(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ と同値であり（命題~\ref{prop:fr_domain_eu}）、
+そのもとで $\mathrm{FR}_t$ が偽であることは $A_t=\emptyset$ と同値である（定義~\ref{def:FR}）。
+(iii)：$A_t=\emptyset$ ならば、前半の二分と (i)(ii) により、いずれか一方が成り立つ。
+逆に、$\mathrm{EU}_t$ が偽ならば命題~\ref{prop:eu_blockage} (ii) により、
+$\mathrm{EU}_t$ が真で $\mathrm{FR}_t$ が偽ならば定義~\ref{def:FR} により、$A_t=\emptyset$ である。
+二つが同時に成り立たないことは、$\mathrm{EU}_t$ の真偽が異なることによる。
+\end{proof}
+
+\begin{remark}[二分の地位]
+\label{rem:blockage_dichotomy}
+命題~\ref{prop:blockage_dichotomy} は定義から従う診断上の分割であり、閉塞の原因の分類ではない。
+(B1)・(B2) の名称は時刻別充足述語を用いずに定めており、
+$t\notin\mathbb{T}_{\mathrm{P},i}$ の時刻の閉塞にも適用される。
+時刻別充足述語との対応は、$t\in\mathbb{T}_{\mathrm{P},i}$ の時刻に限って述べる。
+(B1) の時刻には $\mathrm{FR}_t$ は偽ではなく定義されないのであって、
+定義されないことを偽に含めない（備考~\ref{rem:s3_description_levels}）。
+(B1) の閉塞において、要因 $\eta$ の非充足が閉塞の唯一の原因であるとは主張しない。
+$x_t\notin K$ の時刻の閉塞は一段階では $K$ へ戻れないことを表し、
+数段階を経た $K$ への回復の可能性については何も述べない（備考~\ref{rem:eu_one_step_scope}）。
+現在の状態でどの外部環境状態によっても充足されない要因は臨界必要要因に含まれないので、
+そのような要因に関わる閉塞は (B1) には数えられない（備考~\ref{rem:eu_env_utilization}）。
+
+(B2) は、閉塞のうち (B1) の条件を満たさないものの診断上の残余であり、
+応答の側の失敗を表す原因の分類ではない。
+たとえば、複数の必要環境要因がそろって充足されないことによってのみ一段階の閉塞が生じ、
+各要因が単独では臨界必要要因に属さない場合、その閉塞は (B2) に属する。
+また、$x_t\notin K$ で、どの外部環境状態のもとでも一段では $K$ に戻れない場合、
+定義~\ref{def:eu_critical_domain} の (iii) を満たす要因はなく臨界必要要因集合は空となるので、
+その時刻の閉塞は (B2) に属する。
+この二分は、固定した要因の分解 $E$ と一段の判定に相対する診断上の分割であり、
+環境の側と応答の側の因果的な寄与を分類するものではない。
+\end{remark}
+
+時刻別充足述語の定義域と閉塞の二分の関係を図~\ref{fig:s3_predicate_domain} に示す。
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}[
+  font=\footnotesize,
+  box/.style={draw, rounded corners=2pt, align=center, inner sep=3pt},
+  cond/.style={font=\scriptsize, inner sep=1pt},
+  note/.style={font=\scriptsize, align=center, inner sep=1pt},
+  plabel/.style={font=\small, anchor=west, inner sep=0pt},
+  arr/.style={-{Latex[length=1.6mm]}},
+]
+\node[plabel] at (0,0.8) {(a)\ 時刻別充足述語の定義域};
+\node[box] (t) at (5.0,0) {時刻 $t$};
+\node[box] (out) at (1.9,-1.3)
+ {時刻別充足述語を定めない\\（真でも偽でもない）};
+\node[box] (in) at (8.0,-1.3) {$t\in\mathbb{T}_{\mathrm{P},i}$};
+\draw[arr] (t) -| node[cond, pos=0.3, above]{$\mathrm{FT}_{i,t}=1$} (out);
+\draw[arr] (t) -| node[cond, pos=0.3, above]{$\mathrm{FT}_{i,t}=0$} (in);
+
+\node[box] (sm) at (4.6,-3.0)
+ {$\mathrm{SM}_t$：$x_t\in K$ なら真\\$x_t\notin K$ なら偽};
+\node[box] (eu) at (9.0,-3.0)
+ {$\mathrm{EU}_t$：すべての $\eta\in\mathrm{Crit}^{(1)}(x_t)$ で\\$\eta(x_t,e_t)=1$ なら真\\そうでなければ偽\\（$\mathrm{Crit}^{(1)}(x_t)=\emptyset$ なら真）};
+\coordinate (br) at (8.0,-1.8);
+\draw (in) -- (br);
+\draw[arr] (br) -| (sm.north);
+\draw[arr] (br) -| (eu.north);
+\node[note, anchor=north] at (sm.south) {SM の真偽は EU・FR の\\判定の条件ではない};
+
+\node[box] (frd) at (7.3,-5.4)
+ {$(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$（命題~\ref{prop:fr_domain_eu}）\\$\mathrm{FR}_t$ を定義する\\$A_t\neq\emptyset$ なら真\\$A_t=\emptyset$ なら偽};
+\node[box] (fru) at (10.9,-5.4)
+ {$\mathrm{FR}_t$ は定義しない\\（偽ではない）\\このとき $A_t=\emptyset$\\（命題~\ref{prop:eu_blockage}）};
+\draw[arr] (frd.north |- eu.south) -- node[cond, left]{真} (frd.north);
+\draw[arr] (fru.north |- eu.south) -- node[cond, right]{偽} (fru.north);
+
+\begin{scope}[yshift=-8.1cm]
+\node[plabel] at (0,0.8) {(b)\ 閉塞の二分（$A_t=\emptyset$ のすべての時刻）};
+\node[box] (bl) at (5.8,0) {$A_t=\emptyset$};
+\node[box] (b1) at (3.0,-1.5)
+ {(B1)：ある $\eta\in\mathrm{Crit}^{(1)}(x_t)$ で\\$\eta(x_t,e_t)=0$};
+\node[box] (b2) at (8.6,-1.5)
+ {(B2)：$(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$};
+\draw[arr] (bl) -| (b1);
+\draw[arr] (bl) -| (b2);
+\node[cond] at (5.8,-0.6) {ちょうど一方が成り立つ};
+\node[box, dashed] (b1p) at (3.0,-3.0)
+ {$t\in\mathbb{T}_{\mathrm{P},i}$ のとき\\$\mathrm{EU}_t$ が偽（$\mathrm{FR}_t$ は定義されない）};
+\node[box, dashed] (b2p) at (8.6,-3.0)
+ {$t\in\mathbb{T}_{\mathrm{P},i}$ のとき\\$\mathrm{EU}_t$ が真で $\mathrm{FR}_t$ が偽};
+\draw (b1) -- (b1p);
+\draw (b2) -- (b2p);
+\node[note, align=left, anchor=north west] at (0.3,-3.75)
+ {(B1) の条件は、どの時刻でも単独で $A_t=\emptyset$ を導く（命題~\ref{prop:eu_blockage}）。\\
+  点線の枠は原理判定時刻域の中での読み替えである。\\
+  その外の時刻にも (B1)・(B2) の二分は適用される。};
+\end{scope}
+\end{tikzpicture}
+\caption{時刻別充足述語の定義域と閉塞の二分（命題~\ref{prop:blockage_dichotomy}）。
+矢印は定義による場合分けを表し、因果や時間の順序を表さない。
+(a) SM と EU は原理判定時刻域の上でそれぞれ判定され、SM から EU・FR への線はない。
+FR は EU が真の時刻にだけ定義され、定義されないことを偽に含めない。
+(b) 二分は定義から従う診断上の分割であり、閉塞の原因の分類ではない（備考~\ref{rem:blockage_dichotomy}）。}
+\label{fig:s3_predicate_domain}
+\end{figure}
+
+\begin{remark}[三原理の時刻別充足述語と閉塞・整形式実現・崩壊]
+\label{rem:principles_failure_table}
+$t\in\mathbb{T}_{\mathrm{P},i}$ の時刻について、次が成り立つ。
+\begin{enumerate}
+  \item $\mathrm{SM}_t$ の偽は閉塞の定義条件ではない。
+  本論文は、$\mathrm{SM}_t$ の偽だけから閉塞 $A_t=\emptyset$ を一般的な帰結として置かない。
+  \item $\mathrm{EU}_t$ が偽ならば $A_t=\emptyset$ である（命題~\ref{prop:eu_blockage}）。
+  \item $\mathrm{FR}_t$ が偽ならば $A_t=\emptyset$ であり、
+  $\mathcal{D}_{\mathrm{FR}}$ 上で $\mathrm{FR}_t$ の偽と閉塞は一致する（定義~\ref{def:FR}）。
+  \item 閉塞の時刻は、$\mathrm{EU}_t$ が偽である時刻と、
+  $\mathrm{EU}_t$ が真で $\mathrm{FR}_t$ が偽である時刻に排他的・網羅的に分かれる
+  （命題~\ref{prop:blockage_dichotomy}）。
+  \item 本論文は、いずれの時刻別充足述語が偽であることだけからも、
+  $\mathrm{WF}_{i,t}=0$ または崩壊 $\mathrm{Col}_{i,s}=1$（$s\ge t$）を一般的な帰結として置かない。
+  \item 時刻別充足述語を判定する時刻 $t\in\mathbb{T}_{\mathrm{P},i}$ では、
+  定義~\ref{def:principle_time_domain} により $\mathrm{FT}_{i,t}=0$ であり、
+  補題~\ref{lem:principle_time_domain_down} により $\mathrm{Col}_{i,t}=0$ である。
+\end{enumerate}
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{三原理の連動と含意関係の限定}
+\label{subsec:principle_linkage}
+
+本小節では、三原理の時刻別充足述語の間に本節で示した条件付き含意をまとめ、
+本論文が主張しない含意を明示する。
+
+\begin{remark}[三原理の連動]
+\label{rem:principle_linkage}
+三原理は相互を定義するものではなく、概念的に異なる制約軸である。
+ただし、明示した前提または適用域のもとで、
+それぞれの時刻別充足述語の間に条件付き含意が成立することを妨げない。
+本節で示した条件付き含意等は、次のとおりである。
+\begin{enumerate}
+  \item 命題~\ref{prop:eu_sm_next}：EU の偽から次時刻の $x_{t+1}\notin K$。
+  \item 命題~\ref{prop:fr_next_sm}：局所 FR の偽から次時刻の $x_{t+1}\notin K$。
+  \item 命題~\ref{prop:viab_stage_fr}：有限段頑健可行集合から局所 FR の真。
+  \item 命題~\ref{prop:fr_domain_eu}：FR の定義域と EU の真。
+  \item 命題~\ref{prop:blockage_dichotomy}：閉塞の二分と EU・FR の時刻別充足述語との対応。
+\end{enumerate}
+\end{remark}
+
+\begin{remark}[含意関係の限定]
+\label{rem:principle_implication_scope}
+本論文は、$t\in\mathbb{T}_{\mathrm{P},i}$ について、
+$\mathrm{SM}_t$ の真から $\mathrm{EU}_t$ の真を、
+$\mathrm{EU}_t$ の真から $\mathrm{SM}_t$ の真を、
+$\mathrm{SM}_t$ と $\mathrm{EU}_t$ の真から $\mathrm{FR}_t$ の真を、
+いずれも一般的な帰結として置かない。
+これは含意を主張しないということであり、
+これらの含意が成り立たないことを示したものではない。
+含意が成り立たないことを示すには、
+\S\ref{sec:acs_def} の仮定と構成要件をすべて満たす系を構成し、
+前件が真で後件が偽となる時刻を示す必要がある。
+その構成は本論文では行わない。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{応答多様性縮退と長期可行性：条件付き必要性}
+\label{subsec:sd_necessity}
+
+\subsubsection{本小節の目的と射程}
+
+本小節では、FR の長期の側面のうち、
+必要環境充足状態に対する応答の多様性が縮退したまま持続する場合に、
+長期可行性とどのように関係するかを検討する。
+扱う量は応答多様度 $\mu_{\mathrm{eff},t}$（定義~\ref{def:mu_eff}、分類C）であり、
+これは三原理のいずれの時刻別充足述語の定義にも用いない診断量である。
+
+本小節で中心的に扱う縮退モードは、
+\[
+  e_t\in E_{\mathrm{req}}(x_t),
+  \qquad
+  A_t\neq\emptyset,
+  \qquad
+  \mu_{\mathrm{eff},t}=1
+\]
+である。
+これは、現在可行な行動が存在する一方で、
+$E_{\mathrm{req}}(x_t)$ 上の可行性保持パターンが
+単一の同値類へ縮退している場合を表す。
+このとき、命題~\ref{prop:viab_stage_fr} の証明と同じ論法により
+$(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ であり、
+$t\in\mathbb{T}_{\mathrm{P},i}$ の時刻では $\mathrm{FR}_t$ は真である。
+すなわち、本小節が扱う縮退は局所 FR が真である時刻にも生じうる。
+
+以下で形式的に示すのは、
+ある時刻の $\mu_{\mathrm{eff},t}=1$ から閉塞を導く無条件命題ではない。
+示すのは次の二段である。
+\begin{enumerate}
+  \item 主命題（強仮定を用いない）：
+  実現外部環境状態が必要環境要因を充足し、可行な状態で応答多様性の縮退と応答の弱点が持続するとき、
+  頑健応答不能が持続し、軌道は可行性核の外に留まる（命題~\ref{prop:sd_robust_nonresponse}）。
+  \item 系（強仮定のもとで）：
+  可行性核の外への持続を閉塞へ接続する強仮定を加えると、
+  有限時間で閉塞へ至る（命題~\ref{prop:sd_necessity}）。
+\end{enumerate}
+いずれも条件付き必要性の方向の主張である。
+また、閉塞 $A_t=\emptyset$ から崩壊を導くこともしない。
+閉塞と崩壊の関係は \S\ref{sec:collapse_cond} の責務である。
+
+以下では、\S\ref{sec:acs_def} の必要環境充足集合 $E_{\mathrm{req}}(x)$ と、
+定義~\ref{def:mu_eff} の $\varphi_u$、$\sim$、$\mu_{\mathrm{eff}}(x,e)$、
+$\mu_{\mathrm{eff},t}$ を上流の定義として固定し、本小節で変更しない。
+証明中で時刻 $t$ の同値関係であることを明示する場合は $\sim_t$ と書く。
+本小節は、解析者が外部から選択する環境部分集合を導入しない
+（備考~\ref{rem:env_basis_intrinsic}）。
+環境に関する量化は、$E_{\mathrm{ext}}$ または
+$E_{\mathrm{req}}(x)$ によって与える。
+
+\subsubsection{本小節で用いる仮定と応答不能の記述}
+
+\begin{assumption}[非定常環境]
+\label{ass:nonstationary}
+実現外部環境状態の列 $(e_t)_{t\ge0}$ は時間的に一定ではない。
+すなわち、少なくとも二つの時刻 $t\neq t'$ が存在して
+\[
+  e_t\neq e_{t'}
+\]
+が成立する。ここで $e_t,e_{t'}\in E_{\mathrm{ext}}$ である。
+
+導入地位：O（観察的）。強さ：弱。
+
+\textit{注：}
+本仮定は確率的分散または統計的変動を仮定するものではなく、
+Phase~1 の決定論的・離散時間枠組みにおいて、
+外部環境状態の列が時間的に一定でないことのみを意味する。
+その変化は、外生背景成分の変化によるものでも、
+当該ACS自身の行動に応答した行動応答成分の変化
+（\S\ref{sec:acs_def} 定義~\ref{def:env_realization}）によるものでもよい。
+
+本仮定は、
+環境応答多様性を保持することの構造的意義を解釈する
+背景条件として用いるが、
+後述する可行な応答の弱点（定義~\ref{def:nonresponse_env_set}）の存在を
+本仮定から導くことは主張しない。
+また、命題~\ref{prop:sd_robust_nonresponse} と命題~\ref{prop:sd_necessity} の
+形式的証明には使用しない。
+\end{assumption}
+
+\begin{definition}[応答不能環境集合と可行な応答の弱点（分類C）]
+\label{def:nonresponse_env_set}
+状態 $x\in X$ と行動 $u\in U$ について、
+\[
+  N(x,u)
+  :=
+  \bigl\{\,e\in E_{\mathrm{req}}(x)\bigm| f(x,u,e)\notin K\,\bigr\}
+  \subseteq E_{\mathrm{req}}(x)
+\]
+を、状態 $x$ における行動 $u$ の\emph{応答不能環境集合}と呼ぶ。
+$N(x,u)\neq\emptyset$ は、状態 $x$ で行動 $u$ をとるとき、
+必要環境要因がすべて充足される外部環境状態のうちに、次状態を $K$ に置かないものがあることを表す。
+
+時刻 $t$ において
+\[
+  \exists\,u^\star\in A_t:\quad N(x_t,u^\star)\neq\emptyset
+\]
+が成り立つとき、時刻 $t$ に\emph{可行な応答の弱点}があるという。
+\end{definition}
+
+\begin{remark}[応答不能は状態・行動・環境の関係である]
+\label{rem:nonresponse_relational}
+$N(x,u)$ は状態 $x$、行動 $u$、外部環境状態 $e$ の三つ組の関係として定まり、
+外部環境状態だけの性質ではない。
+本論文は、存続できない局面を外部環境の側だけに帰属させず、
+状態がある外部環境状態に応答できないという関係として記述する。
+
+可行な応答の弱点は、ACS の構成要件でも、すべての時刻に課す仮定でもない。
+本小節では、\S\ref{subsubsec:sd_main} の命題の前提としてだけ用いる。
+弱点がない時刻も存在しうる。
+例えば $E_{\mathrm{req}}(x_t)=\{e_t\}$ であれば、
+任意の $u\in A_t$ について $f(x_t,u,e_t)\in K$ であるから、
+時刻 $t$ に可行な応答の弱点はない。
+本論文は、弱点がない状態の存在を排除しない。
+
+弱点の証人 $e^\star\in N(x_t,u^\star)$ は $E_{\mathrm{ext}}$ 全体ではなく
+$E_{\mathrm{req}}(x_t)$ に属する。
+これは、定義~\ref{def:viab_core} の可行性核が $E_{\mathrm{req}}(x)$ 上の量化で定義されることとの整合による。
+\end{remark}
+
+\begin{remark}[可行な応答の弱点が含意する環境差]
+\label{rem:weakness_env_difference}
+時刻 $t$ に可行な応答の弱点があり、その証人を
+$u^\star\in A_t$、$e^\star\in N(x_t,u^\star)$ とする。
+このとき
+\[
+  f(x_t,u^\star,e_t)\in K,
+  \qquad
+  f(x_t,u^\star,e^\star)\notin K
+\]
+であるから、$e^\star\neq e_t$ であり、
+\[
+  u^\star\in A(x_t,e_t)\setminus A(x_t,e^\star),
+  \qquad
+  A(x_t,e_t)\neq A(x_t,e^\star)
+\]
+が成立する。
+したがって、弱点がある局面では、可行行動対応 $A(x,e)$ が外部環境状態の差異に対して
+少なくとも一箇所で非退化である。
+ただし、この帰結から
+構造的環境結合条件（定義~\ref{def:env_coupling}）や
+特定の環境応答座標集合 $I_E$ の選択を直接導くことはしない。
+\end{remark}
+
+\begin{definition}[応答不能領域（分類C）]
+\label{def:nonresponse_region}
+\[
+  \mathcal N^{(1)}
+  :=
+  \bigl\{\,(x,e)\in X\times E_{\mathrm{ext}}\bigm| A(x,e)=\emptyset\,\bigr\}
+\]
+を\emph{応答不能領域}と呼ぶ。
+$(x,e)\in\mathcal N^{(1)}$ は $e\notin\mathcal E_{\mathrm{viab}}^{(1)}(x)$
+（\S\ref{sec:acs_def} 定義~\ref{def:one_step_viable_environment}）と同値であり、
+本定義は同対応の補集合を組として並べたものである。
+定義から、時刻 $t$ の閉塞 $A_t=\emptyset$ は $(x_t,e_t)\in\mathcal N^{(1)}$ と同値である。
+\end{definition}
+
+\begin{definition}[頑健応答集合と頑健応答不能（分類C）]
+\label{def:robust_response}
+状態 $x\in X$ について、
+\[
+  U^{\mathrm{rob}}(x)
+  :=
+  \bigl\{\,u\in U\bigm| N(x,u)=\emptyset\,\bigr\}
+\]
+を\emph{頑健応答集合}と呼ぶ。
+$U^{\mathrm{rob}}(x)=\emptyset$ のとき、状態 $x$ は\emph{頑健応答不能}であるという。
+すなわち頑健応答不能とは、どの行動をとっても、
+必要環境要因がすべて充足される外部環境状態のうちに次状態を $K$ に置かないものが残ることである。
+\end{definition}
+
+\begin{proposition}[頑健応答不能と頑健可行集合]
+\label{prop:robust_nonresponse_viab}
+$x\in X$ について $U^{\mathrm{rob}}(x)=\emptyset$ ならば、
+$x\notin\mathrm{Viab}_f(K)$ であり、
+すべての $\nu\ge1$ について $x\notin\mathrm{Viab}_f^{(\nu)}(K)$ である。
+\end{proposition}
+
+\begin{proof}
+対偶を示す。
+$x\in\mathrm{Viab}_f(K)$ ならば、命題~\ref{prop:viab_core_max} より、ある $u\in U$ が存在して
+すべての $e\in E_{\mathrm{req}}(x)$ について $f(x,u,e)\in\mathrm{Viab}_f(K)\subseteq K$ であるから、
+$N(x,u)=\emptyset$、すなわち $u\in U^{\mathrm{rob}}(x)$ である。
+$\nu\ge1$ について $x\in\mathrm{Viab}_f^{(\nu)}(K)$ ならば、定義~\ref{def:viab_stage} より、ある $u\in U$ が存在して
+すべての $e\in E_{\mathrm{req}}(x)$ について
+$f(x,u,e)\in\mathrm{Viab}_f^{(\nu-1)}(K)\subseteq K_{\mathrm{req}}\subseteq K$ であるから、
+同様に $u\in U^{\mathrm{rob}}(x)$ である。
+\end{proof}
+
+本論文は、命題~\ref{prop:robust_nonresponse_viab} の逆を一般的な帰結として置かない。
+$E_{\mathrm{req}}(x)\neq\emptyset$ のとき、$U^{\mathrm{rob}}(x)\neq\emptyset$ は
+$E_{\mathrm{req}}(x)$ のすべての外部環境状態のもとで次状態を $K$ に置く行動の存在だけを表し、
+$K_{\mathrm{req}}$ や可行性核に留まることまでは表さない。
+$E_{\mathrm{req}}(x)=\emptyset$ のときは、定義から $U^{\mathrm{rob}}(x)=U$ であり、
+この非空性は頑健性について何も表さない。
+
+\subsubsection{$K$ 外部持続と閉塞の接続}
+
+\begin{definition}[$K$ 外部持続]
+\label{def:theta_exterior}
+以下、補集合は状態空間 $X$ における相対補集合とし、
+\[
+  K^c:=X\setminus K,
+  \qquad
+  \bigl(\mathrm{Viab}_f(K)\bigr)^c
+  :=
+  X\setminus\mathrm{Viab}_f(K)
+\]
+と書く。
+
+ACS $\Sigma$ が時刻 $t$ 以降
+\emph{$K$ 外部に持続する}とは、
+\[
+  \forall s\ge t,\;
+  x_s\in K^c
+\]
+が成立することをいう。
+
+\textit{注：}
+本定義は、一時的な離脱後に $K$ へ再進入する
+オーバーシュートを排除する。
+$x_t\notin K$ となった直後に $x_{t+1}\in K$ に戻る場合は、
+$K$ 外部に持続していないとして扱う。
+
+ある有限時刻に $x_{t+T}\notin K$ となることから、
+\[
+  \forall s\ge0,\;
+  x_{t+T+s}\notin K
+\]
+を一般的な帰結として置かない。
+一度 $K$ を離脱した後の復帰は Phase~1 では排除されていない。
+$K$ 外部への持続は、離脱とは独立に述べられる条件である。
+
+有限時間幅 $\tau$ による持続の略記は、
+$\tau$ の下限を指定しない限り一時的離脱と区別できないため
+採用しない。
+\end{definition}
+
+\begin{assumption}[可行性核外部持続と閉塞の有限時間接続]
+\label{ass:theta_exterior_blockage}
+任意の時刻 $t\in\mathbb{N}_0$ について、
+ACS $\Sigma$ の状態が時刻 $t$ 以降持続的に
+$\mathrm{Viab}_f(K)$（定義~\ref{def:viab_core}）の外部に留まる、
+すなわち
+\[
+  \forall s\ge t,\;
+  x_s\notin\mathrm{Viab}_f(K)
+\]
+が成立するとき、
+\[
+  \exists\,T'\in\mathbb{N}_0
+  \;\text{ s.t. }\;
+  A_{t+T'}=\emptyset.
+\]
+
+導入地位：S（構造的）。強さ：強（強仮定）。
+
+\textit{注（適用条件）：}
+本仮定の前件は、可行性核外部への\emph{持続}であり、
+一時的な外部化ではない。
+また本仮定の帰結は閉塞 $A_{t+T'}=\emptyset$ であって、
+崩壊ではない。
+本論文では
+\[
+  A_t=\emptyset
+  \;\Longrightarrow\;
+  \mathrm{Col}_{i,t}=1
+\]
+とは述べない。閉塞と崩壊の正式な接続は
+\S\ref{sec:collapse_cond} の責務である。
+
+\textit{注（前件の包含関係）：}
+定義~\ref{def:viab_core} より
+$\mathrm{Viab}_f(K)\subseteq K$ であるから
+$K^c\subseteq\bigl(\mathrm{Viab}_f(K)\bigr)^c$ である。
+したがって $K$ 外部への持続
+（定義~\ref{def:theta_exterior}）は本仮定の前件を含意する。
+前件を $K$ 外部持続ではなく可行性核外部持続として置くのは、
+$K$ への一時的な再進入を挟みながらも
+ロバスト可行性を回復できない軌道を対象に含めるためである。
+
+\textit{注：}
+本仮定を ACS の内部動学から導出するための十分条件の形式化は
+Phase~2 の課題とする。
+Phase~1 の本小節では具体的経路を形式仮定として課さない
+（within present framework）。
+
+\textit{注（役割）：}
+本仮定は、命題~\ref{prop:exterior_blockage}、系である命題~\ref{prop:sd_necessity} および命題~\ref{prop:sd_necessity_fr} にだけ用いる。
+主命題（命題~\ref{prop:sd_robust_nonresponse}）は本仮定を用いない。
+可行性核の外に持続しても閉塞に至らない軌道は型の上では排除されず
+（備考~\ref{rem:exterior_without_blockage}）、
+本仮定はそのような軌道を条件付き解析の対象から除く強仮定である。
+\S\ref{sec:acs_def} の分解のもとでは、当該ACSの行動に応答する行動応答成分が保たれることにより、
+可行性核の外に留まりながら可行行動を保つ軌道も、本仮定によって除かれる。
+\end{assumption}
+
+\begin{proposition}[$K$ 外部持続と閉塞]
+\label{prop:exterior_blockage}
+仮定~\ref{ass:theta_exterior_blockage} のもとで、
+ACS $\Sigma$ が時刻 $t$ 以降 $K$ 外部に持続する
+（定義~\ref{def:theta_exterior}）ならば、
+\[
+  \exists\,T'\in\mathbb{N}_0
+  \;\text{ s.t. }\;
+  A_{t+T'}=\emptyset.
+\]
+\end{proposition}
+
+\begin{proof}
+定義~\ref{def:viab_core} より
+$\mathrm{Viab}_f(K)\subseteq K$、したがって
+$K^c\subseteq\bigl(\mathrm{Viab}_f(K)\bigr)^c$ である。
+$K$ 外部持続は可行性核外部持続を含意するので、
+仮定~\ref{ass:theta_exterior_blockage} を適用して結論を得る。
+\end{proof}
+
+\begin{remark}[可行性核の外への持続と閉塞の関係]
+\label{rem:exterior_without_blockage}
+本論文は、仮定~\ref{ass:theta_exterior_blockage} を置かない解析において、
+可行性核の外への持続から閉塞を一般的な帰結として置かない。
+例えば命題~\ref{prop:robust_noninclusion} (ii) の例で、
+外生背景成分がつねに $b_1$ であり $o_0=\mathrm{good}$ であれば、
+$x_t=1\notin\mathrm{Viab}_f(K)$ がすべての時刻で成り立つ一方、
+$A_t=\{u_{\emptyset}\}\neq\emptyset$ もすべての時刻で成り立つ。
+この例も型の水準で構成したものであり、備考~\ref{rem:robust_noninclusion_reading} と同じ射程をもつ。
+\end{remark}
+
+\subsubsection{応答多様性縮退に関する条件付き決定論的証明}
+
+\begin{lemma}[応答多様性縮退と応答の弱点による頑健応答不能]
+\label{lem:sd_viab}
+定義~\ref{def:mu_eff}、定義~\ref{def:viab_core}、
+定義~\ref{def:nonresponse_env_set} および定義~\ref{def:robust_response} のもとで、
+時刻 $t$ において
+\[
+  x_t\in K,
+  \qquad
+  e_t\in E_{\mathrm{req}}(x_t),
+  \qquad
+  A_t\neq\emptyset,
+  \qquad
+  \mu_{\mathrm{eff},t}=1
+\]
+が成立し、かつ時刻 $t$ に可行な応答の弱点があるならば、
+\[
+  U^{\mathrm{rob}}(x_t)=\emptyset,
+  \qquad
+  x_t\notin\mathrm{Viab}_f(K).
+\]
+\end{lemma}
+
+\begin{proof}
+$e_t\in E_{\mathrm{req}}(x_t)$ より
+$E_{\mathrm{req}}(x_t)\neq\emptyset$、したがって
+$x_t\in K_{\mathrm{req}}$ である。
+
+時刻 $t$ に可行な応答の弱点があるので（定義~\ref{def:nonresponse_env_set}）、ある
+\[
+  u^\star\in A_t,
+  \qquad
+  e^\star\in N(x_t,u^\star)\subseteq E_{\mathrm{req}}(x_t)
+\]
+が存在して $f(x_t,u^\star,e^\star)\notin K$ が成立する。
+定義~\ref{def:mu_eff} の可行性保持指示関数
+$\varphi_u:E_{\mathrm{req}}(x_t)\to\{0,1\}$ を用いれば
+$\varphi_{u^\star}(e^\star)=0$ である。
+
+\textbf{ステップ1：応答多様性縮退による弱点の共有。}
+\[
+  \mu_{\mathrm{eff},t}
+  =
+  \bigl|A_t/\!\sim_t\bigr|
+  =
+  1
+\]
+より、$A_t$ 上の全ての行動は単一の同値類に属する。
+$\sim_t$ は $E_{\mathrm{req}}(x_t)$ 上の関数としての
+$\varphi_u$ の一致で定義されるから
+\[
+  \forall u\in A_t,
+  \qquad
+  \varphi_u=\varphi_{u^\star}.
+\]
+特に $e^\star\in E_{\mathrm{req}}(x_t)$ において
+\[
+  \forall u\in A_t,
+  \qquad
+  \varphi_u(e^\star)=0,
+\]
+すなわち
+\[
+  \forall u\in A_t,
+  \qquad
+  f(x_t,u,e^\star)\notin K.
+\]
+
+\textbf{ステップ2：$A_t$ 外の行動。}
+定義~\ref{def:at} より
+$A_t=\{u\in U\mid f(x_t,u,e_t)\in K\}$ であるから、
+任意の $u\in U\setminus A_t$ について
+$f(x_t,u,e_t)\notin K$ である。
+ここで前提より $e_t\in E_{\mathrm{req}}(x_t)$ であるから、
+$e_t$ は $E_{\mathrm{req}}(x_t)$ 内の証人として用いることができる。
+
+\textbf{ステップ3：ロバスト可行性条件の否定。}
+ステップ1より $u\in A_t$ は $e^\star\in E_{\mathrm{req}}(x_t)$ で、
+ステップ2より $u\in U\setminus A_t$ は
+$e_t\in E_{\mathrm{req}}(x_t)$ で、それぞれ可行性を失う。
+したがって
+\[
+  \forall u\in U,\;
+  \exists e\in E_{\mathrm{req}}(x_t)
+  \;\text{ s.t. }\;
+  f(x_t,u,e)\notin K.
+\]
+すなわち、すべての $u\in U$ について $N(x_t,u)\neq\emptyset$ であり、
+$U^{\mathrm{rob}}(x_t)=\emptyset$ である（定義~\ref{def:robust_response}）。
+これは
+\[
+  \exists u\in U
+  \;\text{ s.t. }\;
+  \forall e\in E_{\mathrm{req}}(x_t),\;
+  f(x_t,u,e)\in K
+  \tag{$\dagger$}
+\]
+の否定である。
+
+一方、$x_t\in\mathrm{Viab}_f(K)$ であるならば、
+命題~\ref{prop:viab_core_max} より $\mathrm{Viab}_f(K)$ は
+$E_{\mathrm{req}}$ 不変であるから、ある $u\in U$ が存在して
+\[
+  \forall e\in E_{\mathrm{req}}(x_t),\;
+  f(x_t,u,e)\in\mathrm{Viab}_f(K)\subseteq K
+\]
+が成立し、これは $(\dagger)$ を含意する。
+$(\dagger)$ の否定を得ているから
+$x_t\notin\mathrm{Viab}_f(K)$ である。
+\end{proof}
+
+\begin{remark}[補題~\ref{lem:sd_viab} の論理構造]
+\label{rem:sd_viab_structure}
+本補題では、
+可行な応答の弱点、
+$\mu_{\mathrm{eff},t}=1$、および
+$e_t\in E_{\mathrm{req}}(x_t)$ が
+それぞれ異なる役割を担う。
+
+可行な応答の弱点は、
+現在可行な行動のうち少なくとも一つ $u^\star\in A_t$ について
+$N(x_t,u^\star)\neq\emptyset$ であることだけを前提とする。
+
+$\mu_{\mathrm{eff},t}=1$ は、$A_t$ 上の全可行行動が
+$E_{\mathrm{req}}(x_t)$ 上で同一の可行性保持パターンをもつことを
+意味し、$u^\star$ の弱点を $A_t$ 全体へ伝播させる。
+この伝播がなければ、$A_t$ の他の行動が
+$E_{\mathrm{req}}(x_t)$ 上でロバストである可能性を排除できない。
+したがって $\mu_{\mathrm{eff},t}=1$ は、本補題では状態分類のラベルではなく、結論の導出に用いる前提である。
+この前提を除くと結論が成り立たない例がある。
+$X=\{0,1\}$、$\Pi(x)=x-1$（$K=\{1\}$）、$U=\{u_1,u_2\}$、$E_{\mathrm{ext}}=\{e^1,e^2\}$、$E=\{\eta\}$、$\eta\equiv1$ とし、
+$f(1,u_1,e^1)=f(1,u_2,e^1)=f(1,u_2,e^2)=1$、それ以外の引数では $f=0$ とする。
+$x_t=1$、$e_t=e^1$ では $A_t=\{u_1,u_2\}$ であり、$u_1$ に弱点 $e^2$ があるが、$\mu_{\mathrm{eff},t}=2$ である。
+このとき $u_2\in U^{\mathrm{rob}}(1)$ であり、$\{1\}$ は $E_{\mathrm{req}}$ 不変であるから $1\in\mathrm{Viab}_f(K)$ である
+（型の水準の例）。
+
+$e_t\in E_{\mathrm{req}}(x_t)$ は、$A_t$ の外側にある行動を
+$E_{\mathrm{req}}(x_t)$ 内の証人によって排除するために用いる。
+この条件がない場合、$E_{\mathrm{req}}(x_t)$ 上でロバストな行動が
+$A_t$ の外に存在しうる。
+$\mu_{\mathrm{eff},t}$ は $A_t$ 上の分割の濃度であるから、
+そのような行動を評価できない。
+したがって本条件は、現在の可行行動集合 $A_t$ と
+ロバスト候補行動とを接続する役割をもつ。
+この前提を除くと結論が成り立たない例がある。
+前の例で $E_{\mathrm{ext}}=\{e^1,e^2,e^3\}$、$\eta(x,e)=1\iff e\neq e^1$ とし、
+$f(1,u_1,e^1)=f(1,u_1,e^2)=f(1,u_2,e^2)=f(1,u_2,e^3)=1$、それ以外の引数では $f=0$ とする。
+$x_t=1$、$e_t=e^1\notin E_{\mathrm{req}}(1)$ では $A_t=\{u_1\}$、$\mu_{\mathrm{eff},t}=1$ であり、$u_1$ に弱点 $e^3$ があるが、
+$u_2\in U^{\mathrm{rob}}(1)$ であり、$1\in\mathrm{Viab}_f(K)$ である（型の水準の例）。
+
+なお、より強い条件、すなわち頑健応答不能 $U^{\mathrm{rob}}(x_t)=\emptyset$ を前提に置けば、
+$\mu_{\mathrm{eff},t}=1$ を用いずに
+命題~\ref{prop:robust_nonresponse_viab} から同じ非包含が得られる。
+本小節はこの強い条件を前提とせず、
+応答の弱点と $\mu_{\mathrm{eff},t}=1$ から頑健応答不能を導く。
+\end{remark}
+
+\begin{remark}[$\mu_{\mathrm{eff},t}=1$ の構造的意味：傾向的解釈]
+\label{rem:mu_eff_tendency}
+$\mu_{\mathrm{eff},t}=1$ は、
+現在の可行行動集合 $A_t$ 上で
+$E_{\mathrm{req}}(x_t)$ に対する応答パターンが
+単一化している状態を表す。
+
+ただし、$\mu_{\mathrm{eff},t}=1$ のみから
+構造的脆弱性が一般に導かれるわけではない。
+共通の応答パターンが
+$\varphi(e)\equiv1$（$e\in E_{\mathrm{req}}(x_t)$）
+であるならば、単一の応答パターンであっても
+時刻 $t$ の状態 $x_t$ における一段階先については、
+$E_{\mathrm{req}}(x_t)$ 全体に対して可行性を保つ。
+ただし、この局所的一段階性質は
+備考~\ref{rem:sd_local_scope} の時間的射程に従い、
+本論文は、この性質から、後続時刻でも同じ応答パターンのまま長期存続可能であることを一般的な帰結として置かない。
+なお、時刻 $t$ に可行な応答の弱点がある場合には、
+$\varphi(e)\equiv1$ の場合は生じない。
+上記は、弱点がない時刻における境界事例を記述する。
+
+これに対し時刻 $t$ に可行な応答の弱点がある場合には、共通応答パターンは
+少なくとも一つの $e^\star\in E_{\mathrm{req}}(x_t)$ に対して
+$\varphi(e^\star)=0$ を含む。
+このとき $\mu_{\mathrm{eff},t}=1$ は、
+その弱点を回避する代替的な可行行動が
+$A_t$ 内に存在しないことを意味する。
+
+外部環境状態の列が時間的に一定でないこと
+（仮定~\ref{ass:nonstationary}）は、
+応答多様性の構造的重要性を理解する背景を与える。
+ただし本論文は、非定常性のみから、弱点をもつ外部環境状態 $e^\star$ が
+実現する外部環境状態列上で実際に出現することを一般的な帰結として置かない。
+
+また、$E_{\mathrm{req}}(x_t)=\emptyset$ に起因する
+$\mu_{\mathrm{eff},t}=1$ は本備考の対象ではない
+（備考~\ref{rem:mu_eff_empty_req}）。
+本補題および本備考は $e_t\in E_{\mathrm{req}}(x_t)$ を
+前提としており、この場合 $E_{\mathrm{req}}(x_t)\neq\emptyset$ である。
+
+したがって本論文は、$\mu_{\mathrm{eff},t}=1$ 単独から
+閉塞または崩壊を一般的な帰結として置かない。本備考は、
+可行な応答の弱点と組み合わされた場合の
+構造的脆弱性を記述する傾向的解釈である。
+\end{remark}
+
+\begin{remark}[内部状態差と本小節の時間的射程]
+\label{rem:sd_internal_state_scope}
+定義~\ref{def:mu_eff} の $\mu_{\mathrm{eff},t}$ は、
+固定された現在状態 $x_t$ における局所量である。
+したがって本補題が直接扱うのは、
+その時点の内部状態に条件づけられた
+$E_{\mathrm{req}}(x_t)$ 上の応答多様性である。
+
+一方、\S\ref{subsec:self_env_principles} で概念的に述べた
+時間とともに生じうる内部状態の差異は、
+時刻 $s$ ごとに $x_s$ が変化し、それに伴って
+$E_{\mathrm{req}}(x_s)$、$A_s$、$\mu_{\mathrm{eff},s}$ が
+再評価されることを通じて本小節の時間的議論へ接続する。
+
+ただし、本小節は老化、損耗、内部資源減少等の
+個別の内部変化機構を新たに定式化しない。
+それらの時刻間更新は \S\ref{sec:extended_dynamics} の責務であり、
+本小節は各時刻で与えられた $x_s$ に相対して
+応答多様性縮退の帰結を評価する。
+\end{remark}
+
+\begin{lemma}[可行性核外部におけるロバスト可行性の喪失]
+\label{lem:finite_exit}
+$x_t\in K_{\mathrm{req}}$ かつ
+$x_t\notin\mathrm{Viab}_f(K)$ とする。
+このとき、任意の状態フィードバック方策
+$\pi:K_{\mathrm{req}}\to U$ に対して、
+ある $T\in\mathbb{N}$（$T\ge1$）と有限列
+$(e_s)_{s=t}^{t+T-1}$ が存在して、
+\[
+  e_s\in E_{\mathrm{req}}(x_s),
+  \qquad
+  x_{s+1}=f(x_s,\pi(x_s),e_s)
+  \qquad
+  (s=t,\ldots,t+T-1)
+\]
+のもとで
+\[
+  x_{t+T}\notin K_{\mathrm{req}}
+\]
+となる。
+
+ここで列は離脱時刻までの有限 prefix であり、
+$x_{t+T}\notin K_{\mathrm{req}}$ において $\pi$ は評価されない。
+前提 $x_t\in K_{\mathrm{req}}$ より $T=0$ は結論を与えないため、
+$T\ge1$ とする。
+\end{lemma}
+
+\begin{proof}
+背理法による。
+ある状態フィードバック方策 $\pi$ が存在して、
+任意の $T\in\mathbb{N}$ および上記の条件を満たす任意の有限列
+$(e_s)_{s=t}^{t+T-1}$ について
+$x_{t+T}\in K_{\mathrm{req}}$ が成立すると仮定する。
+
+$R$ を、$x_t$ から $\pi$ と上記の有限列によって
+到達しうる状態全体の集合とする
+（$T=0$ の場合として $x_t\in R$）。
+背理法の仮定より $R\subseteq K_{\mathrm{req}}$ であるから、
+$R$ の各元において $\pi$ は定義される。
+
+任意の $y\in R$ と任意の $e\in E_{\mathrm{req}}(y)$ をとる。
+$y$ に至る有限列の末尾に $e$ を継ぎ足した列も
+同じ条件を満たすから、$f(y,\pi(y),e)\in R$ である。
+したがって $u=\pi(y)$ ととれば
+\[
+  \forall y\in R,\;
+  \exists u\in U
+  \;\text{ s.t. }\;
+  \forall e\in E_{\mathrm{req}}(y),\;
+  f(y,u,e)\in R
+\]
+が成立する。
+すなわち $R$ は $K_{\mathrm{req}}$ の $E_{\mathrm{req}}$ 不変な
+部分集合であり、$R\in\mathfrak{K}$ である。
+
+命題~\ref{prop:viab_core_max} より
+$R\subseteq\mathrm{Viab}_f(K)$、
+したがって $x_t\in\mathrm{Viab}_f(K)$ となり、
+前提に矛盾する。
+\end{proof}
+
+\begin{remark}[補題~\ref{lem:finite_exit} の射程]
+\label{rem:uniform_bound}
+本補題は、各状態フィードバック方策に対して
+離脱を生じさせる有限の外部環境状態列と時刻 $T\in\mathbb{N}$ が
+\emph{存在すること}のみを主張する。
+
+本補題は、実際に実現した外部環境状態列のもとで
+軌道が $K_{\mathrm{req}}$ を離脱することを主張しない。
+可行性核の外部にあることから従うのは、
+任意の状態フィードバック方策に対して、
+離脱を生じさせる外部環境状態列が少なくとも一つ存在するという
+ロバスト可行性の喪失に限られる。
+本補題は $E_{\mathrm{req}}(x_s)$ の任意の元を許して量化しており、
+外生背景成分の実現列と行動応答成分の遷移写像 $g_O$
+（\S\ref{sec:acs_def} 定義~\ref{def:env_realization}）に従う実現軌道を対象としないため、
+実現軌道の有限時間離脱を主張しない。
+
+また、本補題は状態フィードバック方策を対象とする。
+過去の履歴に依存する方策への一般化、
+および $T$ が初期状態と方策にわたって一様に有界であること
+$\sup T<\infty$
+を、本補題は主張しない。
+これらには追加の構造的条件が必要であり、Phase~2 の課題とする。
+
+なお、補題~\ref{lem:finite_exit} は
+命題~\ref{prop:sd_robust_nonresponse} と命題~\ref{prop:sd_necessity} の形式的証明には使用しない
+（within present framework）。
+\end{remark}
+
+\subsubsection{主命題と系：頑健応答不能の持続と閉塞への接続}
+\label{subsubsec:sd_main}
+
+本小節の結果は、強仮定を用いない主命題と、
+強仮定~\ref{ass:theta_exterior_blockage} を加えた系に分けて述べる。
+
+\begin{proposition}[主命題：応答多様性縮退と応答の弱点の持続による頑健応答不能の持続]
+\label{prop:sd_robust_nonresponse}
+ある時刻 $t$ 以降の各 $s\ge t$ について
+\begin{enumerate}[label=(\alph*)]
+  \item $x_s\in K$ ならば $e_s\in E_{\mathrm{req}}(x_s)$、
+  \item $x_s\in K$ かつ $A_s\neq\emptyset$ ならば、
+  $\mu_{\mathrm{eff},s}=1$ であり、かつ時刻 $s$ に可行な応答の弱点がある
+\end{enumerate}
+が成立するとする。このとき、各 $s\ge t$ について
+\[
+  x_s\notin\mathrm{Viab}_f(K)
+\]
+であり、さらに $x_s\in K$ である時刻 $s$ では $U^{\mathrm{rob}}(x_s)=\emptyset$ である。
+本命題は仮定~\ref{ass:theta_exterior_blockage} を用いない。
+\end{proposition}
+
+\begin{proof}
+任意の $s\ge t$ をとる。
+
+$x_s\notin K$ の場合、定義~\ref{def:viab_core} より
+$\mathrm{Viab}_f(K)\subseteq K$ であるから
+$x_s\notin\mathrm{Viab}_f(K)$ である。
+
+$x_s\in K$ かつ $A_s\neq\emptyset$ の場合、条件 (a) より
+$e_s\in E_{\mathrm{req}}(x_s)$ であり、条件 (b) より
+$\mu_{\mathrm{eff},s}=1$ で、時刻 $s$ に可行な応答の弱点がある。
+したがって補題~\ref{lem:sd_viab} より
+$U^{\mathrm{rob}}(x_s)=\emptyset$ かつ $x_s\notin\mathrm{Viab}_f(K)$ である。
+
+$x_s\in K$ かつ $A_s=\emptyset$ の場合、条件 (a) より
+$e_s\in E_{\mathrm{req}}(x_s)$ である。
+定義~\ref{def:at} より、すべての $u\in U$ について $f(x_s,u,e_s)\notin K$ であるから、
+$e_s\in N(x_s,u)$ であり、$U^{\mathrm{rob}}(x_s)=\emptyset$ である。
+命題~\ref{prop:robust_nonresponse_viab} より $x_s\notin\mathrm{Viab}_f(K)$ である。
+\end{proof}
+
+\begin{proposition}[系：応答多様性縮退の持続からの有限時間閉塞；強仮定のもとで]
+\label{prop:sd_necessity}
+仮定~\ref{ass:theta_exterior_blockage} のもとで、
+ある時刻 $t$ 以降の各 $s\ge t$ について
+命題~\ref{prop:sd_robust_nonresponse} の条件 (a)(b) が成立するとする。このとき、
+\[
+  \exists\,T\in\mathbb{N}_0
+  \;\text{ s.t. }\;
+  A_{t+T}=\emptyset.
+\]
+\end{proposition}
+
+\begin{proof}
+命題~\ref{prop:sd_robust_nonresponse} より
+$\forall s\ge t,\ x_s\notin\mathrm{Viab}_f(K)$ である。
+これは仮定~\ref{ass:theta_exterior_blockage} の前件そのものであるから、
+同仮定より、ある $T\in\mathbb{N}_0$ について $A_{t+T}=\emptyset$ である。
+\end{proof}
+
+\begin{remark}[主命題と系の役割分担]
+\label{rem:sd_role_division}
+主命題（命題~\ref{prop:sd_robust_nonresponse}）と系（命題~\ref{prop:sd_necessity}）は、依拠する前提が異なる。
+\begin{enumerate}
+  \item 主命題は、定義・補題~\ref{lem:sd_viab}・命題~\ref{prop:robust_nonresponse_viab} だけから従い、強仮定を用いない。
+  結論は、可行性核の外への持続と、可行な時刻における頑健応答不能である。
+  閉塞は結論に含まない。
+  \item 系は、主命題の結論を強仮定~\ref{ass:theta_exterior_blockage} によって閉塞へ接続する。
+  有限時間の閉塞という結論は、この強仮定に依存する。
+  \item 強仮定を置かない解析では、本論文の主張は主命題の結論までである。
+  主命題の結論が成り立っていても、閉塞は一般には従わない（備考~\ref{rem:exterior_without_blockage}）。
+\end{enumerate}
+\end{remark}
+
+\begin{proposition}[系：応答多様性縮退の持続と局所 FR]
+\label{prop:sd_necessity_fr}
+仮定~\ref{ass:theta_exterior_blockage} と命題~\ref{prop:sd_robust_nonresponse} の条件 (a)(b) のもとで、
+ある $T\in\mathbb{N}_0$ が存在して $A_{t+T}=\emptyset$ であり、さらに次のいずれかが成り立つ。
+\begin{enumerate}[label=(\roman*)]
+  \item $x_{t+T}\notin K$ であり、時刻 $t+T$ の閉塞は (B1) または (B2) である
+  （命題~\ref{prop:blockage_dichotomy}）。
+  このとき $t+T\in\mathbb{T}_{\mathrm{P},i}$ ならば、$\mathrm{SM}_{t+T}$ は偽であり、
+  かつ「$\mathrm{EU}_{t+T}$ が偽」か「$\mathrm{EU}_{t+T}$ が真で $\mathrm{FR}_{t+T}$ が偽」のいずれか一方が成り立つ。
+  \item $x_{t+T}\in K$ であり、時刻 $t+T$ の閉塞は (B2) である。
+  このとき $t+T\in\mathbb{T}_{\mathrm{P},i}$ ならば、$\mathrm{EU}_{t+T}$ は真であり、$\mathrm{FR}_{t+T}$ は偽である。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+命題~\ref{prop:sd_necessity} により、$A_{t+T}=\emptyset$ となる $T\in\mathbb{N}_0$ が存在する。
+$x_{t+T}\notin K$ ならば、命題~\ref{prop:blockage_dichotomy} により (B1)・(B2) のちょうど一方が成り立つ。
+後半は定義~\ref{def:SM} と同命題 (iii) による。
+$x_{t+T}\in K$ ならば、前提 (a) により $e_{t+T}\in E_{\mathrm{req}}(x_{t+T})$ である。
+命題~\ref{prop:viab_stage_fr} の証明と同じく、
+定義~\ref{def:E_req} と $\mathrm{Crit}^{(1)}(x_{t+T})\subseteq E$ により
+$(x_{t+T},e_{t+T})\in\mathcal{D}_{\mathrm{FR}}$ であり、閉塞は (B2) である。
+後半は命題~\ref{prop:blockage_dichotomy} (ii) による。
+\end{proof}
+
+命題~\ref{prop:sd_necessity_fr} は、命題~\ref{prop:sd_necessity} と同じく、
+強仮定~\ref{ass:theta_exterior_blockage} に依存する系である。
+前提 (a) のもとでは、$s\ge t$ かつ $x_s\in K$ の時刻に (B1) の閉塞は生じず、
+そのような時刻が $\mathbb{T}_{\mathrm{P},i}$ に属するならば $\mathrm{EU}_s$ は真である。
+(i) の場合の閉塞は、一段階では $K$ へ戻れないことを表し、
+数段階を経た $K$ への回復の可能性については何も述べない（備考~\ref{rem:eu_one_step_scope}）。
+
+\begin{remark}[条件 (a) の役割と強さ]
+\label{rem:req_condition_role}
+命題~\ref{prop:sd_robust_nonresponse} の条件 (a) は、
+可行状態にある各時刻において
+実現外部環境状態が必要環境要因を充足していることを要求する。
+
+これは補題~\ref{lem:sd_viab} を各時刻へ適用するために要する条件で
+あり、本論文はこれを \S\ref{sec:acs_def} の構成要件 CR-1 から導出していない。
+CR-1 の (CR-1b) は
+$E_{\mathrm{req}}(x)\neq\emptyset$ なる $x$ の存在を要求するのみで、
+実現外部環境状態が各時刻に $E_{\mathrm{req}}(x_s)$ へ属することを
+要求していない。
+
+したがって条件 (a) は命題~\ref{prop:sd_robust_nonresponse} の前件に属する限定条件であり、
+本論文はこれを一般に成立する性質としては扱わない。
+条件 (a) が成立しない時刻を含む軌道に対して、
+命題~\ref{prop:sd_robust_nonresponse}、命題~\ref{prop:sd_necessity} および命題~\ref{prop:sd_necessity_fr} は何も述べない。
+\end{remark}
+
+\begin{remark}[本命題が扱う縮退モード]
+\label{rem:sd_failure_mode_scope}
+定義~\ref{def:mu_eff} により、
+$A_t=\emptyset$ ならば $\mu_{\mathrm{eff},t}=0$ であり
+（命題~\ref{prop:fr_mu_eff}）、これはすでに閉塞である。
+また $E_{\mathrm{req}}(x_t)=\emptyset$ かつ $A_t\neq\emptyset$ ならば
+$\mu_{\mathrm{eff},t}=1$ であるが、
+これは比較の対象となる必要環境充足状態がないことの集合論上の帰結である
+（備考~\ref{rem:mu_eff_empty_req}）。
+本小節の中核補題、主命題（命題~\ref{prop:sd_robust_nonresponse}）および系（命題~\ref{prop:sd_necessity}）が扱うのは、
+$e_t\in E_{\mathrm{req}}(x_t)$ かつ $A_t\neq\emptyset$ のもとで
+$\mu_{\mathrm{eff},t}=1$ となる応答多様性縮退モードである。
+
+したがって、本命題の結論を
+$\mu_{\mathrm{eff},t}\le1$ となるすべての場合へ拡張しない。
+また、局所 FR の偽は $\mathcal{D}_{\mathrm{FR}}$ 上の閉塞そのものであり
+（定義~\ref{def:FR}）、
+本命題は局所 FR の偽から何かを導くものではない。
+\end{remark}
+
+\subsubsection{核に留まる応答と結果の差}
+
+主命題は、応答できない状態の持続を述べる。
+これと対になるものとして、可行性核に留まる応答、あるいは可行性核に入る応答を
+選べる場合の帰結を、仮定を用いずに述べる。
+
+\begin{definition}[核維持応答集合（分類C）]
+\label{def:kernel_response}
+状態 $x\in X$ について、
+\[
+  U^{\mathrm{Viab}}(x)
+  :=
+  \bigl\{\,u\in U\bigm|\forall e\in E_{\mathrm{req}}(x):\ f(x,u,e)\in\mathrm{Viab}_f(K)\,\bigr\}
+\]
+を\emph{核維持応答集合}と呼ぶ。
+$x\in\mathrm{Viab}_f(K)$ のとき、その元は可行性核に留まる応答であり、
+$x\notin\mathrm{Viab}_f(K)$ のとき、その元は必要充足環境のいずれのもとでも可行性核に入る応答である。
+\end{definition}
+
+$x\in\mathrm{Viab}_f(K)$ ならば、命題~\ref{prop:viab_core_max} より $U^{\mathrm{Viab}}(x)\neq\emptyset$ である。
+また $\mathrm{Viab}_f(K)\subseteq K$ であるから、$U^{\mathrm{Viab}}(x)\subseteq U^{\mathrm{rob}}(x)$ である。
+$E_{\mathrm{req}}(x)=\emptyset$ のときは、定義から $U^{\mathrm{Viab}}(x)=U$ である。
+
+\begin{proposition}[核に留まる応答を選び続ける軌道]
+\label{prop:kernel_maintenance}
+ある時刻 $T$ について $x_T\in\mathrm{Viab}_f(K)$ であり、
+すべての $s\ge T$ について
+\[
+  e_s\in E_{\mathrm{req}}(x_s),
+  \qquad
+  u_s\in U^{\mathrm{Viab}}(x_s)
+\]
+が成立するとする。このとき、すべての $s\ge T$ について
+\[
+  x_s\in\mathrm{Viab}_f(K),
+  \qquad
+  A_s\neq\emptyset
+\]
+である。本命題は仮定を用いない。
+\end{proposition}
+
+\begin{proof}
+$s$ に関する帰納法による。
+$x_s\in\mathrm{Viab}_f(K)$ とすれば、$e_s\in E_{\mathrm{req}}(x_s)$ と $u_s\in U^{\mathrm{Viab}}(x_s)$ より
+$x_{s+1}=f(x_s,u_s,e_s)\in\mathrm{Viab}_f(K)$ である。
+さらに $\mathrm{Viab}_f(K)\subseteq K$ であるから $f(x_s,u_s,e_s)\in K$、
+すなわち $u_s\in A_s$ であり、$A_s\neq\emptyset$ である。
+\end{proof}
+
+\begin{definition}[核維持応答の獲得（分類C）]
+\label{def:kernel_response_acquisition}
+軌道について、ある時刻 $T$ が存在して、すべての $s\ge T$ で
+$E_{\mathrm{req}}(x_s)\neq\emptyset$ かつ $u_s\in U^{\mathrm{Viab}}(x_s)$ が成り立つとき、
+その軌道は時刻 $T$ に\emph{核維持応答を獲得している}という。
+条件 $E_{\mathrm{req}}(x_s)\neq\emptyset$ を含めるのは、
+$E_{\mathrm{req}}(x_s)=\emptyset$ のとき $U^{\mathrm{Viab}}(x_s)=U$ となり、
+$u_s\in U^{\mathrm{Viab}}(x_s)$ が空虚に成立するからである。
+これは軌道の性質であり、実効行動 $u_s$ の生成機構
+（\S\ref{sec:tipa}）と内部モデルの更新（\S\ref{sec:extended_dynamics}）を通じて
+成立する場合も成立しない場合もある。
+\end{definition}
+
+\begin{remark}[結果の差と非主張事項]
+\label{rem:kernel_response_scope}
+命題~\ref{prop:kernel_maintenance} と主命題（命題~\ref{prop:sd_robust_nonresponse}）は、
+同じ枠組みの中で次の二つの場合を書き分ける。
+可行性核に留まる応答が存在し、それが選ばれ続ける場合には、閉塞は生じない。
+可行な状態で頑健応答不能が続く場合には、可行性核に留まる応答は存在しない。
+後者の場合にその後の軌道がどうなるかは、実現する外部環境状態の列と行動の選択に依存し、
+閉塞への接続は強仮定のもとでの系としてだけ述べる。
+
+本論文は次のいずれも一般的な帰結として置かない。
+\begin{enumerate}
+  \item 核維持応答の獲得が起こること、またはその時刻の上界。
+  \item 内部モデルの更新（学習）が核維持応答の獲得を導くこと。
+  \item $U^{\mathrm{Viab}}(x)\neq\emptyset$ から、実際に選ばれる行動が $U^{\mathrm{Viab}}(x)$ に属すること。
+\end{enumerate}
+ACS が $\mathrm{Viab}_f(K)$ や $U^{\mathrm{Viab}}(x)$ を内部に保持または計算することも要求しない
+（\S\ref{subsec:description_levels_global}）。
+\end{remark}
+
+\subsubsection{結果の論理的地位}
+
+\begin{remark}[命題~\ref{prop:sd_necessity} の必要性方向の意味]
+\label{rem:sd_necessity_scope}
+命題~\ref{prop:sd_necessity} は、
+ある一時点で $\mu_{\mathrm{eff},t}=1$ となっただけで
+直ちに閉塞へ到達することを主張しない。
+
+同命題が示すのは、条件 (a)、条件 (b)（可行な応答の弱点を含む）、および
+仮定~\ref{ass:theta_exterior_blockage} が成立する場合に、
+$\mu_{\mathrm{eff},s}=1$ という応答多様性縮退を
+閉塞に到達しないまま無期限に持続させることができない、
+という条件付き必要性の方向である。
+
+したがって Phase~1 で得られる帰結は、
+各時刻における $\mu_{\mathrm{eff},t}\ge2$ を
+無条件の普遍必要条件として証明した、という主張ではない。
+本小節が示すのは、指定された追加条件のもとで
+\emph{応答多様性の持続的縮退を回避すること}が
+長期的な非閉塞維持に対して条件付きで要求される、
+という構造的帰結である。
+これは FR の長期の側面の一部を、追加仮定のもとで記述するものである。
+強仮定を用いずに示せるのは、同じ条件 (a)(b) のもとでの頑健応答不能と可行性核の外への持続
+（主命題、命題~\ref{prop:sd_robust_nonresponse}）までである。
+
+また、$E_{\mathrm{req}}(x_t)=\emptyset$ となる時刻について、本命題は閉塞を帰結としない。
+本論文は、その事実だけから $A_t=\emptyset$ または崩壊を一般的な帰結として置かない。
+上記の追加条件のいずれかが成立しない場合、
+本命題は閉塞について何も述べない。
+\end{remark}
+
+\begin{remark}[循環参照の不在]
+\label{rem:no_circular}
+主命題（命題~\ref{prop:sd_robust_nonresponse}）の形式的証明は、
+定義~\ref{def:at}、定義~\ref{def:mu_eff}、定義~\ref{def:req_domain}、
+定義~\ref{def:viab_core}、定義~\ref{def:nonresponse_env_set}、定義~\ref{def:robust_response}、
+命題~\ref{prop:viab_core_max}、命題~\ref{prop:robust_nonresponse_viab}
+および補題~\ref{lem:sd_viab} に依拠し、仮定を用いない。
+系（命題~\ref{prop:sd_necessity}）は、これに加えて
+仮定~\ref{ass:theta_exterior_blockage} に依拠する。
+命題~\ref{prop:sd_necessity_fr} は、これに加えて
+定義~\ref{def:E_req}、定義~\ref{def:eu_fire}、
+定義~\ref{def:fr_domain}、定義~\ref{def:SM} および定義~\ref{def:FR} に依拠する。
+命題~\ref{prop:kernel_maintenance} は、定義~\ref{def:at}、定義~\ref{def:viab_core} および定義~\ref{def:kernel_response} だけに依拠する。
+
+仮定~\ref{ass:nonstationary} は
+環境応答多様性の構造的意義を述べる背景条件であり、
+備考~\ref{rem:viability_relation} は
+Viability Theory との概念的位置づけを整理するものであって、
+いずれもこれらの命題の形式的証明には使用しない。
+補題~\ref{lem:finite_exit} および
+命題~\ref{prop:exterior_blockage} もこれらの命題の証明に使用しない。
+
+また、これらの命題の形式的証明の依存関係には
+\S\ref{subsec:sd_necessity} より後の概念を用いない。
+したがって、証明構造に後続節からの循環的依存は生じない。
+\end{remark}
+
+\begin{remark}[条件付き必要性の論理的地位]
+\label{rem:sd_status}
+本小節で扱う応答多様性縮退と長期可行性の接続は、
+SM の定義的同値性（命題~\ref{prop:sm_K_equiv}）とも、
+局所 FR と閉塞の定義上の一致（定義~\ref{def:FR}）とも異なる論理的地位をもつ。
+
+SM と局所 FR は単一時刻の時刻別充足述語である。
+これに対し応答多様度 $\mu_{\mathrm{eff},t}$ は、
+必要環境要因が充足される外部環境状態の差異に対して、
+一段階の可行性保持の様式がいくつに分かれているかを表す分類Cの診断量であり、
+いずれの時刻別充足述語の定義にも用いない。
+本論文は、単一時刻の $\mu_{\mathrm{eff},t}$ の値だけから、
+長期的な応答多様性の維持に関する帰結を一般的な帰結として置かない。
+
+本小節で条件付き決定論的に示したのは、
+長期的な応答多様性維持の十分条件でも、
+$\mu_{\mathrm{eff},t}\le1$ の一般からの閉塞でもない。
+示したのは、$E_{\mathrm{req}}(x_s)$ が実現環境を含む状態が継続し、
+可行な状態で応答の弱点と $\mu_{\mathrm{eff},s}=1$ という応答多様性縮退が持続する場合の、
+頑健応答不能と可行性核の外への持続という条件付き帰結（主命題）であり、
+さらに可行性核外部持続から閉塞への強い接続仮定を置いた場合の、
+有限時間閉塞という条件付き帰結（系）である。
+命題~\ref{prop:sd_necessity_fr} は、その閉塞時刻が
+$x\notin K$ の時刻であるか局所 FR が偽となる時刻であるかを分ける系である。
+
+\textit{注（三原理と可行性核の関係）：}
+本論文は三原理を、可行性核を計算してそこへ移動する
+アルゴリズムとして定義しない。
+SM は現在状態の可行性を、EU は時刻ごとの臨界必要要因の充足を、
+局所 FR は $\mathcal{D}_{\mathrm{FR}}$ の局面での可行な行動の存在を、
+それぞれ時刻別に記述し、
+これらが長期的な可行性維持と整合しうる、という関係に留める。
+有限段の頑健性との関係は命題~\ref{prop:viab_stage_fr} の一方向に限る。
+
+本論文は、
+「三原理の時刻別充足述語がすべて真ならば可行性核内に留まる」とも、
+「可行性核内にいれば三原理の時刻別充足述語がすべて真である」とも述べない。
+また、可行性核への所属を ACS の成立条件へ格上げしない。
+
+したがって本小節の結果は、
+Phase~1 において形式的に証明できる範囲を、
+応答多様性縮退の持続に対する条件付き必要性の方向として
+明確化するものである
+（主張の強さ $\le$ 証明の強さ）。
+\end{remark}
+
+\begin{remark}[応答多様度の「程度」命題は Phase~2 の課題]
+\label{rem:sd_degree}
+$\mu_{\mathrm{eff},t}$ の値と閉塞到達時間との単調関係、
+例えば「応答多様度が大きいほど
+可行行動集合が空になるまでの時間が長くなる」
+という定量的関係は、
+命題~\ref{prop:sd_necessity} は主張しない。
+
+この種の程度命題を形式化するには、
+追加の動学的仮定、比較原理、時間平均条件、
+または確率的定式化等が必要となる。
+
+Phase~1 で確立するのは、
+$\mu_{\mathrm{eff},t}=1$ という応答多様性縮退が
+指定された条件のもとで持続する場合の
+頑健応答不能の持続（主命題）と、強仮定のもとでの有限時間閉塞（系）という条件付き帰結であり、
+$\mu_{\mathrm{eff},t}$ の大小と閉塞到達時間との
+定量的単調関係ではない。
+また本論文は、$\mu_{\mathrm{eff},t}=1$ 単独から
+閉塞を一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[可行性余裕度の改善可能性は補助診断である]
+\label{rem:sd1_unfulfilled}
+備考~\ref{rem:sd_improvement_aux} で導入した
+\[
+  \exists u\in A_t
+  \quad\text{s.t.}\quad
+  \Pi\bigl(f(x_t,u,e_t)\bigr)>\Pi(x_t)
+\]
+という条件は、現在の実現外部環境状態のもとで
+可行性余裕度を一段階改善できるかを記述する補助診断であり、
+定義~\ref{def:FR} の局所 FR の条件でも、
+本小節の命題の前件でもない。
+
+本論文は、この改善可能性が成り立たないことだけから、
+局所 FR の偽、$\mu_{\mathrm{eff},t}\le1$、閉塞、
+または将来の可行性喪失を一般的な帰結として置かない。
+例えば $\Pi(x_t)$ がモデル上の高い可行性余裕度にあり、
+一段階でさらに増加させる行動が存在しない場合でも、
+\[
+  E_{\mathrm{req}}(x_t)\neq\emptyset,
+  \qquad
+  \mu_{\mathrm{eff},t}\ge2
+\]
+が成立することはありうる。
+
+逆に、可行性余裕度を一段階改善できる行動が存在しても、
+本論文は、そのことだけから応答多様性の非退化や長期可行性を一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[$\mu_{\mathrm{eff}}$ の測度論的位置づけと Phase~2 への委譲]
+\label{rem:mu_measure}
+$\mu_{\mathrm{eff}}(x,e)$ は、
+$E_{\mathrm{req}}(x)$ 上の応答同値類による商集合
+$A(x,e)/\!\sim$ の基数として定義される
+（定義~\ref{def:mu_eff}）。
+
+Phase~1 では $\mu_{\mathrm{eff}}$ を、
+可行性保持の様式の数を表す濃度の診断量として用いる。
+$\mu_{\mathrm{eff}}$ の有限性は仮定せず、
+$\mu_{\mathrm{eff}}$ に関する閾値をいずれの時刻別充足述語の条件にも置かない。
+
+$A(x,e)$ が連続的な構造をもつ場合に、
+行動多様性を基数だけでなく連続量として定量化するためには、
+同値類または商空間に対する可測性等の追加構造が必要となる。
+適切な測度、商測度、被覆数、有効次元、
+その他の連続的多様性指標を用いた
+$\mu_{\mathrm{eff}}$ の精密化は Phase~2 の課題とする
+（within present framework）。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{三原理の時間的統合評価}
+\label{subsec:s3_tstab}
+
+本小節では、
+三原理 SM・EU・FR に関係する状態を、
+時間方向に統合して評価するための
+Phase~1 の形式表現を与える。
+
+ここで扱うのは、三原理そのものの再定義でも、
+時刻別充足述語の変更でもない。
+また、\S\ref{sec:rel_min} の関係品質 $Q$ を
+EU の時刻別充足述語や構造的環境結合条件の
+追加条件として組み込むことでもない。
+
+本論文が構造的に要求するのは、
+ACS が自己--環境相互作用のもとで、
+可行性余裕の低下、
+必要環境要因の非充足、
+可行な応答の縮退、
+および外部関係に伴う可行性関連差異等の少なくとも一部へ感応し、
+それらを応答形成または内部更新に利用しうることである。
+
+以下で導入する評価尺度、
+評価ベクトル $s_t$、
+有限時間窓、
+および T-STAB は、
+理論上の状態列について三原理に関係する状態を時間方向に集約する
+記述・比較のための条件である。
+これらは、ACS 内部で時間方向の評価を担う機能の実装でも、その機能の出力でもない。
+ACS の内部評価が時間方向の統合を行うことは機能水準の事柄であり、
+T-STAB はその内部評価の結果ではなく、理論上の値によって判定される。
+したがって、
+ACS がこれらの量の真値を
+同一の数式、同一の尺度、
+または同一の精度で
+内部計算することは要求しない。
+
+\subsubsection{三原理評価表現の参照スケール}
+
+\begin{definition}[三原理評価表現の参照スケール]
+\label{def:s3_eval_scales}
+SM に関係する評価を $[0,1]$ 値へ正規化して表現するため、
+対象 ACS に相対する正の可行性余裕度参照スケール $\Pi_{\mathrm{ref}}>0$ を用いる。
+$\Pi_{\mathrm{ref}}$ はすべての ACS に共通する定数ではなく、
+$\max_{x\in K}\Pi(x)$ と同一視することも要求しない。
+\end{definition}
+
+\begin{remark}[参照スケールの理論上の地位]
+\label{rem:s3_scale_status}
+定義~\ref{def:s3_eval_scales} の $\Pi_{\mathrm{ref}}$ は、
+三原理の時刻別充足述語の条件ではない。
+したがって、参照スケールの選択を変更しても、
+定義~\ref{def:SM}、定義~\ref{def:EU}、定義~\ref{def:FR}
+の時刻別充足述語の真偽は変化しない。
+
+この参照量は、三原理に関係する差異を程度表現へ写像するための
+数学的較正パラメータであり、
+ACS の7タプルに新たな構成要素を追加するものでもない。
+応答多様度 $\mu_{\mathrm{eff}}$ には参照スケールを置かず、
+T-STAB の条件にも用いない。
+
+具体的な数値較正、内部信号との対応、
+および対象種別ごとの尺度設計は、
+Phase~1 では規定しない
+（within present framework）。
+\end{remark}
+
+\subsubsection{三原理評価の形式表現}
+
+\begin{definition}[SM 評価尺度（分類C）]
+\label{def:s_sm}
+すべての $t\in\mathbb{N}_0$ について
+\[
+  s_{\mathrm{SM},t}
+  :=
+  \min\Bigl\{1,\ \max\Bigl\{0,\ \frac{\Pi(x_t)}{\Pi_{\mathrm{ref}}}\Bigr\}\Bigr\}
+  \in[0,1]
+\]
+と定める。
+$\Pi(x_t)\le0$ のとき $s_{\mathrm{SM},t}=0$ である。
+$s_{\mathrm{SM},t}$ は $\mathrm{SM}_t$ の真偽ではなく、正の可行性余裕度の程度を表す。
+\end{definition}
+
+\begin{definition}[EU・FR 評価尺度（分類C）]
+\label{def:s_eu}
+\label{def:s_fr}
+$t\in\mathbb{T}_{\mathrm{P},i}$ の時刻について、
+$\mathrm{EU}_t$ が真のとき $s_{\mathrm{EU},t}:=1$、偽のとき $s_{\mathrm{EU},t}:=0$ と定める。
+$t\in\mathbb{T}_{\mathrm{P},i}$ かつ $(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ の時刻について、
+$A_t\neq\emptyset$ のとき $s_{\mathrm{FR},t}:=1$、$A_t=\emptyset$ のとき $s_{\mathrm{FR},t}:=0$ と定める。
+それ以外の時刻には定義しない。
+\end{definition}
+
+\begin{definition}[三原理評価ベクトル（分類C）]
+\label{def:S3}
+$S_3:=[0,1]^3$ とする。
+$t\in\mathbb{T}_{\mathrm{P},i}$ かつ $(x_t,e_t)\in\mathcal{D}_{\mathrm{FR}}$ の時刻について、
+\[
+  s_t:=\bigl(s_{\mathrm{SM},t},\,s_{\mathrm{EU},t},\,s_{\mathrm{FR},t}\bigr)\in S_3
+\]
+と定める。
+$s_{\mathrm{SM},t}$ はすべての時刻で、$s_{\mathrm{EU},t}$ は $t\in\mathbb{T}_{\mathrm{P},i}$ で定義されるので、
+この時刻では三成分はすべて定義される。
+それ以外の時刻には $s_t$ を定義しない。
+\end{definition}
+
+\begin{remark}[三成分は同一物理量ではない]
+\label{rem:s3_noncommensurate}
+$s_{\mathrm{SM},t}$、$s_{\mathrm{EU},t}$、$s_{\mathrm{FR},t}$ は
+いずれも $[0,1]$ に値をとるが、
+同一の物理量または同一の測定尺度を共有するとは限らない。
+$s_{\mathrm{SM},t}$ は正の可行性余裕度の程度を、
+$s_{\mathrm{EU},t}$ と $s_{\mathrm{FR},t}$ は
+それぞれの時刻別充足述語の真偽を表す。
+
+したがって、三成分を単純平均して単一の「総合点」を構成すること、
+または一つの成分の増大が他の成分の不足を補償すると解釈することは、
+本小節では行わない。
+\end{remark}
+
+\subsubsection{T-STAB：三原理時間統合評価条件}
+
+\begin{definition}[T-STAB 評価パラメータ]
+\label{def:tstab_params}
+SM 評価の下限参照値 $\underline{s}_{\mathrm{SM}}\in(0,1]$、
+一時刻変動上限 $\delta_{\max}\in[0,1]$、
+および有限窓幅 $W_T\in\mathbb{N}$（$W_T\ge1$）を用いる。
+これらは対象 ACS の評価構造に相対する参照条件であり、
+時刻別充足述語を変更しない。
+\end{definition}
+
+\begin{definition}[T-STAB：三原理時間統合評価条件]
+\label{def:tstab}
+$t\in\mathbb{N}_0$ について、
+\[
+  \mathcal{W}_{T,t}:=\bigl\{r\in\mathbb{N}_0\bigm|\max(0,t-W_T+1)\le r\le t\bigr\},
+  \qquad
+  \Delta\mathcal{W}_{T,t}:=\bigl\{r\in\mathcal{W}_{T,t}\bigm|r-1\in\mathcal{W}_{T,t}\bigr\}
+\]
+とする。
+T-STAB は $t\in\mathbb{T}_{\mathrm{P},i}$ の時刻についてだけ判定する。
+$t\in\mathbb{T}_{\mathrm{P},i}$ の時刻において ACS が \emph{T-STAB 条件を充足する}とは、
+次の四条件がすべて成り立つことをいう。
+\begin{description}[style=nextline]
+  \item[(T1) SM 評価の下限]
+  すべての $r\in\mathcal{W}_{T,t}$ について $s_{\mathrm{SM},r}\ge\underline{s}_{\mathrm{SM}}$。
+  \item[(T2) 局所 FR の窓内充足]
+  すべての $r\in\mathcal{W}_{T,t}$ について、$(x_r,e_r)\in\mathcal{D}_{\mathrm{FR}}$ ならば $A_r\neq\emptyset$。
+  \item[(T3) EU の窓内充足]
+  すべての $r\in\mathcal{W}_{T,t}$ について、$\mathrm{EU}_r$ が真である。
+  \item[(T4) SM 評価の一時刻変動]
+  すべての $r\in\Delta\mathcal{W}_{T,t}$ について $|s_{\mathrm{SM},r}-s_{\mathrm{SM},r-1}|\le\delta_{\max}$。
+  $\Delta\mathcal{W}_{T,t}=\emptyset$ のときは、この条件は空虚に成り立つ。
+\end{description}
+$t\in\mathbb{T}_{\mathrm{P},i}$ ならば、補題~\ref{lem:principle_time_domain_down} により
+$\mathcal{W}_{T,t}\subseteq\mathbb{T}_{\mathrm{P},i}$ であり、
+(T3) の $\mathrm{EU}_r$ は各 $r\in\mathcal{W}_{T,t}$ で定義される。
+(T1)・(T2)・(T4) は、各時刻で定義される量だけを用いる。
+したがって四条件はそれぞれ独立に定義される。
+\end{definition}
+
+T-STAB の (T1)〜(T3) のもとで評価ベクトルがとる範囲は
+$S_3^{\mathrm T}:=\{s\in S_3\mid s_{\mathrm{SM}}\ge\underline{s}_{\mathrm{SM}},\ s_{\mathrm{EU}}=1,\ s_{\mathrm{FR}}=1\}$
+で表せる。
+$S_3^{\mathrm T}$ は閉区間と一点集合の直積であり、$S_3$ の閉部分集合である。
+
+\begin{proposition}[T-STAB から有限窓内の時刻別充足述語への含意]
+\label{prop:tstab_implies_principles}
+$t\in\mathbb{T}_{\mathrm{P},i}$ において T-STAB 条件が充足されるとする。
+このとき、すべての $r\in\mathcal{W}_{T,t}$ について、
+$r\in\mathbb{T}_{\mathrm{P},i}$、$\Pi(x_r)>0$ であり、
+$\mathrm{SM}_r$・$\mathrm{EU}_r$・$\mathrm{FR}_r$ はいずれも定義されて真である。
+また $s_r$ が定義され、$s_r\in S_3^{\mathrm T}$ である。
+\end{proposition}
+
+\begin{proof}
+$r\in\mathcal{W}_{T,t}$ をとる。
+補題~\ref{lem:principle_time_domain_down} により $r\in\mathbb{T}_{\mathrm{P},i}$ である。
+(T1) と $\underline{s}_{\mathrm{SM}}>0$ により $s_{\mathrm{SM},r}>0$ であり、
+定義~\ref{def:s_sm} により $\Pi(x_r)>0$、したがって $x_r\in K$ で $\mathrm{SM}_r$ は真である。
+(T3) により $\mathrm{EU}_r$ は真である。
+命題~\ref{prop:fr_domain_eu} により $(x_r,e_r)\in\mathcal{D}_{\mathrm{FR}}$ であり、
+(T2) により $A_r\neq\emptyset$、したがって $\mathrm{FR}_r$ は真である。
+以上から $s_r$ が定義され、$s_{\mathrm{EU},r}=s_{\mathrm{FR},r}=1$、
+$s_{\mathrm{SM},r}\ge\underline{s}_{\mathrm{SM}}$ であるから $s_r\in S_3^{\mathrm T}$ である。
+\end{proof}
+
+命題~\ref{prop:tstab_implies_principles} の含意は有限窓 $\mathcal{W}_{T,t}$ 内の各時刻に限られる。
+本論文は、T-STAB の充足から、窓の外の時刻における時刻別充足述語の真、
+または無限時間にわたる可行性の保持を一般的な帰結として置かない。
+
+\begin{proposition}[時刻別充足述語の真と T-STAB]
+\label{prop:tstab_zero_margin}
+$t\in\mathbb{T}_{\mathrm{P},i}$ で $\mathrm{SM}_t$・$\mathrm{EU}_t$・$\mathrm{FR}_t$ がすべて真であっても、
+$\Pi(x_t)=0$ ならば、時刻 $t$ において T-STAB 条件は充足されない。
+\end{proposition}
+
+\begin{proof}
+$\Pi(x_t)=0$ ならば、定義~\ref{def:s_sm} により $s_{\mathrm{SM},t}=0<\underline{s}_{\mathrm{SM}}$ である。
+$t\in\mathcal{W}_{T,t}$ であるから (T1) が成り立たない。
+\end{proof}
+
+本命題は、$\Pi(x_t)=0$ となる時刻が存在することを主張しない。
+時刻別充足述語の真から T-STAB の充足が従わないことは、
+この命題の前件が成り立つ時刻について示されている。
+
+関係品質の有限窓評価は \S\ref{subsec:ro_quality} で扱い、T-STAB の条件には含めない（備考~\ref{rem:Q_not_tstab_core}）。
+
+\subsubsection{本小節の記述理論上の地位}
+
+\begin{remark}[時間集約条件の記述上の地位]
+\label{rem:tstab_descriptive_status}
+本小節が扱うのは、三原理に関係する理論上の状態を有限窓で集約する条件である。
+ACS が三原理に関係する状態差を時間方向に統合して
+応答形成または内部更新へ利用しうるという構造的評価機能は、
+これとは別の機能水準の事柄である。
+
+$s_t$、$S_3$、$\mathcal{W}_{T,t}$、T-STAB、
+および \S\ref{sec:rel_min} の $\bar Q_{i\leftarrow j,W_Q,t}$ は、
+理論上の値によって定まる数学的表現であり、
+ACS 内部の評価機能の実装またはその出力ではない。
+したがって、これらの形式量は
+\[
+  \text{ACS が完全に知る真値}
+\]
+とも、
+\[
+  \text{ACS が外生的に最大化すべき目標}
+\]
+とも同一ではない。
+
+また本小節は、三原理の時間統合評価から
+新たな第四原理、新たな失敗状態、
+または力学系論上の安定性定理を導入するものではない。
+T-STAB は $t\in\mathbb{T}_{\mathrm{P},i}$ の時刻にだけ判定され、
+その充足から窓内の時刻別充足述語の真が従う
+（命題~\ref{prop:tstab_implies_principles}）。
+逆向きの含意は、命題~\ref{prop:tstab_zero_margin} の前件が成り立つ場合に成り立たない。
+
+次小節では、この時間統合評価とは別に、
+三原理から構造的機能・標準機能形式への接続を扱う。
+\end{remark}
+
+%----------------------------------------------------------------------
+\subsection{三原理から構造的機能・標準機能形式への接続}
+\label{subsec:principles_to_tipa}
+
+本小節では、
+\S\ref{subsec:self_env_principles}--\S\ref{subsec:s3_tstab}
+で定義・整理した三原理 SM・EU・FR と、
+\S\ref{sec:tipa} で導入する TIPA・PSL・ISL との
+記述水準上の接続を明確にする。
+
+本小節の目的は、
+三原理を新たな機構へ再定義することではない。
+また、SM・EU・FR を
+$M_1$・$M_2$・$M_3$ の三機構へ一対一に対応させることでもない。
+
+\S\ref{subsec:description_levels_global} の
+構造的機能と数学的形式表現の区別、
+ならびに定義~\ref{def:abc_classification} の
+分類A・B・Cの区別に従い、
+本小節では
+\[
+  \text{原理水準の構造的制約}
+  \;\longrightarrow\;
+  \text{構造的機能}
+  \;\longrightarrow\;
+  \text{標準機能形式}
+\]
+という記述上の接続だけを与える。
+
+\subsubsection{原理水準と機構水準の非同一性}
+
+三原理は概念的に異なる制約軸である（備考~\ref{rem:principle_linkage}）。
+しかし、そのことから
+\[
+  \mathrm{SM}\leftrightarrow M_1,
+  \qquad
+  \mathrm{EU}\leftrightarrow M_2,
+  \qquad
+  \mathrm{FR}\leftrightarrow M_3
+\]
+のような一対一の対応を置かない。
+同一の情報統合処理、同一の評価処理、同一の記憶、
+同一の応答形成、または同一の物理基盤が、
+複数の原理に関係する差異を同時に担いうる。
+逆に、一つの原理に関係する機能が
+複数の機構・基盤・実装部位へ分散して担われることも許容する
+（備考~\ref{rem:s3_description_levels}）。
+
+\subsubsection{三原理に関係する構造的機能}
+
+\begin{definition}[三原理関連構造的機能（分類A）]
+\label{def:principle_related_functions}
+本論文が対象とする ACS において、
+三原理に関係する差異を
+自己--環境相互作用のなかで
+応答形成または内部更新へ接続するために要求される
+機能水準の役割を、
+\emph{三原理関連構造的機能}と呼ぶ。
+
+本論文では少なくとも、次の機能群を区別する。
+
+\begin{enumerate}
+
+  \item
+  \textbf{情報取得・統合機能}
+
+  外部環境状態、内部状態、
+  記憶、内部モデルその他の利用可能情報を取得し、
+  後続の評価および応答形成に利用可能な
+  内部表現へ統合する機能。
+
+  \item
+  \textbf{可行性感応評価機能}
+
+  SM に関係する可行性余裕の低下、閾値接近、
+  内部状態の悪化その他の
+  可行性関連差異の少なくとも一部へ感応し、
+  応答形成に利用可能な評価へ変換する機能。
+
+  \item
+  \textbf{応答可能性評価・再構成機能}
+
+  FR に関係する、
+  可行な応答の有無とその縮退、
+  内部状態差に伴う応答余地の変化、
+  必要環境状態差に対する応答差その他の差異の少なくとも一部へ感応し、
+  必要応答ポテンシャルの保持・獲得・回復・再構成に
+  利用可能な評価へ変換する機能。
+
+  \item
+  \textbf{環境利用・外部結合評価機能}
+
+  EU に関係する、必要環境要因の充足・非充足とその接近、
+  外部環境状態差への応答可能性、
+  実現外部相互作用、
+  および外部関係に伴う可行性関連差異の
+  少なくとも一部を識別・評価する機能。
+
+  \item
+  \textbf{応答形成・選択機能}
+
+  上記の統合情報および評価を用いて、
+  現在の状態・環境に相対して応答候補を構成し、
+  実効的な行動または内部応答へ接続する機能。
+
+  \item
+  \textbf{時間横断的情報保持・更新機能}
+
+  単一時刻に閉じず、
+  過去の情報、評価、応答結果その他を
+  後続時刻の評価・応答形成に
+  利用可能な形で保持または更新する機能。
+
+  \item
+  \textbf{物理的感知・作用・基盤維持機能}
+
+  外部・内部信号を物理的に取得し、
+  応答指令を実世界の作用へ接続し、
+  さらに作動を支える物理的基盤を維持する機能。
+
+\end{enumerate}
+
+これらは定義~\ref{def:abc_classification} の意味で
+分類Aの機能水準に属する。
+ただし、上記の列挙は七つの独立モジュールの存在を要求するものではない。
+同一の実装構造が複数の機能を兼ねること、
+また一つの機能が複数の実装構造へ分散することを許容する。
+各機能群の名称に付した原理名は主な関係を示すにとどまり、
+その機能群が当該原理だけに関係することを意味しない
+（備考~\ref{rem:principle_function_overlap}）。
+\end{definition}
+
+\begin{remark}[原始的な機能・基盤機能と三原理関連構造的機能]
+\label{rem:primitive_vs_principle_functions}
+\S\ref{sec:acs_def} の原始的な機能（定義~\ref{def:primitive_functions}）は
+感知・識別・評価・行動の四区分であり、
+基盤機能（定義~\ref{def:base_functions}）は
+その責務を担う機能の活動を支え、担い手を持続させる機能である。
+定義~\ref{def:principle_related_functions} の七つの機能群は、
+これらの区分を三原理に関係する差異の側から記述し直したものであり、
+新たな原始的な区分を加えるものではない。
+これらの機能群の列挙は、\S\ref{sec:acs_def} の構成要件 CR-2 に条件を加えるものではない。
+
+両者の間に一対一の対応は置かない。
+主な関係は次のとおりである。
+\begin{enumerate}
+  \item 第1群（情報取得・統合）は、主に感知と識別の責務に関わる。
+  \item 第2群から第4群（三原理に関係する評価）は、主に評価の責務に関わる。
+  ただし、評価の前提となる差異の識別にも関わる。
+  \item 第5群（応答形成・選択）は、主に行動の責務に関わる。
+  \item 第6群（時間横断的情報保持・更新）は、四区分のいずれの責務にも関与しうる。
+  情報を保持する担い手の持続という側面では基盤機能にも関わる。
+  \item 第7群（物理的感知・作用・基盤維持）のうち、
+  信号の物理的取得と作用への接続は感知と行動の責務に、
+  作動を支える物理的基盤の維持は基盤機能に関わる。
+  同一の過程について両方の側面を区別して記述しうることは、
+  \S\ref{sec:acs_def} の扱いと同じである。
+\end{enumerate}
+ここに挙げた関係は記述上の整理であり、
+各機能群をいずれか一つの区分または基盤機能に割り当てることを求めない。
+また \S\ref{sec:acs_def} 備考~\ref{rem:primitive_vs_principles} と同じく、
+本論文は、いずれかの機能が作動していることから時刻別充足述語が真であることを、
+いずれかの時刻別充足述語が偽であることから特定の機能の停止を、いずれも一般的な帰結として置かない。
+\end{remark}
+
+\begin{remark}[三原理関連機能と時刻別充足述語の真の非同一性]
+\label{rem:functions_not_principle_truth}
+定義~\ref{def:principle_related_functions} の
+構造的機能が存在することから、
+各時刻における $\mathrm{SM}_t$・$\mathrm{EU}_t$・$\mathrm{FR}_t$ の真を、本論文は一般的な帰結として置かない。
+
+例えば、可行性感応評価機能を備えていても、
+実現状態が $\Pi(x_t)<0$ となることはありうる。
+同様に、応答可能性評価・再構成機能が存在していても、
+$\mathrm{FR}_t$ が偽となる時刻、
+または $\mu_{\mathrm{eff},t}\le1$ となる時刻を排除しない。
+また、環境利用・外部結合評価機能が存在していても、
+$\mathrm{EU}_t$ が偽となる時刻を排除しない。
+
+したがって、
+\[
+  \text{原理関連機能の存在}
+  \neq
+  \text{時刻別充足述語の常時の真}
+\]
+である。
+\end{remark}
+
+\begin{remark}[理論上の量への関連と内部での計算の区別]
+\label{rem:theory_quantity_vs_internal}
+定義~\ref{def:principle_related_functions} の機能群は、
+$\Pi$、$K$、$A_t$、$\mathrm{Crit}^{(1)}(x_t)$、$\mathcal{D}_{\mathrm{FR}}$、$\mu_{\mathrm{eff}}$、$Q$ などの理論上の量が
+表す差異に構造的に関連する。
+しかし、関連することと、その量の真値を内部で保持または計算することは異なる。
+本論文は、いずれの機能群についても、これらの量の真値を内部で保持または計算することを要求しない。
+たとえば環境利用・外部結合評価機能について、
+内部で必要と評価された要因が $\mathrm{Crit}^{(1)}(x_t)$ と一致すること、
+または内部で形成された関係の評価が $Q$ と一致することを要求しない
+（備考~\ref{rem:crit_description_level}）。
+内部の評価と理論上の量との不一致（見逃し・誤評価）は、
+\S\ref{sec:tipa} の機構水準で記述される事柄である。
+\end{remark}
+
+\subsubsection{TIPA への標準的接続}
+
+\begin{remark}[TIPA は分類Bの標準機能形式である]
+\label{rem:tipa_as_standard_form}
+\S\ref{sec:tipa} で導入する
+TIPA
+（Triadic Information-Processing Architecture）は、
+定義~\ref{def:principle_related_functions} の
+構造的機能その他を
+本論文の形式体系内で分析可能に分解する
+分類Bの標準機能形式である。
+
+TIPA は
+$M_1,M_2,M_3$
+からなり、
+それぞれ情報統合、適応的評価、応答形成・行動選択を標準的に担う。
+
+ここで重要なのは、
+\[
+  \text{情報統合機能}
+  \neq
+  M_1,
+\]
+\[
+  \text{可行性感応評価機能}
+  \neq
+  M_2,
+\]
+\[
+  \text{応答形成・選択機能}
+  \neq
+  M_3
+\]
+という区別である。
+左辺は機能水準の要求、
+右辺は本論文が採用する標準機能形式である。
+\end{remark}
+
+\begin{definition}[三原理から TIPA への機能的接続]
+\label{def:principles_tipa_connection}
+三原理に関係する情報処理と
+TIPA の標準的役割分担を、
+次のように記述する。
+
+\medskip
+\noindent
+\textbf{$M_1$：情報統合機構。}
+
+$M_1$ は、
+外部・内部から利用可能な信号、内部モデル、記憶その他を統合し、
+後続の評価機構が利用可能な内部表現を形成する標準機構である。
+したがって、
+SM に関係する内部状態信号、
+EU に関係する必要環境要因の充足に関わる情報と外部環境差・外部対象差、
+FR に関係する応答可能性または状態差その他の情報は、
+必要に応じて $M_1$ の統合対象となりうる。
+ただし、$M_1$ が理論上の
+\[
+  \Pi(x_t),\quad
+  E_{\mathrm{req}}(x_t),\quad
+  \mathrm{Crit}^{(1)}(x_t),\quad
+  \mu_{\mathrm{eff},t},\quad
+  Q
+\]
+を再構成することは要求しない。
+
+\medskip
+\noindent
+\textbf{$M_2$：適応的評価機構。}
+
+$M_2$ は、
+$M_1$ 等から利用可能な情報に基づき、
+可行性脅威、必要環境要因の非充足とその接近、
+応答余地の縮退、外部関係の変化、切迫度その他を
+応答形成へ利用可能な形で評価する標準機構である。
+したがって、SM・EU・FR のいずれに関係する差異も、
+その一部が $M_2$ の評価対象となりうる。
+ただし、$M_2$ が理論上の値として
+\[
+  \Pi,\quad
+  K,\quad
+  A_t,\quad
+  E_{\mathrm{req}},\quad
+  \mathrm{Crit}^{(1)},\quad
+  \mathcal{D}_{\mathrm{FR}},\quad
+  \mu_{\mathrm{eff}},\quad
+  Q,\quad
+  s_t,\quad
+  \text{T-STAB}
+\]
+を直接読み出すこと、
+またはそれらを数値計算することは要求しない。
+
+\medskip
+\noindent
+\textbf{$M_3$：応答行動機構。}
+
+$M_3$ は、
+統合された情報および評価を用いて、
+応答候補の構成、要請適合の判定、行動指令その他の応答形成を担う
+標準機構である。
+したがって、三原理に関係する評価差は、
+必要に応じて $M_3$ の候補形成または選択へ反映されうる。
+ただし、三原理は $M_3$ に外部から与えられる
+単一の目的関数ではない。
+また本論文は、$M_3$ の出力だけから時刻別充足述語の真を一般的な帰結として置かない。
+$\mathrm{FR}_t$ が真であっても、$M_3$ の行動指令または実効行動が
+$A_t$ に属することは要求しない（備考~\ref{rem:selection_responsibility}）。
+\end{definition}
+
+\begin{remark}[M1・M2・M3 は三原理専用機構ではない]
+\label{rem:tipa_not_principle_modules}
+定義~\ref{def:principles_tipa_connection} は、
+$M_1$、$M_2$、$M_3$ を
+それぞれ特定の原理専用の機構として定義するものではない。
+
+例えば、SM に関係する危険信号の処理には
+$M_1$ の情報統合、$M_2$ の評価、$M_3$ の応答形成が
+すべて関与しうる。
+同様に、EU に関係する必要環境要因の充足や外部差・外部関係に伴う可行性関連差異、
+FR に関係する応答の縮退も、複数機構を横断して扱われうる。
+
+したがって、TIPA における三機構の区別は
+\[
+  \text{入力統合}
+  \rightarrow
+  \text{評価}
+  \rightarrow
+  \text{応答形成}
+\]
+という機能責務上の標準分解であり、
+SM・EU・FR の三分解と同型であることを主張しない。
+\end{remark}
+
+\subsubsection{PSL への接続}
+
+\begin{definition}[原理関連機能と PSL の接続]
+\label{def:principles_psl_connection}
+\S\ref{subsec:psl} で導入する
+PSL（Physical Substrate Layer）は、
+TIPA と物理的実装部位とのあいだで、
+感知、作用、基盤維持、局所的な保護応答その他を
+物理的に接続する分類Bの標準機能形式である。
+
+三原理との関係は、次のように記述する。
+
+\begin{enumerate}
+
+  \item
+  \textbf{入力側接続。}
+
+  SM・EU・FR に関係する外部・内部信号が
+  TIPA の情報処理へ利用可能となるためには、
+  それらを物理的に取得・伝達する入力側の基盤機能を要する。
+
+  \item
+  \textbf{出力側接続。}
+
+  TIPA で形成された応答指令が実効的な作用へ接続されるためには、
+  出力側の物理的実現機能を要する。
+
+  \item
+  \textbf{基盤維持。}
+
+  情報処理・記憶・感知・作用を継続可能にするためには、
+  それらを担う基盤の維持機能を要する。
+
+  \item
+  \textbf{局所急性異常への保護応答。}
+
+  熟慮的な評価完了を待つことが可行性維持上不適切となりうる
+  急性局所異常に対しては、
+  局所的・低遅延の保護応答機能が三原理関連作動を支えることがある。
+
+\end{enumerate}
+
+これらの具体的な標準形式は \S\ref{subsec:psl} に委ねる。
+\end{definition}
+
+\begin{remark}[PSL 機能は三原理そのものではない]
+\label{rem:psl_not_principles}
+PSL の各標準機能形式は、SM・EU・FR のいずれかと同一ではない。
+
+例えば、基盤維持機能が SM に強く関係しても、
+\[
+  \text{PSL 基盤維持}
+  \iff
+  \mathrm{SM}
+\]
+とはしない。
+また、局所的保護応答が急性の可行性脅威へ対処しうるからといって、
+本論文は、その作動だけから $\mathrm{EU}_t$ または $\mathrm{FR}_t$ を含む
+三原理の時刻別充足述語の真を一般的な帰結として置かない。
+
+PSL は、原理関連機能を物理的作動へ接続する標準機能形式である。
+\end{remark}
+
+\subsubsection{ISL への接続}
+
+\begin{definition}[原理関連機能と ISL の接続]
+\label{def:principles_isl_connection}
+\S\ref{subsec:impl} で導入する
+ISL（Implementation Substrate Layer）は、
+感知、作用、情報保持その他を担う物理的実装部位を
+本論文の標準形式で整理する分類Bの記述層である。
+
+三原理関連機能との接続は、
+少なくとも次の三つの物理的能力を介して記述される。
+\[
+  \text{感知可能な物理担体},
+\]
+\[
+  \text{作用可能な物理担体},
+\]
+\[
+  \text{情報保持可能な物理担体}.
+\]
+\S\ref{subsec:impl} では、これらを標準的に
+\[
+  B_{\mathrm{sens}},
+  \qquad
+  B_{\mathrm{eff}},
+  \qquad
+  B_{\mathrm{mem}}
+\]
+として整理する。
+ただし、これら三集合が実在 ACS において
+互いに完全に分離した三つの独立器官または
+三つの独立ハードウェアとして存在することは要求しない。
+\end{definition}
+
+\begin{remark}[実装部位と原理の局在を同一視しない]
+\label{rem:principles_not_localized}
+SM・EU・FR のいずれも、
+単一の $B_{\mathrm{sens}}$、$B_{\mathrm{eff}}$、$B_{\mathrm{mem}}$
+または単一の物理部位へ局在するとはしない。
+原理関連機能は、感知・記憶・評価・応答・基盤維持の
+複数過程を横断して成立しうる。
+したがって、生物実装、人工実装、その他の実装形態において、
+同じ原理水準の制約が異なる物理配置によって担われることを許容する。
+\end{remark}
+
+\subsubsection{時間方向の変化との役割分担}
+
+\begin{remark}[\S\ref{sec:tipa} と \S\ref{sec:extended_dynamics} の責務境界]
+\label{rem:s4_s5_boundary_from_s3}
+本小節は、三原理に関係する構造的機能を
+TIPA・PSL・ISL の標準機能形式へ接続する。
+
+\S\ref{sec:tipa} は、同一時刻における
+機構・基盤・実装部位の構造と作動を扱う。
+これに対し \S\ref{sec:extended_dynamics} は、
+\S\ref{sec:tipa} で定義済みの構造を再定義せず、
+内部モデル、機能的記憶、偏り、実効的発展自由度、予測地平、
+PSL・ISL の健全度その他について、
+時刻 $t$ から $t+1$ への決定論的な変化を扱う。
+
+したがって、
+\[
+  \text{\S\ref{sec:tipa}}
+  =
+  \text{同一時刻の構造・作動}
+\]
+\[
+  \text{\S\ref{sec:extended_dynamics}}
+  =
+  \text{既定義構造・内部量の時刻間変化}
+\]
+という責務境界を維持する。
+\end{remark}
+
+\begin{remark}[Update と三原理関連機能]
+\label{rem:update_principle_connection}
+7タプルの $\mathrm{Update}$ は、内部モデルの時刻間更新を表す。
+三原理に関係する評価結果、記憶、内部状態差、外部環境差その他が
+後続時刻の内部モデルへ反映されうることは、
+三原理関連構造的機能と Update の接続として理解できる。
+FR の長期の側面である必要応答ポテンシャルの保持・獲得・回復・再構成は、
+この接続を通じて記述されうる。
+ただし、本節は Update の具体的アルゴリズム、学習率、収束特性、
+または最適化法を規定しない。
+それらの時刻間更新構造は \S\ref{sec:extended_dynamics} へ委ねる。
+\end{remark}
+
+\subsubsection{三原理と標準機能形式の対応範囲}
+
+\begin{remark}[原理別の主な機能接続は重複しうる]
+\label{rem:principle_function_overlap}
+三原理と機構層の関係を直感的に整理すると、
+次のような主な接続を記述できる。
+
+\begin{description}
+
+  \item[SM 関連]
+  内部状態および可行性脅威に関係する信号の取得、
+  統合、評価、応答形成、物理的保護、基盤維持。
+
+  \item[EU 関連]
+  必要環境要因の充足・非充足とその接近に関係する信号の取得と評価、
+  外部環境状態差の感知、外部入力の識別、
+  実現外部相互作用の処理、外部関係に伴う可行性関連差異の評価、
+  必要環境要因の充足へ向かう応答形成。
+
+  \item[FR 関連]
+  可行な応答の有無とその縮退の評価、
+  内部状態差に伴う応答余地の変化の評価、
+  必要環境状態差に対する応答差の評価、
+  記憶・内部モデル更新、応答候補の再構成。
+
+\end{description}
+
+ただし、この整理は原理ごとの排他的な担当表ではない。
+例えば、外部環境差の感知は EU に関係するだけでなく、
+SM の危険検出や FR の応答多様性の維持にも同時に関係しうる。
+同様に、記憶は FR だけでなく、SM・EU に関係する評価にも利用されうる。
+したがって、三原理と機構機能の対応は多対多である。
+\end{remark}
+
+\subsubsection{本小節の記述理論上の地位}
+
+\begin{remark}[原理水準から機構水準への接続の最小的主張]
+\label{rem:principles_to_mechanisms_scope}
+本小節が主張するのは、
+三原理に関係する構造的差異が
+ACS の作動と完全に切断されていてはならず、
+それらの差異の少なくとも一部が、
+情報取得・統合、評価、応答形成、記憶・更新、
+物理的感知・作用・基盤維持を通じて
+後続の作動へ接続されうるという
+機能水準の要請である。
+
+これを、本論文では分類Aの構造的機能として整理し、
+\S\ref{sec:tipa} では TIPA・PSL・ISL という
+分類Bの標準機能形式によって記述する。
+したがって本小節は、
+\[
+  \text{三原理}
+  \longrightarrow
+  \text{構造的機能}
+  \longrightarrow
+  \text{標準機能形式}
+\]
+という記述上の橋渡しを与える。
+ただし、
+三原理、特定機構および特定物理部位は、
+相異なる記述水準に属するため、
+相互に同一視しない。
+
+具体的な TIPA・PSL・ISL の定義、
+入力・処理・出力の責務境界、高速処理、Automaticity、
+物理的入出力接続、および実装部位構造は
+\S\ref{sec:tipa} に委ねる。
+時刻間の更新・学習・健全度変化その他は
+\S\ref{sec:extended_dynamics} に委ねる。
+\end{remark}
