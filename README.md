@@ -60,7 +60,7 @@ cd toy && python3 run_e8_checks.py      # 炉番と MinACS の全数検査
 
 ## 引用
 
-`CITATION.cff` を参照。公開後に DOI を付ける予定。
+`CITATION.cff` を参照。DOI 10.5281/zenodo.24095633。
 
 ## ライセンス
 
