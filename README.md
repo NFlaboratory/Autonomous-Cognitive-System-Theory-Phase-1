@@ -1,4 +1,5 @@
 # 自律認知システム理論（ACS理論）Phase 1：決定論的定式化
+Autonomous Cognitive System Theory, Phase 1: a deterministic formulation
 
 論文「自律認知システム理論：倫理的協調知性の数理的基盤（Phase 1：決定論的定式化）」（NF）の LaTeX 原稿と、本文の定義の一部を有限モデルの上で計算する補助資料（トイモデル）を収める。トイモデルは本文の命題を補強する証拠ではない。
 
