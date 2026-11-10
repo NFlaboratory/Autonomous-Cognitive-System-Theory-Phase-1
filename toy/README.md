@@ -2,7 +2,7 @@
 
 論文「自律認知システム理論：倫理的協調知性の数理的基盤（Phase 1：決定論的定式化）」（NF）の付属物である。本文の定義を有限のモデルの上で計算し、形式的に与えた構造が環境の中で自律的に作動して、可行性の維持・閉塞・回復・崩壊を経る様子を、本文の定義どおりに判定して記録する。
 
-> **English summary.** Companion code for the Phase 1 paper on Autonomous Cognitive System (ACS) theory (Japanese). It realises the paper's definitions on small finite models, runs mechanisms that only see their own observations, and judges every step exactly with the paper's sets (feasible set $K$, required-environment set $E_{\mathrm{req}}$, the $E_{\mathrm{req}}$-relative viability kernel, blockage, collapse). Experiments were preregistered with frozen source hashes and held-out seeds. The results are illustrations of existence and of distinctions between concepts; they do **not** show that following the three principles, or having the mechanism, improves survival. See `reports/00_総括_トイモデル_20261027.md`.
+> **English summary.** Companion code for the Phase 1 paper on Autonomous Cognitive System (ACS) theory (Japanese). It realises the paper's definitions on small finite models, runs mechanisms that only see their own observations, and judges every step exactly with the paper's sets (feasible set $`K`$, required-environment set $`E_{\mathrm{req}}`$, the $`E_{\mathrm{req}}`$-relative viability kernel, blockage, collapse). Experiments were preregistered with frozen source hashes and held-out seeds. The results are illustrations of existence and of distinctions between concepts; they do **not** show that following the three principles, or having the mechanism, improves survival. See `reports/00_総括_トイモデル_20261027.md`.
 
 ## 1. まず読むもの
 
@@ -96,7 +96,7 @@ python3 run_prereg.py run specs/<id>.json [--jobs N]         # 検証してか�
 - P10・P11 はこのリポジトリの構成で登録し、ソースの md5 を最上位からの相対パスで記録した。
 - 登録済みの仕様（P1〜P8、P9 r2）は、開発中のフォルダ構成と絶対パスで登録した。その後に共通ファイルを拡張したので、ソースの md5 の照合では再検証に通らない。登録時の md5 は各仕様に残してある。
 - その代わりに、`replicate.py` で全単位をこのリポジトリのコードで再計算し、記録した単位の結果および判定と照合した。結果は `replication/SUMMARY.md` にある。
-  - 単位ごとの原記録（`results/*_units.jsonl`、15 ファイル）はリポジトリに含めず、別に保存する（SHA-256 は `results/UNITS_SHA256.md`）。照合をやり直すには、原記録を `results/` に置く。
+  - 単位ごとの原記録（`results/*_units.jsonl`、登録時は 15 ファイル）はリポジトリに含めない。SHA-256 は `results/UNITS_SHA256.md` にある。P1 r1 を除く 14 件は、2026-11-10 に公開したコードで再生成し、SHA-256 とバイト数が照合表の値と一致することを確かめたうえで、Zenodo のデータセットとして公開した（DOI と再生成の条件は、リポジトリ最上位の `README.md` の「生の実験記録」を参照）。P1 r1 の原記録は保存されていない。照合をやり直すには、原記録を `results/` に置く。
   - 原記録がない場合、`replicate.py` と `aggregate_p10.py` は何も計算せず、見つからないファイルを示して終了コード 1 で終わる（照合の未実行を成功と取り違えないため）。`outputs/p10_summary.md` は変わらない。
   - P1 r1 は、背景の生成の誤りを含む版である。修正後のコードでは一致しないのが期待どおりの結果である（E4 報告）。
   - P9 r1 と P10 v2 r1・r2 は実行が途中で止まった版で、結果の記録がない。
@@ -108,10 +108,10 @@ python3 run_prereg.py run specs/<id>.json [--jobs N]         # 検証してか�
 - トイが示すのは、存在と区別の例示までである。本文の命題の補強ではない。
 - 一般的な傾向は示さない。現実の系への適用可能性も示さない。
 - モデルと機構は設計者（一人）が調整したものである。調整の経緯は各報告と仕様に記載した。
-- 三つのトイでは、$K$ のどの状態でも基盤機能が作動し構造が保たれる（トイの規約）。そのためトイの中では「$K$ にとどまる」ことが崩壊しないことを意味するが、これは本文の一般的な帰結ではない。
+- 三つのトイでは、$`K`$ のどの状態でも基盤機能が作動し構造が保たれる（トイの規約）。そのためトイの中では「$`K`$ にとどまる」ことが崩壊しないことを意味するが、これは本文の一般的な帰結ではない。
 - v2 の組織（`acs_toy/org.py`）は、参加者 2 体の状態を組織の状態に含めて記述している。組織水準の判定はトイの規約で、少なくとも一体の参加者が構造を保つ（integ > 0）ときに組織の整形式実現が成り立ち、すべての参加者が構造を失ったときに組織の崩壊とする。組織ACSであることの判定に参加ACS数の条件は置かない（本文 def:org_acs）。参加者がいるので、区分は個体ACS参加型組織ACSに当たる。参加ACS数だけから組織の崩壊を導くことは本文の一般的な帰結ではなく、このモデルの規約である。
 - 実験で用いた機構の全変種が CR-2b を満たすことを検査した（`check_cr2_variants.py`、`outputs/cr2_variants.md`）。
-- 作り手とは別に、言語モデルを用いた独立のコード監査を一度行った（2026-11-08）。MinACS・炉番について、必要環境充足集合・一段階臨界必要要因・閉塞の二分・応答多様度・$E_{\mathrm{req}}$ に相対する可行性核・応答込みの核を、共通判定層を使わない別実装で全数計算し、判定層の出力との不一致は 0 だった。必要環境充足集合が空になる場合などの合成の境界例 13 件も、定義どおりに判定された。この監査は、単位ごとの原記録との照合、v2 の全シナリオの詳細検査、本文の仮定全体の検査を含まない。人による第三者の検証は行われていない。
+- 作り手とは別に、言語モデルを用いた独立のコード監査を一度行った（2026-11-08）。MinACS・炉番について、必要環境充足集合・一段階臨界必要要因・閉塞の二分・応答多様度・$`E_{\mathrm{req}}`$ に相対する可行性核・応答込みの核を、共通判定層を使わない別実装で全数計算し、判定層の出力との不一致は 0 だった。必要環境充足集合が空になる場合などの合成の境界例 13 件も、定義どおりに判定された。この監査は、単位ごとの原記録との照合、v2 の全シナリオの詳細検査、本文の仮定全体の検査を含まない。人による第三者の検証は行われていない。
 - 検証スイート（`verification/`）の新しい世界（綱渡り・乾眠）と全模型列挙は、機構をもたない部分模型であり、ACS とは呼ばない。照合の結果は、有限の範囲で本文の文言どおりに計算して反例が出なかったことを示すだけで、本文の命題を補強しない。炉番では、強仮定 ass:theta_exterior_blockage が成り立たない軌道が（行動を任意に選べば）作れる。これは系の反例ではない（`verification/README.md` 4.1）。
 - 応答様式のラベル：コードの文字列 "3B-a"・"3B-b"・"3B-c" は、本文の 3B-own・3B-rel・3B-comb にそれぞれ当たる。事前登録したソースの md5 を保つため、コードの文字列は変えていない。
 
