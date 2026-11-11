@@ -1,6 +1,12 @@
 # 自律認知システム理論（ACS理論）Phase 1：決定論的定式化
 Autonomous Cognitive System Theory, Phase 1: a deterministic formulation
 
+**A Shared Formal Language for Humans and Future Autonomous AI**
+
+![ACS Theory — Shared Formal Structure and Architecture](assets/acs-theory-demo.gif)
+
+*Conceptual visualization of ACS Theory (not a recording of toy-model execution).*
+
 論文「自律認知システム理論：倫理的協調知性の数理的基盤（Phase 1：決定論的定式化）」（NF）の LaTeX 原稿と、本文の定義の一部を有限モデルの上で計算する補助資料（トイモデル）を収める。トイモデルは本文の命題を補強する証拠ではない。
 
 > 公開日：2026-11-10。DOI：[10.5281/zenodo.24095633](https://doi.org/10.5281/zenodo.24095633)（すべての版を指す DOI）。2026-11-10 公開版だけを指す DOI は [10.5281/zenodo.24095634](https://doi.org/10.5281/zenodo.24095634)。論文とトイモデルには版番号を付けず、公開日と DOI で識別する。ライセンスは下の「ライセンス」を参照（文書・データは CC BY-SA 4.0、コードは MIT）。
