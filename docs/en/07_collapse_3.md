@@ -1,0 +1,67 @@
+# §7 Collapse, blockage and collapse path sets — part 3 of 5 (trajectory record space and the blockage path set)
+
+*Source: `paper/section7_collapse.tex`, lines 2348–3071 (`subsec:blk_path_set`: the ACS-record-valid time domain, the trajectory record space, the blockage path set, the blockage reaching time, distinctions from other concepts, complement and Phase 1 limits), at commit e6e12cd. Status: draft. Part 2 is [`07_collapse_2.md`](07_collapse_2.md); part 4 ([`07_collapse_4.md`](07_collapse_4.md), 3072–3626: the collapse-reaching path set) follows. §7 defines no assumption. The Japanese manuscript is authoritative; this is a summary, not a translation, and adds no definition, assumption or result.*
+
+---
+
+## Trajectory record space and blockage path set (`subsec:blk_path_set`)
+
+`subsec:collapse_def` treated collapse $\mathrm{Col}_{i,t}=1$ as an absorbing, non-recoverable terminal classification and confirmed that, after the first collapse, the ordinary ACS state quantities $x_t$, $e_t$, $A_{i,t}$, $\mathrm{Desc}_t$ are not required to be kept. The subsection introduces a *trajectory record space* $\mathfrak P$ consistent with this terminal convention, and within it the set $\mathfrak P_{\mathrm{blk}}$ of trajectory records that reach blockage within finite time. A trajectory record separates explicitly the time evolution of ordinary pre-collapse ACS states from the collapse-terminal record over all discrete times.
+
+### The ACS-record-valid time domain
+
+**Definition (`def:acs_valid_time_domain`): ACS-record-valid time domain (classification C).** Let the collapse indicator sequence $(\mathrm{Col}_{i,t})_{t\in\mathbb N_0}$ attached to a trajectory record $\sigma$ satisfy the absorption condition (C-2) of `prop:collapse_basic`. The time domain on which $\sigma$ records ordinary ACS state quantities is
+$$I_{\mathrm{ACS}}(\sigma):=\{t\in\mathbb N_0\mid \mathrm{Col}_{i,t}=0\},$$
+called the *ACS-record-valid time domain*. By (C-2) it takes one of three forms: (1) $\mathbb N_0$, if collapse never holds; (2) $\{0,1,\dots,T-1\}$, if $T\ge1$ is the least time with $\mathrm{Col}_{i,T}=1$; (3) $\emptyset$, if $\mathrm{Col}_{i,0}=1$. The time of the first collapse itself is not included.
+
+**What the domain is (`rem:acs_valid_time_domain_scope`).** $I_{\mathrm{ACS}}(\sigma)$ is the time domain on which the state quantities of §2 and §5 are treated as objects of trajectory recording for the same individual $\Sigma_i$. Because it is determined by $\mathrm{Col}_{i,t}=0$, it can contain times after functional termination (that is, $\mathrm{FT}_{i,t}=1$ and $\mathrm{Col}_{i,t}=0$, `def:functional_termination`). Records at such times are records of tracking the structural individual; they do not treat $\Sigma_i$ as the realization of a currently operating ACS (`rem:post_collapse_record`). The description of function as a currently operating ACS is limited to times with $\mathrm{FT}_{i,t}=0$. This paper does not state $\mathrm{WF}_{i,t}=1$ from $\mathrm{Col}_{i,t}=0$ as a general consequence, so $I_{\mathrm{ACS}}(\sigma)$ may contain times at which $\mathrm{WF}_{i,t}=0$ without collapse. For $t\in I_{\mathrm{ACS}}(\sigma)$ at least $x_t\in X$ and $e_t\in E_{\mathrm{ext}}$ can be recorded; for $t\notin I_{\mathrm{ACS}}(\sigma)$ the section does not require $x_t$, $e_t$, $A_{i,t}$ or $\mathrm{Desc}_t$ as ordinary ACS state quantities. This does not deny the existence of the physical object after collapse; it is the Phase 1 terminal convention that ends the ordinary dynamical description of the same ACS individual.
+
+**Blockage is not assigned at the collapse time (`rem:no_blockage_at_collapse_time_by_default`).** The first collapse time $T$ satisfies $T\notin I_{\mathrm{ACS}}(\sigma)$, so the section does not require $A_{i,T}$ as an ordinary state quantity, and $A_{i,T}=\emptyset$ is not assigned at the same time from $\mathrm{Col}_{i,T}=1$. Whether blockage held within the valid time domain before collapse is recorded separately by $\mathfrak P_{\mathrm{blk}}$.
+
+### The trajectory record space
+
+**Definition (`def:trajectory_space`): trajectory record space (classification C).** For a single ACS individual $\Sigma_i$, the *trajectory record space* $\mathfrak P$ is introduced as a set of records that keep, as a pair, the state record on the ACS-record-valid time domain and the collapse indicator sequence over all discrete times. Each $\sigma\in\mathfrak P$ contains at least: (i) the collapse indicator sequence $(\mathrm{Col}_{i,t})_{t\in\mathbb N_0}$, satisfying absorption (C-2); (ii) the record $(x_t,e_t,\mathrm{Desc}_t)_{t\in I_{\mathrm{ACS}}(\sigma)}$ on the domain determined by that sequence, with $x_t\in X$ and $e_t\in E_{\mathrm{ext}}$. So
+$$\sigma=\bigl((x_t,e_t,\mathrm{Desc}_t)_{t\in I_{\mathrm{ACS}}(\sigma)},\ (\mathrm{Col}_{i,t})_{t\in\mathbb N_0}\bigr).$$
+Here $\mathrm{Desc}_t$ is the organizing tuple of time-dependent quantities of §5. Two of its components, the prediction accuracy coefficient $\pi_{\tau,t}$ and the effective time horizon $\widehat\tau_t$, use records from $t$ to $t+\tau$; they are recorded only when $t+\tau\in I_{\mathrm{ACS}}(\sigma)$ and are otherwise undefined (the value $0$ is not assigned). So for $t\in I_{\mathrm{ACS}}(\sigma)$ with $t+\tau\notin I_{\mathrm{ACS}}(\sigma)$, $\mathrm{Desc}_t$ is recorded as a partial tuple with those two components undefined. The formal operation record after collapse (`prop:s5_continuation` of §5) is not used in these evaluations, and $\sigma$ is not identified with the time series of $\mathrm{Desc}_t$ alone. For each $t\in I_{\mathrm{ACS}}(\sigma)$ the feasible action set $A_{i,t}=A(x_t,e_t)=\{u\in U\mid f(x_t,u,e_t)\in K\}$ is determined by `def:blockage_sec2` and the definition of the feasible action set in §2; for $t\notin I_{\mathrm{ACS}}(\sigma)$ it is not required. The symbol $\mathfrak P$ is unrelated to the persistence evaluation function $\Pi$.
+
+**Dynamical meaning (`rem:trajectory_space_scope`).** $\mathfrak P$ is not a set for calling an arbitrary sequence an "ACS trajectory". When $\sigma\in\mathfrak P$ is treated as a trajectory record of $\Sigma_i$, the record on the valid time domain is presupposed to be a realization record or deterministic simulation record consistent with the deterministic dynamics of the system as given in §2 and §5. The subsection introduces no new trajectory-generating operator or state equation to judge that consistency. $\mathfrak P$ is a classification-C underlying set for describing the subsequent path sets.
+
+**Origin of records (`rem:trajectory_record_origin`).** $\sigma\in\mathfrak P$ is not limited to actually observed records. A deterministic simulation record built from a deterministic model of the system is also admitted as a trajectory record so long as it is consistent with the model's dynamics: that is, a record generated as a standard operation record of §5 with the initial value and the environment realization (the sequence of background components and $g_O$) fixed. A record generated with the sequence of actions supplied by the describer is not a record produced by the operation of $\Sigma_i$ itself, so the section does not treat it as a trajectory record of $\Sigma_i$. No probability measure or likelihood on $\mathfrak P$ is introduced in Phase 1 from this difference in origin.
+
+**No extra structure on $\mathfrak P$ (`rem:trajectory_space_no_extra_structure`).** Phase 1 gives $\mathfrak P$ in general no topology, metric, measure, probability measure or order structure. Hence "distance to a path set", "closeness to collapse trajectories" or "blockage probability" are not used without further definition. What the section needs is the set of trajectory records and its set-theoretic subsets.
+
+### The blockage path set
+
+**Definition (`def:blk_path_set`): blockage path set (classification C).** The *blockage path set* $\mathfrak P_{\mathrm{blk}}\subseteq\mathfrak P$ is
+$$\mathfrak P_{\mathrm{blk}}:=\{\sigma\in\mathfrak P\mid \exists T\in I_{\mathrm{ACS}}(\sigma)\ \text{s.t.}\ A_{i,T}=\emptyset\}.$$
+That is, it is the totality of trajectory records in which blockage $A_{i,T}=\emptyset$ holds at some finite time within the valid time domain, where ordinary ACS state quantities are defined. The subscript $\mathrm{blk}$ stands for blockage.
+
+**No persistence is required (`rem:blk_path_no_persistence`).** For $\sigma\in\mathfrak P_{\mathrm{blk}}$ it suffices that $A_{i,T}=\emptyset$ holds at at least one time in the valid time domain; persistence of blockage afterwards is not required by the definition. In particular a trajectory that, after blockage, returns as the same individual to a state with $A_{i,s}\ne\emptyset$ also belongs to $\mathfrak P_{\mathrm{blk}}$, as long as it has once reached blockage.
+
+**Collapse and membership (`rem:collapse_not_blk_membership`).** This paper does not state $\sigma\in\mathfrak P_{\mathrm{blk}}$ as a general consequence from $\mathrm{Col}_{i,T}=1$ at some finite time, because membership requires that $A_{i,t}=\emptyset$ actually held within the valid time domain before collapse. This is consistent with `subsec:collapse_def`, where prior passage through blockage was not imposed as a requirement for collapse.
+
+### The blockage reaching time
+
+**Definition (`def:blk_reaching_time`): blockage reaching time (classification C).** For $\sigma\in\mathfrak P_{\mathrm{blk}}$,
+$$T_{\mathrm{blk}}(\sigma):=\min\{T\in I_{\mathrm{ACS}}(\sigma)\mid A_{i,T}=\emptyset\}$$
+is called the *blockage reaching time* of $\sigma$. The set is non-empty by `def:blk_path_set`, and since $I_{\mathrm{ACS}}(\sigma)\subseteq\mathbb N_0$, the well-ordering of the natural numbers gives a minimum; $T_{\mathrm{blk}}(\sigma)$ is a finite natural number.
+
+**It is only the first blockage time (`rem:blk_reaching_time`).** $T_{\mathrm{blk}}(\sigma)$ is the time at which blockage first holds in $\sigma$. It does not mean that blockage persists for $t>T_{\mathrm{blk}}(\sigma)$, that collapse is reached, or that external recovery occurs. So $T_{\mathrm{blk}}$ is a classification-C quantity recording the first blockage time, not a terminal time.
+
+### Distinction from other concepts
+
+**Being outside the kernel (`rem:viab_outside_not_blk_path`).** As in `subsec:blockage`, this paper does not state $A_{i,t}=\emptyset$ from $x_t\notin\mathrm{Viab}_f(K)$ alone as a general consequence. Hence it does not state $\sigma\in\mathfrak P_{\mathrm{blk}}$ from $x_t\notin\mathrm{Viab}_f(K)$ at some time alone. Nor does it call being outside the robust viability kernel "inflow into the blockage path set" without additional conditions.
+
+**False SM predicate and loss of well-formed realization (`rem:sm_wf_not_blk_path`).** This paper does not state $\sigma\in\mathfrak P_{\mathrm{blk}}$ as a general consequence from the SM predicate being false at $t$ ($\Pi(x_t)<0$) or from $\mathrm{WF}_{i,t}=0$ alone. Membership in $\mathfrak P_{\mathrm{blk}}$ is defined only by the existence of a time in the valid time domain at which $A_{i,T}=\emptyset$ actually holds.
+
+**The blockage and collapse-reaching path sets are different objects (`rem:blk_vs_col`).** $\mathfrak P_{\mathrm{blk}}$ is the set of records that reach blockage within finite time; the collapse-reaching path set $\mathfrak P_{\mathrm{col}}$ of `subsec:col_path_set` is the set of records with $\mathrm{Col}_{i,T}=1$ at some finite time. Since they are determined by different conditions, Phase 1 assumes none of $\mathfrak P_{\mathrm{blk}}\subseteq\mathfrak P_{\mathrm{col}}$, $\mathfrak P_{\mathrm{col}}\subseteq\mathfrak P_{\mathrm{blk}}$, or $\mathfrak P_{\mathrm{blk}}=\mathfrak P_{\mathrm{col}}$ in general.
+
+### Complement and Phase 1 limits
+
+**The complement $\mathfrak P\setminus\mathfrak P_{\mathrm{blk}}$ (`rem:blk_in_trajectory_space`).** The complement is the set of trajectory records with $A_{i,t}\ne\emptyset$ at every time of $I_{\mathrm{ACS}}(\sigma)$. This paper does not state, from membership in the complement, that the SM predicate is true at all times, that the trajectory stays inside the robust viability kernel, that well-formed realization holds at every time, or that collapse is avoided. In particular, trajectories that reach collapse without passing through blockage are not excluded. For records in the complement, at those times of $I_{\mathrm{ACS}}(\sigma)\cap\mathbb T_{\mathrm P,i}$ (`def:principle_time_domain` of §3) at which $(x_t,e_t)\in\mathcal D_{\mathrm{FR}}$, the FR predicate is true (`rem:internal_quantities_not_principles`).
+
+**Phase 1 limits (`rem:blk_phase1_scope`).** Phase 1 only defines $\mathfrak P_{\mathrm{blk}}$ as a set-theoretic subset of $\mathfrak P$. This paper does not in general define a measure, probability, topological boundary, density, distance, basin of attraction or "closeness to blockage" of $\mathfrak P_{\mathrm{blk}}$. Nor does Phase 1 give a general procedure that predicts, from observation up to a finite time, that a record will later belong to $\mathfrak P_{\mathrm{blk}}$. The changes in internal dynamics and relations treated in `subsec:inflow_paths` do not, by themselves, lead to membership in $\mathfrak P_{\mathrm{blk}}$.
+
+---
+
+*Check status.* This summary adds no new definition, assumption or result. Labels in backticks are shared with the manuscript. It has been checked against the manuscript by the drafting model and audited by an external AI model. It remains a draft until the author checks it against the manuscript. No independent human third-party verification is claimed.
