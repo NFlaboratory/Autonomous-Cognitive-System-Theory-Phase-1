@@ -7,6 +7,15 @@ Autonomous Cognitive System Theory, Phase 1: a deterministic formulation
 
 *Conceptual visualization of ACS Theory (not a recording of toy-model execution).*
 
+## 日本語論文全文（PDF）
+
+**[ACS理論 Phase 1 — 日本語論文全文PDF](paper/ACS_Phase1_ja.pdf)**
+
+論文「自律認知システム理論：倫理的協調知性の数理的基盤
+（Phase 1：決定論的定式化）」（NF）の組版済みPDFです。
+
+LaTeX原稿は [`paper/`](paper/) を参照してください。
+
 ## English Readers — Start Here
 
 This repository contains the Japanese manuscript (authoritative) of *Autonomous Cognitive System Theory, Phase 1* and English companion material. The English material is a set of summaries, not a full translation. It adds no definitions, assumptions or results, and all files are drafts until the author has checked them against the manuscript.
@@ -17,7 +26,7 @@ This repository contains the Japanese manuscript (authoritative) of *Autonomous 
 | Detailed English summaries (Markdown, section by section) | [docs/en/README.md](docs/en/README.md) |
 | English PDF collection (31 files) | [docs/en/pdf/README.md](docs/en/pdf/README.md) |
 | English glossary | [docs/en/glossary.md](docs/en/glossary.md) |
-| Japanese manuscript (authoritative) | [paper/](paper/) |
+| Japanese manuscript (authoritative) | [Full paper PDF](paper/ACS_Phase1_ja.pdf) · [LaTeX sources](paper/) |
 
 論文「自律認知システム理論：倫理的協調知性の数理的基盤（Phase 1：決定論的定式化）」（NF）の LaTeX 原稿と、本文の定義の一部を有限モデルの上で計算する補助資料（トイモデル）を収める。トイモデルは本文の命題を補強する証拠ではない。
 
@@ -36,7 +45,7 @@ This repository contains the Japanese LaTeX manuscript of *Autonomous Cognitive 
 
 | パス | 内容 |
 |---|---|
-| `paper/` | 原稿 15 ファイル（`main.tex`、`abstract.tex`、§1〜§9、付録 A〜C、`references.bib`）と `.latexmkrc` |
+| `paper/` | 原稿 15 ファイル（`main.tex`、`abstract.tex`、§1〜§9、付録 A〜C、`references.bib`）、`.latexmkrc`、および[日本語論文全文PDF](paper/ACS_Phase1_ja.pdf) |
 | `tools/` | 原稿の静的検査：`check_acs.py`（ラベル・参照・引用）、`ci_gate.py`（CI 用の判定。問題があれば終了コード 1）、`env_guard.py`（保護対象の環境の同一性）、`forbid.py`（禁止表現の件数）、`gen_appendix_c.py`（付録 C の生成）、`gen_dependency_table.py`（依存一覧の生成）、`logic_audit.py`（論理確認のための要確認箇所の抽出：記号の初出、仮定の使用、参照の循環、備考の断定文、節をまたぐ参照）、`prose_extract.py`（§2〜§8 の地の文の抽出。結果の JSON は `-o` で指定したファイル、または標準出力に書く）、`kernel_inclusion_check.py`（可行性核の包含関係の有限検査）、`check_licenses.py`（全ファイルのライセンスの割り当ての検査） |
 | `toy/` | トイモデル一式（`toy/README.md` を参照）。検証スイートは `toy/verification/`（§4・§5 の 83 定義のうち照合済み 24 件・例示 19 件・未実施 40 件。`toy/verification/README.md`） |
 | `docs/ACS_Phase1_overview_en.md` | 英語の概要（16165 文字、 PDF 約 4 ページ分。本文の要約で、新しい結果は含まない） |
