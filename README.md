@@ -1,7 +1,7 @@
 # 自律認知システム理論（ACS理論）Phase 1：決定論的定式化
 Autonomous Cognitive System Theory, Phase 1: a deterministic formulation
 
-**A Shared Formal Language for Humans and Future Autonomous AI**
+**A structural basis for a shared descriptive language across humans and autonomous AI**
 
 ![ACS Theory — Shared Formal Structure and Architecture](assets/acs-theory-demo.gif)
 
